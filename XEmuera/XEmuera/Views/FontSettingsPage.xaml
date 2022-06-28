@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:rcv="clr-namespace:ReorderableCollectionView.Forms;assembly=ReorderableCollectionView.Forms"
+	x:Class="XEmuera.Views.FontSettingsPage">
+	<ContentPage.Content>
+		<StackLayout>
+			<rcv:ReorderableCollectionView
+				x:Name="FontCollectionView"
+				CanReorderItems="True"
+				IsGrouped="True">
+
+				<CollectionView.GroupHeaderTemplate>
+					<DataTemplate>
+						<Label
+							Text="{Binding Name}"
+							Padding="10,0"
+							BackgroundColor="LightGray"
+							FontSize="14"
+							FontAttributes="Bold" />
+					</DataTemplate>
+				</CollectionView.GroupHeaderTemplate>
+
+				<CollectionView.ItemTemplate>
+					<DataTemplate>
+						<StackLayout
+							Spacing="0"
+							Orientation="Vertical">
+
+							<StackLayout
+								Padding="10"
+								Orientation="Horizontal">
+
+								<StackLayout
+									Spacing="2"
+									HorizontalOptions="StartAndExpand"
+									Orientation="Vertical">
+									<Label
+										Text="{Binding Name}"
+										FontSize="14" />
+									<Label
+										Text="{Binding OtherName}"
+										TextColor="DarkGray"
+										FontSize="12" />
+								</StackLayout>
+
+								<Switch
+									IsToggled="{Binding Enabled}" />
+
+							</StackLayout>
+
+							<BoxView
+								Color="LightGray"
+								HeightRequest="1" />
+						</StackLayout>
+					</DataTemplate>
+				</CollectionView.ItemTemplate>
+
+			</rcv:ReorderableCollectionView>
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

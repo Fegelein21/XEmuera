@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xct:Popup
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit"
+	x:Class="XEmuera.Views.Popup.ConfigValuePopup"
+	Color="Transparent">
+
+	<Frame
+		x:Name="MainLayout"
+		BackgroundColor="White"
+		SizeChanged="MainLayout_SizeChanged">
+
+		<ScrollView>
+			<StackLayout
+				Orientation="Vertical"
+				Spacing="10">
+
+				<Label
+					x:Name="TitleLabel"
+					HorizontalOptions="Center"
+					Margin="0,0,0,5"
+					Text="Settings Page"
+					FontSize="16" />
+
+				<StackLayout
+					Orientation="Horizontal">
+
+					<Switch
+						x:Name="ConfigToggle" />
+
+					<Label
+						x:Name="ConfigToggleLabel"
+						FontSize="14"
+						VerticalOptions="Center" />
+
+				</StackLayout>
+
+				<StackLayout
+					Orientation="Vertical">
+
+					<StackLayout
+						x:Name="ContentLayout"
+						Spacing="0"
+						Orientation="Vertical" />
+
+					<StackLayout
+						x:Name="EntryGroup"
+						IsVisible="False"
+						Orientation="Horizontal">
+						<Label
+							Text="配置值:"
+							VerticalOptions="Center" />
+						<Entry
+							x:Name="ConfigEntry"
+							Placeholder="请输入配置值"
+							HorizontalOptions="FillAndExpand"
+							FontSize="16"
+							TextChanged="ConfigEntry_TextChanged"
+							Keyboard="Plain" />
+					</StackLayout>
+				</StackLayout>
+
+				<StackLayout
+					Orientation="Horizontal">
+
+					<Button
+						Text="Default"
+						Clicked="OnDefault" />
+
+					<Button
+						HorizontalOptions="CenterAndExpand"
+						Text="Cancel"
+						Clicked="OnClose" />
+
+					<Button
+						Text="OK"
+						Clicked="OkButton_Clicked" />
+
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+	</Frame>
+</xct:Popup>

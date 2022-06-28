@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:eforms="clr-namespace:MinorShift.Emuera.Forms"
+	x:Class="MinorShift.Emuera.MainWindow"
+	NavigationPage.HasNavigationBar="False"
+	SizeChanged="ContentPage_SizeChanged">
+
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style
+				x:Key="buttonStyle"
+				TargetType="Button">
+				<Setter
+					Property="WidthRequest"
+					Value="70" />
+				<Setter
+					Property="BackgroundColor"
+					Value="#60ffffff" />
+				<Setter
+					Property="FontSize"
+					Value="12" />
+				<Setter
+					Property="Padding"
+					Value="2" />
+			</Style>
+		</ResourceDictionary>
+	</ContentPage.Resources>
+
+	<FlexLayout
+		Direction="Column">
+
+		<RelativeLayout
+			x:Name="mainLayout">
+
+			<eforms:EraPictureBox
+				x:Name="mainPicBox"
+				EnableTouchEvents="True"
+				Touch="EraPictureBox_Touch"
+				PaintSurface="mainPicBox_Paint" />
+
+			<StackLayout
+				x:Name="uiLayout"
+				InputTransparent="True"
+				CascadeInputTransparent="False"
+				Orientation="Vertical"
+				SizeChanged="uiLayout_SizeChanged">
+
+				<StackLayout
+					x:Name="buttonGroup"
+					Orientation="Horizontal"
+					HorizontalOptions="Fill"
+					HeightRequest="40"
+					Padding="20,10"
+					Spacing="20">
+
+					<Button
+						Text="跳过"
+						Style="{StaticResource buttonStyle}"
+						HorizontalOptions="StartAndExpand"
+						Clicked="SkipButton_Clicked" />
+
+					<Button
+						Text="输入框"
+						Style="{StaticResource buttonStyle}"
+						Clicked="EntryButton_Clicked" />
+
+					<Button
+						Text="滑动条"
+						Style="{StaticResource buttonStyle}"
+						Clicked="ScrollBarButton_Clicked" />
+
+					<Button
+						Text="快捷按钮"
+						Style="{StaticResource buttonStyle}"
+						Clicked="QuickButtonGroup_Clicked" />
+
+				</StackLayout>
+
+				<StackLayout
+					x:Name="ScrollBarLayout"
+					IsVisible="false"
+					HorizontalOptions="End"
+					VerticalOptions="EndAndExpand"
+					Margin="0, 0, 40, 20"
+					Rotation="90"
+					AnchorX="1"
+					AnchorY="0.5">
+					<Slider
+						x:Name="vScrollBar"
+						Maximum="1"
+						Value="1"
+						MaximumTrackColor="LightGray"
+						MinimumTrackColor="LightGray"
+						ValueChanged="scrollBar_ValueChanged"
+						DragStarted="vScrollBar_DragStarted"
+						DragCompleted="vScrollBar_DragCompleted" />
+				</StackLayout>
+
+				<ScrollView
+					x:Name="buttonScrollView"
+					x:FieldModifier="public"
+					HorizontalOptions="End"
+					VerticalOptions="EndAndExpand"
+					HorizontalScrollBarVisibility="Never"
+					VerticalScrollBarVisibility="Never"
+					Margin="0, 0, 20, 30"
+					Orientation="Both">
+
+					<StackLayout
+						x:Name="quickButtonGroup"
+						x:FieldModifier="public"
+						Spacing="2"
+						Orientation="Vertical" />
+
+				</ScrollView>
+			</StackLayout>
+		</RelativeLayout>
+
+		<StackLayout
+			x:Name="entryGroup"
+			FlexLayout.Basis="80"
+			IsVisible="False"
+			BackgroundColor="#20000000"
+			Padding="0, 0, 8, 0"
+			Orientation="Horizontal">
+
+			<Entry
+				x:Name="richTextBox1"
+				Completed="richTextBox1_Completed"
+				HorizontalOptions="FillAndExpand"
+				Keyboard="Plain"
+				FontSize="Body"
+				FontFamily="MS Gothic"
+				TextColor="White"
+				TextChanged="richTextBox1_TextChanged" />
+
+			<Button
+				x:Name="inputButton"
+				Text="输入"
+				Style="{StaticResource buttonStyle}"
+				VerticalOptions="Center"
+				Clicked="inputButton_Clicked" />
+
+		</StackLayout>
+	</FlexLayout>
+</ContentPage>

@@ -1,0 +1,3029 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="buttonSave.Location" type="System.Drawing.Point, System.Drawing">
+    <value>89, 400</value>
+  </data>
+  <data name="buttonSave.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 24</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="buttonSave.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="buttonSave.Text" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="&gt;&gt;buttonSave.Name" xml:space="preserve">
+    <value>buttonSave</value>
+  </data>
+  <data name="&gt;&gt;buttonSave.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonSave.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;buttonSave.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="buttonCancel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>250, 400</value>
+  </data>
+  <data name="buttonCancel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>78, 24</value>
+  </data>
+  <data name="buttonCancel.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="buttonCancel.Text" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="&gt;&gt;buttonCancel.Name" xml:space="preserve">
+    <value>buttonCancel</value>
+  </data>
+  <data name="&gt;&gt;buttonCancel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonCancel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;buttonCancel.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="buttonReboot.Location" type="System.Drawing.Point, System.Drawing">
+    <value>144, 400</value>
+  </data>
+  <data name="buttonReboot.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 24</value>
+  </data>
+  <data name="buttonReboot.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="buttonReboot.Text" xml:space="preserve">
+    <value>保存して再起動</value>
+  </data>
+  <data name="&gt;&gt;buttonReboot.Name" xml:space="preserve">
+    <value>buttonReboot</value>
+  </data>
+  <data name="&gt;&gt;buttonReboot.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonReboot.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;buttonReboot.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="comboBox6.Items" xml:space="preserve">
+    <value>サクラエディタ</value>
+  </data>
+  <data name="comboBox6.Items1" xml:space="preserve">
+    <value>TERAPAD</value>
+  </data>
+  <data name="comboBox6.Items2" xml:space="preserve">
+    <value>EmEditor</value>
+  </data>
+  <data name="comboBox6.Items3" xml:space="preserve">
+    <value>ユーザー設定</value>
+  </data>
+  <data name="comboBox6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>108, 250</value>
+  </data>
+  <data name="comboBox6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 20</value>
+  </data>
+  <data name="comboBox6.TabIndex" type="System.Int32, mscorlib">
+    <value>78</value>
+  </data>
+  <data name="&gt;&gt;comboBox6.Name" xml:space="preserve">
+    <value>comboBox6</value>
+  </data>
+  <data name="&gt;&gt;comboBox6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;comboBox6.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;comboBox6.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="checkBox24.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox24.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 86</value>
+  </data>
+  <data name="checkBox24.Size" type="System.Drawing.Size, System.Drawing">
+    <value>207, 16</value>
+  </data>
+  <data name="checkBox24.TabIndex" type="System.Int32, mscorlib">
+    <value>77</value>
+  </data>
+  <data name="checkBox24.Text" xml:space="preserve">
+    <value>セーブデータをsavフォルダ内に作成する</value>
+  </data>
+  <data name="&gt;&gt;checkBox24.Name" xml:space="preserve">
+    <value>checkBox24</value>
+  </data>
+  <data name="&gt;&gt;checkBox24.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox24.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;checkBox24.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="textBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>108, 276</value>
+  </data>
+  <data name="textBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 19</value>
+  </data>
+  <data name="textBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>76</value>
+  </data>
+  <data name="&gt;&gt;textBox2.Name" xml:space="preserve">
+    <value>textBox2</value>
+  </data>
+  <data name="&gt;&gt;textBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBox2.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;textBox2.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label23.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label23.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 250</value>
+  </data>
+  <data name="label23.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 12</value>
+  </data>
+  <data name="label23.TabIndex" type="System.Int32, mscorlib">
+    <value>75</value>
+  </data>
+  <data name="label23.Text" xml:space="preserve">
+    <value>コマンドライン引数</value>
+  </data>
+  <data name="&gt;&gt;label23.Name" xml:space="preserve">
+    <value>label23</value>
+  </data>
+  <data name="&gt;&gt;label23.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label23.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;label23.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="button4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>246, 218</value>
+  </data>
+  <data name="button4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 23</value>
+  </data>
+  <data name="button4.TabIndex" type="System.Int32, mscorlib">
+    <value>74</value>
+  </data>
+  <data name="button4.Text" xml:space="preserve">
+    <value>選択</value>
+  </data>
+  <data name="&gt;&gt;button4.Name" xml:space="preserve">
+    <value>button4</value>
+  </data>
+  <data name="&gt;&gt;button4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button4.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;button4.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="textBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 220</value>
+  </data>
+  <data name="textBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>230, 19</value>
+  </data>
+  <data name="textBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>73</value>
+  </data>
+  <data name="&gt;&gt;textBox1.Name" xml:space="preserve">
+    <value>textBox1</value>
+  </data>
+  <data name="&gt;&gt;textBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBox1.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;textBox1.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="label22.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label22.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 204</value>
+  </data>
+  <data name="label22.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 12</value>
+  </data>
+  <data name="label22.TabIndex" type="System.Int32, mscorlib">
+    <value>72</value>
+  </data>
+  <data name="label22.Text" xml:space="preserve">
+    <value>関連づけるテキストエディタ</value>
+  </data>
+  <data name="&gt;&gt;label22.Name" xml:space="preserve">
+    <value>label22</value>
+  </data>
+  <data name="&gt;&gt;label22.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label22.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;label22.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="label20.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label20.Location" type="System.Drawing.Point, System.Drawing">
+    <value>144, 163</value>
+  </data>
+  <data name="label20.Size" type="System.Drawing.Size, System.Drawing">
+    <value>117, 12</value>
+  </data>
+  <data name="label20.TabIndex" type="System.Int32, mscorlib">
+    <value>71</value>
+  </data>
+  <data name="label20.Text" xml:space="preserve">
+    <value>使用するセーブデータ数</value>
+  </data>
+  <data name="&gt;&gt;label20.Name" xml:space="preserve">
+    <value>label20</value>
+  </data>
+  <data name="&gt;&gt;label20.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label20.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;label20.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="label17.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label17.Location" type="System.Drawing.Point, System.Drawing">
+    <value>142, 139</value>
+  </data>
+  <data name="label17.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 12</value>
+  </data>
+  <data name="label17.TabIndex" type="System.Int32, mscorlib">
+    <value>70</value>
+  </data>
+  <data name="label17.Text" xml:space="preserve">
+    <value>無限ループ警告までのミリ秒</value>
+  </data>
+  <data name="&gt;&gt;label17.Name" xml:space="preserve">
+    <value>label17</value>
+  </data>
+  <data name="&gt;&gt;label17.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label17.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;label17.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>142, 114</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>81, 12</value>
+  </data>
+  <data name="label6.TabIndex" type="System.Int32, mscorlib">
+    <value>69</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>履歴ログの行数</value>
+  </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="numericUpDown11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 163</value>
+  </data>
+  <data name="numericUpDown11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 19</value>
+  </data>
+  <data name="numericUpDown11.TabIndex" type="System.Int32, mscorlib">
+    <value>66</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown11.Name" xml:space="preserve">
+    <value>numericUpDown11</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown11.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown11.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="checkBox18.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox18.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 60</value>
+  </data>
+  <data name="checkBox18.Size" type="System.Drawing.Size, System.Drawing">
+    <value>151, 16</value>
+  </data>
+  <data name="checkBox18.TabIndex" type="System.Int32, mscorlib">
+    <value>65</value>
+  </data>
+  <data name="checkBox18.Text" xml:space="preserve">
+    <value>キーボードマクロを使用する</value>
+  </data>
+  <data name="&gt;&gt;checkBox18.Name" xml:space="preserve">
+    <value>checkBox18</value>
+  </data>
+  <data name="&gt;&gt;checkBox18.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox18.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;checkBox18.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="numericUpDown10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 137</value>
+  </data>
+  <data name="numericUpDown10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 19</value>
+  </data>
+  <data name="numericUpDown10.TabIndex" type="System.Int32, mscorlib">
+    <value>64</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown10.Name" xml:space="preserve">
+    <value>numericUpDown10</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown10.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown10.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="numericUpDown4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 112</value>
+  </data>
+  <data name="numericUpDown4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 19</value>
+  </data>
+  <data name="numericUpDown4.TabIndex" type="System.Int32, mscorlib">
+    <value>63</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown4.Name" xml:space="preserve">
+    <value>numericUpDown4</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown4.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown4.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="checkBox7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>168, 60</value>
+  </data>
+  <data name="checkBox7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 16</value>
+  </data>
+  <data name="checkBox7.TabIndex" type="System.Int32, mscorlib">
+    <value>62</value>
+  </data>
+  <data name="checkBox7.Text" xml:space="preserve">
+    <value>オートセーブを行なう</value>
+  </data>
+  <data name="&gt;&gt;checkBox7.Name" xml:space="preserve">
+    <value>checkBox7</value>
+  </data>
+  <data name="&gt;&gt;checkBox7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox7.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;checkBox7.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="checkBox6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>168, 38</value>
+  </data>
+  <data name="checkBox6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>124, 16</value>
+  </data>
+  <data name="checkBox6.TabIndex" type="System.Int32, mscorlib">
+    <value>61</value>
+  </data>
+  <data name="checkBox6.Text" xml:space="preserve">
+    <value>多重起動を許可する</value>
+  </data>
+  <data name="&gt;&gt;checkBox6.Name" xml:space="preserve">
+    <value>checkBox6</value>
+  </data>
+  <data name="&gt;&gt;checkBox6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox6.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;checkBox6.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="checkBox5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 38</value>
+  </data>
+  <data name="checkBox5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 16</value>
+  </data>
+  <data name="checkBox5.TabIndex" type="System.Int32, mscorlib">
+    <value>60</value>
+  </data>
+  <data name="checkBox5.Text" xml:space="preserve">
+    <value>デバッグコマンドを使用する</value>
+  </data>
+  <data name="&gt;&gt;checkBox5.Name" xml:space="preserve">
+    <value>checkBox5</value>
+  </data>
+  <data name="&gt;&gt;checkBox5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox5.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;checkBox5.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
+  <data name="checkBox4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>168, 16</value>
+  </data>
+  <data name="checkBox4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>111, 16</value>
+  </data>
+  <data name="checkBox4.TabIndex" type="System.Int32, mscorlib">
+    <value>59</value>
+  </data>
+  <data name="checkBox4.Text" xml:space="preserve">
+    <value>メニューを使用する</value>
+  </data>
+  <data name="&gt;&gt;checkBox4.Name" xml:space="preserve">
+    <value>checkBox4</value>
+  </data>
+  <data name="&gt;&gt;checkBox4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox4.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;checkBox4.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="checkBox3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 16</value>
+  </data>
+  <data name="checkBox3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>103, 16</value>
+  </data>
+  <data name="checkBox3.TabIndex" type="System.Int32, mscorlib">
+    <value>58</value>
+  </data>
+  <data name="checkBox3.Text" xml:space="preserve">
+    <value>マウスを使用する</value>
+  </data>
+  <data name="&gt;&gt;checkBox3.Name" xml:space="preserve">
+    <value>checkBox3</value>
+  </data>
+  <data name="&gt;&gt;checkBox3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox3.Parent" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;checkBox3.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
+  <data name="tabEnvironment.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 40</value>
+  </data>
+  <data name="tabEnvironment.Size" type="System.Drawing.Size, System.Drawing">
+    <value>308, 326</value>
+  </data>
+  <data name="tabEnvironment.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="tabEnvironment.Text" xml:space="preserve">
+    <value>環境</value>
+  </data>
+  <data name="&gt;&gt;tabEnvironment.Name" xml:space="preserve">
+    <value>tabEnvironment</value>
+  </data>
+  <data name="&gt;&gt;tabEnvironment.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabEnvironment.Parent" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;tabEnvironment.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="checkBox14.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox14.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 185</value>
+  </data>
+  <data name="checkBox14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>183, 16</value>
+  </data>
+  <data name="checkBox14.TabIndex" type="System.Int32, mscorlib">
+    <value>67</value>
+  </data>
+  <data name="checkBox14.Text" xml:space="preserve">
+    <value>ボタンの途中で行を折りかえさない</value>
+  </data>
+  <data name="&gt;&gt;checkBox14.Name" xml:space="preserve">
+    <value>checkBox14</value>
+  </data>
+  <data name="&gt;&gt;checkBox14.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox14.Parent" xml:space="preserve">
+    <value>tabPageView</value>
+  </data>
+  <data name="&gt;&gt;checkBox14.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label18.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label18.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 35</value>
+  </data>
+  <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 12</value>
+  </data>
+  <data name="label18.TabIndex" type="System.Int32, mscorlib">
+    <value>65</value>
+  </data>
+  <data name="label18.Text" xml:space="preserve">
+    <value>描画インターフェース</value>
+  </data>
+  <data name="&gt;&gt;label18.Name" xml:space="preserve">
+    <value>label18</value>
+  </data>
+  <data name="&gt;&gt;label18.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label18.Parent" xml:space="preserve">
+    <value>tabPageView</value>
+  </data>
+  <data name="&gt;&gt;label18.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="comboBoxTextDrawingMode.Items" xml:space="preserve">
+    <value>WIN API (GDI)</value>
+  </data>
+  <data name="comboBoxTextDrawingMode.Items1" xml:space="preserve">
+    <value>TextRenderer (GDI&amp;GDI+)</value>
+  </data>
+  <data name="comboBoxTextDrawingMode.Items2" xml:space="preserve">
+    <value>Graphics (GDI+)</value>
+  </data>
+  <data name="comboBoxTextDrawingMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 50</value>
+  </data>
+  <data name="comboBoxTextDrawingMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 20</value>
+  </data>
+  <data name="comboBoxTextDrawingMode.TabIndex" type="System.Int32, mscorlib">
+    <value>64</value>
+  </data>
+  <data name="&gt;&gt;comboBoxTextDrawingMode.Name" xml:space="preserve">
+    <value>comboBoxTextDrawingMode</value>
+  </data>
+  <data name="&gt;&gt;comboBoxTextDrawingMode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;comboBoxTextDrawingMode.Parent" xml:space="preserve">
+    <value>tabPageView</value>
+  </data>
+  <data name="&gt;&gt;comboBoxTextDrawingMode.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>143, 162</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 12</value>
+  </data>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>63</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>PRINTCの文字数</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>tabPageView</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="numericUpDown9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 160</value>
+  </data>
+  <data name="numericUpDown9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 19</value>
+  </data>
+  <data name="numericUpDown9.TabIndex" type="System.Int32, mscorlib">
+    <value>62</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown9.Name" xml:space="preserve">
+    <value>numericUpDown9</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown9.Parent" xml:space="preserve">
+    <value>tabPageView</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown9.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>143, 137</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 12</value>
+  </data>
+  <data name="label5.TabIndex" type="System.Int32, mscorlib">
+    <value>61</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>PRINTCを並べる数</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>tabPageView</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="numericUpDown1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 135</value>
+  </data>
+  <data name="numericUpDown1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 19</value>
+  </data>
+  <data name="numericUpDown1.TabIndex" type="System.Int32, mscorlib">
+    <value>60</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown1.Name" xml:space="preserve">
+    <value>numericUpDown1</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown1.Parent" xml:space="preserve">
+    <value>tabPageView</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown1.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="label9.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>143, 111</value>
+  </data>
+  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 12</value>
+  </data>
+  <data name="label9.TabIndex" type="System.Int32, mscorlib">
+    <value>56</value>
+  </data>
+  <data name="label9.Text" xml:space="preserve">
+    <value>フレーム毎秒</value>
+  </data>
+  <data name="&gt;&gt;label9.Name" xml:space="preserve">
+    <value>label9</value>
+  </data>
+  <data name="&gt;&gt;label9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
+    <value>tabPageView</value>
+  </data>
+  <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="numericUpDown7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 109</value>
+  </data>
+  <data name="numericUpDown7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 19</value>
+  </data>
+  <data name="numericUpDown7.TabIndex" type="System.Int32, mscorlib">
+    <value>55</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown7.Name" xml:space="preserve">
+    <value>numericUpDown7</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown7.Parent" xml:space="preserve">
+    <value>tabPageView</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown7.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="tabPageView.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 40</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="tabPageView.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabPageView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>308, 326</value>
+  </data>
+  <data name="tabPageView.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="tabPageView.Text" xml:space="preserve">
+    <value>表示</value>
+  </data>
+  <data name="&gt;&gt;tabPageView.Name" xml:space="preserve">
+    <value>tabPageView</value>
+  </data>
+  <data name="&gt;&gt;tabPageView.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPageView.Parent" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;tabPageView.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="checkBox21.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox21.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 115</value>
+  </data>
+  <data name="checkBox21.Size" type="System.Drawing.Size, System.Drawing">
+    <value>176, 16</value>
+  </data>
+  <data name="checkBox21.TabIndex" type="System.Int32, mscorlib">
+    <value>83</value>
+  </data>
+  <data name="checkBox21.Text" xml:space="preserve">
+    <value>起動時にウィンドウを最大化する</value>
+  </data>
+  <data name="&gt;&gt;checkBox21.Name" xml:space="preserve">
+    <value>checkBox21</value>
+  </data>
+  <data name="&gt;&gt;checkBox21.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox21.Parent" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;checkBox21.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="ScrollRange.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ScrollRange.Location" type="System.Drawing.Point, System.Drawing">
+    <value>139, 249</value>
+  </data>
+  <data name="ScrollRange.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 12</value>
+  </data>
+  <data name="ScrollRange.TabIndex" type="System.Int32, mscorlib">
+    <value>82</value>
+  </data>
+  <data name="ScrollRange.Text" xml:space="preserve">
+    <value>スクロールの行数</value>
+  </data>
+  <data name="&gt;&gt;ScrollRange.Name" xml:space="preserve">
+    <value>ScrollRange</value>
+  </data>
+  <data name="&gt;&gt;ScrollRange.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ScrollRange.Parent" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;ScrollRange.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="numericUpDown8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 247</value>
+  </data>
+  <data name="numericUpDown8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 19</value>
+  </data>
+  <data name="numericUpDown8.TabIndex" type="System.Int32, mscorlib">
+    <value>81</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown8.Name" xml:space="preserve">
+    <value>numericUpDown8</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown8.Parent" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown8.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="checkBox17.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox17.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 136</value>
+  </data>
+  <data name="checkBox17.Size" type="System.Drawing.Size, System.Drawing">
+    <value>199, 16</value>
+  </data>
+  <data name="checkBox17.TabIndex" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="checkBox17.Text" xml:space="preserve">
+    <value>起動時のウィンドウの位置を固定する</value>
+  </data>
+  <data name="&gt;&gt;checkBox17.Name" xml:space="preserve">
+    <value>checkBox17</value>
+  </data>
+  <data name="&gt;&gt;checkBox17.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox17.Parent" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;checkBox17.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="button3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 208</value>
+  </data>
+  <data name="button3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 24</value>
+  </data>
+  <data name="button3.TabIndex" type="System.Int32, mscorlib">
+    <value>79</value>
+  </data>
+  <data name="button3.Text" xml:space="preserve">
+    <value>現在のウィンドウ位置を取得</value>
+  </data>
+  <data name="&gt;&gt;button3.Name" xml:space="preserve">
+    <value>button3</value>
+  </data>
+  <data name="&gt;&gt;button3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button3.Parent" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;button3.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="label10.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>139, 185</value>
+  </data>
+  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 12</value>
+  </data>
+  <data name="label10.TabIndex" type="System.Int32, mscorlib">
+    <value>78</value>
+  </data>
+  <data name="label10.Text" xml:space="preserve">
+    <value>ウィンドウ位置Y</value>
+  </data>
+  <data name="&gt;&gt;label10.Name" xml:space="preserve">
+    <value>label10</value>
+  </data>
+  <data name="&gt;&gt;label10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="label19.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>139, 160</value>
+  </data>
+  <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 12</value>
+  </data>
+  <data name="label19.TabIndex" type="System.Int32, mscorlib">
+    <value>77</value>
+  </data>
+  <data name="label19.Text" xml:space="preserve">
+    <value>ウィンドウ位置X</value>
+  </data>
+  <data name="&gt;&gt;label19.Name" xml:space="preserve">
+    <value>label19</value>
+  </data>
+  <data name="&gt;&gt;label19.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label19.Parent" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;label19.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="numericUpDownPosY.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 183</value>
+  </data>
+  <data name="numericUpDownPosY.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 19</value>
+  </data>
+  <data name="numericUpDownPosY.TabIndex" type="System.Int32, mscorlib">
+    <value>76</value>
+  </data>
+  <data name="&gt;&gt;numericUpDownPosY.Name" xml:space="preserve">
+    <value>numericUpDownPosY</value>
+  </data>
+  <data name="&gt;&gt;numericUpDownPosY.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDownPosY.Parent" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;numericUpDownPosY.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="numericUpDownPosX.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 158</value>
+  </data>
+  <data name="numericUpDownPosX.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 19</value>
+  </data>
+  <data name="numericUpDownPosX.TabIndex" type="System.Int32, mscorlib">
+    <value>75</value>
+  </data>
+  <data name="&gt;&gt;numericUpDownPosX.Name" xml:space="preserve">
+    <value>numericUpDownPosX</value>
+  </data>
+  <data name="&gt;&gt;numericUpDownPosX.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDownPosX.Parent" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;numericUpDownPosX.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 61</value>
+  </data>
+  <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 24</value>
+  </data>
+  <data name="button1.TabIndex" type="System.Int32, mscorlib">
+    <value>74</value>
+  </data>
+  <data name="button1.Text" xml:space="preserve">
+    <value>現在のウィンドウサイズを取得</value>
+  </data>
+  <data name="&gt;&gt;button1.Name" xml:space="preserve">
+    <value>button1</value>
+  </data>
+  <data name="&gt;&gt;button1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button1.Parent" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;button1.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>139, 38</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 12</value>
+  </data>
+  <data name="label3.TabIndex" type="System.Int32, mscorlib">
+    <value>73</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>ウィンドウ高さ</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>139, 13</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 12</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>72</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>ウィンドウ幅</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="numericUpDown3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 36</value>
+  </data>
+  <data name="numericUpDown3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 19</value>
+  </data>
+  <data name="numericUpDown3.TabIndex" type="System.Int32, mscorlib">
+    <value>71</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown3.Name" xml:space="preserve">
+    <value>numericUpDown3</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown3.Parent" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown3.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="numericUpDown2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 11</value>
+  </data>
+  <data name="numericUpDown2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 19</value>
+  </data>
+  <data name="numericUpDown2.TabIndex" type="System.Int32, mscorlib">
+    <value>70</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown2.Name" xml:space="preserve">
+    <value>numericUpDown2</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown2.Parent" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown2.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="checkBox8.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 94</value>
+  </data>
+  <data name="checkBox8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>158, 16</value>
+  </data>
+  <data name="checkBox8.TabIndex" type="System.Int32, mscorlib">
+    <value>69</value>
+  </data>
+  <data name="checkBox8.Text" xml:space="preserve">
+    <value>ウィンドウの高さを可変にする</value>
+  </data>
+  <data name="&gt;&gt;checkBox8.Name" xml:space="preserve">
+    <value>checkBox8</value>
+  </data>
+  <data name="&gt;&gt;checkBox8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox8.Parent" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;checkBox8.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="tabPageWindow.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 40</value>
+  </data>
+  <data name="tabPageWindow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>308, 326</value>
+  </data>
+  <data name="tabPageWindow.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="tabPageWindow.Text" xml:space="preserve">
+    <value>ウィンドウ</value>
+  </data>
+  <data name="&gt;&gt;tabPageWindow.Name" xml:space="preserve">
+    <value>tabPageWindow</value>
+  </data>
+  <data name="&gt;&gt;tabPageWindow.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPageWindow.Parent" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;tabPageWindow.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="button2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>57, 187</value>
+  </data>
+  <data name="button2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 24</value>
+  </data>
+  <data name="button2.TabIndex" type="System.Int32, mscorlib">
+    <value>69</value>
+  </data>
+  <data name="button2.Text" xml:space="preserve">
+    <value>フォント名一覧を取得</value>
+  </data>
+  <data name="&gt;&gt;button2.Name" xml:space="preserve">
+    <value>button2</value>
+  </data>
+  <data name="&gt;&gt;button2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button2.Parent" xml:space="preserve">
+    <value>tabPageFont</value>
+  </data>
+  <data name="&gt;&gt;button2.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>132, 244</value>
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 12</value>
+  </data>
+  <data name="label7.TabIndex" type="System.Int32, mscorlib">
+    <value>53</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>一行の高さ</value>
+  </data>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
+  </data>
+  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
+    <value>tabPageFont</value>
+  </data>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label8.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>132, 219</value>
+  </data>
+  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 12</value>
+  </data>
+  <data name="label8.TabIndex" type="System.Int32, mscorlib">
+    <value>52</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>フォントサイズ</value>
+  </data>
+  <data name="&gt;&gt;label8.Name" xml:space="preserve">
+    <value>label8</value>
+  </data>
+  <data name="&gt;&gt;label8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
+    <value>tabPageFont</value>
+  </data>
+  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="numericUpDown6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 242</value>
+  </data>
+  <data name="numericUpDown6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 19</value>
+  </data>
+  <data name="numericUpDown6.TabIndex" type="System.Int32, mscorlib">
+    <value>51</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown6.Name" xml:space="preserve">
+    <value>numericUpDown6</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown6.Parent" xml:space="preserve">
+    <value>tabPageFont</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown6.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="numericUpDown5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 217</value>
+  </data>
+  <data name="numericUpDown5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 19</value>
+  </data>
+  <data name="numericUpDown5.TabIndex" type="System.Int32, mscorlib">
+    <value>50</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown5.Name" xml:space="preserve">
+    <value>numericUpDown5</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown5.Parent" xml:space="preserve">
+    <value>tabPageFont</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown5.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>132, 164</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 12</value>
+  </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>49</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>フォント名</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>tabPageFont</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="comboBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 161</value>
+  </data>
+  <data name="comboBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 20</value>
+  </data>
+  <data name="comboBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>48</value>
+  </data>
+  <data name="&gt;&gt;comboBox2.Name" xml:space="preserve">
+    <value>comboBox2</value>
+  </data>
+  <data name="&gt;&gt;comboBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;comboBox2.Parent" xml:space="preserve">
+    <value>tabPageFont</value>
+  </data>
+  <data name="&gt;&gt;comboBox2.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="colorBoxBacklog.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 112</value>
+  </data>
+  <data name="colorBoxBacklog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>215, 30</value>
+  </data>
+  <data name="colorBoxBacklog.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;colorBoxBacklog.Name" xml:space="preserve">
+    <value>colorBoxBacklog</value>
+  </data>
+  <data name="&gt;&gt;colorBoxBacklog.Type" xml:space="preserve">
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.6904.3472, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;colorBoxBacklog.Parent" xml:space="preserve">
+    <value>tabPageFont</value>
+  </data>
+  <data name="&gt;&gt;colorBoxBacklog.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="colorBoxSelecting.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 81</value>
+  </data>
+  <data name="colorBoxSelecting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>215, 30</value>
+  </data>
+  <data name="colorBoxSelecting.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;colorBoxSelecting.Name" xml:space="preserve">
+    <value>colorBoxSelecting</value>
+  </data>
+  <data name="&gt;&gt;colorBoxSelecting.Type" xml:space="preserve">
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.6904.3472, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;colorBoxSelecting.Parent" xml:space="preserve">
+    <value>tabPageFont</value>
+  </data>
+  <data name="&gt;&gt;colorBoxSelecting.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="colorBoxFG.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 50</value>
+  </data>
+  <data name="colorBoxFG.Size" type="System.Drawing.Size, System.Drawing">
+    <value>215, 30</value>
+  </data>
+  <data name="colorBoxFG.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;colorBoxFG.Name" xml:space="preserve">
+    <value>colorBoxFG</value>
+  </data>
+  <data name="&gt;&gt;colorBoxFG.Type" xml:space="preserve">
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.6904.3472, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;colorBoxFG.Parent" xml:space="preserve">
+    <value>tabPageFont</value>
+  </data>
+  <data name="&gt;&gt;colorBoxFG.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="colorBoxBG.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 20</value>
+  </data>
+  <data name="colorBoxBG.Size" type="System.Drawing.Size, System.Drawing">
+    <value>215, 30</value>
+  </data>
+  <data name="colorBoxBG.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;colorBoxBG.Name" xml:space="preserve">
+    <value>colorBoxBG</value>
+  </data>
+  <data name="&gt;&gt;colorBoxBG.Type" xml:space="preserve">
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.6904.3472, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;colorBoxBG.Parent" xml:space="preserve">
+    <value>tabPageFont</value>
+  </data>
+  <data name="&gt;&gt;colorBoxBG.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="tabPageFont.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 40</value>
+  </data>
+  <data name="tabPageFont.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabPageFont.Size" type="System.Drawing.Size, System.Drawing">
+    <value>308, 326</value>
+  </data>
+  <data name="tabPageFont.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tabPageFont.Text" xml:space="preserve">
+    <value>フォント</value>
+  </data>
+  <data name="&gt;&gt;tabPageFont.Name" xml:space="preserve">
+    <value>tabPageFont</value>
+  </data>
+  <data name="&gt;&gt;tabPageFont.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPageFont.Parent" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;tabPageFont.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="comboBox1.Items" xml:space="preserve">
+    <value>日本語(ja-JP)</value>
+  </data>
+  <data name="comboBox1.Items1" xml:space="preserve">
+    <value>한글(ko-KR)</value>
+  </data>
+  <data name="comboBox1.Items2" xml:space="preserve">
+    <value>(zh-CN)</value>
+  </data>
+  <data name="comboBox1.Items3" xml:space="preserve">
+    <value>(zh-TW)</value>
+  </data>
+  <data name="comboBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>161, 269</value>
+  </data>
+  <data name="comboBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 20</value>
+  </data>
+  <data name="comboBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>78</value>
+  </data>
+  <data name="&gt;&gt;comboBox1.Name" xml:space="preserve">
+    <value>comboBox1</value>
+  </data>
+  <data name="&gt;&gt;comboBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;comboBox1.Parent" xml:space="preserve">
+    <value>tabPageSystem</value>
+  </data>
+  <data name="&gt;&gt;comboBox1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label11.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 274</value>
+  </data>
+  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>146, 12</value>
+  </data>
+  <data name="label11.TabIndex" type="System.Int32, mscorlib">
+    <value>77</value>
+  </data>
+  <data name="label11.Text" xml:space="preserve">
+    <value>内部で使用する東アジア言語</value>
+  </data>
+  <data name="&gt;&gt;label11.Name" xml:space="preserve">
+    <value>label11</value>
+  </data>
+  <data name="&gt;&gt;label11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
+    <value>tabPageSystem</value>
+  </data>
+  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="checkBoxSystemFullSpace.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBoxSystemFullSpace.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 217</value>
+  </data>
+  <data name="checkBoxSystemFullSpace.Size" type="System.Drawing.Size, System.Drawing">
+    <value>209, 16</value>
+  </data>
+  <data name="checkBoxSystemFullSpace.TabIndex" type="System.Int32, mscorlib">
+    <value>74</value>
+  </data>
+  <data name="checkBoxSystemFullSpace.Text" xml:space="preserve">
+    <value>全角スペースをホワイトスペースに含める</value>
+  </data>
+  <data name="&gt;&gt;checkBoxSystemFullSpace.Name" xml:space="preserve">
+    <value>checkBoxSystemFullSpace</value>
+  </data>
+  <data name="&gt;&gt;checkBoxSystemFullSpace.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxSystemFullSpace.Parent" xml:space="preserve">
+    <value>tabPageSystem</value>
+  </data>
+  <data name="&gt;&gt;checkBoxSystemFullSpace.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="checkBox22.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox22.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 195</value>
+  </data>
+  <data name="checkBox22.Size" type="System.Drawing.Size, System.Drawing">
+    <value>276, 16</value>
+  </data>
+  <data name="checkBox22.TabIndex" type="System.Int32, mscorlib">
+    <value>73</value>
+  </data>
+  <data name="checkBox22.Text" xml:space="preserve">
+    <value>同名の非イベント関数が複数定義されたとき警告する</value>
+  </data>
+  <data name="&gt;&gt;checkBox22.Name" xml:space="preserve">
+    <value>checkBox22</value>
+  </data>
+  <data name="&gt;&gt;checkBox22.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox22.Parent" xml:space="preserve">
+    <value>tabPageSystem</value>
+  </data>
+  <data name="&gt;&gt;checkBox22.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="label21.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label21.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 8</value>
+  </data>
+  <data name="label21.Size" type="System.Drawing.Size, System.Drawing">
+    <value>228, 24</value>
+  </data>
+  <data name="label21.TabIndex" type="System.Int32, mscorlib">
+    <value>71</value>
+  </data>
+  <data name="label21.Text" xml:space="preserve">
+    <value>※システムの項目を変化させた場合、
+ERBスクリプトが正常に動作しないことがあります</value>
+  </data>
+  <data name="&gt;&gt;label21.Name" xml:space="preserve">
+    <value>label21</value>
+  </data>
+  <data name="&gt;&gt;label21.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label21.Parent" xml:space="preserve">
+    <value>tabPageSystem</value>
+  </data>
+  <data name="&gt;&gt;label21.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="checkBox20.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox20.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 151</value>
+  </data>
+  <data name="checkBox20.Size" type="System.Drawing.Size, System.Drawing">
+    <value>181, 16</value>
+  </data>
+  <data name="checkBox20.TabIndex" type="System.Int32, mscorlib">
+    <value>70</value>
+  </data>
+  <data name="checkBox20.Text" xml:space="preserve">
+    <value>システム関数の上書きを許可する</value>
+  </data>
+  <data name="&gt;&gt;checkBox20.Name" xml:space="preserve">
+    <value>checkBox20</value>
+  </data>
+  <data name="&gt;&gt;checkBox20.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox20.Parent" xml:space="preserve">
+    <value>tabPageSystem</value>
+  </data>
+  <data name="&gt;&gt;checkBox20.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="checkBox19.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 173</value>
+  </data>
+  <data name="checkBox19.Size" type="System.Drawing.Size, System.Drawing">
+    <value>250, 16</value>
+  </data>
+  <data name="checkBox19.TabIndex" type="System.Int32, mscorlib">
+    <value>69</value>
+  </data>
+  <data name="checkBox19.Text" xml:space="preserve">
+    <value>システム関数が上書きされたとき警告を表示する</value>
+  </data>
+  <data name="&gt;&gt;checkBox19.Name" xml:space="preserve">
+    <value>checkBox19</value>
+  </data>
+  <data name="&gt;&gt;checkBox19.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox19.Parent" xml:space="preserve">
+    <value>tabPageSystem</value>
+  </data>
+  <data name="&gt;&gt;checkBox19.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="checkBox16.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox16.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 129</value>
+  </data>
+  <data name="checkBox16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 16</value>
+  </data>
+  <data name="checkBox16.TabIndex" type="System.Int32, mscorlib">
+    <value>55</value>
+  </data>
+  <data name="checkBox16.Text" xml:space="preserve">
+    <value>読み込み順をファイル名順にソートする</value>
+  </data>
+  <data name="&gt;&gt;checkBox16.Name" xml:space="preserve">
+    <value>checkBox16</value>
+  </data>
+  <data name="&gt;&gt;checkBox16.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox16.Parent" xml:space="preserve">
+    <value>tabPageSystem</value>
+  </data>
+  <data name="&gt;&gt;checkBox16.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="checkBox15.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 107</value>
+  </data>
+  <data name="checkBox15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 16</value>
+  </data>
+  <data name="checkBox15.TabIndex" type="System.Int32, mscorlib">
+    <value>54</value>
+  </data>
+  <data name="checkBox15.Text" xml:space="preserve">
+    <value>サブディレクトリを検索する</value>
+  </data>
+  <data name="&gt;&gt;checkBox15.Name" xml:space="preserve">
+    <value>checkBox15</value>
+  </data>
+  <data name="&gt;&gt;checkBox15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox15.Parent" xml:space="preserve">
+    <value>tabPageSystem</value>
+  </data>
+  <data name="&gt;&gt;checkBox15.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="checkBox1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 41</value>
+  </data>
+  <data name="checkBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 16</value>
+  </data>
+  <data name="checkBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>38</value>
+  </data>
+  <data name="checkBox1.Text" xml:space="preserve">
+    <value>大文字小文字の違いを無視する</value>
+  </data>
+  <data name="&gt;&gt;checkBox1.Name" xml:space="preserve">
+    <value>checkBox1</value>
+  </data>
+  <data name="&gt;&gt;checkBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox1.Parent" xml:space="preserve">
+    <value>tabPageSystem</value>
+  </data>
+  <data name="&gt;&gt;checkBox1.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="checkBox10.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 85</value>
+  </data>
+  <data name="checkBox10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>141, 16</value>
+  </data>
+  <data name="checkBox10.TabIndex" type="System.Int32, mscorlib">
+    <value>53</value>
+  </data>
+  <data name="checkBox10.Text" xml:space="preserve">
+    <value>_Replace.csvを利用する</value>
+  </data>
+  <data name="&gt;&gt;checkBox10.Name" xml:space="preserve">
+    <value>checkBox10</value>
+  </data>
+  <data name="&gt;&gt;checkBox10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox10.Parent" xml:space="preserve">
+    <value>tabPageSystem</value>
+  </data>
+  <data name="&gt;&gt;checkBox10.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="checkBox2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 63</value>
+  </data>
+  <data name="checkBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>141, 16</value>
+  </data>
+  <data name="checkBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="checkBox2.Text" xml:space="preserve">
+    <value>_Rename.csvを利用する</value>
+  </data>
+  <data name="&gt;&gt;checkBox2.Name" xml:space="preserve">
+    <value>checkBox2</value>
+  </data>
+  <data name="&gt;&gt;checkBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox2.Parent" xml:space="preserve">
+    <value>tabPageSystem</value>
+  </data>
+  <data name="&gt;&gt;checkBox2.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="tabPageSystem.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 40</value>
+  </data>
+  <data name="tabPageSystem.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabPageSystem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>308, 326</value>
+  </data>
+  <data name="tabPageSystem.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="tabPageSystem.Text" xml:space="preserve">
+    <value>システム</value>
+  </data>
+  <data name="&gt;&gt;tabPageSystem.Name" xml:space="preserve">
+    <value>tabPageSystem</value>
+  </data>
+  <data name="&gt;&gt;tabPageSystem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPageSystem.Parent" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;tabPageSystem.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="checkBox29.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox29.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 107</value>
+  </data>
+  <data name="checkBox29.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 16</value>
+  </data>
+  <data name="checkBox29.TabIndex" type="System.Int32, mscorlib">
+    <value>83</value>
+  </data>
+  <data name="checkBox29.Text" xml:space="preserve">
+    <value>キャラクタ変数の引数を補完しない</value>
+  </data>
+  <data name="&gt;&gt;checkBox29.Name" xml:space="preserve">
+    <value>checkBox29</value>
+  </data>
+  <data name="&gt;&gt;checkBox29.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox29.Parent" xml:space="preserve">
+    <value>tabPageSystem2</value>
+  </data>
+  <data name="&gt;&gt;checkBox29.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="checkBox26.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox26.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 63</value>
+  </data>
+  <data name="checkBox26.Size" type="System.Drawing.Size, System.Drawing">
+    <value>203, 16</value>
+  </data>
+  <data name="checkBox26.TabIndex" type="System.Int32, mscorlib">
+    <value>82</value>
+  </data>
+  <data name="checkBox26.Text" xml:space="preserve">
+    <value>セーブデータをバイナリ形式で保存する</value>
+  </data>
+  <data name="&gt;&gt;checkBox26.Name" xml:space="preserve">
+    <value>checkBox26</value>
+  </data>
+  <data name="&gt;&gt;checkBox26.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox26.Parent" xml:space="preserve">
+    <value>tabPageSystem2</value>
+  </data>
+  <data name="&gt;&gt;checkBox26.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="checkBox27.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox27.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 85</value>
+  </data>
+  <data name="checkBox27.Size" type="System.Drawing.Size, System.Drawing">
+    <value>266, 16</value>
+  </data>
+  <data name="checkBox27.TabIndex" type="System.Int32, mscorlib">
+    <value>81</value>
+  </data>
+  <data name="checkBox27.Text" xml:space="preserve">
+    <value>セーブデータをUTF-8で保存する(非バイナリ時のみ)</value>
+  </data>
+  <data name="&gt;&gt;checkBox27.Name" xml:space="preserve">
+    <value>checkBox27</value>
+  </data>
+  <data name="&gt;&gt;checkBox27.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox27.Parent" xml:space="preserve">
+    <value>tabPageSystem2</value>
+  </data>
+  <data name="&gt;&gt;checkBox27.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="checkBoxSystemTripleSymbol.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBoxSystemTripleSymbol.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 41</value>
+  </data>
+  <data name="checkBoxSystemTripleSymbol.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 16</value>
+  </data>
+  <data name="checkBoxSystemTripleSymbol.TabIndex" type="System.Int32, mscorlib">
+    <value>73</value>
+  </data>
+  <data name="checkBoxSystemTripleSymbol.Text" xml:space="preserve">
+    <value>FORM中の三連記号を展開しない</value>
+  </data>
+  <data name="&gt;&gt;checkBoxSystemTripleSymbol.Name" xml:space="preserve">
+    <value>checkBoxSystemTripleSymbol</value>
+  </data>
+  <data name="&gt;&gt;checkBoxSystemTripleSymbol.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxSystemTripleSymbol.Parent" xml:space="preserve">
+    <value>tabPageSystem2</value>
+  </data>
+  <data name="&gt;&gt;checkBoxSystemTripleSymbol.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="label24.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label24.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 8</value>
+  </data>
+  <data name="label24.Size" type="System.Drawing.Size, System.Drawing">
+    <value>228, 24</value>
+  </data>
+  <data name="label24.TabIndex" type="System.Int32, mscorlib">
+    <value>72</value>
+  </data>
+  <data name="label24.Text" xml:space="preserve">
+    <value>※システムの項目を変化させた場合、
+ERBスクリプトが正常に動作しないことがあります</value>
+  </data>
+  <data name="&gt;&gt;label24.Name" xml:space="preserve">
+    <value>label24</value>
+  </data>
+  <data name="&gt;&gt;label24.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label24.Parent" xml:space="preserve">
+    <value>tabPageSystem2</value>
+  </data>
+  <data name="&gt;&gt;label24.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tabPageSystem2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 40</value>
+  </data>
+  <data name="tabPageSystem2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>308, 326</value>
+  </data>
+  <data name="tabPageSystem2.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="tabPageSystem2.Text" xml:space="preserve">
+    <value>システム2</value>
+  </data>
+  <data name="&gt;&gt;tabPageSystem2.Name" xml:space="preserve">
+    <value>tabPageSystem2</value>
+  </data>
+  <data name="&gt;&gt;tabPageSystem2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPageSystem2.Parent" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;tabPageSystem2.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="checkBox9.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 129</value>
+  </data>
+  <data name="checkBox9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 16</value>
+  </data>
+  <data name="checkBox9.TabIndex" type="System.Int32, mscorlib">
+    <value>82</value>
+  </data>
+  <data name="checkBox9.Text" xml:space="preserve">
+    <value>TIMESの計算をeramakerにあわせる</value>
+  </data>
+  <data name="&gt;&gt;checkBox9.Name" xml:space="preserve">
+    <value>checkBox9</value>
+  </data>
+  <data name="&gt;&gt;checkBox9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox9.Parent" xml:space="preserve">
+    <value>tabPageCompati</value>
+  </data>
+  <data name="&gt;&gt;checkBox9.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="checkBoxCompatiSP.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBoxCompatiSP.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 195</value>
+  </data>
+  <data name="checkBoxCompatiSP.Size" type="System.Drawing.Size, System.Drawing">
+    <value>116, 16</value>
+  </data>
+  <data name="checkBoxCompatiSP.TabIndex" type="System.Int32, mscorlib">
+    <value>81</value>
+  </data>
+  <data name="checkBoxCompatiSP.Text" xml:space="preserve">
+    <value>SPキャラを使用する</value>
+  </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>149, 17</value>
+  </metadata>
+  <data name="checkBoxCompatiSP.ToolTip" xml:space="preserve">
+    <value>ON：eramaker仕様</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiSP.Name" xml:space="preserve">
+    <value>checkBoxCompatiSP</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiSP.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiSP.Parent" xml:space="preserve">
+    <value>tabPageCompati</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiSP.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="checkBox28.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox28.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 173</value>
+  </data>
+  <data name="checkBox28.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 16</value>
+  </data>
+  <data name="checkBox28.TabIndex" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="checkBox28.Text" xml:space="preserve">
+    <value>イベント関数のCALLを許可する</value>
+  </data>
+  <data name="checkBox28.ToolTip" xml:space="preserve">
+    <value>ON：eramaker仕様</value>
+  </data>
+  <data name="&gt;&gt;checkBox28.Name" xml:space="preserve">
+    <value>checkBox28</value>
+  </data>
+  <data name="&gt;&gt;checkBox28.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox28.Parent" xml:space="preserve">
+    <value>tabPageCompati</value>
+  </data>
+  <data name="&gt;&gt;checkBox28.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="checkBox25.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox25.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 275</value>
+  </data>
+  <data name="checkBox25.Size" type="System.Drawing.Size, System.Drawing">
+    <value>265, 16</value>
+  </data>
+  <data name="checkBox25.TabIndex" type="System.Int32, mscorlib">
+    <value>79</value>
+  </data>
+  <data name="checkBox25.Text" xml:space="preserve">
+    <value>ユーザー関数の引数に自動的にTOSTRを補完する</value>
+  </data>
+  <data name="checkBox25.ToolTip" xml:space="preserve">
+    <value>ON：Emuera旧仕様　OFF：標準仕様（eramaker仕様）</value>
+  </data>
+  <data name="&gt;&gt;checkBox25.Name" xml:space="preserve">
+    <value>checkBox25</value>
+  </data>
+  <data name="&gt;&gt;checkBox25.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox25.Parent" xml:space="preserve">
+    <value>tabPageCompati</value>
+  </data>
+  <data name="&gt;&gt;checkBox25.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="checkBox12.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 253</value>
+  </data>
+  <data name="checkBox12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>239, 16</value>
+  </data>
+  <data name="checkBox12.TabIndex" type="System.Int32, mscorlib">
+    <value>78</value>
+  </data>
+  <data name="checkBox12.Text" xml:space="preserve">
+    <value>ユーザー関数の全ての引数の省略を許可する</value>
+  </data>
+  <data name="checkBox12.ToolTip" xml:space="preserve">
+    <value>ON：Emuera旧仕様　OFF：標準仕様（eramaker仕様）</value>
+  </data>
+  <data name="&gt;&gt;checkBox12.Name" xml:space="preserve">
+    <value>checkBox12</value>
+  </data>
+  <data name="&gt;&gt;checkBox12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox12.Parent" xml:space="preserve">
+    <value>tabPageCompati</value>
+  </data>
+  <data name="&gt;&gt;checkBox12.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="checkBoxFuncNoIgnoreCase.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBoxFuncNoIgnoreCase.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 151</value>
+  </data>
+  <data name="checkBoxFuncNoIgnoreCase.Size" type="System.Drawing.Size, System.Drawing">
+    <value>259, 16</value>
+  </data>
+  <data name="checkBoxFuncNoIgnoreCase.TabIndex" type="System.Int32, mscorlib">
+    <value>77</value>
+  </data>
+  <data name="checkBoxFuncNoIgnoreCase.Text" xml:space="preserve">
+    <value>関数・属性については大文字小文字を無視しない</value>
+  </data>
+  <data name="checkBoxFuncNoIgnoreCase.ToolTip" xml:space="preserve">
+    <value>ON：eramaker仕様</value>
+  </data>
+  <data name="&gt;&gt;checkBoxFuncNoIgnoreCase.Name" xml:space="preserve">
+    <value>checkBoxFuncNoIgnoreCase</value>
+  </data>
+  <data name="&gt;&gt;checkBoxFuncNoIgnoreCase.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxFuncNoIgnoreCase.Parent" xml:space="preserve">
+    <value>tabPageCompati</value>
+  </data>
+  <data name="&gt;&gt;checkBoxFuncNoIgnoreCase.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="button8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>150, 297</value>
+  </data>
+  <data name="button8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 23</value>
+  </data>
+  <data name="button8.TabIndex" type="System.Int32, mscorlib">
+    <value>76</value>
+  </data>
+  <data name="button8.Text" xml:space="preserve">
+    <value>Emuera標準仕様にする</value>
+  </data>
+  <data name="&gt;&gt;button8.Name" xml:space="preserve">
+    <value>button8</value>
+  </data>
+  <data name="&gt;&gt;button8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button8.Parent" xml:space="preserve">
+    <value>tabPageCompati</value>
+  </data>
+  <data name="&gt;&gt;button8.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="button7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 297</value>
+  </data>
+  <data name="button7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 23</value>
+  </data>
+  <data name="button7.TabIndex" type="System.Int32, mscorlib">
+    <value>75</value>
+  </data>
+  <data name="button7.Text" xml:space="preserve">
+    <value>eramakerの仕様にする</value>
+  </data>
+  <data name="&gt;&gt;button7.Name" xml:space="preserve">
+    <value>button7</value>
+  </data>
+  <data name="&gt;&gt;button7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button7.Parent" xml:space="preserve">
+    <value>tabPageCompati</value>
+  </data>
+  <data name="&gt;&gt;button7.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="checkBoxCompatiLinefeedAs1739.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBoxCompatiLinefeedAs1739.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 231</value>
+  </data>
+  <data name="checkBoxCompatiLinefeedAs1739.Size" type="System.Drawing.Size, System.Drawing">
+    <value>230, 16</value>
+  </data>
+  <data name="checkBoxCompatiLinefeedAs1739.TabIndex" type="System.Int32, mscorlib">
+    <value>74</value>
+  </data>
+  <data name="checkBoxCompatiLinefeedAs1739.Text" xml:space="preserve">
+    <value>ver1739以前の非ボタン折り返しを再現する</value>
+  </data>
+  <data name="checkBoxCompatiLinefeedAs1739.ToolTip" xml:space="preserve">
+    <value>ON：Emuera旧仕様　OFF：標準仕様（eramaker仕様）</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiLinefeedAs1739.Name" xml:space="preserve">
+    <value>checkBoxCompatiLinefeedAs1739</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiLinefeedAs1739.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiLinefeedAs1739.Parent" xml:space="preserve">
+    <value>tabPageCompati</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiLinefeedAs1739.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="checkBoxCompatiRAND.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBoxCompatiRAND.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 107</value>
+  </data>
+  <data name="checkBoxCompatiRAND.Size" type="System.Drawing.Size, System.Drawing">
+    <value>244, 16</value>
+  </data>
+  <data name="checkBoxCompatiRAND.TabIndex" type="System.Int32, mscorlib">
+    <value>73</value>
+  </data>
+  <data name="checkBoxCompatiRAND.Text" xml:space="preserve">
+    <value>擬似変数RANDの仕様をeramakerに合わせる</value>
+  </data>
+  <data name="checkBoxCompatiRAND.ToolTip" xml:space="preserve">
+    <value>ON：eramaker仕様</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiRAND.Name" xml:space="preserve">
+    <value>checkBoxCompatiRAND</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiRAND.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiRAND.Parent" xml:space="preserve">
+    <value>tabPageCompati</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiRAND.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="label30.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label30.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 3</value>
+  </data>
+  <data name="label30.Size" type="System.Drawing.Size, System.Drawing">
+    <value>274, 48</value>
+  </data>
+  <data name="label30.TabIndex" type="System.Int32, mscorlib">
+    <value>72</value>
+  </data>
+  <data name="label30.Text" xml:space="preserve">
+    <value>※eramakerとEmueraで動作が違う、
+Emueraの過去のバージョンで動作したものが動作しない、
+などの問題を解決するためのオプションです
+標準で問題ない場合は変更しないでください</value>
+  </data>
+  <data name="&gt;&gt;label30.Name" xml:space="preserve">
+    <value>label30</value>
+  </data>
+  <data name="&gt;&gt;label30.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label30.Parent" xml:space="preserve">
+    <value>tabPageCompati</value>
+  </data>
+  <data name="&gt;&gt;label30.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="checkBoxCompatiCALLNAME.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBoxCompatiCALLNAME.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 85</value>
+  </data>
+  <data name="checkBoxCompatiCALLNAME.Size" type="System.Drawing.Size, System.Drawing">
+    <value>257, 16</value>
+  </data>
+  <data name="checkBoxCompatiCALLNAME.TabIndex" type="System.Int32, mscorlib">
+    <value>56</value>
+  </data>
+  <data name="checkBoxCompatiCALLNAME.Text" xml:space="preserve">
+    <value>CALLNAMEが空文字列の時にNAMEを代入する</value>
+  </data>
+  <data name="checkBoxCompatiCALLNAME.ToolTip" xml:space="preserve">
+    <value>ON：eramaker仕様</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiCALLNAME.Name" xml:space="preserve">
+    <value>checkBoxCompatiCALLNAME</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiCALLNAME.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiCALLNAME.Parent" xml:space="preserve">
+    <value>tabPageCompati</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiCALLNAME.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="checkBoxCompatiErrorLine.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBoxCompatiErrorLine.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 63</value>
+  </data>
+  <data name="checkBoxCompatiErrorLine.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 16</value>
+  </data>
+  <data name="checkBoxCompatiErrorLine.TabIndex" type="System.Int32, mscorlib">
+    <value>54</value>
+  </data>
+  <data name="checkBoxCompatiErrorLine.Text" xml:space="preserve">
+    <value>解釈不可能な行があっても実行する</value>
+  </data>
+  <data name="checkBoxCompatiErrorLine.ToolTip" xml:space="preserve">
+    <value>ON：eramaker仕様</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiErrorLine.Name" xml:space="preserve">
+    <value>checkBoxCompatiErrorLine</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiErrorLine.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiErrorLine.Parent" xml:space="preserve">
+    <value>tabPageCompati</value>
+  </data>
+  <data name="&gt;&gt;checkBoxCompatiErrorLine.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="tabPageCompati.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 40</value>
+  </data>
+  <data name="tabPageCompati.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabPageCompati.Size" type="System.Drawing.Size, System.Drawing">
+    <value>308, 326</value>
+  </data>
+  <data name="tabPageCompati.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="tabPageCompati.Text" xml:space="preserve">
+    <value>互換性</value>
+  </data>
+  <data name="&gt;&gt;tabPageCompati.Name" xml:space="preserve">
+    <value>tabPageCompati</value>
+  </data>
+  <data name="&gt;&gt;tabPageCompati.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPageCompati.Parent" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;tabPageCompati.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="button6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 297</value>
+  </data>
+  <data name="button6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 23</value>
+  </data>
+  <data name="button6.TabIndex" type="System.Int32, mscorlib">
+    <value>75</value>
+  </data>
+  <data name="button6.Text" xml:space="preserve">
+    <value>開発者向けの設定にする</value>
+  </data>
+  <data name="&gt;&gt;button6.Name" xml:space="preserve">
+    <value>button6</value>
+  </data>
+  <data name="&gt;&gt;button6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button6.Parent" xml:space="preserve">
+    <value>tabPageDebug</value>
+  </data>
+  <data name="&gt;&gt;button6.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="button5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 297</value>
+  </data>
+  <data name="button5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 23</value>
+  </data>
+  <data name="button5.TabIndex" type="System.Int32, mscorlib">
+    <value>74</value>
+  </data>
+  <data name="button5.Text" xml:space="preserve">
+    <value>ユーザー向けの設定にする</value>
+  </data>
+  <data name="&gt;&gt;button5.Name" xml:space="preserve">
+    <value>button5</value>
+  </data>
+  <data name="&gt;&gt;button5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button5.Parent" xml:space="preserve">
+    <value>tabPageDebug</value>
+  </data>
+  <data name="&gt;&gt;button5.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="checkBox23.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox23.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 12</value>
+  </data>
+  <data name="checkBox23.Size" type="System.Drawing.Size, System.Drawing">
+    <value>223, 16</value>
+  </data>
+  <data name="checkBox23.TabIndex" type="System.Int32, mscorlib">
+    <value>73</value>
+  </data>
+  <data name="checkBox23.Text" xml:space="preserve">
+    <value>eramaker互換性に関する警告を表示する</value>
+  </data>
+  <data name="&gt;&gt;checkBox23.Name" xml:space="preserve">
+    <value>checkBox23</value>
+  </data>
+  <data name="&gt;&gt;checkBox23.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox23.Parent" xml:space="preserve">
+    <value>tabPageDebug</value>
+  </data>
+  <data name="&gt;&gt;checkBox23.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label15.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>27, 102</value>
+  </data>
+  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 12</value>
+  </data>
+  <data name="label15.TabIndex" type="System.Int32, mscorlib">
+    <value>56</value>
+  </data>
+  <data name="label15.Text" xml:space="preserve">
+    <value>表示する最低警告レベル</value>
+  </data>
+  <data name="&gt;&gt;label15.Name" xml:space="preserve">
+    <value>label15</value>
+  </data>
+  <data name="&gt;&gt;label15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label15.Parent" xml:space="preserve">
+    <value>tabPageDebug</value>
+  </data>
+  <data name="&gt;&gt;label15.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="comboBox5.Items" xml:space="preserve">
+    <value>0:標準でない文法</value>
+  </data>
+  <data name="comboBox5.Items1" xml:space="preserve">
+    <value>1:無視可能なエラー</value>
+  </data>
+  <data name="comboBox5.Items2" xml:space="preserve">
+    <value>2:動作しないエラー</value>
+  </data>
+  <data name="comboBox5.Items3" xml:space="preserve">
+    <value>3:致命的エラー</value>
+  </data>
+  <data name="comboBox5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>42, 117</value>
+  </data>
+  <data name="comboBox5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 20</value>
+  </data>
+  <data name="comboBox5.TabIndex" type="System.Int32, mscorlib">
+    <value>55</value>
+  </data>
+  <data name="&gt;&gt;comboBox5.Name" xml:space="preserve">
+    <value>comboBox5</value>
+  </data>
+  <data name="&gt;&gt;comboBox5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;comboBox5.Parent" xml:space="preserve">
+    <value>tabPageDebug</value>
+  </data>
+  <data name="&gt;&gt;comboBox5.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="label14.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
+    <value>27, 221</value>
+  </data>
+  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>185, 12</value>
+  </data>
+  <data name="label14.TabIndex" type="System.Int32, mscorlib">
+    <value>54</value>
+  </data>
+  <data name="label14.Text" xml:space="preserve">
+    <value>関数が呼び出されなかった警告の扱い</value>
+  </data>
+  <data name="&gt;&gt;label14.Name" xml:space="preserve">
+    <value>label14</value>
+  </data>
+  <data name="&gt;&gt;label14.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label14.Parent" xml:space="preserve">
+    <value>tabPageDebug</value>
+  </data>
+  <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="comboBox4.Items" xml:space="preserve">
+    <value>無視</value>
+  </data>
+  <data name="comboBox4.Items1" xml:space="preserve">
+    <value>総数のみ表示する</value>
+  </data>
+  <data name="comboBox4.Items2" xml:space="preserve">
+    <value>ファイル毎に一度だけ表示する</value>
+  </data>
+  <data name="comboBox4.Items3" xml:space="preserve">
+    <value>表示する</value>
+  </data>
+  <data name="comboBox4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>42, 236</value>
+  </data>
+  <data name="comboBox4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 20</value>
+  </data>
+  <data name="comboBox4.TabIndex" type="System.Int32, mscorlib">
+    <value>53</value>
+  </data>
+  <data name="&gt;&gt;comboBox4.Name" xml:space="preserve">
+    <value>comboBox4</value>
+  </data>
+  <data name="&gt;&gt;comboBox4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;comboBox4.Parent" xml:space="preserve">
+    <value>tabPageDebug</value>
+  </data>
+  <data name="&gt;&gt;comboBox4.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="label13.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>27, 171</value>
+  </data>
+  <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 12</value>
+  </data>
+  <data name="label13.TabIndex" type="System.Int32, mscorlib">
+    <value>52</value>
+  </data>
+  <data name="label13.Text" xml:space="preserve">
+    <value>関数が見つからない警告の扱い</value>
+  </data>
+  <data name="&gt;&gt;label13.Name" xml:space="preserve">
+    <value>label13</value>
+  </data>
+  <data name="&gt;&gt;label13.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label13.Parent" xml:space="preserve">
+    <value>tabPageDebug</value>
+  </data>
+  <data name="&gt;&gt;label13.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="comboBox3.Items" xml:space="preserve">
+    <value>無視</value>
+  </data>
+  <data name="comboBox3.Items1" xml:space="preserve">
+    <value>総数のみ表示する</value>
+  </data>
+  <data name="comboBox3.Items2" xml:space="preserve">
+    <value>ファイル毎に一度だけ表示する</value>
+  </data>
+  <data name="comboBox3.Items3" xml:space="preserve">
+    <value>表示する</value>
+  </data>
+  <data name="comboBox3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>42, 186</value>
+  </data>
+  <data name="comboBox3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 20</value>
+  </data>
+  <data name="comboBox3.TabIndex" type="System.Int32, mscorlib">
+    <value>51</value>
+  </data>
+  <data name="&gt;&gt;comboBox3.Name" xml:space="preserve">
+    <value>comboBox3</value>
+  </data>
+  <data name="&gt;&gt;comboBox3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;comboBox3.Parent" xml:space="preserve">
+    <value>tabPageDebug</value>
+  </data>
+  <data name="&gt;&gt;comboBox3.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="label12.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 64</value>
+  </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 12</value>
+  </data>
+  <data name="label12.TabIndex" type="System.Int32, mscorlib">
+    <value>50</value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>ロード時に引数を解析する</value>
+  </data>
+  <data name="&gt;&gt;label12.Name" xml:space="preserve">
+    <value>label12</value>
+  </data>
+  <data name="&gt;&gt;label12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label12.Parent" xml:space="preserve">
+    <value>tabPageDebug</value>
+  </data>
+  <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="comboBoxReduceArgumentOnLoad.Items" xml:space="preserve">
+    <value>常に行わない</value>
+  </data>
+  <data name="comboBoxReduceArgumentOnLoad.Items1" xml:space="preserve">
+    <value>更新されていれば行う</value>
+  </data>
+  <data name="comboBoxReduceArgumentOnLoad.Items2" xml:space="preserve">
+    <value>常に行う</value>
+  </data>
+  <data name="comboBoxReduceArgumentOnLoad.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 79</value>
+  </data>
+  <data name="comboBoxReduceArgumentOnLoad.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 20</value>
+  </data>
+  <data name="comboBoxReduceArgumentOnLoad.TabIndex" type="System.Int32, mscorlib">
+    <value>49</value>
+  </data>
+  <data name="&gt;&gt;comboBoxReduceArgumentOnLoad.Name" xml:space="preserve">
+    <value>comboBoxReduceArgumentOnLoad</value>
+  </data>
+  <data name="&gt;&gt;comboBoxReduceArgumentOnLoad.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;comboBoxReduceArgumentOnLoad.Parent" xml:space="preserve">
+    <value>tabPageDebug</value>
+  </data>
+  <data name="&gt;&gt;comboBoxReduceArgumentOnLoad.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="checkBox11.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>29, 152</value>
+  </data>
+  <data name="checkBox11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 16</value>
+  </data>
+  <data name="checkBox11.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="checkBox11.Text" xml:space="preserve">
+    <value>呼び出されなかった関数を無視する</value>
+  </data>
+  <data name="&gt;&gt;checkBox11.Name" xml:space="preserve">
+    <value>checkBox11</value>
+  </data>
+  <data name="&gt;&gt;checkBox11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox11.Parent" xml:space="preserve">
+    <value>tabPageDebug</value>
+  </data>
+  <data name="&gt;&gt;checkBox11.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="checkBox13.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 34</value>
+  </data>
+  <data name="checkBox13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>162, 16</value>
+  </data>
+  <data name="checkBox13.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="checkBox13.Text" xml:space="preserve">
+    <value>ロード時にレポートを表示する</value>
+  </data>
+  <data name="&gt;&gt;checkBox13.Name" xml:space="preserve">
+    <value>checkBox13</value>
+  </data>
+  <data name="&gt;&gt;checkBox13.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox13.Parent" xml:space="preserve">
+    <value>tabPageDebug</value>
+  </data>
+  <data name="&gt;&gt;checkBox13.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="tabPageDebug.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 40</value>
+  </data>
+  <data name="tabPageDebug.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabPageDebug.Size" type="System.Drawing.Size, System.Drawing">
+    <value>308, 326</value>
+  </data>
+  <data name="tabPageDebug.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tabPageDebug.Text" xml:space="preserve">
+    <value>解析</value>
+  </data>
+  <data name="&gt;&gt;tabPageDebug.Name" xml:space="preserve">
+    <value>tabPageDebug</value>
+  </data>
+  <data name="&gt;&gt;tabPageDebug.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPageDebug.Parent" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;tabPageDebug.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="tabControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
+  </data>
+  <data name="tabControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>316, 370</value>
+  </data>
+  <data name="tabControl.TabIndex" type="System.Int32, mscorlib">
+    <value>35</value>
+  </data>
+  <data name="&gt;&gt;tabControl.Name" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;tabControl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabControl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tabControl.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label16.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label16.Location" type="System.Drawing.Point, System.Drawing">
+    <value>87, 385</value>
+  </data>
+  <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>197, 12</value>
+  </data>
+  <data name="label16.TabIndex" type="System.Int32, mscorlib">
+    <value>36</value>
+  </data>
+  <data name="label16.Text" xml:space="preserve">
+    <value>※変更は再起動するまで反映されません</value>
+  </data>
+  <data name="&gt;&gt;label16.Name" xml:space="preserve">
+    <value>label16</value>
+  </data>
+  <data name="&gt;&gt;label16.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label16.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label16.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>334, 429</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>ConfigDialog</value>
+  </data>
+  <data name="&gt;&gt;openFileDialog1.Name" xml:space="preserve">
+    <value>openFileDialog1</value>
+  </data>
+  <data name="&gt;&gt;openFileDialog1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
+    <value>toolTip1</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>ConfigDialog</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root>

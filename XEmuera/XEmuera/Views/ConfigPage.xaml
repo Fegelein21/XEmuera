@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:Class="XEmuera.Views.ConfigPage">
+	<ContentPage.Content>
+
+		<ListView
+			x:Name="ConfigListView"
+			HasUnevenRows="True"
+			ItemTapped="ConfigListView_ItemTapped">
+
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<ViewCell>
+						<StackLayout
+							Padding="12"
+							Orientation="Horizontal">
+
+							<StackLayout
+								Spacing="2"
+								HorizontalOptions="StartAndExpand"
+								Orientation="Vertical">
+
+								<Label
+									Text="{Binding Text}"
+									FontSize="14" />
+
+								<StackLayout
+									Orientation="Horizontal">
+
+									<Label
+										Text="{Binding ValueText}"
+										FontSize="12" />
+
+									<Rectangle
+										IsVisible="{Binding IsValueColor}"
+										Fill="{Binding ValueColor}"
+										Aspect="Fill"
+										Stroke="DarkGray"
+										StrokeThickness="1"
+										WidthRequest="12"
+										HeightRequest="12"
+										VerticalOptions="Center" />
+
+								</StackLayout>
+							</StackLayout>
+
+							<Switch
+								IsToggled="{Binding Enabled}" />
+
+						</StackLayout>
+					</ViewCell>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
+	</ContentPage.Content>
+</ContentPage>

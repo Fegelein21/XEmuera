@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:Class="XEmuera.Views.GameItemPage"
+	Title="游戏列表">
+
+	<ListView
+		x:Name="GameItemListView"
+		RefreshControlColor="{StaticResource ZimaBlueColor}"
+		HasUnevenRows="True"
+		IsPullToRefreshEnabled="True"
+		ItemSelected="GameItemListView_ItemSelected"
+		Refreshing="ListView_Refreshing">
+
+		<ListView.ItemTemplate>
+			<DataTemplate>
+				<ViewCell>
+					<StackLayout
+						Orientation="Horizontal"
+						Padding="10">
+						<StackLayout
+							Spacing="2"
+							Orientation="Vertical"
+							HorizontalOptions="StartAndExpand">
+							<Label
+								Text="{Binding Name}"
+								FontSize="14"
+								TextColor="HotPink" />
+							<Label
+								Text="{Binding Path}"
+								FontSize="12"
+								TextColor="Gray" />
+						</StackLayout>
+						<Switch
+							IsToggled="{Binding Favorite}" />
+					</StackLayout>
+				</ViewCell>
+			</DataTemplate>
+		</ListView.ItemTemplate>
+
+	</ListView>
+</ContentPage>
