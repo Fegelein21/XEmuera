@@ -93,7 +93,7 @@ namespace XEmuera
 				if (PlatformService.NeedManageFilesPermissions())
 				{
 					if (Device.RuntimePlatform == Device.Android)
-						MessageBox.Show("安卓10及以上需要授予管理文件权限，授予后请关闭并重新启动软件。", "注意");
+						MessageBox.Show("安卓10及以上需要授予文件管理权限，授予权限后请重新启动软件。", "注意");
 					PlatformService.RequestManageFilesPermissions();
 				}
 			}

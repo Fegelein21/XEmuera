@@ -45,7 +45,7 @@ namespace XEmuera.Views
 				{
 					new AboutModel
 					{
-						Text = "版本",
+						Text = "内核版本",
 						Detail = "Emuera1824+v15 私家改造版",
 						Url = "https://ux.getuploader.com/ninnohito/index"
 					},
@@ -74,7 +74,7 @@ namespace XEmuera.Views
 						File = "开源代码使用清单",
 					},
 				},
-				new AboutModelGroup("打赏作者")
+				new AboutModelGroup("支持作者")
 				{
 					new AboutModel
 					{
