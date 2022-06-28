@@ -7,9 +7,9 @@ XEmuera是一款使用[Xamarin.Forms](https://dotnet.microsoft.com/apps/xamarin)
 
 ## 使用 & 注意
 - 游戏放置在根目录的emuera文件夹下。
-- 字体放置在根目录的emuera/fonts文件夹下，格式要求为 `*.ttf` ，添加字体后请重启软件。
+- 字体放置在根目录的emuera/fonts文件夹下，格式要求为 `*.ttf` ，添加字体后请重新启动软件。
 - 本软件已内置 `MS Gothic` 和 `Microsoft YaHei` 字体。
-- 安卓10以上需要授予文件管理权限，授予权限后请重启软件。
+- 安卓10及以上需要授予文件管理权限，授予权限后请重新启动软件。
 - 修改游戏配置后需要重新加载游戏才能生效。
 
 ## 下载
