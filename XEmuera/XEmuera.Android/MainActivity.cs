@@ -53,6 +53,22 @@ namespace XEmuera.Droid
 			base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 		}
 
+		protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+		{
+			base.OnActivityResult(requestCode, resultCode, data);
+
+			switch (requestCode)
+			{
+				case GameUtils.ManageFilesPermissionsRequestCode:
+					GameUtils.StorageAccess = resultCode == Result.Ok
+						? Xamarin.Essentials.PermissionStatus.Granted : Xamarin.Essentials.PermissionStatus.Denied;
+					break;
+
+				default:
+					break;
+			}
+		}
+
 		public override void OnWindowFocusChanged(bool hasFocus)
 		{
 			base.OnWindowFocusChanged(hasFocus);

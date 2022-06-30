@@ -8,16 +8,20 @@ using Xamarin.Forms;
 using XEmuera.Models;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using MinorShift.Emuera;
 using MinorShift.Emuera.Forms;
 using System.Linq;
 using SkiaSharp;
 using XEmuera.Forms;
+using System.Threading;
 
 namespace XEmuera
 {
 	public static class GameUtils
 	{
+		public const int ManageFilesPermissionsRequestCode = 100;
+
+		public const int FileSelectorRequestCode = 101;
+
 		private static bool Init;
 
 		public static MainPage MainPage { get; set; }
@@ -49,13 +53,20 @@ namespace XEmuera
 
 		public static Action EmueraSwitched { get; set; }
 
-		public static PermissionStatus StorageAccess { get; private set; } = PermissionStatus.Unknown;
+		public static PermissionStatus StorageAccess { get; set; }
 
 		public static void Load()
 		{
 			Init = false;
 
 			PlatformService = DependencyService.Get<IPlatformService>();
+
+			if (!RequestExternalPermissions())
+			{
+				MessageBox.Show("权限获取失败，请重新启动软件或手动授予权限。");
+				PlatformService.CloseApplication();
+				return;
+			}
 
 			GameFolderModel.Load();
 
@@ -70,35 +81,36 @@ namespace XEmuera
 			Init = true;
 		}
 
-		public static void Save()
+		public static bool RequestExternalPermissions()
 		{
-			GameFolderModel.Save();
-		}
-
-		public static bool RequestExternalAccess()
-		{
-			if (StorageAccess == PermissionStatus.Denied)
-				return false;
-
-			if (StorageAccess == PermissionStatus.Granted || !PlatformService.NeedStoragePermissions())
-				return true;
-
-			var task = CheckAndRequestPermissionAsync(new Permissions.StorageWrite());
-			task.Wait();
-
-			StorageAccess = task.Result;
-			bool result = StorageAccess == PermissionStatus.Granted;
-			if (result)
+			if (PlatformService.NeedStoragePermissions())
 			{
-				if (PlatformService.NeedManageFilesPermissions())
-				{
-					if (Device.RuntimePlatform == Device.Android)
-						MessageBox.Show("安卓10及以上需要授予文件管理权限，授予权限后请重新启动软件。", "注意");
-					PlatformService.RequestManageFilesPermissions();
-				}
+				var task = CheckAndRequestPermissionAsync(new Permissions.StorageWrite());
+				task.Wait();
+				StorageAccess = task.Result;
+			}
+			else
+			{
+				StorageAccess = PermissionStatus.Granted;
 			}
 
-			return result;
+			if (StorageAccess != PermissionStatus.Granted)
+				return false;
+
+			if (PlatformService.NeedManageFilesPermissions())
+			{
+				StorageAccess = PermissionStatus.Unknown;
+
+				MessageBox.Show("当前平台需要授予文件管理权限，即将为您跳转至权限管理界面。");
+				PlatformService.RequestManageFilesPermissions();
+
+				SpinWait.SpinUntil(() => StorageAccess != PermissionStatus.Unknown);
+
+				if (PlatformService.NeedManageFilesPermissions())
+					return false;
+			}
+
+			return true;
 		}
 
 		public static async Task<PermissionStatus> CheckAndRequestPermissionAsync<T>(T permission) where T : Permissions.BasePermission
@@ -232,9 +244,12 @@ namespace XEmuera
 			string path = Directory.EnumerateFiles(directoryName).FirstOrDefault(file => regex.IsMatch(Path.GetFileName(file)));
 
 			if (path != null)
+			{
 				filePath = path;
+				return true;
+			}
 
-			return path != null;
+			return false;
 		}
 	}
 
@@ -297,6 +312,8 @@ namespace XEmuera
 		void EmueraPageAppearing();
 
 		void EmueraPageDisappearing();
+
+		string GetStoragePath();
 
 		bool NeedManageFilesPermissions();
 

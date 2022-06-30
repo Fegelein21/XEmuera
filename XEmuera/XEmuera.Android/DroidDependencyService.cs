@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xamarin.Forms;
-using XEmuera;
 using XEmuera.Droid;
 
 [assembly: Dependency(typeof(DroidDependencyService))]
@@ -32,6 +31,11 @@ namespace XEmuera.Droid
 			MainActivity.Instance.OnWindowFocusChanged(true);
 		}
 
+		public string GetStoragePath()
+		{
+			return Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
+		}
+
 		public bool NeedManageFilesPermissions()
 		{
 			return (int)Build.VERSION.SdkInt >= 30 && !Android.OS.Environment.IsExternalStorageManager;
@@ -39,15 +43,15 @@ namespace XEmuera.Droid
 
 		public bool NeedStoragePermissions()
 		{
-			return (int)Build.VERSION.SdkInt >= 24;
+			return true;
 		}
 
 		public void RequestManageFilesPermissions()
 		{
 			Intent intent = new Intent(Android.Provider.Settings.ActionManageAppAllFilesAccessPermission);
-			intent.SetData(Android.Net.Uri.Parse($"package:{MainActivity.Instance.PackageName}"));
+			intent.SetData(Android.Net.Uri.Parse("package:" + MainActivity.Instance.PackageName));
 
-			MainActivity.Instance.StartActivityForResult(intent, 1);
+			MainActivity.Instance.StartActivityForResult(intent, GameUtils.ManageFilesPermissionsRequestCode);
 		}
 	}
 }

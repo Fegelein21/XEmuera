@@ -57,31 +57,33 @@ namespace XEmuera.Models
 		{
 			AllModels.Clear();
 
+			string mainPath = GameFolderModel.Instance.Path;
+
+			if (!Directory.Exists(mainPath))
+				return;
+
+			var gameItemPaths = Directory.GetDirectories(mainPath);
+			if (gameItemPaths.Length == 0)
+				return;
+
 			GameItemModel gameItem;
+			char directorySeparatorChar = System.IO.Path.DirectorySeparatorChar;
 
-			foreach (var listPath in GameFolderModel.AllModels.Select(item => item.Path))
+			foreach (var itemPath in gameItemPaths)
 			{
-				if (!Directory.Exists(listPath))
+				if (!Directory.Exists(itemPath + directorySeparatorChar + "ERB"))
 					continue;
 
-				var gameItemPaths = Directory.GetDirectories(listPath);
-				if (gameItemPaths.Length == 0)
+				string emueraConfig = itemPath + directorySeparatorChar + "emuera.config";
+				if (!FileUtils.Exists(ref emueraConfig) && !Directory.Exists(itemPath + directorySeparatorChar + "CSV"))
 					continue;
 
-				foreach (var itemPath in gameItemPaths)
+				gameItem = new GameItemModel
 				{
-					if (!Directory.Exists(itemPath + "/CSV"))
-						continue;
-					if (!Directory.Exists(itemPath + "/ERB"))
-						continue;
-
-					gameItem = new GameItemModel
-					{
-						Name = System.IO.Path.GetFileName(itemPath),
-						Path = itemPath,
-					};
-					AllModels.Add(gameItem);
-				}
+					Name = System.IO.Path.GetFileName(itemPath),
+					Path = itemPath,
+				};
+				AllModels.Add(gameItem);
 			}
 
 			string favoritePaths = GameUtils.GetPreferences(PrefKeyFavoriteItem, null);

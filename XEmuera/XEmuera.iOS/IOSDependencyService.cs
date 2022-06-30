@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading;
 using UIKit;
 using Xamarin.Forms;
-using XEmuera;
 using XEmuera.iOS;
 
 [assembly: Dependency(typeof(IOSDependencyService))]
@@ -25,6 +24,11 @@ namespace XEmuera.iOS
 		}
 
 		public void EmueraPageDisappearing()
+		{
+			throw new NotImplementedException();
+		}
+
+		public string GetStoragePath()
 		{
 			throw new NotImplementedException();
 		}
