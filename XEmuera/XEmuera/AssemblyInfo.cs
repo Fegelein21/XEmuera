@@ -4,6 +4,6 @@ using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
-//[assembly: ExportFont("MS Gothic.ttf", Alias = "MS Gothic")]
+[assembly: ExportFont("MS Gothic.ttf", Alias = "MS Gothic")]
 
-//[assembly: ExportFont("Microsoft YaHei.ttf", Alias = "Microsoft YaHei")]
+[assembly: ExportFont("Microsoft YaHei.ttf", Alias = "Microsoft YaHei")]

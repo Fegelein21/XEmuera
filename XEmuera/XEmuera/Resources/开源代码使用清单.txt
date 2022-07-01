@@ -18,6 +18,10 @@ SkiaSharp
 https://www.nuget.org/packages/SkiaSharp
 
 
+SkiaSharp.Svg
+https://www.nuget.org/packages/SkiaSharp.Svg
+
+
 SkiaSharp.Views.Forms
 https://www.nuget.org/packages/SkiaSharp.Views.Forms
 

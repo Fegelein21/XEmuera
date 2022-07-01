@@ -11,13 +11,41 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XEmuera.Forms;
 using Xamarin.CommunityToolkit.Extensions;
+using System.ComponentModel;
 
 namespace MinorShift.Emuera
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class MainWindow : ContentPage
+	public partial class MainWindow : ContentPage, INotifyPropertyChanged
 	{
-		public Color InvertForeColor { get; set; }
+		public event PropertyChangedEventHandler NotifyPropertyChanged;
+
+		public Color MainColor
+		{
+			get => _mainColor;
+			set
+			{
+				if (_mainColor == value)
+					return;
+				_mainColor = value;
+				InvertMainColor = DisplayUtils.InvertColor(_mainColor).WithAlpha(0x80);
+				NotifyPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MainColor)));
+			}
+		}
+		private Color _mainColor;
+
+		public Color InvertMainColor
+		{
+			get => _invertMainColor;
+			set
+			{
+				if (_invertMainColor == value)
+					return;
+				_invertMainColor = value;
+				NotifyPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InvertMainColor)));
+			}
+		}
+		private Color _invertMainColor;
 
 		bool IsInitGameView;
 
@@ -35,7 +63,12 @@ namespace MinorShift.Emuera
 			Sys.Init();
 			Program.Main();
 
-			InvertForeColor = DisplayUtils.InvertColor(Config.ForeColor).WithAlpha(0x60);
+			this.SetBinding(BackgroundColorProperty, nameof(MainColor), BindingMode.TwoWay);
+
+			MainColor = Config.ForeColor;
+
+			buttonGroup.BindingContext = this;
+			entryGroup.BindingContext = this;
 
 			InitGameView();
 		}
@@ -418,7 +451,7 @@ namespace MinorShift.Emuera
 			entryGroup.IsVisible = !entryGroup.IsVisible;
 		}
 
-		private void inputButton_Clicked(object sender, EventArgs e)
+		private void publish_button_Clicked(object sender, EventArgs e)
 		{
 			if (console.IsInProcess)
 				return;
@@ -443,11 +476,22 @@ namespace MinorShift.Emuera
 
 		public void quickButton_Clicked(object sender, EventArgs e)
 		{
-			if (!(((Button)sender).BindingContext is string inputs))
+			if (!(((View)sender).BindingContext is string inputs))
 				return;
 
 			richTextBox1.Text = inputs;
 			PressEnterKey(false, false);
+		}
+
+		private void ButtonVisibleGroup_Clicked(object sender, EventArgs e)
+		{
+			var visible = !edit_button.IsVisible;
+
+			edit_button.IsVisible = visible;
+			scroll_vertical_button.IsVisible = visible;
+			gallery_view_button.IsVisible = visible;
+
+			menu_show_button.Opacity = visible ? 1 : 0.5d;
 		}
 
 		public void MainMenu_Reboot()

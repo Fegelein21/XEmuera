@@ -15,6 +15,12 @@
     <None Remove="Resources\Emuera_readme.txt" />
     <None Remove="Resources\Fonts\Microsoft YaHei.ttf" />
     <None Remove="Resources\Fonts\MS Gothic.ttf" />
+    <None Remove="Resources\Images\chevron_right.svg" />
+    <None Remove="Resources\Images\edit.svg" />
+    <None Remove="Resources\Images\gallery_view.svg" />
+    <None Remove="Resources\Images\menu_show.svg" />
+    <None Remove="Resources\Images\publish.svg" />
+    <None Remove="Resources\Images\scroll_vertical.svg" />
     <None Remove="Resources\开源代码使用清单.txt" />
     <None Remove="Resources\私家改造版Emuera_readme.txt" />
   </ItemGroup>
@@ -23,6 +29,12 @@
     <EmbeddedResource Include="Resources\Emuera_readme.txt" />
     <EmbeddedResource Include="Resources\Fonts\MS Gothic.ttf" />
     <EmbeddedResource Include="Resources\Fonts\Microsoft YaHei.ttf" />
+    <EmbeddedResource Include="Resources\Images\chevron_right.svg" />
+    <EmbeddedResource Include="Resources\Images\edit.svg" />
+    <EmbeddedResource Include="Resources\Images\gallery_view.svg" />
+    <EmbeddedResource Include="Resources\Images\menu_show.svg" />
+    <EmbeddedResource Include="Resources\Images\publish.svg" />
+    <EmbeddedResource Include="Resources\Images\scroll_vertical.svg" />
     <EmbeddedResource Include="Resources\开源代码使用清单.txt" />
     <EmbeddedResource Include="Resources\私家改造版Emuera_readme.txt" />
   </ItemGroup>
@@ -30,6 +42,7 @@
   <ItemGroup>
     <PackageReference Include="ReorderableCollectionView.Forms" Version="1.0.0" />
     <PackageReference Include="SkiaSharp" Version="2.88.0" />
+    <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="2.88.0" />
     <PackageReference Include="Spillman.Xamarin.Forms.ColorPicker" Version="1.0.8" />
     <PackageReference Include="Xamarin.CommunityToolkit" Version="2.0.2" />
@@ -62,5 +75,9 @@
     <EmbeddedResource Update="Views\TxtFilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\Docs\" />
   </ItemGroup>
 </Project>

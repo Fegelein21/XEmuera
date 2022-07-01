@@ -2,7 +2,9 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:views="clr-namespace:XEmuera.Views"
 	xmlns:eforms="clr-namespace:MinorShift.Emuera.Forms"
+	xmlns:resExt="clr-namespace:XEmuera.Resources"
 	x:Class="MinorShift.Emuera.MainWindow"
 	NavigationPage.HasNavigationBar="False"
 	SizeChanged="ContentPage_SizeChanged">
@@ -10,20 +12,20 @@
 	<ContentPage.Resources>
 		<ResourceDictionary>
 			<Style
-				x:Key="buttonStyle"
-				TargetType="Button">
+				x:Key="TintImageButtonStyle"
+				TargetType="views:TintImageButton">
 				<Setter
-					Property="WidthRequest"
-					Value="70" />
+					Property="TintColor"
+					Value="{Binding MainColor}" />
 				<Setter
 					Property="BackgroundColor"
-					Value="#60ffffff" />
+					Value="{Binding InvertMainColor}" />
 				<Setter
-					Property="FontSize"
-					Value="12" />
+					Property="CornerRadius"
+					Value="3" />
 				<Setter
 					Property="Padding"
-					Value="2" />
+					Value="6" />
 			</Style>
 		</ResourceDictionary>
 	</ContentPage.Resources>
@@ -49,32 +51,49 @@
 
 				<StackLayout
 					x:Name="buttonGroup"
+					InputTransparent="True"
+					CascadeInputTransparent="False"
 					Orientation="Horizontal"
 					HorizontalOptions="Fill"
-					HeightRequest="40"
+					HeightRequest="36"
 					Padding="20,10"
 					Spacing="20">
 
-					<Button
-						Text="跳过"
-						Style="{StaticResource buttonStyle}"
-						HorizontalOptions="StartAndExpand"
-						Clicked="SkipButton_Clicked" />
+					<BoxView
+						InputTransparent="True"
+						HorizontalOptions="StartAndExpand" />
 
-					<Button
-						Text="输入框"
-						Style="{StaticResource buttonStyle}"
+					<views:TintImageButton
+						x:Name="edit_button"
+						Source="{resExt:ImageResource edit.svg}"
+						Style="{StaticResource TintImageButtonStyle}"
 						Clicked="EntryButton_Clicked" />
 
-					<Button
-						Text="滑动条"
-						Style="{StaticResource buttonStyle}"
+					<views:TintImageButton
+						x:Name="scroll_vertical_button"
+						Source="{resExt:ImageResource scroll_vertical.svg}"
+						Style="{StaticResource TintImageButtonStyle}"
+						Padding="8"
 						Clicked="ScrollBarButton_Clicked" />
 
-					<Button
-						Text="快捷按钮"
-						Style="{StaticResource buttonStyle}"
+					<views:TintImageButton
+						x:Name="gallery_view_button"
+						Source="{resExt:ImageResource gallery_view.svg}"
+						Style="{StaticResource TintImageButtonStyle}"
 						Clicked="QuickButtonGroup_Clicked" />
+
+					<views:TintImageButton
+						x:Name="menu_show_button"
+						Source="{resExt:ImageResource menu_show.svg}"
+						Style="{StaticResource TintImageButtonStyle}"
+						Padding="8"
+						Clicked="ButtonVisibleGroup_Clicked" />
+
+					<views:TintImageButton
+						x:Name="chevron_right_button"
+						Source="{resExt:ImageResource chevron_right.svg}"
+						Style="{StaticResource TintImageButtonStyle}"
+						Clicked="SkipButton_Clicked" />
 
 				</StackLayout>
 
@@ -120,10 +139,10 @@
 
 		<StackLayout
 			x:Name="entryGroup"
-			FlexLayout.Basis="80"
+			FlexLayout.Basis="70"
 			IsVisible="False"
-			BackgroundColor="#20000000"
-			Padding="0, 0, 8, 0"
+			BackgroundColor="{Binding InvertMainColor}"
+			Padding="4,0,8,0"
 			Orientation="Horizontal">
 
 			<Entry
@@ -131,18 +150,17 @@
 				Completed="richTextBox1_Completed"
 				HorizontalOptions="FillAndExpand"
 				Keyboard="Plain"
-				FontSize="Body"
+				FontSize="16"
 				FontFamily="MS Gothic"
-				TextColor="White"
+				TextColor="{Binding MainColor}"
 				TextChanged="richTextBox1_TextChanged" />
 
-			<Button
-				x:Name="inputButton"
-				Text="输入"
-				Style="{StaticResource buttonStyle}"
-				VerticalOptions="Center"
-				Clicked="inputButton_Clicked" />
-
+			<views:TintImageButton
+				x:Name="publish_button"
+				Source="{resExt:ImageResource publish.svg}"
+				Style="{StaticResource TintImageButtonStyle}"
+				WidthRequest="50"
+				Clicked="publish_button_Clicked" />
 		</StackLayout>
 	</FlexLayout>
 </ContentPage>

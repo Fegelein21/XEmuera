@@ -127,13 +127,10 @@ namespace XEmuera
 			});
 		}
 
-		private static Assembly MainAssembly;
+		private static readonly Assembly MainAssembly = typeof(MainPage).GetTypeInfo().Assembly;
 
 		public static Stream GetManifestResourceStream(string resourceID)
 		{
-			if (MainAssembly == null)
-				MainAssembly = MainPage.GetType().GetTypeInfo().Assembly;
-
 			return MainAssembly.GetManifestResourceStream(resourceID);
 		}
 
@@ -152,7 +149,7 @@ namespace XEmuera
 	{
 		public const int QuickButtonWidth = 70;
 		public const int QuickButtonHeight = 32;
-		public const int QuickButtonSpacing = 2;
+		public const int QuickButtonSpacing = 4;
 
 		public const SKFilterQuality TextFilterQuality = SKFilterQuality.Medium;
 

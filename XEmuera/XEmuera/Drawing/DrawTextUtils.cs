@@ -99,17 +99,17 @@ namespace XEmuera.Drawing
 
 			//------------------------------------
 
-			HashSet<FontCache> fontCache = new HashSet<FontCache> { UserCache };
-			foreach (FontCache item in EnabledFontCaches)
-				fontCache.Add(item);
+			List<FontCache> fontCache = new List<FontCache>(EnabledFontCaches);
+			fontCache.Remove(UserCache);
+			fontCache.Insert(0, UserCache);
 
 			int count = fontCache.Count;
 			for (int i = 0; i < count * 2; i++)
 			{
 				if (i < count)
-					FontCaches[i].CheckGlyphs();
+					fontCache[i].CheckGlyphs();
 				else
-					FontCaches[i - count].PrepareGlyphs();
+					fontCache[i - count].PrepareGlyphs();
 
 				if (CharRemain == 0)
 					break;

@@ -6,9 +6,11 @@ using Xamarin.Forms;
 using XEmuera.Models;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Essentials;
+using Xamarin.Forms.Xaml;
 
 namespace XEmuera.Views.Popup
 {
+	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ConfigValuePopup : Xamarin.CommunityToolkit.UI.Views.Popup
 	{
 		private readonly ConfigModel ConfigModel;

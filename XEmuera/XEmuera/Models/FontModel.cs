@@ -86,41 +86,16 @@ namespace XEmuera.Models
 
 			Default = AllModels[DefaultFontName];
 
+			LoadFontsFolder();
+
 			EnabledList = new FontGroup
 			{
 				Name = "主动按顺序接替",
 			};
-			DisabledList = new FontGroup
+			DisabledList = new FontGroup(AllModels.Values)
 			{
 				Name = "仅由游戏自行调用",
 			};
-
-			string path = GameFolderModel.Instance.Path + Path.DirectorySeparatorChar + "fonts";
-			if (!Directory.Exists(path))
-				return;
-
-			var list = FileUtils.GetFiles(path, "*.ttf", SearchOption.AllDirectories);
-			if (list.Length == 0)
-				return;
-
-			foreach (var fontFile in list)
-			{
-				string fileName = Path.GetFileNameWithoutExtension(fontFile);
-				if (AllModels.ContainsKey(fileName))
-					continue;
-
-				var typeface = SKTypeface.FromFile(fontFile);
-				if (typeface == null)
-					continue;
-
-				if (AllModels.ContainsKey(typeface.FamilyName))
-					typeface.Dispose();
-				else
-					AddFontModel(typeface, fileName);
-			}
-
-			foreach (var item in AllModels.Values)
-				DisabledList.Add(item);
 
 			string enabledFont = GameUtils.GetPreferences(PrefKeyEnabledFont, null);
 			if (string.IsNullOrEmpty(enabledFont))
@@ -158,6 +133,33 @@ namespace XEmuera.Models
 			GameUtils.SetPreferences(PrefKeyEnabledFont, string.Join(separator, EnabledList.Select(item => item.Name)));
 
 			DrawTextUtils.Load();
+		}
+
+		private static void LoadFontsFolder()
+		{
+			string path = GameFolderModel.Instance.Path + Path.DirectorySeparatorChar + "fonts";
+			if (!Directory.Exists(path))
+				return;
+
+			var list = FileUtils.GetFiles(path, "*.ttf", SearchOption.AllDirectories);
+			if (list.Length == 0)
+				return;
+
+			foreach (var fontFile in list)
+			{
+				string fileName = Path.GetFileNameWithoutExtension(fontFile);
+				if (AllModels.ContainsKey(fileName))
+					continue;
+
+				var typeface = SKTypeface.FromFile(fontFile);
+				if (typeface == null)
+					continue;
+
+				if (AllModels.ContainsKey(typeface.FamilyName))
+					typeface.Dispose();
+				else
+					AddFontModel(typeface, fileName);
+			}
 		}
 
 		private static void InitFontMapping()
