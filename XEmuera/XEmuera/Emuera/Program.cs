@@ -38,7 +38,7 @@ namespace MinorShift.Emuera
 		/// </summary>
 		//[STAThread]
 		//static void Main(string[] args)
-		internal static void Main()
+		internal static bool Init()
 		{
 			ExeDir = Sys.ExeDir;
 #if DEBUG
@@ -82,23 +82,24 @@ namespace MinorShift.Emuera
 			//Application.EnableVisualStyles();
 			//Application.SetCompatibleTextRenderingDefault(false);
 
+			if (!Directory.Exists(CsvDir))
+			{
+				MessageBox.Show("csvフォルダが見つかりません", "フォルダなし");
+				return false;
+			}
+			if (!Directory.Exists(ErbDir))
+			{
+				MessageBox.Show("erbフォルダが見つかりません", "フォルダなし");
+				return false;
+			}
+
 			ConfigData.Instance.LoadConfig();
 
 			//二重起動の禁止かつ二重起動
 			if ((!Config.AllowMultipleInstances) && (Sys.PrevInstance()))
 			{
 				MessageBox.Show("多重起動を許可する場合、emuera.configを書き換えて下さい", "既に起動しています");
-				return;
-			}
-			if (!Directory.Exists(CsvDir))
-			{
-				MessageBox.Show("csvフォルダが見つかりません", "フォルダなし");
-				return;
-			}
-			if (!Directory.Exists(ErbDir))
-			{
-				MessageBox.Show("erbフォルダが見つかりません", "フォルダなし");
-				return;
+				return false;
 			}
 			//if (debugMode)
 			//{
@@ -177,6 +178,8 @@ namespace MinorShift.Emuera
 			//	Reboot = false;
 			//	ConfigData.Instance.ReLoadConfig();
 			//}
+
+			return true;
 		}
 
 		public static void RebootMain()

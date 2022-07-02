@@ -18,12 +18,12 @@ namespace XEmuera.Views
 			if (Settings == null)
 			{
 				Settings = new List<SettingsModel>();
-				foreach (var item in ConfigModel.ConfigSettings.Keys)
+				foreach (var item in ConfigModel.ConfigCodeGroups)
 				{
 					Settings.Add(new SettingsModel
 					{
-						Title = Convert(item),
-						Value = item,
+						Title = item.Name,
+						Value = item.ID,
 					});
 				}
 				Settings.Add(new SettingsModel
@@ -63,26 +63,12 @@ namespace XEmuera.Views
 					});
 					break;
 				default:
-					var configPage = new ConfigPage(ConfigModel.ConfigSettings[model.Value])
+					var configPage = new ConfigPage(model.Value)
 					{
 						Title = model.Title
 					};
 					await Navigation.PushAsync(configPage);
 					break;
-			}
-		}
-		private static string Convert(string text)
-		{
-			switch (text)
-			{
-				case "Environment":
-					return "环境";
-				case "Window":
-					return "窗口";
-				case "Text":
-					return "文字";
-				default:
-					throw new System.InvalidCastException();
 			}
 		}
 

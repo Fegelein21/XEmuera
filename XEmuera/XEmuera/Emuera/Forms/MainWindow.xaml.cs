@@ -51,7 +51,7 @@ namespace MinorShift.Emuera
 
 		bool IsWindowClosing;
 
-		public MainWindow()
+		private MainWindow()
 		{
 			InitializeComponent();
 
@@ -61,22 +61,40 @@ namespace MinorShift.Emuera
 			GlobalStatic.MainWindow = this;
 
 			Sys.Init();
-			Program.Main();
+			if (!Program.Init())
+			{
+				LoadSuccess = false;
+				return;
+			}
 
 			this.SetBinding(BackgroundColorProperty, nameof(MainColor), BindingMode.TwoWay);
 
 			MainColor = Config.ForeColor;
 
-			buttonGroup.BindingContext = this;
+			ToolButtonGroup.BindingContext = this;
 			entryGroup.BindingContext = this;
+
+			ScrollBarLayout.PropertyChanged += IsVisible_PropertyChanged;
+			quickButtonScrollView.PropertyChanged += IsVisible_PropertyChanged;
+			entryGroup.PropertyChanged += IsVisible_PropertyChanged;
+
+			ScrollBarLayout.IsVisible = false;
+			entryGroup.IsVisible = false;
 
 			InitGameView();
 		}
 
+		static bool LoadSuccess;
+
+		public static MainWindow Load()
+		{
+			LoadSuccess = true;
+			var mainWindow = new MainWindow();
+			return LoadSuccess ? mainWindow : null;
+		}
+
 		private void InitGameView()
 		{
-			ScreenOrientation = Width > Height;
-
 			mainLayout.Children.Clear();
 
 			mainLayout.Children.Add(mainPicBox,
@@ -107,16 +125,9 @@ namespace MinorShift.Emuera
 			GameUtils.IsEmueraPage = false;
 		}
 
-		bool ScreenOrientation;
-
 		private void uiLayout_SizeChanged(object sender, EventArgs e)
 		{
-			if (ScreenOrientation != Width > Height)
-			{
-				ScreenOrientation = Width > Height;
-				RefreshQuickButtonGroup();
-			}
-
+			RefreshQuickButtonGroup();
 			RefreshScrollBarLayout();
 		}
 
@@ -147,16 +158,16 @@ namespace MinorShift.Emuera
 
 		public void RefreshQuickButtonGroup()
 		{
-			int width = DisplayUtils.QuickButtonWidth * Config.QuickButtonColumn + DisplayUtils.QuickButtonSpacing * (Config.QuickButtonColumn - 1);
-			buttonScrollView.WidthRequest = Math.Min(uiLayout.Width * 3 / 5, Math.Min(width, quickButtonGroup.Width));
-			buttonScrollView.HeightRequest = Math.Min(400d, Math.Min(uiLayout.Height - buttonGroup.Height - 40d, quickButtonGroup.Height));
+			int width = Config.QuickButtonWidth * Config.QuickButtonColumn + Config.QuickButtonSpacing * (Config.QuickButtonColumn - 1);
+			quickButtonScrollView.WidthRequest = Math.Min(uiLayout.Width * 3 / 5, Math.Min(width, quickButtonGroup.Width));
+			quickButtonScrollView.HeightRequest = Math.Min(400d, Math.Min(uiLayout.Height - ToolButtonGroup.Height - 30d, quickButtonGroup.Height));
 
-			buttonScrollView.ScrollToAsync(0, quickButtonGroup.Height, false);
+			quickButtonScrollView.ScrollToAsync(0, quickButtonGroup.Height, false);
 		}
 
 		private void RefreshScrollBarLayout()
 		{
-			ScrollBarLayout.WidthRequest = Math.Min(400d, uiLayout.Height - buttonGroup.Height - 40d);
+			ScrollBarLayout.WidthRequest = Math.Min(400d, uiLayout.Height - ToolButtonGroup.Height - 40d);
 		}
 
 		protected override bool OnBackButtonPressed()
@@ -426,7 +437,7 @@ namespace MinorShift.Emuera
 		private void InvisibleAllControlView()
 		{
 			ScrollBarLayout.IsVisible = false;
-			buttonScrollView.IsVisible = false;
+			quickButtonScrollView.IsVisible = false;
 		}
 
 		/// <summary>
@@ -459,28 +470,34 @@ namespace MinorShift.Emuera
 			PressEnterKey(false, false);
 		}
 
-		private void SkipButton_Clicked(object sender, EventArgs e)
-		{
-			PressEnterKey(true, true);
-		}
-
 		public void QuickButtonGroup_Clicked(object sender, EventArgs e)
 		{
-			bool visible = buttonScrollView.IsVisible;
+			bool visible = quickButtonScrollView.IsVisible;
 			InvisibleAllControlView();
-			buttonScrollView.IsVisible = !visible;
+			quickButtonScrollView.IsVisible = !visible;
 
-			if (buttonScrollView.IsVisible)
+			if (quickButtonScrollView.IsVisible)
 				console.RefreshQuickButtonAsync();
 		}
 
 		public void quickButton_Clicked(object sender, EventArgs e)
 		{
-			if (!(((View)sender).BindingContext is string inputs))
-				return;
+			bool isBacklog = vScrollBar.Value != vScrollBar.Maximum;
+			if (isBacklog)
+			{
+				vScrollBar.Value = vScrollBar.Maximum;
+				RefreshStrings(true);
+			}
 
-			richTextBox1.Text = inputs;
-			PressEnterKey(false, false);
+			if (((View)sender).BindingContext is string inputs)
+			{
+				richTextBox1.Text = inputs;
+				PressEnterKey(false, false);
+			}
+			else
+			{
+				PressEnterKey(true, false);
+			}
 		}
 
 		private void ButtonVisibleGroup_Clicked(object sender, EventArgs e)
@@ -491,7 +508,12 @@ namespace MinorShift.Emuera
 			scroll_vertical_button.IsVisible = visible;
 			gallery_view_button.IsVisible = visible;
 
-			menu_show_button.Opacity = visible ? 1 : 0.5d;
+			SetButtonOpacity(menu_show_button, visible);
+		}
+
+		private static void SetButtonOpacity(View button, bool visible)
+		{
+			button.Opacity = visible ? 1 : 0.5d;
 		}
 
 		public void MainMenu_Reboot()
@@ -529,6 +551,19 @@ namespace MinorShift.Emuera
 				if (result)
 					this.GotoTitle();
 			}, MessageBoxButtons.OKCancel);
+		}
+
+		private void IsVisible_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName != nameof(IsVisible))
+				return;
+
+			if (sender == ScrollBarLayout)
+				SetButtonOpacity(scroll_vertical_button, ScrollBarLayout.IsVisible);
+			else if (sender == quickButtonScrollView)
+				SetButtonOpacity(gallery_view_button, quickButtonScrollView.IsVisible);
+			else if (sender == entryGroup)
+				SetButtonOpacity(edit_button, entryGroup.IsVisible);
 		}
 	}
 }

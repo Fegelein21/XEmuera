@@ -54,19 +54,12 @@ namespace XEmuera.Views
 
 		private void GameItemListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
-			if (!(e.SelectedItem is GameItemModel item))
+			if (!(GameItemListView.SelectedItem is GameItemModel item))
 				return;
 
 			GameItemListView.SelectedItem = null;
 
-			if (GameUtils.IsEmueraPage)
-				return;
-
-			GameUtils.IsEmueraPage = true;
-
-			GameUtils.CurrentGamePath = item.Path;
-
-			Navigation.PushAsync(new MainWindow(), false);
+			GameUtils.StartEmuera(item.Path);
 		}
 	}
 }

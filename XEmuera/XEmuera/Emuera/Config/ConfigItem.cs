@@ -6,6 +6,7 @@ using System.Drawing;
 using MinorShift.Emuera.Sub;
 using XEmuera;
 using XEmuera.Forms;
+using SkiaSharp;
 
 namespace MinorShift.Emuera
 {
@@ -224,6 +225,14 @@ namespace MinorShift.Emuera
 				{
 					Value = (TextEditorType)Enum.Parse(typeof(TextEditorType), str);
 				}
+				else
+					ShowError("不正な指定です");
+			}
+			else if (Value is SKFilterQuality)
+			{
+				ret = Enum.TryParse(str, true, out SKFilterQuality result);
+				if (ret)
+					Value = result;
 				else
 					ShowError("不正な指定です");
 			}

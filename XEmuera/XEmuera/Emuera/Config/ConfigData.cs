@@ -9,6 +9,7 @@ using MinorShift.Emuera.GameData.Expression;
 using System.Linq;
 using XEmuera;
 using XEmuera.Models;
+using SkiaSharp;
 
 namespace MinorShift.Emuera
 {
@@ -114,9 +115,18 @@ namespace MinorShift.Emuera
 			configArray.Add(new ConfigItem(ConfigCode.SystemNoTarget, "キャラクタ変数の引数を補完しない", false));
 			configArray.Add(new ConfigItem(ConfigCode.SystemIgnoreStringSet, "文字列変数の代入に文字列式を強制する", false));
 
-			configArray.Add(new ConfigItem(ConfigCode.QuickButtonColumn, "快捷按钮显示列数", 5));
 			configArray.Add(new ConfigItem(ConfigCode.FontScale, "文字和图像放大倍数", 2.0f));
 			configArray.Add(new ConfigItem(ConfigCode.PanSpeed, "横向平移速度", 2.0f));
+
+			configArray.Add(new ConfigItem(ConfigCode.QuickButtonColumn, "按钮显示列数", 5));
+			configArray.Add(new ConfigItem(ConfigCode.QuickButtonFontSize, "按钮字体大小", 12));
+			configArray.Add(new ConfigItem(ConfigCode.QuickButtonWidth, "按钮长度", 90));
+			configArray.Add(new ConfigItem(ConfigCode.QuickButtonSpacing, "按钮间隔", 3));
+
+			configArray.Add(new ConfigItem(ConfigCode.TextAntialias, "文字抗锯齿", true));
+			configArray.Add(new ConfigItem(ConfigCode.ShapeAntialias, "图形抗锯齿", true));
+			configArray.Add(new ConfigItem(ConfigCode.TextFilterQuality, "文字过滤质量", SKFilterQuality.Low));
+			configArray.Add(new ConfigItem(ConfigCode.ShapeFilterQuality, "图形过滤质量", SKFilterQuality.Low));
 
 			i = 0;
 			debugArray.Add(new ConfigItem(ConfigCode.DebugShowWindow, "起動時にデバッグウインドウを表示する", true));

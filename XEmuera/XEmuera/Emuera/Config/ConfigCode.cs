@@ -150,8 +150,17 @@ namespace MinorShift.Emuera
 
 		UseKeyMacro = 162,
 
-		QuickButtonColumn,
 		FontScale,
 		PanSpeed,
+
+		QuickButtonColumn,
+		QuickButtonFontSize,
+		QuickButtonWidth,
+		QuickButtonSpacing,
+
+		TextAntialias,
+		TextFilterQuality,
+		ShapeAntialias,
+		ShapeFilterQuality,
 	}
 }

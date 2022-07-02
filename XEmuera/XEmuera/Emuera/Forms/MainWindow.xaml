@@ -50,7 +50,7 @@
 				SizeChanged="uiLayout_SizeChanged">
 
 				<StackLayout
-					x:Name="buttonGroup"
+					x:Name="ToolButtonGroup"
 					InputTransparent="True"
 					CascadeInputTransparent="False"
 					Orientation="Horizontal"
@@ -93,13 +93,12 @@
 						x:Name="chevron_right_button"
 						Source="{resExt:ImageResource chevron_right.svg}"
 						Style="{StaticResource TintImageButtonStyle}"
-						Clicked="SkipButton_Clicked" />
+						Clicked="quickButton_Clicked" />
 
 				</StackLayout>
 
 				<StackLayout
 					x:Name="ScrollBarLayout"
-					IsVisible="false"
 					HorizontalOptions="End"
 					VerticalOptions="EndAndExpand"
 					Margin="0, 0, 40, 20"
@@ -118,19 +117,19 @@
 				</StackLayout>
 
 				<ScrollView
-					x:Name="buttonScrollView"
+					x:Name="quickButtonScrollView"
 					x:FieldModifier="public"
 					HorizontalOptions="End"
 					VerticalOptions="EndAndExpand"
 					HorizontalScrollBarVisibility="Never"
 					VerticalScrollBarVisibility="Never"
-					Margin="0, 0, 20, 30"
+					Margin="0,0,20,20"
 					Orientation="Both">
 
 					<StackLayout
 						x:Name="quickButtonGroup"
 						x:FieldModifier="public"
-						Spacing="2"
+						Spacing="3"
 						Orientation="Vertical" />
 
 				</ScrollView>
@@ -140,7 +139,6 @@
 		<StackLayout
 			x:Name="entryGroup"
 			FlexLayout.Basis="70"
-			IsVisible="False"
 			BackgroundColor="{Binding InvertMainColor}"
 			Padding="4,0,8,0"
 			Orientation="Horizontal">

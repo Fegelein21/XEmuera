@@ -20,6 +20,8 @@ namespace XEmuera.Models
 
 		private static readonly Dictionary<ConfigCode, ConfigModel> AllModels = new Dictionary<ConfigCode, ConfigModel>();
 
+		public static List<ConfigCodeGroup> ConfigCodeGroups { get; private set; }
+
 		public readonly ConfigItem ConfigItem;
 
 		public ConfigCode Code { get => ConfigItem.Code; }
@@ -97,12 +99,11 @@ namespace XEmuera.Models
 		{
 			AllModels.Clear();
 
-			foreach (var pair in ConfigSettingsCode)
-			{
-				List<ConfigModel> list = new List<ConfigModel>();
-				ConfigSettings[pair.Key] = list;
+			InitConfigCodeGroups();
 
-				foreach (var configCode in pair.Value)
+			foreach (var group in ConfigCodeGroups)
+			{
+				foreach (var configCode in group.Code)
 				{
 					ConfigItem configItem = ConfigData.Instance.GetItem(configCode);
 					if (configItem == null)
@@ -127,7 +128,6 @@ namespace XEmuera.Models
 					}
 
 					AllModels[configCode] = configModel;
-					list.Add(configModel);
 					configModel.PropertyChanged += ConfigItem_PropertyChanged;
 				}
 			}
@@ -161,41 +161,137 @@ namespace XEmuera.Models
 			return null;
 		}
 
-		public static readonly Dictionary<string, List<ConfigModel>> ConfigSettings = new Dictionary<string, List<ConfigModel>>();
-
-		public static readonly Dictionary<string, ConfigCode[]> ConfigSettingsCode = new Dictionary<string, ConfigCode[]>
+		private static void InitConfigCodeGroups()
 		{
+			ConfigCodeGroups = new List<ConfigCodeGroup>
 			{
-				"Environment", new ConfigCode[]
+				new ConfigCodeGroup
 				{
-					ConfigCode.AutoSave,
-				}
-			},
-			{
-				"Window", new ConfigCode[]
+					ID = "Environment",
+					Name = "环境",
+					Code = new ConfigCode[]
+					{
+						ConfigCode.AutoSave,
+						ConfigCode.UseSaveFolder,
+						ConfigCode.MaxLog,
+						ConfigCode.InfiniteLoopAlertTime,
+						ConfigCode.SaveDataNos,
+					}
+				},
+				new ConfigCodeGroup
 				{
-					ConfigCode.WindowX,
+					ID = "Display",
+					Name = "显示",
+					Code = new ConfigCode[]
+					{
+						//ConfigCode.TextDrawingMode,
 
-					ConfigCode.QuickButtonColumn,
-					ConfigCode.ScrollHeight,
-					ConfigCode.PanSpeed,
-				}
-			},
-			{
-				"Text", new ConfigCode[]
+						ConfigCode.FPS,
+						ConfigCode.PrintCPerLine,
+						ConfigCode.PrintCLength,
+						ConfigCode.ButtonWrap,
+					}
+				},
+				new ConfigCodeGroup
 				{
-					ConfigCode.FontScale,
+					ID = "Window",
+					Name = "窗口",
+					Code = new ConfigCode[]
+					{
+						ConfigCode.WindowX,
 
-					ConfigCode.ForeColor,
-					ConfigCode.BackColor,
-					ConfigCode.FocusColor,
-					ConfigCode.LogColor,
+						ConfigCode.ScrollHeight,
+						ConfigCode.PanSpeed,
+					}
+				},
+				new ConfigCodeGroup
+				{
+					ID = "Text",
+					Name = "文字",
+					Code = new ConfigCode[]
+					{
+						ConfigCode.FontScale,
+						ConfigCode.TextAntialias,
+						ConfigCode.TextFilterQuality,
+						ConfigCode.ShapeAntialias,
+						ConfigCode.ShapeFilterQuality,
 
-					ConfigCode.FontName,
-					ConfigCode.FontSize,
-					ConfigCode.LineHeight,
-				}
-			},
-		};
+						ConfigCode.ForeColor,
+						ConfigCode.BackColor,
+						ConfigCode.FocusColor,
+						ConfigCode.LogColor,
+
+						ConfigCode.FontName,
+						ConfigCode.FontSize,
+						ConfigCode.LineHeight,
+					}
+				},
+				new ConfigCodeGroup
+				{
+					ID = "System",
+					Name = "系统",
+					Code = new ConfigCode[]
+					{
+						ConfigCode.IgnoreCase,
+						ConfigCode.UseRenameFile,
+						ConfigCode.UseReplaceFile,
+						ConfigCode.SearchSubdirectory,
+						ConfigCode.SortWithFilename,
+						ConfigCode.AllowFunctionOverloading,
+						ConfigCode.WarnFunctionOverloading,
+						ConfigCode.WarnFunctionOverloading,
+						ConfigCode.WarnNormalFunctionOverloading,
+						ConfigCode.SystemAllowFullSpace,
+						ConfigCode.useLanguage,
+					}
+				},
+				new ConfigCodeGroup
+				{
+					ID = "System2",
+					Name = "系统2",
+					Code = new ConfigCode[]
+					{
+						ConfigCode.SystemIgnoreTripleSymbol,
+						ConfigCode.SystemSaveInBinary,
+						ConfigCode.SystemSaveInUTF8,
+						ConfigCode.SystemNoTarget,
+					}
+				},
+				new ConfigCodeGroup
+				{
+					ID = "Debug",
+					Name = "调试",
+					Code = new ConfigCode[]
+					{
+						ConfigCode.WarnBackCompatibility,
+						ConfigCode.DisplayReport,
+						ConfigCode.ReduceArgumentOnLoad,
+						ConfigCode.DisplayWarningLevel,
+						ConfigCode.IgnoreUncalledFunction,
+						ConfigCode.FunctionNotFoundWarning,
+						ConfigCode.FunctionNotCalledWarning,
+					}
+				},
+				new ConfigCodeGroup
+				{
+					ID = "QuickButton",
+					Name = "快捷按钮",
+					Code = new ConfigCode[]
+					{
+						ConfigCode.QuickButtonColumn,
+						ConfigCode.QuickButtonFontSize,
+						ConfigCode.QuickButtonWidth,
+						ConfigCode.QuickButtonSpacing,
+					}
+				},
+			};
+		}
+
+		public class ConfigCodeGroup
+		{
+			public string ID { get; set; }
+			public string Name { get; set; }
+			public ConfigCode[] Code { get; set; }
+		}
 	}
 }

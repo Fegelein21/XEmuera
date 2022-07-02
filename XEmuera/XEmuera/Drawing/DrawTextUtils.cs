@@ -1,12 +1,11 @@
-﻿using SkiaSharp;
+﻿using MinorShift.Emuera;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using XEmuera.Drawing;
 using XEmuera.Models;
 
 namespace XEmuera.Drawing
@@ -17,12 +16,7 @@ namespace XEmuera.Drawing
 
 		private static readonly List<FontCache> EnabledFontCaches = new List<FontCache>();
 
-		private static readonly SKPaint Paint = new SKPaint
-		{
-			StrokeWidth = 2,
-			IsAntialias = true,
-			FilterQuality = DisplayUtils.TextFilterQuality
-		};
+		private static SKPaint Paint;
 
 		private static char[] CharList;
 
@@ -73,6 +67,15 @@ namespace XEmuera.Drawing
 		{
 			foreach (var fontCache in FontCaches)
 				fontCache.Clear();
+
+			if (Paint != null)
+				Paint.Dispose();
+			Paint = new SKPaint
+			{
+				StrokeWidth = 2,
+				IsAntialias = Config.TextAntialias,
+				FilterQuality = Config.TextFilterQuality
+			};
 		}
 
 		public static void DrawText(SKCanvas canvas, string text, Font font, RectangleF rect, Color color)

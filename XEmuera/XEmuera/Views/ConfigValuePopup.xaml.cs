@@ -4,11 +4,12 @@ using MinorShift.Emuera;
 using Spillman.Xamarin.Forms.ColorPicker;
 using Xamarin.Forms;
 using XEmuera.Models;
-using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Essentials;
 using Xamarin.Forms.Xaml;
+using XEmuera.Forms;
+using SkiaSharp;
 
-namespace XEmuera.Views.Popup
+namespace XEmuera.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ConfigValuePopup : Xamarin.CommunityToolkit.UI.Views.Popup
@@ -23,7 +24,7 @@ namespace XEmuera.Views.Popup
 			TitleLabel.Text = ConfigModel.Text;
 
 			ConfigToggleLabel.BindingContext = ConfigToggle;
-			ConfigToggleLabel.SetBinding(Label.TextProperty, nameof(Switch.IsToggled), BindingMode.OneWay, new ConfigToggleConverter());
+			ConfigToggleLabel.SetBinding(Label.TextProperty, nameof(Switch.IsToggled), default, new ConfigToggleConverter());
 			ConfigToggle.IsToggled = ConfigModel.Enabled;
 
 			ConfigEntry.Text = ConfigModel.ValueText;
@@ -37,17 +38,22 @@ namespace XEmuera.Views.Popup
 			Size = new Size(MainLayout.Width, Math.Min(info.Height / info.Density - 40d, MainLayout.Height));
 		}
 
+		protected override void LightDismiss()
+		{
+			base.LightDismiss();
+			UnSubscribeRadioButtonGroup();
+		}
+
 		private void Close()
 		{
 			Dismiss(null);
+			UnSubscribeRadioButtonGroup();
 		}
 
 		private void OnDefault(object sender, EventArgs e)
 		{
-			if (ConfigEntry.BindingContext is StackLayout layout)
-			{
-				RadioButtonGroup.SetSelectedValue(layout, ConfigModel.ConfigItem.Value);
-			}
+			if (ConfigEntry.BindingContext is StackLayout)
+				RadioButtonGroup.SetSelectedValue(ContentLayout, ConfigModel.ConfigItem.Value);
 			else
 				ConfigEntry.Text = ConfigItem.ValueToString(ConfigModel.ConfigItem.Value);
 		}
@@ -68,7 +74,7 @@ namespace XEmuera.Views.Popup
 			}
 			else
 			{
-				GameUtils.MainPage.DisplaySnackBarAsync("无效的输入值。", null, null, TimeSpan.FromMilliseconds(2000));
+				MessageBox.Show("无效的输入值。");
 				ConfigModel.ConfigItem.ResetValue();
 			}
 		}
@@ -82,12 +88,25 @@ namespace XEmuera.Views.Popup
 				Switch valueSwitch = new Switch
 				{
 					IsToggled = b,
-					HorizontalOptions = LayoutOptions.Start
 				};
 
-				ContentLayout.Children.Add(valueSwitch);
+				Label label = new Label
+				{
+					BindingContext = valueSwitch,
+				};
+				label.SetBinding(Label.TextProperty, nameof(Switch.IsToggled), default, new SwitchBoolConverter());
+
+				StackLayout layout = new StackLayout
+				{
+					Orientation = StackOrientation.Horizontal
+				};
+				layout.Children.Add(valueSwitch);
+				layout.Children.Add(label);
+
+				ContentLayout.Children.Add(layout);
+
 				ConfigEntry.BindingContext = valueSwitch;
-				ConfigEntry.SetBinding(Entry.TextProperty, nameof(Switch.IsToggled), BindingMode.TwoWay);
+				ConfigEntry.SetBinding(Entry.TextProperty, nameof(Switch.IsToggled));
 			}
 			else if (Value is float f)
 			{
@@ -135,9 +154,21 @@ namespace XEmuera.Views.Popup
 				EntryGroup.IsVisible = true;
 				ConfigEntry.BindingContext = model;
 			}
-			else if (Value is UseLanguage language)
+			else if (Value is UseLanguage useLanguage)
 			{
-				AddEnumContentLayout(language);
+				AddEnumContentLayout(useLanguage);
+			}
+			else if (Value is ReduceArgumentOnLoadFlag reduceArgumentOnLoadFlag)
+			{
+				AddEnumContentLayout(reduceArgumentOnLoadFlag);
+			}
+			else if (Value is DisplayWarningFlag displayWarningFlag)
+			{
+				AddEnumContentLayout(displayWarningFlag);
+			}
+			else if (Value is SKFilterQuality sKFilterQuality)
+			{
+				AddEnumContentLayout(sKFilterQuality);
 			}
 			else
 			{
@@ -146,7 +177,7 @@ namespace XEmuera.Views.Popup
 			}
 		}
 
-		private void AddEnumContentLayout<T>(T selecteValue) where T : Enum
+		private void AddEnumContentLayout<T>(T selectedValue) where T : Enum
 		{
 			ContentLayout.Spacing = 2;
 
@@ -166,9 +197,14 @@ namespace XEmuera.Views.Popup
 				};
 			}
 			RadioButtonGroup.SetGroupName(ContentLayout, nameof(T));
-			RadioButtonGroup.SetSelectedValue(ContentLayout, selecteValue);
+			RadioButtonGroup.SetSelectedValue(ContentLayout, selectedValue);
 
 			ConfigEntry.BindingContext = ContentLayout;
+		}
+
+		private void UnSubscribeRadioButtonGroup()
+		{
+			RadioButtonGroup.SetGroupName(ContentLayout, null);
 		}
 
 		private void ConfigEntry_TextChanged(object sender, TextChangedEventArgs e)
@@ -185,18 +221,31 @@ namespace XEmuera.Views.Popup
 				}
 			}
 		}
+	}
 
-		private class ConfigToggleConverter : IValueConverter
+	public class ConfigToggleConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-			{
-				return (bool)value ? "覆盖游戏原配置" : "使用游戏中配置";
-			}
+			return (bool)value ? "覆盖游戏原配置" : "使用游戏原配置";
+		}
 
-			public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-			{
-				return false;
-			}
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			return false;
+		}
+	}
+
+	public class SwitchBoolConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			return (bool)value ? "已启用" : "已禁用";
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			return false;
 		}
 	}
 }

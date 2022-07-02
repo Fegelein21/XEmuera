@@ -12,6 +12,8 @@ namespace MinorShift.Emuera.GameView
 	{
 		int lastRefreshQuickButtonGeneration = -1;
 
+		StackLayout quickButtonGroup;
+
 		public void RefreshQuickButton()
 		{
 			MainThread.BeginInvokeOnMainThread(() =>
@@ -25,23 +27,27 @@ namespace MinorShift.Emuera.GameView
 			if (!window.quickButtonGroup.IsVisible)
 				return;
 
-			if (lastRefreshQuickButtonGeneration == lastButtonGeneration)
-				return;
-
 			if (state != ConsoleState.WaitInput)
 				return;
 
-			StackLayout quickButtonGroup = window.quickButtonGroup;
+			quickButtonGroup = window.quickButtonGroup;
+			bool needClearButtonGroup = quickButtonGroup.Children.Count > 0;
 
-			if (quickButtonGroup.Children.Count > 0)
+			if (lastRefreshQuickButtonGeneration == lastButtonGeneration)
+				needClearButtonGroup = inputReq.InputType == GameProc.InputType.EnterKey;
+
+			if (needClearButtonGroup)
 			{
 				quickButtonGroup.Children.Clear();
 				quickButtonGroup.WidthRequest = -1;
 				quickButtonGroup.HeightRequest = -1;
 
-				window.buttonScrollView.WidthRequest = -1;
-				window.buttonScrollView.HeightRequest = -1;
+				window.quickButtonScrollView.WidthRequest = -1;
+				window.quickButtonScrollView.HeightRequest = -1;
 			}
+
+			if (lastRefreshQuickButtonGeneration == lastButtonGeneration)
+				return;
 
 			if (inputReq.InputType == GameProc.InputType.Void || inputReq.InputType == GameProc.InputType.AnyKey)
 				return;
@@ -65,6 +71,8 @@ namespace MinorShift.Emuera.GameView
 			System.Drawing.Color color;
 			AConsoleColoredPart coloredPart;
 
+			quickButtonGroup.Spacing = Config.QuickButtonSpacing;
+
 			for (int i = topLineNo; i <= bottomLineNo; i++)
 			{
 				curLine = displayLineList[i];
@@ -72,7 +80,7 @@ namespace MinorShift.Emuera.GameView
 				layout = new StackLayout
 				{
 					Orientation = StackOrientation.Horizontal,
-					Spacing = DisplayUtils.QuickButtonSpacing,
+					Spacing = Config.QuickButtonSpacing,
 				};
 
 				for (int b = 0; b < curLine.Buttons.Length; b++)
@@ -102,11 +110,11 @@ namespace MinorShift.Emuera.GameView
 						BindingContext = button.Inputs,
 						Text = text.Trim(),
 						TextColor = color,
-						FontSize = 10,
-						WidthRequest = DisplayUtils.QuickButtonWidth,
-						HeightRequest = DisplayUtils.QuickButtonHeight,
 						BackgroundColor = System.Drawing.Color.FromArgb(color.ToArgb() ^ 0xffffff).WithAlpha(0xc0),
-						Padding = 2,
+						FontSize = Config.QuickButtonFontSize,
+						WidthRequest = Config.QuickButtonWidth,
+						HeightRequest = Config.QuickButtonHeight,
+						Padding = Config.QuickButtonPadding,
 					};
 					quickButton.Clicked += window.quickButton_Clicked;
 

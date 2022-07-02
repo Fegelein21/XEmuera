@@ -51,7 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\Popup\ConfigValuePopup.xaml.cs">
+    <Compile Update="Views\ConfigValuePopup.xaml.cs">
       <DependentUpon>ConfigValuePopup.xaml</DependentUpon>
     </Compile>
   </ItemGroup>

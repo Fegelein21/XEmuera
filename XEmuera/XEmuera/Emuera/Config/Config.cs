@@ -7,6 +7,7 @@ using XEmuera.Forms;
 using MinorShift._Library;
 using XEmuera;
 using XEmuera.Drawing;
+using SkiaSharp;
 
 namespace MinorShift.Emuera
 {
@@ -70,9 +71,20 @@ namespace MinorShift.Emuera
 			FocusColor = instance.GetConfigValue<Color>(ConfigCode.FocusColor);
 			LogColor = instance.GetConfigValue<Color>(ConfigCode.LogColor);
 
-			QuickButtonColumn = instance.GetConfigValue<int>(ConfigCode.QuickButtonColumn);
 			FontScale = instance.GetConfigValue<float>(ConfigCode.FontScale);
 			PanSpeed = instance.GetConfigValue<float>(ConfigCode.PanSpeed);
+
+			QuickButtonColumn = instance.GetConfigValue<int>(ConfigCode.QuickButtonColumn);
+			QuickButtonWidth = instance.GetConfigValue<int>(ConfigCode.QuickButtonWidth);
+			QuickButtonFontSize = instance.GetConfigValue<int>(ConfigCode.QuickButtonFontSize);
+			QuickButtonSpacing = instance.GetConfigValue<int>(ConfigCode.QuickButtonSpacing);
+			QuickButtonPadding = 2;
+			QuickButtonHeight = QuickButtonFontSize * 3 + QuickButtonPadding * 2;
+
+			TextAntialias = instance.GetConfigValue<bool>(ConfigCode.TextAntialias);
+			ShapeAntialias = instance.GetConfigValue<bool>(ConfigCode.ShapeAntialias);
+			TextFilterQuality = instance.GetConfigValue<SKFilterQuality>(ConfigCode.TextFilterQuality);
+			ShapeFilterQuality = instance.GetConfigValue<SKFilterQuality>(ConfigCode.ShapeFilterQuality);
 
 			//FontSize = instance.GetConfigValue<int>(ConfigCode.FontSize);
 			FontSize = (int)(instance.GetConfigValue<int>(ConfigCode.FontSize) * FontScale);
@@ -497,7 +509,20 @@ namespace MinorShift.Emuera
 		public static Color BackColor { get; private set; }
 		public static Color FocusColor { get; private set; }
 		public static Color LogColor { get; private set; }
+
 		public static int QuickButtonColumn { get; private set; }
+		public static int QuickButtonFontSize { get; private set; }
+		public static int QuickButtonWidth { get; private set; }
+		public static int QuickButtonHeight { get; private set; }
+		public static int QuickButtonSpacing { get; private set; }
+		public static int QuickButtonPadding { get; private set; }
+
+		public static bool TextAntialias { get; private set; }
+		public static bool ShapeAntialias { get; private set; }
+
+		public static SKFilterQuality TextFilterQuality { get; private set; }
+		public static SKFilterQuality ShapeFilterQuality { get; private set; }
+
 		public static float FontScale { get; private set; }
 		public static int FontSize { get; private set; }
 		public static string FontName { get; private set; }

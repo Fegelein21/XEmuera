@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XEmuera.Models;
-using XEmuera.Views.Popup;
 using Xamarin.CommunityToolkit.Extensions;
 
 namespace XEmuera.Views
@@ -15,11 +14,13 @@ namespace XEmuera.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ConfigPage : ContentPage
 	{
-		internal ConfigPage(List<ConfigModel> configModelList)
+		internal ConfigPage(string groupId)
 		{
 			InitializeComponent();
 
-			ConfigListView.ItemsSource = configModelList;
+			var group = ConfigModel.ConfigCodeGroups.FirstOrDefault(group => group.ID == groupId);
+			if (group != null && group.Code != null)
+				ConfigListView.ItemsSource = group.Code.Select(code => ConfigModel.Get(code)).Where(model => model != null);
 		}
 
 		private async void ConfigListView_ItemTapped(object sender, ItemTappedEventArgs e)

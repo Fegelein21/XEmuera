@@ -275,6 +275,7 @@ namespace MinorShift.Emuera
 			console = new EmueraConsole(this);
 
 			DrawTextUtils.Reset();
+			DrawBitmapUtils.Reset();
 
 			console.Initialize();
 		}
@@ -563,7 +564,7 @@ namespace MinorShift.Emuera
 				console.forceStopTimer();
 				Program.Reboot = true;
 				Close();
-				Navigation.PushAsync(new MainWindow(), false);
+				GameUtils.StartEmuera();
 			});
 		}
 
@@ -574,6 +575,7 @@ namespace MinorShift.Emuera
 			Task.Run(() =>
 			{
 				console.GotoTitle();
+				console.RefreshQuickButton();
 			});
 		}
 

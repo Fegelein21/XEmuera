@@ -38,6 +38,10 @@ namespace XEmuera.Models
 		}
 		private bool _favorite;
 
+		public bool HasError { get; private set; }
+
+		public string Error { get; private set; }
+
 		private void Sort()
 		{
 			var list = AllModels.ToList();
@@ -74,15 +78,18 @@ namespace XEmuera.Models
 				if (!Directory.Exists(itemPath + directorySeparatorChar + "ERB"))
 					continue;
 
-				string emueraConfig = itemPath + directorySeparatorChar + "emuera.config";
-				if (!FileUtils.Exists(ref emueraConfig) && !Directory.Exists(itemPath + directorySeparatorChar + "CSV"))
-					continue;
-
 				gameItem = new GameItemModel
 				{
 					Name = System.IO.Path.GetFileName(itemPath),
 					Path = itemPath,
 				};
+
+				if (!Directory.Exists(itemPath + directorySeparatorChar + "CSV"))
+				{
+					gameItem.HasError = true;
+					gameItem.Error = "(缺少CSV文件夹)";
+				}
+
 				AllModels.Add(gameItem);
 			}
 

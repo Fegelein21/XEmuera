@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using MinorShift.Emuera;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,11 +9,18 @@ namespace XEmuera.Drawing
 {
 	public static class DrawBitmapUtils
 	{
-		private static readonly SKPaint Paint = new SKPaint
+		private static SKPaint Paint;
+
+		public static void Reset()
 		{
-			IsAntialias = true,
-			FilterQuality = DisplayUtils.ShapeFilterQuality
-		};
+			if (Paint != null)
+				Paint.Dispose();
+			Paint = new SKPaint
+			{
+				IsAntialias = Config.ShapeAntialias,
+				FilterQuality = Config.ShapeFilterQuality
+			};
+		}
 
 		public static void DrawBitmap(SKCanvas canvas, SKBitmap bitmap, Rectangle src, Rectangle dest)
 		{
@@ -86,8 +94,8 @@ namespace XEmuera.Drawing
 			IsStroke = true;
 			Color = DisplayUtils.ToSKColor(color);
 			StrokeWidth = width;
-			IsAntialias = true;
-			FilterQuality = DisplayUtils.ShapeFilterQuality;
+			IsAntialias = Config.ShapeAntialias;
+			FilterQuality = Config.ShapeFilterQuality;
 		}
 	}
 }

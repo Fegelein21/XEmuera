@@ -43,7 +43,7 @@ namespace XEmuera.Droid
 
 		public bool NeedStoragePermissions()
 		{
-			return true;
+			return (int)Build.VERSION.SdkInt >= 24;
 		}
 
 		public void RequestManageFilesPermissions()

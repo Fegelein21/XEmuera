@@ -13,6 +13,8 @@ using System.Linq;
 using SkiaSharp;
 using XEmuera.Forms;
 using System.Threading;
+using MinorShift._Library;
+using MinorShift.Emuera;
 
 namespace XEmuera
 {
@@ -81,6 +83,26 @@ namespace XEmuera
 			Init = true;
 		}
 
+		public static void StartEmuera(string gamePath)
+		{
+			if (IsEmueraPage)
+				return;
+
+			CurrentGamePath = gamePath;
+
+			StartEmuera();
+		}
+
+		public static void StartEmuera()
+		{
+			var mainWindow = MainWindow.Load();
+			if (mainWindow != null)
+			{
+				IsEmueraPage = true;
+				MainPage.Detail.Navigation.PushAsync(mainWindow, false);
+			}
+		}
+
 		public static bool RequestExternalPermissions()
 		{
 			if (PlatformService.NeedStoragePermissions())
@@ -147,14 +169,6 @@ namespace XEmuera
 
 	public static class DisplayUtils
 	{
-		public const int QuickButtonWidth = 70;
-		public const int QuickButtonHeight = 32;
-		public const int QuickButtonSpacing = 4;
-
-		public const SKFilterQuality TextFilterQuality = SKFilterQuality.Medium;
-
-		public const SKFilterQuality ShapeFilterQuality = SKFilterQuality.Medium;
-
 		public const int HeightOffset = 4;
 
 		public static readonly double ScreenDensity = DeviceDisplay.MainDisplayInfo.Density;
@@ -225,6 +239,18 @@ namespace XEmuera
 			if (string.IsNullOrEmpty(filePath))
 				return false;
 
+			string directoryName = Path.GetDirectoryName(filePath);
+			if (!Directory.Exists(directoryName))
+			{
+				directoryName = directoryName.ToUpper();
+				if (!Directory.Exists(directoryName))
+				{
+					directoryName = directoryName.ToLower();
+					if (!Directory.Exists(directoryName))
+						return false;
+				}
+			}
+
 			if (File.Exists(filePath))
 				return true;
 
@@ -236,7 +262,6 @@ namespace XEmuera
 			if (File.Exists(filePath))
 				return true;
 
-			string directoryName = Path.GetDirectoryName(filePath) + Path.DirectorySeparatorChar;
 			Regex regex = new Regex("^" + Regex.Escape(Path.GetFileName(filePath)) + "$", RegexOptions.IgnoreCase);
 			string path = Directory.EnumerateFiles(directoryName).FirstOrDefault(file => regex.IsMatch(Path.GetFileName(file)));
 
