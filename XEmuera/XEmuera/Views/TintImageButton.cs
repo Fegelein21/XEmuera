@@ -1,6 +1,8 @@
 ﻿using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using Xamarin.Forms;
 
@@ -8,8 +10,39 @@ namespace XEmuera.Views
 {
 	public class TintImageButton : ImageButton
 	{
-		public static readonly BindableProperty TintColorProperty = BindableProperty.Create(
-			nameof(TintColor), typeof(Color), typeof(TintImageButton), Color.Transparent, propertyChanged: RedrawCanvas);
+		public static readonly BindableProperty ImageProperty = BindableProperty.Create(nameof(Image), typeof(string),
+			typeof(TintImageButton), null, propertyChanged: RefreshImageSource);
+
+		public static readonly BindableProperty ToggledImageProperty = BindableProperty.Create(nameof(ToggledImage), typeof(string),
+			typeof(TintImageButton), null, propertyChanged: RefreshImageSource);
+
+		public static readonly BindableProperty IsToggledProperty = BindableProperty.Create(nameof(IsToggled), typeof(bool?),
+			typeof(TintImageButton), null, propertyChanged: (bindable, oldValue, newValue) =>
+			{
+				var button = bindable as TintImageButton;
+				button.Toggled?.Invoke(bindable, new ToggledEventArgs((bool)newValue));
+			});
+
+		public static readonly BindableProperty TintColorProperty = BindableProperty.Create(nameof(TintColor), typeof(Color),
+			typeof(TintImageButton), Color.Transparent, propertyChanged: RefreshTintColor);
+
+		public string Image
+		{
+			get { return (string)GetValue(ImageProperty); }
+			set { SetValue(ImageProperty, value); }
+		}
+
+		public string ToggledImage
+		{
+			get { return (string)GetValue(ToggledImageProperty); }
+			set { SetValue(ToggledImageProperty, value); }
+		}
+
+		public bool? IsToggled
+		{
+			get { return (bool?)GetValue(IsToggledProperty); }
+			set { SetValue(IsToggledProperty, value); }
+		}
 
 		public Color TintColor
 		{
@@ -17,23 +50,80 @@ namespace XEmuera.Views
 			set => SetValue(TintColorProperty, value);
 		}
 
-		private static async void RedrawCanvas(BindableObject bindable, object oldvalue, object newvalue)
+		public event EventHandler<ToggledEventArgs> Toggled;
+
+		public TintImageButton() : base()
 		{
-			if (!(bindable is TintImageButton button))
+			Clicked += (sender, args) =>
+			{
+				IsToggled = !IsToggled;
+			};
+
+			Toggled += (sender, args) => ToggleImageSource();
+		}
+
+		private void ToggleImageSource(bool forceRefresh = false)
+		{
+			if (string.IsNullOrEmpty(ToggledImage))
+			{
+				if (Source == null || forceRefresh)
+					Source = CreateImageSource(Image);
+
 				return;
+			}
 
-			if (button.Source == null)
-				return;
+			if (IsToggled != null && (bool)IsToggled)
+				Source = CreateImageSource(ToggledImage);
+			else
+				Source = CreateImageSource(Image);
+		}
 
-			var source = button.Source as StreamImageSource;
-			var stream = await source.Stream(default);
+		private static void RefreshImageSource(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var button = bindable as TintImageButton;
 
+			button.ToggleImageSource(true);
+		}
+
+		private ImageSource CreateImageSource(string source)
+		{
+			if (string.IsNullOrEmpty(source))
+				return null;
+
+			string resId = $"XEmuera.Resources.Images.{source}";
+			var stream = GameUtils.GetManifestResourceStream(resId);
+			if (stream == null)
+				return null;
+
+			if (source.EndsWith(".svg", StringComparison.OrdinalIgnoreCase))
+			{
+				var picture = new SkiaSharp.Extended.Svg.SKSvg().Load(stream);
+				var image = SKImage.FromPicture(picture, new SKSizeI(200, 200));
+
+				stream = image.Encode().AsStream();
+			}
+
+			if (TintColor != Color.Transparent)
+				stream = DrawTintColor(stream, TintColor);
+
+			return ImageSource.FromStream(() => stream);
+		}
+
+		private static void RefreshTintColor(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var button = bindable as TintImageButton;
+
+			button.ToggleImageSource(true);
+		}
+
+		private static Stream DrawTintColor(Stream stream, Color tintColor)
+		{
 			var bitmap = SKBitmap.Decode(stream);
 			var image = SKImage.FromBitmap(bitmap);
 
 			using SKPaint paint = new SKPaint
 			{
-				ColorFilter = SKColorFilter.CreateBlendMode(DisplayUtils.ToSKColor(button.TintColor), SKBlendMode.SrcIn),
+				ColorFilter = SKColorFilter.CreateBlendMode(DisplayUtils.ToSKColor(tintColor), SKBlendMode.SrcIn),
 			};
 
 			using (var canvas = new SKCanvas(bitmap))
@@ -43,7 +133,7 @@ namespace XEmuera.Views
 			}
 
 			var data = bitmap.Encode(SKEncodedImageFormat.Png, 100);
-			button.Source = ImageSource.FromStream(() => data.AsStream());
+			return data.AsStream();
 		}
 	}
 }

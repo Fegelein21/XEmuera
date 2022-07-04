@@ -4,7 +4,6 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:views="clr-namespace:XEmuera.Views"
 	xmlns:eforms="clr-namespace:MinorShift.Emuera.Forms"
-	xmlns:resExt="clr-namespace:XEmuera.Resources"
 	x:Class="MinorShift.Emuera.MainWindow"
 	NavigationPage.HasNavigationBar="False"
 	SizeChanged="ContentPage_SizeChanged">
@@ -56,42 +55,53 @@
 					Orientation="Horizontal"
 					HorizontalOptions="Fill"
 					HeightRequest="36"
-					Padding="20,10"
-					Spacing="20">
+					Padding="0,10,20,10"
+					Spacing="16">
 
 					<BoxView
 						InputTransparent="True"
 						HorizontalOptions="StartAndExpand" />
 
 					<views:TintImageButton
-						x:Name="edit_button"
-						Source="{resExt:ImageResource edit.svg}"
+						x:Name="lock_rotation_button"
+						Image="lock_rotation_open.svg"
+						ToggledImage="lock_rotation.svg"
 						Style="{StaticResource TintImageButtonStyle}"
-						Clicked="EntryButton_Clicked" />
+						Toggled="lock_rotation_button_Toggled"
+						IsToggled="False" />
+
+					<views:TintImageButton
+						x:Name="edit_button"
+						Image="edit.svg"
+						Style="{StaticResource TintImageButtonStyle}"
+						Toggled="edit_button_Toggled"
+						IsToggled="False" />
 
 					<views:TintImageButton
 						x:Name="scroll_vertical_button"
-						Source="{resExt:ImageResource scroll_vertical.svg}"
+						Image="scroll_vertical.svg"
 						Style="{StaticResource TintImageButtonStyle}"
 						Padding="8"
-						Clicked="ScrollBarButton_Clicked" />
+						Toggled="scroll_vertical_button_Toggled"
+						IsToggled="False" />
 
 					<views:TintImageButton
 						x:Name="gallery_view_button"
-						Source="{resExt:ImageResource gallery_view.svg}"
+						Image="gallery_view.svg"
 						Style="{StaticResource TintImageButtonStyle}"
-						Clicked="QuickButtonGroup_Clicked" />
+						Toggled="gallery_view_button_Toggled"
+						IsToggled="True" />
 
 					<views:TintImageButton
 						x:Name="menu_show_button"
-						Source="{resExt:ImageResource menu_show.svg}"
+						Image="menu_show.svg"
 						Style="{StaticResource TintImageButtonStyle}"
 						Padding="8"
 						Clicked="ButtonVisibleGroup_Clicked" />
 
 					<views:TintImageButton
 						x:Name="chevron_right_button"
-						Source="{resExt:ImageResource chevron_right.svg}"
+						Image="chevron_right.svg"
 						Style="{StaticResource TintImageButtonStyle}"
 						Clicked="quickButton_Clicked" />
 
@@ -99,6 +109,7 @@
 
 				<StackLayout
 					x:Name="ScrollBarLayout"
+					IsVisible="False"
 					HorizontalOptions="End"
 					VerticalOptions="EndAndExpand"
 					Margin="0, 0, 40, 20"
@@ -138,6 +149,7 @@
 
 		<StackLayout
 			x:Name="entryGroup"
+			IsVisible="False"
 			FlexLayout.Basis="70"
 			BackgroundColor="{Binding InvertMainColor}"
 			Padding="4,0,8,0"
@@ -155,7 +167,7 @@
 
 			<views:TintImageButton
 				x:Name="publish_button"
-				Source="{resExt:ImageResource publish.svg}"
+				Image="publish.svg"
 				Style="{StaticResource TintImageButtonStyle}"
 				WidthRequest="50"
 				Clicked="publish_button_Clicked" />

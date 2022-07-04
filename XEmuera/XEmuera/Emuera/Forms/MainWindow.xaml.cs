@@ -12,6 +12,7 @@ using Xamarin.Forms.Xaml;
 using XEmuera.Forms;
 using Xamarin.CommunityToolkit.Extensions;
 using System.ComponentModel;
+using XEmuera.Views;
 
 namespace MinorShift.Emuera
 {
@@ -51,6 +52,8 @@ namespace MinorShift.Emuera
 
 		bool IsWindowClosing;
 
+		List<TintImageButton> InvisibleToolButtonList;
+
 		private MainWindow()
 		{
 			InitializeComponent();
@@ -74,12 +77,11 @@ namespace MinorShift.Emuera
 			ToolButtonGroup.BindingContext = this;
 			entryGroup.BindingContext = this;
 
-			ScrollBarLayout.PropertyChanged += IsVisible_PropertyChanged;
-			quickButtonScrollView.PropertyChanged += IsVisible_PropertyChanged;
-			entryGroup.PropertyChanged += IsVisible_PropertyChanged;
-
-			ScrollBarLayout.IsVisible = false;
-			entryGroup.IsVisible = false;
+			InvisibleToolButtonList = new List<TintImageButton>
+			{
+				scroll_vertical_button,
+				gallery_view_button,
+			};
 
 			InitGameView();
 		}
@@ -123,6 +125,7 @@ namespace MinorShift.Emuera
 		{
 			base.OnDisappearing();
 			GameUtils.IsEmueraPage = false;
+			GameUtils.PlatformService.UnlockScreenOrientation();
 		}
 
 		private void uiLayout_SizeChanged(object sender, EventArgs e)
@@ -434,50 +437,65 @@ namespace MinorShift.Emuera
 			PressEnterKey(false, false);
 		}
 
-		private void InvisibleAllControlView()
+		private void InvisibleToolButton(TintImageButton button)
 		{
-			ScrollBarLayout.IsVisible = false;
-			quickButtonScrollView.IsVisible = false;
-		}
-
-		/// <summary>
-		/// 控制显示或隐藏滑动条
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void ScrollBarButton_Clicked(object sender, EventArgs e)
-		{
-			bool visible = ScrollBarLayout.IsVisible;
-			InvisibleAllControlView();
-			ScrollBarLayout.IsVisible = !visible;
-		}
-
-		/// <summary>
-		/// 控制显示或隐藏输入栏
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void EntryButton_Clicked(object sender, EventArgs e)
-		{
-			entryGroup.IsVisible = !entryGroup.IsVisible;
-		}
-
-		private void publish_button_Clicked(object sender, EventArgs e)
-		{
-			if (console.IsInProcess)
+			if (InvisibleToolButtonList == null)
+				return;
+			if (!(bool)button.IsToggled)
 				return;
 
-			PressEnterKey(false, false);
+			foreach (var view in InvisibleToolButtonList)
+			{
+				if (view != button)
+					view.IsToggled = false;
+			}
 		}
 
-		public void QuickButtonGroup_Clicked(object sender, EventArgs e)
+		private void lock_rotation_button_Toggled(object sender, ToggledEventArgs e)
 		{
-			bool visible = quickButtonScrollView.IsVisible;
-			InvisibleAllControlView();
-			quickButtonScrollView.IsVisible = !visible;
+			if (e.Value)
+				GameUtils.PlatformService.LockScreenOrientation();
+			else
+				GameUtils.PlatformService.UnlockScreenOrientation();
+
+			SetButtonOpacity(lock_rotation_button, e.Value);
+		}
+
+		private void edit_button_Toggled(object sender, ToggledEventArgs e)
+		{
+			entryGroup.IsVisible = e.Value;
+			SetButtonOpacity(edit_button, e.Value);
+		}
+
+		private void scroll_vertical_button_Toggled(object sender, ToggledEventArgs e)
+		{
+			InvisibleToolButton((TintImageButton)sender);
+
+			ScrollBarLayout.IsVisible = e.Value;
+			SetButtonOpacity(scroll_vertical_button, e.Value);
+		}
+
+		private void gallery_view_button_Toggled(object sender, ToggledEventArgs e)
+		{
+			InvisibleToolButton((TintImageButton)sender);
+
+			quickButtonScrollView.IsVisible = e.Value;
+			SetButtonOpacity(gallery_view_button, e.Value);
 
 			if (quickButtonScrollView.IsVisible)
-				console.RefreshQuickButtonAsync();
+				console?.RefreshQuickButtonAsync();
+		}
+
+		private void ButtonVisibleGroup_Clicked(object sender, EventArgs e)
+		{
+			var visible = !edit_button.IsVisible;
+
+			lock_rotation_button.IsVisible = visible;
+			edit_button.IsVisible = visible;
+			scroll_vertical_button.IsVisible = visible;
+			gallery_view_button.IsVisible = visible;
+
+			SetButtonOpacity(menu_show_button, visible);
 		}
 
 		public void quickButton_Clicked(object sender, EventArgs e)
@@ -500,15 +518,12 @@ namespace MinorShift.Emuera
 			}
 		}
 
-		private void ButtonVisibleGroup_Clicked(object sender, EventArgs e)
+		private void publish_button_Clicked(object sender, EventArgs e)
 		{
-			var visible = !edit_button.IsVisible;
+			if (console.IsInProcess)
+				return;
 
-			edit_button.IsVisible = visible;
-			scroll_vertical_button.IsVisible = visible;
-			gallery_view_button.IsVisible = visible;
-
-			SetButtonOpacity(menu_show_button, visible);
+			PressEnterKey(false, false);
 		}
 
 		private static void SetButtonOpacity(View button, bool visible)
@@ -551,19 +566,6 @@ namespace MinorShift.Emuera
 				if (result)
 					this.GotoTitle();
 			}, MessageBoxButtons.OKCancel);
-		}
-
-		private void IsVisible_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName != nameof(IsVisible))
-				return;
-
-			if (sender == ScrollBarLayout)
-				SetButtonOpacity(scroll_vertical_button, ScrollBarLayout.IsVisible);
-			else if (sender == quickButtonScrollView)
-				SetButtonOpacity(gallery_view_button, quickButtonScrollView.IsVisible);
-			else if (sender == entryGroup)
-				SetButtonOpacity(edit_button, entryGroup.IsVisible);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using XEmuera.Droid;
 
@@ -36,6 +38,32 @@ namespace XEmuera.Droid
 			return Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
 		}
 
+		public void LockScreenOrientation()
+		{
+			ScreenOrientation orientation;
+
+			switch (DeviceDisplay.MainDisplayInfo.Rotation)
+			{
+				case DisplayRotation.Rotation0:
+					orientation = ScreenOrientation.Portrait;
+					break;
+				case DisplayRotation.Rotation90:
+					orientation = ScreenOrientation.Landscape;
+					break;
+				case DisplayRotation.Rotation180:
+					orientation = ScreenOrientation.ReversePortrait;
+					break;
+				case DisplayRotation.Rotation270:
+					orientation = ScreenOrientation.ReverseLandscape;
+					break;
+				default:
+					orientation = ScreenOrientation.Unspecified;
+					break;
+			}
+
+			MainActivity.Instance.RequestedOrientation = orientation;
+		}
+
 		public bool NeedManageFilesPermissions()
 		{
 			return (int)Build.VERSION.SdkInt >= 30 && !Android.OS.Environment.IsExternalStorageManager;
@@ -52,6 +80,11 @@ namespace XEmuera.Droid
 			intent.SetData(Android.Net.Uri.Parse("package:" + MainActivity.Instance.PackageName));
 
 			MainActivity.Instance.StartActivityForResult(intent, GameUtils.ManageFilesPermissionsRequestCode);
+		}
+
+		public void UnlockScreenOrientation()
+		{
+			MainActivity.Instance.RequestedOrientation = ScreenOrientation.Sensor;
 		}
 	}
 }

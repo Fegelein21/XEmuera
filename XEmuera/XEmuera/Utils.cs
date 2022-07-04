@@ -32,6 +32,8 @@ namespace XEmuera
 
 		public static EraPictureBox MainPicBox { get; set; }
 
+		private static readonly Assembly MainAssembly = typeof(MainPage).GetTypeInfo().Assembly;
+
 		public static string CurrentGamePath { get; set; }
 
 		public static IPlatformService PlatformService { get; private set; }
@@ -148,8 +150,6 @@ namespace XEmuera
 				return status;
 			});
 		}
-
-		private static readonly Assembly MainAssembly = typeof(MainPage).GetTypeInfo().Assembly;
 
 		public static Stream GetManifestResourceStream(string resourceID)
 		{
@@ -337,11 +337,15 @@ namespace XEmuera
 
 		string GetStoragePath();
 
+		void LockScreenOrientation();
+
 		bool NeedManageFilesPermissions();
 
 		bool NeedStoragePermissions();
 
 		void RequestManageFilesPermissions();
+
+		void UnlockScreenOrientation();
 	}
 
 	public static class Strings
