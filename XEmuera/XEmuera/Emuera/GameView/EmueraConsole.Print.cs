@@ -572,7 +572,7 @@ namespace MinorShift.Emuera.GameView
 
 		public void setStBar(string barStr)
 		{
-			stBar = getStBar(barStr);
+			stBar = getStBar(barStr ?? "-");
 		}
 		#endregion
 

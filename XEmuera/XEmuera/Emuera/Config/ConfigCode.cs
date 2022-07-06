@@ -162,5 +162,8 @@ namespace MinorShift.Emuera
 		TextFilterQuality,
 		ShapeAntialias,
 		ShapeFilterQuality,
+
+		LongPressSkip,
+		LongPressSkipTime,
 	}
 }

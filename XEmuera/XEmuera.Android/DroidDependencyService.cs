@@ -69,6 +69,11 @@ namespace XEmuera.Droid
 			return (int)Build.VERSION.SdkInt >= 30 && !Android.OS.Environment.IsExternalStorageManager;
 		}
 
+		public bool NeedRebootIfLanguageChanged()
+		{
+			return (int)Build.VERSION.SdkInt <= 32;
+		}
+
 		public bool NeedStoragePermissions()
 		{
 			return (int)Build.VERSION.SdkInt >= 24;

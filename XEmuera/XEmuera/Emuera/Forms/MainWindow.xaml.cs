@@ -13,6 +13,8 @@ using XEmuera.Forms;
 using Xamarin.CommunityToolkit.Extensions;
 using System.ComponentModel;
 using XEmuera.Views;
+using XEmuera.Resources;
+using System.Timers;
 
 namespace MinorShift.Emuera
 {
@@ -83,7 +85,21 @@ namespace MinorShift.Emuera
 				gallery_view_button,
 			};
 
+			LongPressTimer = new Timer(Config.LongPressSkipTime);
+			LongPressTimer.Elapsed += LongPressTimer_Elapsed;
+
 			InitGameView();
+		}
+
+		private void LongPressTimer_Elapsed(object sender, ElapsedEventArgs e)
+		{
+			LongPressTimer.Enabled = false;
+
+			if (IsMouseMove(PrevPoint))
+				return;
+
+			IsLongPressed = true;
+			PressEnterKey(null);
 		}
 
 		static bool LoadSuccess;
@@ -130,6 +146,9 @@ namespace MinorShift.Emuera
 
 		private void uiLayout_SizeChanged(object sender, EventArgs e)
 		{
+			if (IsWindowClosing)
+				return;
+
 			RefreshQuickButtonGroup();
 			RefreshScrollBarLayout();
 		}
@@ -179,9 +198,9 @@ namespace MinorShift.Emuera
 			{
 				Close();
 			}
-			else if (!IsInitializeing())
+			else if (!IsInitializing(true))
 			{
-				MessageBox.ShowOnMainThread("确定要退出游戏吗?", "", result =>
+				MessageBox.ShowOnMainThread(StringsText.QuitGameConfirm, null, result =>
 				{
 					if (result)
 						Close();
@@ -191,11 +210,12 @@ namespace MinorShift.Emuera
 			return true;
 		}
 
-		private bool IsInitializeing()
+		private bool IsInitializing(bool showMessage = false)
 		{
 			if (GlobalStatic.Process == null || GlobalStatic.Process.inInitializeing)
 			{
-				this.DisplaySnackBarAsync("请等待加载完成后再重启或退出游戏。", null, null);
+				if (showMessage)
+					this.DisplaySnackBarAsync(StringsText.GameIsProcessing, null, null);
 				return true;
 			}
 			return false;
@@ -216,11 +236,14 @@ namespace MinorShift.Emuera
 				}
 				Program.RebootMain();
 				Navigation.PopAsync();
+				if (!Program.Reboot)
+					GC.Collect();
 			});
 		}
 
 		bool IsMouseMoveAction;
 
+		SKPoint StartPoint;
 		SKPoint PrevPoint;
 		System.Drawing.Point MouseLocation;
 		Point MoveDistance;
@@ -230,6 +253,9 @@ namespace MinorShift.Emuera
 
 		double PicBoxMinX;
 		double PicBoxMaxX;
+
+		Timer LongPressTimer;
+		bool IsLongPressed;
 
 		/// <summary>
 		/// 获取画板的点击位置和滑动距离
@@ -252,7 +278,11 @@ namespace MinorShift.Emuera
 					IsMouseMoveAction = false;
 					IsDragScrollBar = true;
 					PrevPoint = e.Location;
-					//StartPoint = PrevPoint;
+					StartPoint = PrevPoint;
+
+					IsLongPressed = false;
+					if (Config.LongPressSkip)
+						LongPressTimer.Enabled = true;
 
 					PicBoxMinX = mainLayout.Width - mainPicBox.Width;
 					PicBoxMaxX = 0;
@@ -295,6 +325,9 @@ namespace MinorShift.Emuera
 
 					IsDragScrollBar = false;
 
+					if (Config.LongPressSkip)
+						LongPressTimer.Enabled = false;
+
 					MouseReleased(e);
 					LeaveMouse();
 
@@ -314,7 +347,7 @@ namespace MinorShift.Emuera
 
 		private void MouseReleased(SKTouchEventArgs e)
 		{
-			if (IsMouseMoveAction)
+			if (IsMouseMove(e.Location) || IsLongPressed)
 				return;
 
 			//if (!Config.UseMouse)
@@ -367,6 +400,11 @@ namespace MinorShift.Emuera
 				PressEnterKey(false, true);
 				return;
 			}
+		}
+
+		private bool IsMouseMove(SKPoint endPoint)
+		{
+			return IsMouseMoveAction && SKPoint.Distance(StartPoint, endPoint) >= 10;
 		}
 
 		public bool IsDragScrollBar { get; private set; }
@@ -441,7 +479,7 @@ namespace MinorShift.Emuera
 		{
 			if (InvisibleToolButtonList == null)
 				return;
-			if (!(bool)button.IsToggled)
+			if (!(button.IsToggled ?? false))
 				return;
 
 			foreach (var view in InvisibleToolButtonList)
@@ -500,6 +538,11 @@ namespace MinorShift.Emuera
 
 		public void quickButton_Clicked(object sender, EventArgs e)
 		{
+			PressEnterKey(((View)sender).BindingContext as string);
+		}
+
+		private void PressEnterKey(string inputs)
+		{
 			bool isBacklog = vScrollBar.Value != vScrollBar.Maximum;
 			if (isBacklog)
 			{
@@ -507,14 +550,14 @@ namespace MinorShift.Emuera
 				RefreshStrings(true);
 			}
 
-			if (((View)sender).BindingContext is string inputs)
+			if (inputs == null)
 			{
-				richTextBox1.Text = inputs;
-				PressEnterKey(false, false);
+				PressEnterKey(true, false);
 			}
 			else
 			{
-				PressEnterKey(true, false);
+				richTextBox1.Text = inputs;
+				PressEnterKey(false, false);
 			}
 		}
 
@@ -533,10 +576,10 @@ namespace MinorShift.Emuera
 
 		public void MainMenu_Reboot()
 		{
-			if (IsInitializeing())
+			if (IsInitializing(true))
 				return;
 
-			MessageBox.ShowOnMainThread("ゲームを再起動します", "再起動", result =>
+			MessageBox.ShowOnMainThread(StringsText.RebootConfirm, StringsText.Reboot, result =>
 			{
 				if (result)
 					this.Reboot();
@@ -561,7 +604,7 @@ namespace MinorShift.Emuera
 				return;
 			}
 
-			MessageBox.ShowOnMainThread("タイトル画面へ戻ります", "タイトル画面に戻る", result =>
+			MessageBox.ShowOnMainThread(StringsText.GotoTitleConfirm, StringsText.GotoTitle, result =>
 			{
 				if (result)
 					this.GotoTitle();

@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CSVFolderNotExists" xml:space="preserve">
+    <value>未找到csv文件夹</value>
+  </data>
+  <data name="ERBFolderNotExists" xml:space="preserve">
+    <value>未找到erb文件夹</value>
+  </data>
+  <data name="NoFolder" xml:space="preserve">
+    <value>无文件夹</value>
+  </data>
+  <data name="RebootConfirm" xml:space="preserve">
+    <value>确定要重新加载吗</value>
+  </data>
+  <data name="Reboot" xml:space="preserve">
+    <value>重新加载</value>
+  </data>
+  <data name="GotoTitleConfirm" xml:space="preserve">
+    <value>确定要返回标题界面吗</value>
+  </data>
+  <data name="GotoTitle" xml:space="preserve">
+    <value>返回标题界面</value>
+  </data>
+  <data name="GameIsProcessing" xml:space="preserve">
+    <value>请等待加载完成后再重启或退出游戏。</value>
+  </data>
+  <data name="QuitGameConfirm" xml:space="preserve">
+    <value>确定要退出游戏吗？</value>
+  </data>
+  <data name="PermissionsRequestFailed" xml:space="preserve">
+    <value>权限获取失败，请重新启动软件或手动授予权限。</value>
+  </data>
+  <data name="NeedManageFilesPermissions" xml:space="preserve">
+    <value>当前平台需要授予文件管理权限，即将为您跳转至权限管理界面。</value>
+  </data>
+  <data name="BackButtonToQuit" xml:space="preserve">
+    <value>再按一次返回键退出应用。</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="FontReplaceOrder" xml:space="preserve">
+    <value>字体接替顺序</value>
+  </data>
+  <data name="Environment" xml:space="preserve">
+    <value>环境</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="Font" xml:space="preserve">
+    <value>文字</value>
+  </data>
+  <data name="Window" xml:space="preserve">
+    <value>窗口</value>
+  </data>
+  <data name="System" xml:space="preserve">
+    <value>系统</value>
+  </data>
+  <data name="System2" xml:space="preserve">
+    <value>系统2</value>
+  </data>
+  <data name="Compati" xml:space="preserve">
+    <value>兼容性</value>
+  </data>
+  <data name="Debug" xml:space="preserve">
+    <value>调试</value>
+  </data>
+  <data name="QuickButton" xml:space="preserve">
+    <value>快捷按钮</value>
+  </data>
+  <data name="ConfigValue" xml:space="preserve">
+    <value>配置值</value>
+  </data>
+  <data name="EnterConfigValue" xml:space="preserve">
+    <value>请输入配置值</value>
+  </data>
+  <data name="UseGameConfig" xml:space="preserve">
+    <value>使用游戏原配置</value>
+  </data>
+  <data name="OverwriteGameConfig" xml:space="preserve">
+    <value>覆写游戏原配置</value>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>已启用</value>
+  </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>已禁用</value>
+  </data>
+  <data name="GameList" xml:space="preserve">
+    <value>游戏列表</value>
+  </data>
+  <data name="FontReplaceByOrder" xml:space="preserve">
+    <value>主动按顺序接替</value>
+  </data>
+  <data name="FontOnlyCallInGame" xml:space="preserve">
+    <value>仅由游戏自行调用</value>
+  </data>
+  <data name="ProjectWebSite" xml:space="preserve">
+    <value>项目地址</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>版本</value>
+  </data>
+  <data name="Document" xml:space="preserve">
+    <value>文档</value>
+  </data>
+  <data name="CodeManifest" xml:space="preserve">
+    <value>代码清单</value>
+  </data>
+  <data name="OpenSourceCodeManifest" xml:space="preserve">
+    <value>开源代码使用清单</value>
+  </data>
+  <data name="SupportMe" xml:space="preserve">
+    <value>支持作者</value>
+  </data>
+  <data name="SoftwareUsageStatement" xml:space="preserve">
+    <value>软件使用声明</value>
+  </data>
+  <data name="SoftwareUsageStatementDetail" xml:space="preserve">
+    <value>本软件遵循MIT开源许可协议，免费使用软件和开放源码。
+本软件的项目地址即为唯一指定下载地址，请确保您的软件获取自官方。
+对于用户使用本软件造成的任何损失，作者概不负责。</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="LanguageChangedNeedReboot" xml:space="preserve">
+    <value>已成功将语言设置为 {0}，是否立即重新启动软件？</value>
+  </data>
+  <data name="ConfigSettings" xml:space="preserve">
+    <value>游戏配置项</value>
+  </data>
+  <data name="OtherConfigSettings" xml:space="preserve">
+    <value>其他配置项</value>
+  </data>
+  <data name="FontAndShape" xml:space="preserve">
+    <value>文字和图像</value>
+  </data>
+</root>

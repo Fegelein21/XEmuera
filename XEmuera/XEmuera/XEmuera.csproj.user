@@ -4,8 +4,8 @@
     <_LastSelectedProfileId>E:\VisualStudio Project\XEmuera\XEmuera\XEmuera\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Emuera\Forms\MainWindow.resx">
+    <None Update="Emuera\Forms\MainWindow.resx">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
+    </None>
   </ItemGroup>
 </Project>

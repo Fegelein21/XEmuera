@@ -95,7 +95,7 @@ namespace MinorShift.Emuera.Content
 					//アニメスプライト宣言。nullでないとき、フレーム追加モード
 					SpriteAnime currentAnime = null;
 					//string directory = Path.GetDirectoryName(filepath).ToUpper() + "\\";
-					string directory = Path.GetDirectoryName(filepath).ToUpper() + Path.DirectorySeparatorChar;
+					string directory = Path.GetDirectoryName(filepath) + Path.DirectorySeparatorChar;
 					string filename = Path.GetFileName(filepath);
 					string[] lines = File.ReadAllLines(filepath, Config.Encode);
 					int lineNo = 0;
@@ -170,11 +170,11 @@ namespace MinorShift.Emuera.Content
 
 			string name = tokens[0].Trim().ToUpper();//
 			//string arg2 = tokens[1].ToUpper();//画像ファイル名
-			string arg2 = tokens[1].ToUpper().Replace('\\', Path.DirectorySeparatorChar);
+			string arg2 = tokens[1].Replace('\\', Path.DirectorySeparatorChar);
 			if (name.Length == 0 || arg2.Length == 0)
 				return null;
 			//アニメーションスプライト宣言
-			if (arg2 == "ANIME")
+			if (arg2.Equals("ANIME", StringComparison.OrdinalIgnoreCase))
 			{
 				if (tokens.Length < 4)
 				{
@@ -208,7 +208,8 @@ namespace MinorShift.Emuera.Content
 			//親画像のロードConstImage
 			if (!FileUtils.Exists(ref parentName))
 			{
-				ParserMediator.Warn("指定された画像ファイルが見つかりませんでした:" + arg2, sp, 1);
+				//ParserMediator.Warn("指定された画像ファイルが見つかりませんでした:" + arg2, sp, 1);
+				ParserMediator.Warn("指定された画像ファイルが見つかりませんでした:" + parentName, sp, 1);
 				return null;
 			}
 			if (!resourceDic.TryGetValue(parentName, out var aContentFile))

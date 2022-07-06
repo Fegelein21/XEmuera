@@ -14,11 +14,11 @@ namespace XEmuera.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ConfigPage : ContentPage
 	{
-		internal ConfigPage(string groupId)
+		internal ConfigPage(List<ConfigModel.ConfigCodeGroup> groups, string codeGroupId)
 		{
 			InitializeComponent();
 
-			var group = ConfigModel.ConfigCodeGroups.FirstOrDefault(group => group.ID == groupId);
+			var group = groups.FirstOrDefault(group => group.ID == codeGroupId);
 			if (group != null && group.Code != null)
 				ConfigListView.ItemsSource = group.Code.Select(code => ConfigModel.Get(code)).Where(model => model != null);
 		}

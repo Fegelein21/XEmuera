@@ -8,6 +8,7 @@ using Xamarin.Essentials;
 using Xamarin.Forms.Xaml;
 using XEmuera.Forms;
 using SkiaSharp;
+using XEmuera.Resources;
 
 namespace XEmuera.Views
 {
@@ -21,7 +22,9 @@ namespace XEmuera.Views
 			InitializeComponent();
 
 			ConfigModel = model;
-			TitleLabel.Text = ConfigModel.Text;
+			TitleLabel.Text = ConfigModel.Title;
+
+			ConfigToggleGroup.IsVisible = ConfigModel.IsVanillaConfig;
 
 			ConfigToggleLabel.BindingContext = ConfigToggle;
 			ConfigToggleLabel.SetBinding(Label.TextProperty, nameof(Switch.IsToggled), default, new ConfigToggleConverter());
@@ -52,10 +55,10 @@ namespace XEmuera.Views
 
 		private void OnDefault(object sender, EventArgs e)
 		{
-			if (ConfigEntry.BindingContext is StackLayout)
-				RadioButtonGroup.SetSelectedValue(ContentLayout, ConfigModel.ConfigItem.Value);
+			if (ConfigModel.Value is Enum)
+				RadioButtonGroup.SetSelectedValue(ContentLayout, ConfigModel.ConfigItem.DefaultValue);
 			else
-				ConfigEntry.Text = ConfigItem.ValueToString(ConfigModel.ConfigItem.Value);
+				ConfigEntry.Text = ConfigItem.ValueToString(ConfigModel.ConfigItem.DefaultValue);
 		}
 
 		protected virtual void OnClose(object sender, EventArgs e)
@@ -68,15 +71,15 @@ namespace XEmuera.Views
 			if (ConfigModel.ConfigItem.TryParse(ConfigEntry.Text))
 			{
 				ConfigModel.Enabled = ConfigToggle.IsToggled;
-				ConfigModel.ResetConfig();
-				ConfigModel.ConfigItem.ResetValue();
+				ConfigModel.UpdateValue();
 				Close();
 			}
 			else
 			{
 				MessageBox.Show("无效的输入值。");
-				ConfigModel.ConfigItem.ResetValue();
 			}
+
+			ConfigModel.ConfigItem.ResetDefault();
 		}
 
 		private void InitContentLayout()
@@ -227,7 +230,7 @@ namespace XEmuera.Views
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return (bool)value ? "覆盖游戏原配置" : "使用游戏原配置";
+			return (bool)value ? StringsText.OverwriteGameConfig : StringsText.UseGameConfig;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -240,7 +243,7 @@ namespace XEmuera.Views
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return (bool)value ? "已启用" : "已禁用";
+			return (bool)value ? StringsText.Enabled : StringsText.Disabled;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

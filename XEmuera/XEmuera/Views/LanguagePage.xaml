@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:Class="XEmuera.Views.LanguagePage">
+
+	<ListView
+		x:Name="LanguageListView"
+		ItemSelected="ListView_ItemSelected"
+		HasUnevenRows="True">
+		<ListView.ItemTemplate>
+			<DataTemplate>
+				<ViewCell>
+					<StackLayout
+						Spacing="2"
+						Padding="10"
+						Orientation="Vertical">
+						<Label
+							Text="{Binding NativeName}"
+							TextColor="HotPink"
+							FontSize="14" />
+						<Label
+							Text="{Binding Name}"
+							FontSize="12" />
+					</StackLayout>
+				</ViewCell>
+			</DataTemplate>
+		</ListView.ItemTemplate>
+	</ListView>
+</ContentPage>

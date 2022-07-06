@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XEmuera.Models;
-using MinorShift.Emuera;
 using Xamarin.CommunityToolkit.Extensions;
+using XEmuera.Resources;
 
 namespace XEmuera.Views
 {
@@ -19,12 +19,9 @@ namespace XEmuera.Views
 		{
 			InitializeComponent();
 
-			GameItemListView.ItemsSource = GameItemModel.AllModels;
+			Title = StringsText.GameList;
 
-			Task.Run(() =>
-			{
-				GameUtils.Load();
-			});
+			GameItemListView.ItemsSource = GameItemModel.AllModels;
 		}
 
 		private void ListView_Refreshing(object sender, EventArgs e)
@@ -46,7 +43,7 @@ namespace XEmuera.Views
 			Task.Run(async () =>
 			{
 				CloseApplication = true;
-				CloseApplication = await this.DisplaySnackBarAsync("再按一次返回键退出应用。", null, null);
+				CloseApplication = await this.DisplaySnackBarAsync(StringsText.BackButtonToQuit, null, null);
 			});
 
 			return true;

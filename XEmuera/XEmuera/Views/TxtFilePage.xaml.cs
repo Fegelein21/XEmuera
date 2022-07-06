@@ -13,12 +13,11 @@ namespace XEmuera.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class TxtFilePage : ContentPage
 	{
-		public TxtFilePage(string title, string resource)
+		public TxtFilePage(string resource)
 		{
 			InitializeComponent();
 
 			BindingContext = this;
-			Title = title;
 
 			var stream = GameUtils.GetManifestResourceStream(resource);
 			using (StreamReader streamReader = new StreamReader(stream))

@@ -1,44 +1,57 @@
-﻿using MinorShift.Emuera;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XEmuera.Models;
+using XEmuera.Resources;
 
 namespace XEmuera.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class SettingsPage : ContentPage
 	{
-		static List<SettingsModel> Settings = null;
+		private static List<SettingsModel> Settings;
 
 		public SettingsPage()
 		{
 			InitializeComponent();
 
-			if (Settings == null)
-			{
-				Settings = new List<SettingsModel>();
-				foreach (var item in ConfigModel.ConfigCodeGroups)
-				{
-					Settings.Add(new SettingsModel
-					{
-						Title = item.Name,
-						Value = item.ID,
-					});
-				}
-				Settings.Add(new SettingsModel
-				{
-					Title = "字体接替顺序",
-					Value = nameof(FontSettingsPage),
-				});
-				Settings.Add(new SettingsModel
-				{
-					Title = "关于",
-					Value = nameof(AboutPage),
-				});
-			}
+			Title = StringsText.Settings;
+
+			InitList();
 
 			SettingsListView.ItemsSource = Settings;
+		}
+
+		private static void InitList()
+		{
+			Settings = new List<SettingsModel>
+			{
+				new SettingsModel
+				{
+					Title = StringsText.ConfigSettings,
+					Value = nameof(StringsText.ConfigSettings),
+				},
+				new SettingsModel
+				{
+					Title = StringsText.OtherConfigSettings,
+					Value = nameof(StringsText.OtherConfigSettings),
+				},
+				new SettingsModel
+				{
+					Title = StringsText.FontReplaceOrder,
+					Value = nameof(FontSettingsPage),
+				},
+				new SettingsModel
+				{
+					Title = StringsText.Language,
+					Value = nameof(LanguagePage),
+				},
+				new SettingsModel
+				{
+					Title = StringsText.About,
+					Value = nameof(AboutPage),
+				}
+			};
 		}
 
 		private async void SettingsListView_ItemTapped(object sender, ItemTappedEventArgs e)
@@ -50,8 +63,26 @@ namespace XEmuera.Views
 
 			switch (model.Value)
 			{
+				case nameof(StringsText.ConfigSettings):
+					await Navigation.PushAsync(new ConfigSettingsPage(ConfigModel.ConfigCodeGroups)
+					{
+						Title = model.Title,
+					});
+					break;
+				case nameof(StringsText.OtherConfigSettings):
+					await Navigation.PushAsync(new ConfigSettingsPage(ConfigModel.OtherConfigCodeGroups)
+					{
+						Title = model.Title,
+					});
+					break;
 				case nameof(FontSettingsPage):
 					await Navigation.PushAsync(new FontSettingsPage
+					{
+						Title = model.Title
+					});
+					break;
+				case nameof(LanguagePage):
+					await Navigation.PushAsync(new LanguagePage
 					{
 						Title = model.Title
 					});
@@ -62,20 +93,13 @@ namespace XEmuera.Views
 						Title = model.Title
 					});
 					break;
-				default:
-					var configPage = new ConfigPage(model.Value)
-					{
-						Title = model.Title
-					};
-					await Navigation.PushAsync(configPage);
-					break;
 			}
 		}
+	}
 
-		public class SettingsModel
-		{
-			public string Title { get; set; }
-			public string Value { get; set; }
-		}
+	public class SettingsModel
+	{
+		public string Title { get; set; }
+		public string Value { get; set; }
 	}
 }

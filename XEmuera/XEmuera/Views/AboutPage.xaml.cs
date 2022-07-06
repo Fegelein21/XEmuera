@@ -6,13 +6,19 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using XEmuera.Resources;
+using Xamarin.CommunityToolkit.Extensions;
 
 namespace XEmuera.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class AboutPage : ContentPage
 	{
+		public const string GithubUrl = "https://github.com/Fegelein21/XEmuera";
+		public const string GiteeUrl = "https://gitee.com/fegelein21/XEmuera";
 		public const string AiFaDianUrl = "https://afdian.net/@fegelein21";
+
+		private static List<AboutModelGroup> AboutList;
 
 		public string AppName { get; private set; } = AppInfo.Name;
 
@@ -24,34 +30,41 @@ namespace XEmuera.Views
 
 			BindingContext = this;
 
-			List<AboutModelGroup> group = new List<AboutModelGroup>
+			InitList();
+
+			AboutListView.ItemsSource = AboutList;
+		}
+
+		private static void InitList()
+		{
+			AboutList = new List<AboutModelGroup>
 			{
-				new AboutModelGroup("项目地址")
+				new AboutModelGroup(StringsText.ProjectWebSite)
 				{
 					new AboutModel
 					{
 						Text = "Github",
-						Detail = "首发地址",
-						Url = "https://github.com/Fegelein21/XEmuera"
+						Detail = GithubUrl,
+						Url = GithubUrl
 					},
 					new AboutModel
 					{
 						Text = "Gitee",
-						Detail = "国内中转",
-						Url = "https://gitee.com/fegelein21/XEmuera"
+						Detail = GiteeUrl,
+						Url = GiteeUrl
 					},
 				},
 				new AboutModelGroup("Emuera")
 				{
 					new AboutModel
 					{
-						Text = "内核版本",
+						Text = StringsText.Version,
 						Detail = "Emuera1824+v15 私家改造版",
 						Url = "https://ux.getuploader.com/ninnohito/index"
 					},
 					new AboutModel
 					{
-						Text = "参考文档",
+						Text = StringsText.Document,
 						Detail = "EmueraWiki",
 						Url = "http://osdn.jp/projects/emuera/wiki/FrontPage"
 					},
@@ -66,26 +79,24 @@ namespace XEmuera.Views
 						File = "私家改造版Emuera_readme",
 					},
 				},
-				new AboutModelGroup("代码清单")
+				new AboutModelGroup(StringsText.CodeManifest)
 				{
 					new AboutModel
 					{
-						Text = "开源代码使用清单",
-						File = "开源代码使用清单",
+						Text = StringsText.OpenSourceCodeManifest,
+						File = "OpenSourceCodeManifest",
 					},
 				},
-				new AboutModelGroup("支持作者")
+				new AboutModelGroup(StringsText.SupportMe)
 				{
 					new AboutModel
 					{
-						Text = "爱发电主页",
+						Text = "爱发电",
 						Detail = AiFaDianUrl,
 						Url = AiFaDianUrl
 					},
 				},
 			};
-
-			AboutListView.ItemsSource = group;
 		}
 
 		private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -101,8 +112,11 @@ namespace XEmuera.Views
 			}
 			else if (!string.IsNullOrEmpty(model.File))
 			{
-				string resource = $"XEmuera.Resources.{model.File}.txt";
-				await Navigation.PushAsync(new TxtFilePage(model.File, resource));
+				var page = new TxtFilePage($"XEmuera.Resources.Docs.{model.File}.txt")
+				{
+					Title = model.File
+				};
+				await Navigation.PushAsync(page);
 			}
 		}
 
@@ -121,6 +135,18 @@ namespace XEmuera.Views
 			public string Detail { get; set; }
 			public string Url { get; set; }
 			public string File { get; set; }
+		}
+
+		int AvatarClick;
+
+		private void AvatarImageButton_Clicked(object sender, EventArgs e)
+		{
+			AvatarClick++;
+
+			if (AvatarClick >= 10)
+				GameUtils.MainPage.DisplayToastAsync("你成为了一名Super面筋人！");
+			else if (AvatarClick > 1)
+				GameUtils.MainPage.DisplayToastAsync($"还有{10 - AvatarClick}步成为Super面筋人！");
 		}
 	}
 }

@@ -66,6 +66,11 @@ namespace XEmuera.iOS
 			throw new NotImplementedException();
 		}
 
+		public bool NeedRebootIfLanguageChanged()
+		{
+			return false;
+		}
+
 		public bool NeedStoragePermissions()
 		{
 			throw new NotImplementedException();

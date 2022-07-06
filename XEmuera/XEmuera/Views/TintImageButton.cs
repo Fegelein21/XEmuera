@@ -72,7 +72,7 @@ namespace XEmuera.Views
 				return;
 			}
 
-			if (IsToggled != null && (bool)IsToggled)
+			if (IsToggled ?? false)
 				Source = CreateImageSource(ToggledImage);
 			else
 				Source = CreateImageSource(Image);

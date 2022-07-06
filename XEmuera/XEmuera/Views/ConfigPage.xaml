@@ -23,7 +23,7 @@
 								Orientation="Vertical">
 
 								<Label
-									Text="{Binding Text}"
+									Text="{Binding Title}"
 									FontSize="14" />
 
 								<StackLayout
@@ -47,6 +47,7 @@
 							</StackLayout>
 
 							<Switch
+								IsVisible="{Binding IsVanillaConfig}"
 								IsToggled="{Binding Enabled}" />
 
 						</StackLayout>

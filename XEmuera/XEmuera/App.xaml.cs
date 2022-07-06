@@ -14,6 +14,11 @@ namespace XEmuera
 		{
 			InitializeComponent();
 
+			Task.Run(() =>
+			{
+				GameUtils.Load();
+			});
+
 			MainPage = new MainPage();
 		}
 

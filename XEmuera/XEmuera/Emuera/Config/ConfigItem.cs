@@ -67,7 +67,7 @@ namespace MinorShift.Emuera
 			//throw new ExeEE("型が一致しない");
 		}
 
-		public void ResetValue()
+		public void ResetDefault()
 		{
 			Value = DefaultValue;
 		}
@@ -98,7 +98,7 @@ namespace MinorShift.Emuera
 		{
 			if (string.IsNullOrEmpty(param))
 				return false;
-			if (this.Fixed)
+			if (GameUtils.IsEmueraPage && Fixed)
 				return false;
 
 			bool ret = false;

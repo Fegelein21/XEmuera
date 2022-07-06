@@ -86,6 +86,9 @@ namespace MinorShift.Emuera
 			TextFilterQuality = instance.GetConfigValue<SKFilterQuality>(ConfigCode.TextFilterQuality);
 			ShapeFilterQuality = instance.GetConfigValue<SKFilterQuality>(ConfigCode.ShapeFilterQuality);
 
+			LongPressSkip = instance.GetConfigValue<bool>(ConfigCode.LongPressSkip);
+			LongPressSkipTime = instance.GetConfigValue<int>(ConfigCode.LongPressSkipTime);
+
 			//FontSize = instance.GetConfigValue<int>(ConfigCode.FontSize);
 			FontSize = (int)(instance.GetConfigValue<int>(ConfigCode.FontSize) * FontScale);
 
@@ -522,6 +525,9 @@ namespace MinorShift.Emuera
 
 		public static SKFilterQuality TextFilterQuality { get; private set; }
 		public static SKFilterQuality ShapeFilterQuality { get; private set; }
+
+		public static bool LongPressSkip { get; private set; }
+		public static int LongPressSkipTime { get; private set; }
 
 		public static float FontScale { get; private set; }
 		public static int FontSize { get; private set; }

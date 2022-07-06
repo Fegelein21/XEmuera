@@ -6,6 +6,7 @@ using MinorShift._Library;
 using MinorShift.Emuera.GameView;
 using MinorShift.Emuera.GameData.Expression;
 using System.IO;
+using XEmuera.Resources;
 
 namespace MinorShift.Emuera
 {
@@ -84,12 +85,12 @@ namespace MinorShift.Emuera
 
 			if (!Directory.Exists(CsvDir))
 			{
-				MessageBox.Show("csvフォルダが見つかりません", "フォルダなし");
+				MessageBox.Show(StringsText.CSVFolderNotExists, StringsText.NoFolder);
 				return false;
 			}
 			if (!Directory.Exists(ErbDir))
 			{
-				MessageBox.Show("erbフォルダが見つかりません", "フォルダなし");
+				MessageBox.Show(StringsText.ERBFolderNotExists, StringsText.NoFolder);
 				return false;
 			}
 

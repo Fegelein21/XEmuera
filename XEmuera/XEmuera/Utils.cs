@@ -13,8 +13,8 @@ using System.Linq;
 using SkiaSharp;
 using XEmuera.Forms;
 using System.Threading;
-using MinorShift._Library;
 using MinorShift.Emuera;
+using XEmuera.Resources;
 
 namespace XEmuera
 {
@@ -63,11 +63,13 @@ namespace XEmuera
 		{
 			Init = false;
 
+			LanguageModel.Load();
+
 			PlatformService = DependencyService.Get<IPlatformService>();
 
 			if (!RequestExternalPermissions())
 			{
-				MessageBox.Show("权限获取失败，请重新启动软件或手动授予权限。");
+				MessageBox.Show(StringsText.PermissionsRequestFailed);
 				PlatformService.CloseApplication();
 				return;
 			}
@@ -125,7 +127,7 @@ namespace XEmuera
 			{
 				StorageAccess = PermissionStatus.Unknown;
 
-				MessageBox.Show("当前平台需要授予文件管理权限，即将为您跳转至权限管理界面。");
+				MessageBox.Show(StringsText.NeedManageFilesPermissions);
 				PlatformService.RequestManageFilesPermissions();
 
 				SpinWait.SpinUntil(() => StorageAccess != PermissionStatus.Unknown);
@@ -340,6 +342,8 @@ namespace XEmuera
 		void LockScreenOrientation();
 
 		bool NeedManageFilesPermissions();
+
+		bool NeedRebootIfLanguageChanged();
 
 		bool NeedStoragePermissions();
 

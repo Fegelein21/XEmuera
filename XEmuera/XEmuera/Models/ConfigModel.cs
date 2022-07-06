@@ -4,6 +4,7 @@ using System.Text;
 using System.ComponentModel;
 using MinorShift.Emuera;
 using Xamarin.Forms;
+using XEmuera.Resources;
 
 namespace XEmuera.Models
 {
@@ -14,7 +15,7 @@ namespace XEmuera.Models
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public const string PrefKeyConfig = nameof(PrefKeyConfig);
+		//public const string PrefKeyConfig = nameof(PrefKeyConfig);
 
 		private const string separator = "_|_";
 
@@ -22,11 +23,15 @@ namespace XEmuera.Models
 
 		public static List<ConfigCodeGroup> ConfigCodeGroups { get; private set; }
 
-		public readonly ConfigItem ConfigItem;
+		public static List<ConfigCodeGroup> OtherConfigCodeGroups { get; private set; }
+
+		public ConfigItem ConfigItem { get; private set; }
 
 		public ConfigCode Code { get => ConfigItem.Code; }
 
-		public string Text { get => ConfigItem.Text; }
+		//public string Text { get => ConfigItem.Text; }
+
+		public string Title { get => ConfigsText.ResourceManager.GetString(Code.ToString()); }
 
 		public object Value
 		{
@@ -90,9 +95,10 @@ namespace XEmuera.Models
 		}
 		Color _valueColor = Color.Gray;
 
-		public ConfigModel(ConfigItem configItem)
+		public bool IsVanillaConfig { get; private set; }
+
+		private ConfigModel()
 		{
-			ConfigItem = configItem;
 		}
 
 		public static void Load()
@@ -101,7 +107,14 @@ namespace XEmuera.Models
 
 			InitConfigCodeGroups();
 
-			foreach (var group in ConfigCodeGroups)
+			InitConfigModel(ConfigCodeGroups, true);
+
+			InitConfigModel(OtherConfigCodeGroups);
+		}
+
+		private static void InitConfigModel(List<ConfigCodeGroup> codeGroups, bool isVanillaConfig = false)
+		{
+			foreach (var group in codeGroups)
 			{
 				foreach (var configCode in group.Code)
 				{
@@ -109,23 +122,37 @@ namespace XEmuera.Models
 					if (configItem == null)
 						continue;
 
-					ConfigModel configModel = new ConfigModel(configItem);
+					ConfigModel configModel = new ConfigModel
+					{
+						ConfigItem = configItem,
+						IsVanillaConfig = isVanillaConfig,
+					};
 
-					string pref = GameUtils.GetPreferences(PrefKeyConfig, null);
-					string[] data = pref == null
-						? new string[0] : pref.Split(new[] { separator }, StringSplitOptions.None);
+					switch (configCode)
+					{
+						case ConfigCode.PanSpeed:
+							configModel.IsVanillaConfig = false;
+							break;
+					}
+
+					string pref = GameUtils.GetPreferences(configCode.ToString(), null);
+					string[] data = pref?.Split(new[] { separator }, StringSplitOptions.None) ?? new string[0];
 
 					if (data.Length >= 2 && configItem.TryParse(data[1]))
 					{
 						configModel.Enabled = bool.Parse(data[0]);
-						configModel.ResetConfig();
-						configItem.ResetValue();
+						configModel.UpdateValue();
+
+						configItem.ResetDefault();
 					}
 					else
 					{
 						configModel.Enabled = false;
-						configModel.Value = configItem.Value;
+						configModel.ResetDefault();
 					}
+
+					if (!configModel.IsVanillaConfig)
+						configModel.Enabled = true;
 
 					AllModels[configCode] = configModel;
 					configModel.PropertyChanged += ConfigItem_PropertyChanged;
@@ -135,8 +162,7 @@ namespace XEmuera.Models
 
 		private static void ConfigItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			ConfigModel configModel = sender as ConfigModel;
-			configModel.Save();
+			((ConfigModel)sender).Save();
 		}
 
 		public void Save()
@@ -149,9 +175,14 @@ namespace XEmuera.Models
 			GameUtils.SetPreferences(Code.ToString(), string.Join(separator, data));
 		}
 
-		public void ResetConfig()
+		public void UpdateValue()
 		{
 			Value = ConfigItem.Value;
+		}
+
+		public void ResetDefault()
+		{
+			Value = ConfigItem.DefaultValue;
 		}
 
 		public static ConfigModel Get(ConfigCode code)
@@ -168,7 +199,7 @@ namespace XEmuera.Models
 				new ConfigCodeGroup
 				{
 					ID = "Environment",
-					Name = "环境",
+					Name = StringsText.Environment,
 					Code = new ConfigCode[]
 					{
 						ConfigCode.AutoSave,
@@ -180,8 +211,8 @@ namespace XEmuera.Models
 				},
 				new ConfigCodeGroup
 				{
-					ID = "Display",
-					Name = "显示",
+					ID = "View",
+					Name = StringsText.View,
 					Code = new ConfigCode[]
 					{
 						//ConfigCode.TextDrawingMode,
@@ -195,7 +226,7 @@ namespace XEmuera.Models
 				new ConfigCodeGroup
 				{
 					ID = "Window",
-					Name = "窗口",
+					Name = StringsText.Window,
 					Code = new ConfigCode[]
 					{
 						ConfigCode.WindowX,
@@ -206,16 +237,10 @@ namespace XEmuera.Models
 				},
 				new ConfigCodeGroup
 				{
-					ID = "Text",
-					Name = "文字",
+					ID = "Font",
+					Name = StringsText.Font,
 					Code = new ConfigCode[]
 					{
-						ConfigCode.FontScale,
-						ConfigCode.TextAntialias,
-						ConfigCode.TextFilterQuality,
-						ConfigCode.ShapeAntialias,
-						ConfigCode.ShapeFilterQuality,
-
 						ConfigCode.ForeColor,
 						ConfigCode.BackColor,
 						ConfigCode.FocusColor,
@@ -229,7 +254,7 @@ namespace XEmuera.Models
 				new ConfigCodeGroup
 				{
 					ID = "System",
-					Name = "系统",
+					Name = StringsText.System,
 					Code = new ConfigCode[]
 					{
 						ConfigCode.IgnoreCase,
@@ -248,7 +273,7 @@ namespace XEmuera.Models
 				new ConfigCodeGroup
 				{
 					ID = "System2",
-					Name = "系统2",
+					Name = StringsText.System2,
 					Code = new ConfigCode[]
 					{
 						ConfigCode.SystemIgnoreTripleSymbol,
@@ -259,8 +284,26 @@ namespace XEmuera.Models
 				},
 				new ConfigCodeGroup
 				{
+					ID = "Compati",
+					Name = StringsText.Compati,
+					Code = new ConfigCode[]
+					{
+						ConfigCode.CompatiErrorLine,
+						ConfigCode.CompatiCALLNAME,
+						ConfigCode.CompatiRAND,
+						ConfigCode.TimesNotRigorousCalculation,
+						ConfigCode.CompatiFunctionNoignoreCase,
+						ConfigCode.CompatiCallEvent,
+						ConfigCode.CompatiSPChara,
+						ConfigCode.CompatiLinefeedAs1739,
+						ConfigCode.CompatiFuncArgOptional,
+						ConfigCode.CompatiFuncArgAutoConvert,
+					}
+				},
+				new ConfigCodeGroup
+				{
 					ID = "Debug",
-					Name = "调试",
+					Name = StringsText.Debug,
 					Code = new ConfigCode[]
 					{
 						ConfigCode.WarnBackCompatibility,
@@ -272,16 +315,43 @@ namespace XEmuera.Models
 						ConfigCode.FunctionNotCalledWarning,
 					}
 				},
+			};
+
+			OtherConfigCodeGroups = new List<ConfigCodeGroup>
+			{
 				new ConfigCodeGroup
 				{
 					ID = "QuickButton",
-					Name = "快捷按钮",
+					Name = StringsText.QuickButton,
 					Code = new ConfigCode[]
 					{
 						ConfigCode.QuickButtonColumn,
 						ConfigCode.QuickButtonFontSize,
 						ConfigCode.QuickButtonWidth,
 						ConfigCode.QuickButtonSpacing,
+					}
+				},
+				new ConfigCodeGroup
+				{
+					ID = "FontAndShape",
+					Name = StringsText.FontAndShape,
+					Code = new ConfigCode[]
+					{
+						ConfigCode.FontScale,
+						ConfigCode.TextAntialias,
+						ConfigCode.TextFilterQuality,
+						ConfigCode.ShapeAntialias,
+						ConfigCode.ShapeFilterQuality,
+					}
+				},
+				new ConfigCodeGroup
+				{
+					ID = "LongPressSkip",
+					Name = ConfigsText.LongPressSkip,
+					Code = new ConfigCode[]
+					{
+						ConfigCode.LongPressSkip,
+						ConfigCode.LongPressSkipTime,
 					}
 				},
 			};

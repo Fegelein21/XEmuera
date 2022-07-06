@@ -7,6 +7,7 @@ using System.Linq;
 using XEmuera.Drawing;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using XEmuera.Resources;
 
 namespace XEmuera.Models
 {
@@ -90,11 +91,11 @@ namespace XEmuera.Models
 
 			EnabledList = new FontGroup
 			{
-				Name = "主动按顺序接替",
+				Name = StringsText.FontReplaceByOrder,
 			};
 			DisabledList = new FontGroup(AllModels.Values)
 			{
-				Name = "仅由游戏自行调用",
+				Name = StringsText.FontOnlyCallInGame,
 			};
 
 			string enabledFont = GameUtils.GetPreferences(PrefKeyEnabledFont, null);

@@ -7,6 +7,7 @@ using System.Text;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using XEmuera.Resources;
 
 namespace XEmuera.Views
 {
@@ -33,20 +34,20 @@ namespace XEmuera.Views
 			{
 				MenuList.Add(new MainMenuItem
 				{
-					Title = "重新加载",
-					Value = "ReloadEmuera",
+					Title = StringsText.Reboot,
+					Value = nameof(StringsText.Reboot),
 				});
 
 				MenuList.Add(new MainMenuItem
 				{
-					Title = "回到标题界面",
-					Value = "GotoTitle",
+					Title = StringsText.GotoTitle,
+					Value = nameof(StringsText.GotoTitle),
 				});
 			}
 
 			MenuList.Add(new MainMenuItem
 			{
-				Title = "设置",
+				Title = StringsText.Settings,
 				Value = nameof(SettingsPage),
 			});
 		}
@@ -63,11 +64,11 @@ namespace XEmuera.Views
 				case nameof(SettingsPage):
 					await GameUtils.MainPage.Detail.Navigation.PushAsync(new SettingsPage());
 					break;
-				case "ReloadEmuera":
+				case nameof(StringsText.Reboot):
 					if (GameUtils.IsEmueraPage)
 						GlobalStatic.MainWindow.MainMenu_Reboot();
 					break;
-				case "GotoTitle":
+				case nameof(StringsText.GotoTitle):
 					if (GameUtils.IsEmueraPage)
 						GlobalStatic.MainWindow.MainMenu_GotoTitle();
 					break;

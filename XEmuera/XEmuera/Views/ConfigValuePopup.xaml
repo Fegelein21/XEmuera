@@ -3,6 +3,7 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit"
+	xmlns:res="clr-namespace:XEmuera.Resources"
 	x:Class="XEmuera.Views.ConfigValuePopup"
 	Color="Transparent">
 
@@ -24,6 +25,7 @@
 					FontSize="16" />
 
 				<StackLayout
+					x:Name="ConfigToggleGroup"
 					Orientation="Horizontal">
 
 					<Switch
@@ -49,11 +51,11 @@
 						IsVisible="False"
 						Orientation="Horizontal">
 						<Label
-							Text="配置值:"
+							Text="{x:Static res:StringsText.ConfigValue}"
 							VerticalOptions="Center" />
 						<Entry
 							x:Name="ConfigEntry"
-							Placeholder="请输入配置值"
+							Placeholder="{x:Static res:StringsText.EnterConfigValue}"
 							HorizontalOptions="FillAndExpand"
 							FontSize="16"
 							TextChanged="ConfigEntry_TextChanged"

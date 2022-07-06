@@ -12,9 +12,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="Emuera\Forms\ClipBoardDialog.resx" />
+    <EmbeddedResource Remove="Emuera\Forms\ColorBox.resx" />
+    <EmbeddedResource Remove="Emuera\Forms\ConfigDialog.resx" />
+    <EmbeddedResource Remove="Emuera\Forms\DebugConfigDialog.resx" />
+    <EmbeddedResource Remove="Emuera\Forms\DebugDialog.resx" />
+    <EmbeddedResource Remove="Emuera\Forms\EraPictureBox.resx" />
+    <EmbeddedResource Remove="Emuera\Forms\MainWindow.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Resources\Emuera_readme.txt" />
     <None Remove="Resources\Fonts\Microsoft YaHei.ttf" />
     <None Remove="Resources\Fonts\MS Gothic.ttf" />
+    <None Remove="Resources\Images\app_icon.png" />
     <None Remove="Resources\Images\chevron_right.svg" />
     <None Remove="Resources\Images\edit.svg" />
     <None Remove="Resources\Images\gallery_view.svg" />
@@ -28,9 +39,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Emuera_readme.txt" />
+    <EmbeddedResource Include="Resources\Docs\Emuera_readme.txt" />
     <EmbeddedResource Include="Resources\Fonts\MS Gothic.ttf" />
     <EmbeddedResource Include="Resources\Fonts\Microsoft YaHei.ttf" />
+    <EmbeddedResource Include="Resources\Images\app_icon.png" />
     <EmbeddedResource Include="Resources\Images\chevron_right.svg" />
     <EmbeddedResource Include="Resources\Images\edit.svg" />
     <EmbeddedResource Include="Resources\Images\gallery_view.svg" />
@@ -39,8 +51,18 @@
     <EmbeddedResource Include="Resources\Images\menu_show.svg" />
     <EmbeddedResource Include="Resources\Images\publish.svg" />
     <EmbeddedResource Include="Resources\Images\scroll_vertical.svg" />
-    <EmbeddedResource Include="Resources\开源代码使用清单.txt" />
-    <EmbeddedResource Include="Resources\私家改造版Emuera_readme.txt" />
+    <EmbeddedResource Include="Resources\Docs\OpenSourceCodeManifest.txt" />
+    <EmbeddedResource Include="Resources\Docs\私家改造版Emuera_readme.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Emuera\Forms\ClipBoardDialog.resx" />
+    <None Include="Emuera\Forms\ColorBox.resx" />
+    <None Include="Emuera\Forms\ConfigDialog.resx" />
+    <None Include="Emuera\Forms\DebugConfigDialog.resx" />
+    <None Include="Emuera\Forms\DebugDialog.resx" />
+    <None Include="Emuera\Forms\EraPictureBox.resx" />
+    <None Include="Emuera\Forms\MainWindow.resx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,6 +77,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Resources\ConfigsText.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ConfigsText.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\MessageText.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MessageText.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\StringsText.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StringsText.resx</DependentUpon>
+    </Compile>
     <Compile Update="Views\ConfigValuePopup.xaml.cs">
       <DependentUpon>ConfigValuePopup.xaml</DependentUpon>
     </Compile>
@@ -64,13 +101,37 @@
     <EmbeddedResource Update="Emuera\Forms\MainWindow.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Emuera\Properties\Resources.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ConfigsText.ja-JP.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ConfigsText.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ConfigsText.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\MessageText.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MessageText.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\StringsText.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>StringsText.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ConfigPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\ConfigSettingsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\FontSettingsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\LanguagePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\MainMenuPage.xaml">
@@ -79,9 +140,5 @@
     <EmbeddedResource Update="Views\TxtFilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Resources\Docs\" />
   </ItemGroup>
 </Project>
