@@ -22,9 +22,10 @@ namespace XEmuera.Views
 			InitializeComponent();
 
 			ConfigModel = model;
+			ConfigModel.ConfigItem.Fixed = false;
 			TitleLabel.Text = ConfigModel.Title;
 
-			ConfigToggleGroup.IsVisible = ConfigModel.IsVanillaConfig;
+			ConfigToggleGroup.IsVisible = ConfigModel.HasSwitch;
 
 			ConfigToggleLabel.BindingContext = ConfigToggle;
 			ConfigToggleLabel.SetBinding(Label.TextProperty, nameof(Switch.IsToggled), default, new ConfigToggleConverter());
@@ -68,7 +69,7 @@ namespace XEmuera.Views
 
 		protected virtual void OkButton_Clicked(object sender, EventArgs e)
 		{
-			if (ConfigModel.ConfigItem.TryParse(ConfigEntry.Text))
+			if (ConfigItem.TryParse(ConfigModel.ConfigItem, ConfigEntry.Text))
 			{
 				ConfigModel.Enabled = ConfigToggle.IsToggled;
 				ConfigModel.UpdateValue();

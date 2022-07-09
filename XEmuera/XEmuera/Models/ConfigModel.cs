@@ -95,7 +95,7 @@ namespace XEmuera.Models
 		}
 		Color _valueColor = Color.Gray;
 
-		public bool IsVanillaConfig { get; private set; }
+		public bool HasSwitch { get; private set; }
 
 		private ConfigModel()
 		{
@@ -112,7 +112,7 @@ namespace XEmuera.Models
 			InitConfigModel(OtherConfigCodeGroups);
 		}
 
-		private static void InitConfigModel(List<ConfigCodeGroup> codeGroups, bool isVanillaConfig = false)
+		private static void InitConfigModel(List<ConfigCodeGroup> codeGroups, bool hasSwitch = false)
 		{
 			foreach (var group in codeGroups)
 			{
@@ -125,20 +125,20 @@ namespace XEmuera.Models
 					ConfigModel configModel = new ConfigModel
 					{
 						ConfigItem = configItem,
-						IsVanillaConfig = isVanillaConfig,
+						HasSwitch = hasSwitch,
 					};
 
 					switch (configCode)
 					{
 						case ConfigCode.PanSpeed:
-							configModel.IsVanillaConfig = false;
+							configModel.HasSwitch = false;
 							break;
 					}
 
 					string pref = GameUtils.GetPreferences(configCode.ToString(), null);
 					string[] data = pref?.Split(new[] { separator }, StringSplitOptions.None) ?? new string[0];
 
-					if (data.Length >= 2 && configItem.TryParse(data[1]))
+					if (data.Length >= 2 && ConfigItem.TryParse(configItem, data[1]))
 					{
 						configModel.Enabled = bool.Parse(data[0]);
 						configModel.UpdateValue();
@@ -151,7 +151,7 @@ namespace XEmuera.Models
 						configModel.ResetDefault();
 					}
 
-					if (!configModel.IsVanillaConfig)
+					if (!configModel.HasSwitch)
 						configModel.Enabled = true;
 
 					AllModels[configCode] = configModel;
@@ -325,7 +325,6 @@ namespace XEmuera.Models
 					Name = StringsText.QuickButton,
 					Code = new ConfigCode[]
 					{
-						ConfigCode.QuickButtonColumn,
 						ConfigCode.QuickButtonFontSize,
 						ConfigCode.QuickButtonWidth,
 						ConfigCode.QuickButtonSpacing,
@@ -337,6 +336,8 @@ namespace XEmuera.Models
 					Name = StringsText.FontAndShape,
 					Code = new ConfigCode[]
 					{
+						ConfigCode.AdaptiveFont,
+						ConfigCode.AdaptiveFontSize,
 						ConfigCode.FontScale,
 						ConfigCode.TextAntialias,
 						ConfigCode.TextFilterQuality,

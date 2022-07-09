@@ -575,6 +575,7 @@ namespace MinorShift.Emuera
 			Task.Run(() =>
 			{
 				console.GotoTitle();
+				console.ClearQuickButton();
 				console.RefreshQuickButton();
 			});
 		}

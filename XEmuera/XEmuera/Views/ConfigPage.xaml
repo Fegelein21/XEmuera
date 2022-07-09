@@ -47,7 +47,7 @@
 							</StackLayout>
 
 							<Switch
-								IsVisible="{Binding IsVanillaConfig}"
+								IsVisible="{Binding HasSwitch}"
 								IsToggled="{Binding Enabled}" />
 
 						</StackLayout>

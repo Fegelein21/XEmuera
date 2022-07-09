@@ -196,7 +196,7 @@ namespace XEmuera.Resources {
         }
         
         /// <summary>
-        ///   查找类似 文字和图像 的本地化字符串。
+        ///   查找类似 文字与图像 的本地化字符串。
         /// </summary>
         internal static string FontAndShape {
             get {

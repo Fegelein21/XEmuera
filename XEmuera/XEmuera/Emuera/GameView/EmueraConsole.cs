@@ -648,6 +648,9 @@ namespace MinorShift.Emuera.GameView
                 return;
 			stopTimer();
             isTimeout = true;
+
+			ClearQuickButton();
+
 			if(IsWaitingPrimitive)
 			{
 				//callEmueraProgramは呼び出し先で行う。
@@ -666,6 +669,8 @@ namespace MinorShift.Emuera.GameView
 			//		MoveMouse(point);
 			//}
 			RefreshStrings(true);
+
+			RefreshQuickButton();
 		}
 
         public void forceStopTimer()
@@ -825,6 +830,8 @@ namespace MinorShift.Emuera.GameView
 		public void PressEnterKey(bool keySkip, string str, bool changedByMouse)
 		{
 			MesSkip = keySkip;
+			ClearQuickButton();
+
 			if ((state == ConsoleState.Running) || (state == ConsoleState.Initializing))
 				return;
 			else if ((state == ConsoleState.Quit))
@@ -922,6 +929,8 @@ namespace MinorShift.Emuera.GameView
 			finally
 			{
 				inProcess = false;
+
+				RefreshQuickButton();
 			}
 			endMacro:
 			//if(state == ConsoleState.WaitInput && inputReq.NeedValue)
@@ -931,8 +940,6 @@ namespace MinorShift.Emuera.GameView
 			//		MoveMouse(point);
 			//}
 			RefreshStrings(true);
-
-			RefreshQuickButton();
 		}
 
 		private void openErrorFile(ScriptPosition pos)

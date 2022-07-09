@@ -63,6 +63,8 @@ namespace XEmuera
 		{
 			Init = false;
 
+			VersionUpdate.Check();
+
 			LanguageModel.Load();
 
 			PlatformService = DependencyService.Get<IPlatformService>();
@@ -166,6 +168,16 @@ namespace XEmuera
 		public static string GetPreferences(string key, string defaultValue)
 		{
 			return Preferences.Get(key, defaultValue, AppInfo.PackageName);
+		}
+
+		public static bool HasPreferences(string key)
+		{
+			return Preferences.ContainsKey(key, AppInfo.PackageName);
+		}
+
+		public static void RemovePreferences(string key)
+		{
+			Preferences.Remove(key, AppInfo.PackageName);
 		}
 	}
 

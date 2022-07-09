@@ -340,7 +340,7 @@
     <value>文字列変数の代入に文字列式を強制する</value>
   </data>
   <data name="FontScale" xml:space="preserve">
-    <value>文字和图像放大倍数</value>
+    <value>文字与图像缩放倍数</value>
   </data>
   <data name="PanSpeed" xml:space="preserve">
     <value>横向平移速度</value>
@@ -439,9 +439,15 @@
     <value>RELATIONの初期値</value>
   </data>
   <data name="LongPressSkip" xml:space="preserve">
-    <value>长按跳过文本</value>
+    <value>长按屏幕跳过文本</value>
   </data>
   <data name="LongPressSkipTime" xml:space="preserve">
-    <value>长按跳过所需毫秒</value>
+    <value>长按所需毫秒数</value>
+  </data>
+  <data name="AdaptiveFontSize" xml:space="preserve">
+    <value>自适应文字与图像大小</value>
+  </data>
+  <data name="AdaptiveFont" xml:space="preserve">
+    <value>自适应文字与图像</value>
   </data>
 </root>

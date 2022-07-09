@@ -4,15 +4,35 @@ using System.Diagnostics;
 using System.Text;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using XEmuera;
 
 namespace MinorShift.Emuera.GameView
 {
 	internal sealed partial class EmueraConsole
 	{
-		int lastRefreshQuickButtonGeneration = -1;
-
 		StackLayout quickButtonGroup;
+
+		public void ClearQuickButton()
+		{
+			MainThread.BeginInvokeOnMainThread(() =>
+			{
+				ClearQuickButtonAsync();
+			});
+		}
+
+		public void ClearQuickButtonAsync()
+		{
+			quickButtonGroup = window.quickButtonGroup;
+
+			if (quickButtonGroup.Children.Count > 0)
+			{
+				quickButtonGroup.Children.Clear();
+				quickButtonGroup.WidthRequest = -1;
+				quickButtonGroup.HeightRequest = -1;
+
+				window.quickButtonScrollView.WidthRequest = -1;
+				window.quickButtonScrollView.HeightRequest = -1;
+			}
+		}
 
 		public void RefreshQuickButton()
 		{
@@ -30,26 +50,7 @@ namespace MinorShift.Emuera.GameView
 			if (state != ConsoleState.WaitInput)
 				return;
 
-			quickButtonGroup = window.quickButtonGroup;
-			bool needClearButtonGroup = quickButtonGroup.Children.Count > 0;
-
-			if (lastRefreshQuickButtonGeneration == lastButtonGeneration)
-				needClearButtonGroup = inputReq.InputType == GameProc.InputType.EnterKey;
-
-			if (needClearButtonGroup)
-			{
-				quickButtonGroup.Children.Clear();
-				quickButtonGroup.WidthRequest = -1;
-				quickButtonGroup.HeightRequest = -1;
-
-				window.quickButtonScrollView.WidthRequest = -1;
-				window.quickButtonScrollView.HeightRequest = -1;
-			}
-
-			if (lastRefreshQuickButtonGeneration == lastButtonGeneration)
-				return;
-
-			if (inputReq.InputType == GameProc.InputType.Void || inputReq.InputType == GameProc.InputType.AnyKey)
+			if (inputReq.InputType != GameProc.InputType.IntValue && inputReq.InputType != GameProc.InputType.StrValue)
 				return;
 
 			bool lockTaken = false;
@@ -67,10 +68,11 @@ namespace MinorShift.Emuera.GameView
 			StackLayout layout;
 			Button quickButton;
 
-			string text;
 			System.Drawing.Color color;
+			System.Drawing.Color bgcolor;
 			AConsoleColoredPart coloredPart;
 
+			quickButtonGroup = window.quickButtonGroup;
 			quickButtonGroup.Spacing = Config.QuickButtonSpacing;
 
 			for (int i = topLineNo; i <= bottomLineNo; i++)
@@ -93,24 +95,18 @@ namespace MinorShift.Emuera.GameView
 					if (button.Generation != lastButtonGeneration)
 						continue;
 
-					coloredPart = button.StrArray[0] as AConsoleColoredPart;
-					if (coloredPart == null)
-					{
-						text = button.ToString();
-						color = Config.ForeColor;
-					}
-					else
-					{
-						text = coloredPart.Str;
-						color = coloredPart.Color;
-					}
+					coloredPart = button.StrArray[button.StrArray.Length - 1] as AConsoleColoredPart;
+					color = coloredPart?.Color ?? Config.ForeColor;
+
+					bgcolor = Math.Abs(color.R - 0x7f) <= 0x10 && Math.Abs(color.G - 0x7f) <= 0x10 && Math.Abs(color.B - 0x7f) <= 0x10
+						? Config.BackColor : color;
 
 					quickButton = new Button
 					{
 						BindingContext = button.Inputs,
-						Text = text.Trim(),
+						Text = button.ToString().Trim(),
 						TextColor = color,
-						BackgroundColor = System.Drawing.Color.FromArgb(color.ToArgb() ^ 0xffffff).WithAlpha(0xc0),
+						BackgroundColor = System.Drawing.Color.FromArgb(bgcolor.ToArgb() ^ 0xffffff).WithAlpha(0xc0),
 						FontSize = Config.QuickButtonFontSize,
 						WidthRequest = Config.QuickButtonWidth,
 						HeightRequest = Config.QuickButtonHeight,
@@ -128,9 +124,6 @@ namespace MinorShift.Emuera.GameView
 				if (row > 0)
 					column++;
 			}
-
-			if (quickButtonGroup.Children.Count > 0)
-				lastRefreshQuickButtonGeneration = lastButtonGeneration;
 
 			quickButtonGroup.ResolveLayoutChanges();
 			window.RefreshQuickButtonGroup();

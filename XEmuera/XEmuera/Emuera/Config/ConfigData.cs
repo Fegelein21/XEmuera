@@ -118,14 +118,15 @@ namespace MinorShift.Emuera
 			configArray.Add(new ConfigItem(ConfigCode.SystemNoTarget, ConfigsText.SystemNoTarget, false));
 			configArray.Add(new ConfigItem(ConfigCode.SystemIgnoreStringSet, ConfigsText.SystemIgnoreStringSet, false));
 
-			configArray.Add(new ConfigItem(ConfigCode.FontScale, ConfigsText.FontScale, 2.0f));
 			configArray.Add(new ConfigItem(ConfigCode.PanSpeed, ConfigsText.PanSpeed, 2.0f));
 
-			configArray.Add(new ConfigItem(ConfigCode.QuickButtonColumn, ConfigsText.QuickButtonColumn, 5));
 			configArray.Add(new ConfigItem(ConfigCode.QuickButtonFontSize, ConfigsText.QuickButtonFontSize, 12));
 			configArray.Add(new ConfigItem(ConfigCode.QuickButtonWidth, ConfigsText.QuickButtonWidth, 90));
 			configArray.Add(new ConfigItem(ConfigCode.QuickButtonSpacing, ConfigsText.QuickButtonSpacing, 3));
 
+			configArray.Add(new ConfigItem(ConfigCode.AdaptiveFont, ConfigsText.AdaptiveFont, true));
+			configArray.Add(new ConfigItem(ConfigCode.AdaptiveFontSize, ConfigsText.AdaptiveFontSize, 32));
+			configArray.Add(new ConfigItem(ConfigCode.FontScale, ConfigsText.FontScale, 1f));
 			configArray.Add(new ConfigItem(ConfigCode.TextAntialias, ConfigsText.TextAntialias, true));
 			configArray.Add(new ConfigItem(ConfigCode.ShapeAntialias, ConfigsText.ShapeAntialias, true));
 			configArray.Add(new ConfigItem(ConfigCode.TextFilterQuality, ConfigsText.TextFilterQuality, SKFilterQuality.Low));
@@ -503,7 +504,8 @@ namespace MinorShift.Emuera
                             //解析モード時はここを上書きして十分な長さを確保する
                             tokens[1] = "10000";
                         }
-						if ((item.TryParse(tokens[1])) && (fix))
+						item.Fixed = false;
+						if ((ConfigItem.TryParse(item, tokens[1])) && (fix))
 							item.Fixed = true;
 					}
 #if DEBUG
@@ -549,7 +551,7 @@ namespace MinorShift.Emuera
                         continue;
                     ConfigItem item = GetReplaceItem(itemName);
                     if (item != null)
-                        item.TryParse(tokens[1]);
+                        ConfigItem.TryParse(item, tokens[1]);
 				}
 			}
 			catch (EmueraException ee)
@@ -616,7 +618,7 @@ namespace MinorShift.Emuera
 					ConfigItem item = GetDebugItem(tokens[0].Trim());
 					if (item != null)
 					{
-						item.TryParse(tokens[1]);
+						ConfigItem.TryParse(item, tokens[1]);
 					}
 #if DEBUG
 					//else

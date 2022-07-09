@@ -5,7 +5,6 @@ using System.IO;
 using System.Drawing;
 using MinorShift.Emuera.Sub;
 using XEmuera;
-using XEmuera.Forms;
 using SkiaSharp;
 
 namespace MinorShift.Emuera
@@ -94,15 +93,16 @@ namespace MinorShift.Emuera
 
 
 		/// ジェネリック化大失敗。なんかうまい方法ないかな～
-		public bool TryParse(string param)
+		public static bool TryParse(ConfigItem item, string param)
 		{
 			if (string.IsNullOrEmpty(param))
 				return false;
-			if (GameUtils.IsEmueraPage && Fixed)
+			if (item.Fixed)
 				return false;
 
 			bool ret = false;
 			string str = param.Trim();
+			object Value = item.Value;
 
 			if (Value is bool)
 			{
@@ -238,10 +238,11 @@ namespace MinorShift.Emuera
 			}
 			//else
 			//    ShowError("型不明なコンフィグ");
+			item.Value = Value;
 			return ret;
 		}
 
-		private void ShowError(string errorMessage)
+		private static void ShowError(string errorMessage)
 		{
 			if (GameUtils.IsEmueraPage)
 				throw new CodeEE(errorMessage);
@@ -249,7 +250,7 @@ namespace MinorShift.Emuera
 			//	MessageBox.QuickShow(errorMessage);
 		}
 
-		private bool TryStringToBool(string arg, out bool p)
+		private static bool TryStringToBool(string arg, out bool p)
 		{
 			if (arg == null)
 			{

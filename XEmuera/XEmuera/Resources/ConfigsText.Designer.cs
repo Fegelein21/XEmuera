@@ -61,6 +61,24 @@ namespace XEmuera.Resources {
         }
         
         /// <summary>
+        ///   查找类似 自适应文字与图像 的本地化字符串。
+        /// </summary>
+        internal static string AdaptiveFont {
+            get {
+                return ResourceManager.GetString("AdaptiveFont", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 自适应文字与图像大小 的本地化字符串。
+        /// </summary>
+        internal static string AdaptiveFontSize {
+            get {
+                return ResourceManager.GetString("AdaptiveFontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 允许重写系统函数 的本地化字符串。
         /// </summary>
         internal static string AllowFunctionOverloading {
@@ -376,7 +394,7 @@ namespace XEmuera.Resources {
         }
         
         /// <summary>
-        ///   查找类似 文字和图像放大倍数 的本地化字符串。
+        ///   查找类似 文字与图像缩放倍数 的本地化字符串。
         /// </summary>
         internal static string FontScale {
             get {
@@ -511,7 +529,7 @@ namespace XEmuera.Resources {
         }
         
         /// <summary>
-        ///   查找类似 长按跳过文本 的本地化字符串。
+        ///   查找类似 长按屏幕跳过文本 的本地化字符串。
         /// </summary>
         internal static string LongPressSkip {
             get {
@@ -520,7 +538,7 @@ namespace XEmuera.Resources {
         }
         
         /// <summary>
-        ///   查找类似 长按跳过所需毫秒 的本地化字符串。
+        ///   查找类似 长按所需毫秒数 的本地化字符串。
         /// </summary>
         internal static string LongPressSkipTime {
             get {

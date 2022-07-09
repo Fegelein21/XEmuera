@@ -15,6 +15,7 @@ using System.ComponentModel;
 using XEmuera.Views;
 using XEmuera.Resources;
 using System.Timers;
+using XEmuera.Models;
 
 namespace MinorShift.Emuera
 {
@@ -111,17 +112,20 @@ namespace MinorShift.Emuera
 			return LoadSuccess ? mainWindow : null;
 		}
 
+		private double ScaledWindowX;
+
 		private void InitGameView()
 		{
+			int originalWindowX = ConfigData.Instance.GetConfigValue<int>(ConfigCode.WindowX);
+			int originalFontSize = ConfigData.Instance.GetConfigValue<int>(ConfigCode.FontSize);
+			ScaledWindowX = originalWindowX * Config.FontScale * Config.FontSize / originalFontSize / DisplayUtils.ScreenDensity;
+
 			mainLayout.Children.Clear();
 
 			mainLayout.Children.Add(mainPicBox,
 				null,
 				null,
-				Constraint.RelativeToParent(parent =>
-				{
-					return Math.Max(parent.Width, ConfigData.Instance.GetConfigValue<int>(ConfigCode.WindowX) * Config.FontScale / DisplayUtils.ScreenDensity);
-				}),
+				Constraint.RelativeToParent(parent => Math.Max(parent.Width, ScaledWindowX)),
 				Constraint.RelativeToParent(parent => parent.Height));
 
 			mainLayout.Children.Add(uiLayout,
@@ -180,9 +184,8 @@ namespace MinorShift.Emuera
 
 		public void RefreshQuickButtonGroup()
 		{
-			int width = Config.QuickButtonWidth * Config.QuickButtonColumn + Config.QuickButtonSpacing * (Config.QuickButtonColumn - 1);
-			quickButtonScrollView.WidthRequest = Math.Min(uiLayout.Width * 3 / 5, Math.Min(width, quickButtonGroup.Width));
-			quickButtonScrollView.HeightRequest = Math.Min(400d, Math.Min(uiLayout.Height - ToolButtonGroup.Height - 30d, quickButtonGroup.Height));
+			quickButtonScrollView.WidthRequest = Math.Min(quickButtonGroup.Width, uiLayout.Width * 3 / 5);
+			quickButtonScrollView.HeightRequest = Math.Min(quickButtonGroup.Height, uiLayout.Height - ToolButtonGroup.Height - 30d);
 
 			quickButtonScrollView.ScrollToAsync(0, quickButtonGroup.Height, false);
 		}
@@ -522,6 +525,8 @@ namespace MinorShift.Emuera
 
 			if (quickButtonScrollView.IsVisible)
 				console?.RefreshQuickButtonAsync();
+			else
+				console?.ClearQuickButtonAsync();
 		}
 
 		private void ButtonVisibleGroup_Clicked(object sender, EventArgs e)

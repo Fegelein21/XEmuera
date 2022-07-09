@@ -16,9 +16,6 @@ namespace XEmuera.Models
 		{
 			string path = GameUtils.PlatformService.GetStoragePath() + System.IO.Path.DirectorySeparatorChar + "emuera";
 
-			if (!Directory.Exists(path))
-				return;
-
 			Instance = new GameFolderModel()
 			{
 				Name = System.IO.Path.GetFileName(path),
