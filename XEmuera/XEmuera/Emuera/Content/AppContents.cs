@@ -1,12 +1,10 @@
 ﻿using MinorShift.Emuera.Sub;
-using SkiaSharp;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Text;
-using XEmuera;
+using WebPWrapper;
 
 namespace MinorShift.Emuera.Content
 {
@@ -19,21 +17,22 @@ namespace MinorShift.Emuera.Content
 		static readonly Dictionary<string, AContentFile> resourceDic = new Dictionary<string, AContentFile>();
 		static readonly Dictionary<string, ASprite> imageDictionary = new Dictionary<string, ASprite>();
 		static readonly Dictionary<int, GraphicsImage> gList;
+        //private static Bitmap bmp;
 
-		//static public T GetContent<T>(string name)where T :AContentItem
-		//{
-		//	if (name == null)
-		//		return null;
-		//	name = name.ToUpper();
-		//	if (!itemDic.ContainsKey(name))
-		//		return null;
-		//	return itemDic[name] as T;
-		//}
-		static public GraphicsImage GetGraphics(int i)
+        //static public T GetContent<T>(string name)where T :AContentItem
+        //{
+        //	if (name == null)
+        //		return null;
+        //	name = name.ToUpper();
+        //	if (!itemDic.ContainsKey(name))
+        //		return null;
+        //	return itemDic[name] as T;
+        //}
+        static public GraphicsImage GetGraphics(int i)
 		{
-			if (gList.TryGetValue(i, out var g))
-				return g;
-			g = new GraphicsImage(i);
+			if (gList.ContainsKey(i))
+				return gList[i];
+			GraphicsImage g =  new GraphicsImage(i);
 			gList[i] = g;
 			return g;
 		}
@@ -43,9 +42,9 @@ namespace MinorShift.Emuera.Content
 			if (name == null)
 				return null;
 			name = name.ToUpper();
-			if (!imageDictionary.TryGetValue(name, out var aSprite))
+			if (!imageDictionary.ContainsKey(name))
 				return null;
-			return aSprite;
+			return imageDictionary[name];
 		}
 
 		static public void SpriteDispose(string name)
@@ -53,9 +52,9 @@ namespace MinorShift.Emuera.Content
 			if (name == null)
 				return;
 			name = name.ToUpper();
-			if (!imageDictionary.TryGetValue(name, out var aSprite))
+			if (!imageDictionary.ContainsKey(name))
 				return;
-			aSprite.Dispose();
+			imageDictionary[name].Dispose();
 			imageDictionary.Remove(name);
 		}
 
@@ -84,18 +83,14 @@ namespace MinorShift.Emuera.Content
 			try
 			{
 				//resourcesフォルダ内の全てのcsvファイルを探索する
-				//string[] csvFiles = Directory.GetFiles(Program.ContentDir, "*.csv", SearchOption.AllDirectories);
-				string[] csvFiles = FileUtils.GetFiles(Program.ContentDir, "*.csv", SearchOption.AllDirectories);
-
+				string[] csvFiles = Directory.GetFiles(Program.ContentDir, "*.csv", SearchOption.AllDirectories);
 				foreach (var filepath in csvFiles)
 				{
 					//".csv"のみを拾うように
-					//if (0 != ".csv".CompareTo(Path.GetExtension(filepath).ToLower()))
-					//	continue;
-					//アニメスプライト宣言。nullでないとき、フレーム追加モード
+					if (0 != ".csv".CompareTo(Path.GetExtension(filepath).ToLower()))
+						continue;                       //アニメスプライト宣言。nullでないとき、フレーム追加モード
 					SpriteAnime currentAnime = null;
-					//string directory = Path.GetDirectoryName(filepath).ToUpper() + "\\";
-					string directory = Path.GetDirectoryName(filepath) + Path.DirectorySeparatorChar;
+					string directory = Path.GetDirectoryName(filepath).ToUpper() + "\\";
 					string filename = Path.GetFileName(filepath);
 					string[] lines = File.ReadAllLines(filepath, Config.Encode);
 					int lineNo = 0;
@@ -110,21 +105,21 @@ namespace MinorShift.Emuera.Content
 						string[] tokens = str.Split(',');
 						//AContentItem item = CreateFromCsv(tokens);
 						ScriptPosition sp = new ScriptPosition(filename, lineNo);
-                        if (CreateFromCsv(tokens, directory, currentAnime, sp) is ASprite item)
-                        {
-                            //アニメスプライト宣言ならcurrentAnime上書きしてフレーム追加モードにする。そうでないならnull
-                            currentAnime = item as SpriteAnime;
-                            if (!imageDictionary.ContainsKey(item.Name))
-                            {
-                                imageDictionary.Add(item.Name, item);
-                            }
-                            else
-                            {
-                                ParserMediator.Warn("同名のリソースがすでに作成されています:" + item.Name, sp, 0);
-                                item.Dispose();
-                            }
-                        }
-                    }
+						if (CreateFromCsv(tokens, directory, currentAnime, sp) is ASprite item)
+						{
+							//アニメスプライト宣言ならcurrentAnime上書きしてフレーム追加モードにする。そうでないならnull
+							currentAnime = item as SpriteAnime;
+							if (!imageDictionary.ContainsKey(item.Name))
+							{
+								imageDictionary.Add(item.Name, item);
+							}
+							else
+							{
+								ParserMediator.Warn("同名のリソースがすでに作成されています:" + item.Name, sp, 0);
+								item.Dispose();
+							}
+						}
+					}
 				}
 			}
 			catch
@@ -164,17 +159,14 @@ namespace MinorShift.Emuera.Content
 		/// <returns></returns>
 		static private AContentItem CreateFromCsv(string[] tokens, string dir, SpriteAnime currentAnime, ScriptPosition sp)
 		{
-
-			if (tokens.Length < 2)
+			if(tokens.Length < 2)
 				return null;
-
 			string name = tokens[0].Trim().ToUpper();//
-			//string arg2 = tokens[1].ToUpper();//画像ファイル名
-			string arg2 = tokens[1].Replace('\\', Path.DirectorySeparatorChar);
+			string arg2 = tokens[1].ToUpper();//画像ファイル名
 			if (name.Length == 0 || arg2.Length == 0)
 				return null;
 			//アニメーションスプライト宣言
-			if (arg2.Equals("ANIME", StringComparison.OrdinalIgnoreCase))
+			if (arg2 == "ANIME")
 			{
 				if (tokens.Length < 4)
 				{
@@ -206,15 +198,21 @@ namespace MinorShift.Emuera.Content
 
 
 			//親画像のロードConstImage
-			if (!FileUtils.Exists(ref parentName))
+			if (!resourceDic.ContainsKey(parentName))
 			{
-				//ParserMediator.Warn("指定された画像ファイルが見つかりませんでした:" + arg2, sp, 1);
-				ParserMediator.Warn("指定された画像ファイルが見つかりませんでした:" + parentName, sp, 1);
-				return null;
-			}
-			if (!resourceDic.TryGetValue(parentName, out var aContentFile))
-			{
-				SKBitmap bmp = SKBitmap.Decode(parentName);
+				string filepath = parentName;
+				if (!File.Exists(filepath))
+				{
+					ParserMediator.Warn("指定された画像ファイルが見つかりませんでした:" + arg2, sp, 1);
+					return null;
+				}
+				Bitmap bmp = null;
+				using (WebP webp = new WebP())
+				if (Path.GetExtension(filepath).ToUpperInvariant() == ".WEBP")
+					bmp = webp.Load(filepath);
+				else
+					bmp = new Bitmap(filepath);
+				
 				if (bmp == null)
 				{
 					ParserMediator.Warn("指定されたファイルの読み込みに失敗しました:" + arg2, sp, 1);
@@ -235,14 +233,13 @@ namespace MinorShift.Emuera.Content
 					return null;
 				}
 				resourceDic.Add(parentName, img);
-				aContentFile = img;
 			}
-            if (!(aContentFile is ConstImage parentImage) || !parentImage.IsCreated)
+            if (!(resourceDic[parentName] is ConstImage parentImage) || !parentImage.IsCreated)
             {
                 ParserMediator.Warn("作成に失敗したリソースを元にスプライトを作成しようとしました:" + arg2, sp, 1);
                 return null;
             }
-            Rectangle rect = new Rectangle(new Point(0, 0), DisplayUtils.ToSize(parentImage.Bitmap.Info.Size));
+            Rectangle rect = new Rectangle(new Point(0, 0), parentImage.Bitmap.Size);
 			Point pos = new Point();
 			int delay = 1000;
 			//name,parentname, x,y,w,h ,offset_x,offset_y, delayTime

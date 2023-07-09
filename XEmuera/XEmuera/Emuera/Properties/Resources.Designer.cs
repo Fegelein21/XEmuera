@@ -8,11 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MinorShift.Emuera.Properties
-{
+namespace MinorShift.Emuera.Properties {
     using System;
-
-
+    
+    
     /// <summary>
     ///   ローカライズされた文字列などを検索するための、厳密に型指定されたリソース クラスです。
     /// </summary>
@@ -23,235 +22,193 @@ namespace MinorShift.Emuera.Properties
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources
-    {
-
+    public class Resources {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources()
-        {
+        internal Resources() {
         }
-
+        
         /// <summary>
         ///   このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if (object.ReferenceEquals(resourceMan, null))
-                {
+        public static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MinorShift.Emuera.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   すべてについて、現在のスレッドの CurrentUICulture プロパティをオーバーライドします
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        public static global::System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:画像の範囲外が指定されています に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string RuntimeErrMesMethodCIMGCreateOutOfRange0
-        {
-            get
-            {
+        public static string RuntimeErrMesMethodCIMGCreateOutOfRange0 {
+            get {
                 return ResourceManager.GetString("RuntimeErrMesMethodCIMGCreateOutOfRange0", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:ColorARGB引数に不適切な値(0x{1:X8})が指定されました に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string RuntimeErrMesMethodColorARGB0
-        {
-            get
-            {
+        public static string RuntimeErrMesMethodColorARGB0 {
+            get {
                 return ResourceManager.GetString("RuntimeErrMesMethodColorARGB0", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:第{2}引数に不適切な値({1})が指定されました に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string RuntimeErrMesMethodDefaultArgumentOutOfRange0
-        {
-            get
-            {
+        public static string RuntimeErrMesMethodDefaultArgumentOutOfRange0 {
+            get {
                 return ResourceManager.GetString("RuntimeErrMesMethodDefaultArgumentOutOfRange0", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:ColorMatrixの指定された要素({1}, {2})が不適切であるか5x5に足りていません に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string RuntimeErrMesMethodGColorMatrix0
-        {
-            get
-            {
+        public static string RuntimeErrMesMethodGColorMatrix0 {
+            get {
                 return ResourceManager.GetString("RuntimeErrMesMethodGColorMatrix0", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:描画オプションがWINAPIの時には使用できません に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string RuntimeErrMesMethodGDIPLUSOnly
-        {
-            get
-            {
+        public static string RuntimeErrMesMethodGDIPLUSOnly {
+            get {
                 return ResourceManager.GetString("RuntimeErrMesMethodGDIPLUSOnly", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:GraphicsのHeightに0以下の値({1})が指定されました に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string RuntimeErrMesMethodGHeight0
-        {
-            get
-            {
+        public static string RuntimeErrMesMethodGHeight0 {
+            get {
                 return ResourceManager.GetString("RuntimeErrMesMethodGHeight0", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:GraphicsのHeightに{2}以上の値({1})が指定されました に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string RuntimeErrMesMethodGHeight1
-        {
-            get
-            {
+        public static string RuntimeErrMesMethodGHeight1 {
+            get {
                 return ResourceManager.GetString("RuntimeErrMesMethodGHeight1", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:GraphicsIDに負の値({1})が指定されました に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string RuntimeErrMesMethodGraphicsID0
-        {
-            get
-            {
+        public static string RuntimeErrMesMethodGraphicsID0 {
+            get {
                 return ResourceManager.GetString("RuntimeErrMesMethodGraphicsID0", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:GraphicsIDの値({1})が大きすぎます に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string RuntimeErrMesMethodGraphicsID1
-        {
-            get
-            {
+        public static string RuntimeErrMesMethodGraphicsID1 {
+            get {
                 return ResourceManager.GetString("RuntimeErrMesMethodGraphicsID1", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:GraphicsのWidthに0以下の値({1})が指定されました に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string RuntimeErrMesMethodGWidth0
-        {
-            get
-            {
+        public static string RuntimeErrMesMethodGWidth0 {
+            get {
                 return ResourceManager.GetString("RuntimeErrMesMethodGWidth0", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:GraphicsのWidthに{2}以上の値({1})が指定されました に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string RuntimeErrMesMethodGWidth1
-        {
-            get
-            {
+        public static string RuntimeErrMesMethodGWidth1 {
+            get {
                 return ResourceManager.GetString("RuntimeErrMesMethodGWidth1", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:第{1}引数は省略できません に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string SyntaxErrMesMethodDefaultArgumentNotNullable0
-        {
-            get
-            {
+        public static string SyntaxErrMesMethodDefaultArgumentNotNullable0 {
+            get {
                 return ResourceManager.GetString("SyntaxErrMesMethodDefaultArgumentNotNullable0", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:引数の数が間違っています に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string SyntaxErrMesMethodDefaultArgumentNum0
-        {
-            get
-            {
+        public static string SyntaxErrMesMethodDefaultArgumentNum0 {
+            get {
                 return ResourceManager.GetString("SyntaxErrMesMethodDefaultArgumentNum0", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:少なくとも{1}個の引数が必要です に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string SyntaxErrMesMethodDefaultArgumentNum1
-        {
-            get
-            {
+        public static string SyntaxErrMesMethodDefaultArgumentNum1 {
+            get {
                 return ResourceManager.GetString("SyntaxErrMesMethodDefaultArgumentNum1", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:引数の数が多すぎます に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string SyntaxErrMesMethodDefaultArgumentNum2
-        {
-            get
-            {
+        public static string SyntaxErrMesMethodDefaultArgumentNum2 {
+            get {
                 return ResourceManager.GetString("SyntaxErrMesMethodDefaultArgumentNum2", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:第{1}引数の型が間違っています に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string SyntaxErrMesMethodDefaultArgumentType0
-        {
-            get
-            {
+        public static string SyntaxErrMesMethodDefaultArgumentType0 {
+            get {
                 return ResourceManager.GetString("SyntaxErrMesMethodDefaultArgumentType0", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   {0}関数:ColorMatrixに5x5以上の二次元数値型配列変数でない引数が指定されました に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string SyntaxErrMesMethodGraphicsColorMatrix0
-        {
-            get
-            {
+        public static string SyntaxErrMesMethodGraphicsColorMatrix0 {
+            get {
                 return ResourceManager.GetString("SyntaxErrMesMethodGraphicsColorMatrix0", resourceCulture);
             }
         }

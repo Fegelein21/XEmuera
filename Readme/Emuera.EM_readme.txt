@@ -1,0 +1,155 @@
+﻿#region EM_私家版_space制限解除
+◆ HTML_PRINTの<space>タグでparaに負数を指定できます
+
+#region EM_私家版_ファイル占用解除
+◆ プログラム動作中Resourceフォルダーの画像ファイルを常時占用しないようにしました
+
+#region EM_私家版_INPUT系機能拡張
+◆ INPUT, INPUTS, ONEINPUT, ONEINPUTS に第二引数追加(整数型，省略可，デフォルトは0)
+TINPUT, TINPUTS, TONEINPUT, TONEINPUTS に第五引数追加(整数型，省略可，デフォルトは0)
+追加引数==0時、または省略した時 本家版と同じです。
+追加引数!=0時 マウスクリックをエンターキーにみなす、左クリックの時RESULT:1を1、右クリックの時RESULT:1を2にします。また、同時にShift Ctrl Altを押した場合、そのキー状態をRESULT:2に保存します。(bit 17 18 19)
+
+#region EM_私家版_INPUT系機能拡張＆ONEINPUT系制限解除
+◆ ONEINPUT, ONEINPUTS, TONEINPUT, TONEINPUTS デフォルト値に2桁以上/2文字以上を指定できます
+
+#region EM_私家版_LoadText＆SaveText機能拡張
+◆ LOADTEXT, SAVETEXT の第一引数が文字列の場合、第一引数をパスとしてファイルをロード/セーブします。Emuera.exeを相対パスで指定(".."は無効)。更に、configにで「LOADTEXTとSAVETEXTで使える拡張子」が決められた拡張子しか使えません。(デフォルトはtxtのみ)
+例文:LOADTEXTとSAVETEXTで使える拡張子:txt,(任意の拡張子),(任意の拡張子)
+
+#region EM_私家版_StringMeasure獲得
+#region EM_私家版_HtmlManager機能拡張
+◆ int HTML_STRINGLEN html
+HTML_PRINTでhtmlを表示した結果の幅(半角文字単位)を返す、複数行がある場合1行目の幅を返す
+
+#region EM_私家版_HtmlManager機能拡張
+◆ int HTML_SUBSTRING str, int
+strを2つに分ける
+例：
+	HTML_SUBSTRING　"AB<b>CD</b>EFG",4
+	PRINTSL RESULTS
+	PRINTSL RESULTS:1
+結果：
+	AB<b>C</b>
+	<b>D</b>EFG
+(太字は普通より幅広いからです)
+
+#region EM_私家版_辞書獲得
+◆ int FUNCEXIST str
+	与えられた文字列と同名な関数(式中で使える関数も含め)が定義されていたら1を返します(ユーザが定義した関数のみ)。定義されていない場合0を返します。
+◆ int ISDEFINED str
+	与えられた文字列と同名なマクロ(#DEFINE XXX)が定義されていたら1を返します。定義されていない場合0を返します。
+◆ int VAREXIST str
+	与えられた文字列と同名な変数が定義されたら変数の性質によって正数を返します。定義されていない場合0を返します。
+	変数が整数型の場合、返り値 setbit 1
+	変数が文字列型の場合、返り値 setbit 2
+	変数が定数の場合、返り値 setbit 3
+	変数が2次元配列の場合、返り値 setbit 4 
+	変数が3次元配列の場合、返り値 setbit 5
+	例：
+		#DEFINE VAR_IS_NUM 1
+		#DEFINE VAR_IS_STRING 1p1
+		#DEFINE VAR_IS_CONST 1p2
+		#DEFINE VAR_IS_2DARRAY 1p3
+		#DEFINE VAR_IS_3DARRAY 1p4
+
+		#DIM FOO,10,10
+
+		...
+
+		IF VAREXIST("FOO")==(VAR_IS_NUM|VAR_IS_2DARRAY)
+			PRINTL TRUE
+		ELSE
+			PRINTL FALSE
+		ENDIF
+		IF VAREXIST("FOO2")
+			PRINTL TRUE
+		ELSE
+			PRINTL FALSE
+		ENDIF
+	結果：
+		TRUE
+		FALSE	
+
+◆ int ENUMFUNCBEGINSWITH str
+	int ENUMVARBEGINSWITH str
+	int ENUMMACROBEGINSWITH str
+	int ENUMFUNCENDSWITH str
+	int ENUMVARENDSWITH str
+	int ENUMMACROENDSWITH str
+	int ENUMFUNCWITH str
+	int ENUMVARWITH str
+	int ENUMMACROWITH str
+	定義されたシンボルを返す，結果をRESULTSに代入，総数を返します。
+	FUNCは関数名，VARは変数名，MACROはマクロ名。
+	BEGINSWITHはstrで始まるシンボルです。
+	ENDSWITHはstrで終わるシンボルです。
+	WITHはstrを含むシンボルです。
+
+◆ int GETVAR str
+	str GETVARS str
+	int(1) SETVAR str, value
+	文字列で表した変数のGET、SET関数です。
+	例：
+		#DIM FOO = 10,10
+
+		SETVAR "FOO:1", 5
+		PRINTFORML {FOO} {FOO:1} {GETVAR("FOO:1")}
+	結果：
+		10 5 5
+
+◆ int(1) VARSETEX str, value(, int, int, int)
+	VARSETと似ています，第1引数は変数名の代わりに文字列で表した変数名に変更します
+	第3引数は0以外または省略した場合、配列の全てにvalueを代入、そうでない場合，最低次元の配列に代入
+	例：
+		#DIM FOO,2,3
+
+		VARSETEX "FOO:1:1", 5, 0
+		PRINTFORML {FOO:1:0} {FOO:1:2}
+		VARSETEX "FOO:1:0", 10
+		PRINTFORML {FOO:0:0} {FOO:1:2}
+	結果：
+		0 5
+		10 10
+
+◆ int(1) ARRAYMSORTEX str/intArray, strArray(, int)
+	ARRAYMSORTと似ています，第1引数は文字列の場合，変数名の代わりに文字列で表した変数配列名に変更します
+	第2引数は文字列配列，それぞれの要素は並び替えたい配列の変数名を表す
+	第2引数は0以外または省略した場合正順、0の場合逆順
+	例：
+		#DIM IDX = 4,2,3,1
+		#DIM AA = 1,2,3,4
+		#DIM BB = 5,3,1,2
+		#DIMS VARS = "IDX", "AA", "BB" ; IDXを入れないとIDXを並び替えしない
+
+		ARRAYMSORTEX IDX, VARS      ;
+		PRINTFORML > IDX == {IDX},{IDX:1},{IDX:2},{IDX:3}
+		PRINTFORML > AA == {AA},{AA:1},{AA:2},{AA:3}
+		PRINTFORML > BB == {BB},{BB:1},{BB:2},{BB:3}
+		PRINTL
+		ARRAYMSORTEX "IDX", VARS, 0   ;逆順
+		PRINTFORML > IDX == {IDX},{IDX:1},{IDX:2},{IDX:3}
+		PRINTFORML > AA == {AA},{AA:1},{AA:2},{AA:3}
+		PRINTFORML > BB == {BB},{BB:1},{BB:2},{BB:3}
+
+	結果:
+		> IDX == 1,2,3,4
+		> AA == 4,2,3,1
+		> BB == 2,3,1,5
+		
+		> IDX == 4,3,2,1
+		> AA == 1,3,2,4
+		> BB == 5,1,3,2
+
+◆ int REGEXPMATCH str, patter
+	strが正規表現パターンpatterに合うなら1を返す，そうでない場合0を返す
+
+◆ int XML_GET xml, xpath(, strArray/int, int)
+	xpathの規則でxmlを解析します、結果数を返す
+	第3引数は0以外または省略した場合，総数のみ返す，他の整数の場合，RESULTS結果を返す
+	第3引数は文字列配列の場合，その配列に結果代入
+	第4引数は結果のタイプを決めます
+	1: InnerText
+	2: InnerXml
+	3: OuterXml
+	他: Value

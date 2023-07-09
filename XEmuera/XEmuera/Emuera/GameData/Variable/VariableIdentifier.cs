@@ -250,12 +250,9 @@ namespace MinorShift.Emuera.GameData.Variable
 				{
 					VariableCode flag = code &
 						(VariableCode.__ARRAY_1D__ | VariableCode.__ARRAY_2D__ | VariableCode.__ARRAY_3D__ | VariableCode.__CHARACTER_DATA__ | VariableCode.__STRING__ | VariableCode.__INTEGER__);
-					if (!extSaveListDic.TryGetValue(flag, out var variableCodes))
-					{
-						variableCodes = new List<VariableCode>();
-						extSaveListDic.Add(flag, variableCodes);
-					}
-					variableCodes.Add(code);
+					if (!extSaveListDic.ContainsKey(flag))
+						extSaveListDic.Add(flag, new List<VariableCode>());
+					extSaveListDic[flag].Add(code);
 				}
 			}
 		}
@@ -264,9 +261,9 @@ namespace MinorShift.Emuera.GameData.Variable
 		{
 			VariableCode gFlag = flag &
 				(VariableCode.__ARRAY_1D__ | VariableCode.__ARRAY_2D__ | VariableCode.__ARRAY_3D__ | VariableCode.__CHARACTER_DATA__ | VariableCode.__STRING__ | VariableCode.__INTEGER__);
-			if (!extSaveListDic.TryGetValue(gFlag, out var variableCodes))
+			if (!extSaveListDic.ContainsKey(gFlag))
 				return new List<VariableCode>();
-			return variableCodes;
+			return extSaveListDic[gFlag];
 		}
 
 		public static VariableIdentifier GetVariableId(VariableCode code)

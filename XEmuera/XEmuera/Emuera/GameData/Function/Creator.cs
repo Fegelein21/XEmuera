@@ -207,7 +207,45 @@ namespace MinorShift.Emuera.GameData.Function
 
                 ["SPRITEANIMECREATE"] = new SpriteAnimeCreateMethod(),
                 ["SPRITEANIMEADDFRAME"] = new SpriteAnimeAddFrameMethod(),
-                ["SETANIMETIMER"] = new SetAnimeTimerMethod()
+                ["SETANIMETIMER"] = new SetAnimeTimerMethod(),
+
+                #region EM_私家版_追加関数
+                ["HTML_STRINGLEN"] = new HtmlStringLenMethod(),
+                ["HTML_SUBSTRING"] = new HtmlSubStringMethod(),
+                ["XML_GET"] = new XmlGetMethod(),
+                ["FUNCEXIST"] = new FuncExistMethod(),
+                ["VAREXIST"] = new VarExistMethod(),
+                ["ISDEFINED"] = new IsDefinedMethod(),
+                ["ENUMFUNCBEGINSWITH"] = new EnumNameMethod(EnumNameMethod.EType.Function, EnumNameMethod.EAction.BeginsWith),
+                ["ENUMFUNCENDSWITH"] = new EnumNameMethod(EnumNameMethod.EType.Function, EnumNameMethod.EAction.EndsWith),
+                ["ENUMFUNCWITH"] = new EnumNameMethod(EnumNameMethod.EType.Function, EnumNameMethod.EAction.With),
+                ["ENUMVARBEGINSWITH"] = new EnumNameMethod(EnumNameMethod.EType.Variable, EnumNameMethod.EAction.BeginsWith),
+                ["ENUMVARENDSWITH"] = new EnumNameMethod(EnumNameMethod.EType.Variable, EnumNameMethod.EAction.EndsWith),
+                ["ENUMVARWITH"] = new EnumNameMethod(EnumNameMethod.EType.Variable, EnumNameMethod.EAction.With),
+                ["ENUMMACROBEGINSWITH"] = new EnumNameMethod(EnumNameMethod.EType.Macro, EnumNameMethod.EAction.BeginsWith),
+                ["ENUMMACROENDSWITH"] = new EnumNameMethod(EnumNameMethod.EType.Macro, EnumNameMethod.EAction.EndsWith),
+                ["ENUMMACROWITH"] = new EnumNameMethod(EnumNameMethod.EType.Macro, EnumNameMethod.EAction.With),
+                ["GETVAR"] = new GetVarMethod(),
+                ["GETVARS"] = new GetVarsMethod(),
+                ["SETVAR"] = new SetVarMethod(),
+                ["VARSETEX"] = new VarSetExMethod(),
+                ["ARRAYMSORTEX"] = new ArrayMultiSortExMethod(),
+                ["REGEXPMATCH"] = new RegexpMatchMethod(),
+                #endregion
+
+
+                #region EEで追加されたやつ
+                ["EXISTSOUND"] = new ExistSoundMethod(),
+                ["EXISTFUNCTION"] = new ExistFunctionMethod(),
+                //["GROTATE"] = new GraphicsRotateMethod(),
+                ["GDRAWGWITHROTATE"] = new GraphicsDrawGWithRotateMethod(),
+                ["GDRAWTEXT"] = new GraphicsDrawStringMethod(),
+                ["GGETFONT"] = new GraphicsStateStrMethod(),//("GGETFONT")
+                ["GGETFONTSIZE"] = new GraphicsStateMethod(),//("GGETFONTSIZE")
+                ["GGETFONTSTYLE"] = new GraphicsStateMethod(),
+                ["GGETTEXTSIZE"] = new GraphicsGetTextSizeMethod(),
+                //["GGETBRUSH"] = new GraphicsGetBrushMethod(),
+                #endregion
             };
 
 

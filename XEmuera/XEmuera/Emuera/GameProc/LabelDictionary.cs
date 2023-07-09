@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using XEmuera.Forms;
+using System.Windows.Forms;
 using MinorShift.Emuera.Sub;
 using MinorShift.Emuera.GameData;
 using MinorShift.Emuera.GameData.Variable;
+using System.Linq;
 
 namespace MinorShift.Emuera.GameProc
 {
@@ -14,6 +15,9 @@ namespace MinorShift.Emuera.GameProc
 	/// </summary>
 	internal sealed class LabelDictionary
 	{
+		#region EM_私家版_辞書獲得
+		public string[] NoneventKeys => noneventLabelDic.Keys.ToArray();
+		#endregion
 		public LabelDictionary()
 		{
 			Initialized = false;
@@ -40,12 +44,12 @@ namespace MinorShift.Emuera.GameProc
 		#region Initialized 前用
 		public FunctionLabelLine GetSameNameLabel(FunctionLabelLine point)
 		{
+			string id = point.LabelName;
+			if (!labelAtDic.ContainsKey(id))
+				return null;
 			if (point.IsError)
 				return null;
-			string id = point.LabelName;
-			if (!labelAtDic.TryGetValue(id, out var labelList))
-				return null;
-			//List<FunctionLabelLine> labelList = labelAtDic[id];
+			List<FunctionLabelLine> labelList = labelAtDic[id];
 			if (labelList.Count <= 1)
 				return null;
 			return labelList[0];
@@ -196,13 +200,13 @@ namespace MinorShift.Emuera.GameProc
 			point.FileIndex = currentFileCount;
 			count++;
 			string id = point.LabelName;
-			if (labelAtDic.TryGetValue(id, out var labelList))
+			if (labelAtDic.ContainsKey(id))
 			{
-				labelList.Add(point);
+				labelAtDic[id].Add(point);
 			}
 			else
 			{
-				labelList = new List<FunctionLabelLine>();
+				List<FunctionLabelLine> labelList = new List<FunctionLabelLine>();
 				labelList.Add(point);
 				labelAtDic.Add(id, labelList);
 			}

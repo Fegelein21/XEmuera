@@ -1,5 +1,4 @@
-﻿using SkiaSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -23,9 +22,8 @@ namespace MinorShift.Emuera.GameView
 		public virtual int Bottom { get { return Config.FontSize; } }
 		public abstract bool CanDivide { get; }
 		
-		public abstract void DrawTo(SKCanvas graph, int pointY, bool isSelecting, bool isBackLog, TextDrawingMode mode);
-
-		//public abstract void GDIDrawTo(int pointY, bool isSelecting, bool isBackLog);
+		public abstract void DrawTo(Graphics graph, int pointY, bool isSelecting, bool isBackLog, TextDrawingMode mode);
+		public abstract void GDIDrawTo(int pointY, bool isSelecting, bool isBackLog);
 
 		public abstract void SetWidth(StringMeasure sm, float subPixel);
 		public override string ToString()
@@ -41,7 +39,7 @@ namespace MinorShift.Emuera.GameView
 	/// </summary>
 	abstract class AConsoleColoredPart : AConsoleDisplayPart
 	{
-		public Color Color { get; set; }
+		protected Color Color { get; set; }
 		protected Color ButtonColor { get; set; }
 		protected bool colorChanged;
 	}

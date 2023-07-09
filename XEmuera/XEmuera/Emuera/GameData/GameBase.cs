@@ -4,7 +4,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
 using MinorShift.Emuera.Sub;
-using XEmuera;
 
 namespace MinorShift.Emuera.GameData
 {
@@ -21,9 +20,13 @@ namespace MinorShift.Emuera.GameData
 		public bool ScriptVersionDefined = false;
 		public Int64 ScriptCompatibleMinVersion = -1;
         public string Compatible_EmueraVer = "0.000.0.0";
+        #region EE_UPDATECHECK
+        public string UpdateCheckURL = "";
+		public string VersionName = "";
+        #endregion
 
-		//1.727 追加。Form.Text
-		public string ScriptWindowTitle = null;
+        //1.727 追加。Form.Text
+        public string ScriptWindowTitle = null;
 		public string ScriptVersionText
 		{
 			get
@@ -86,7 +89,7 @@ namespace MinorShift.Emuera.GameData
 		/// <returns>読み込み続行するなら真、エラー終了なら偽</returns>
 		public bool LoadGameBaseCsv(string basePath)
 		{
-            if (!FileUtils.Exists(ref basePath))
+            if (!File.Exists(basePath))
             {
                 return true;
             }
@@ -143,7 +146,6 @@ namespace MinorShift.Emuera.GameData
 						case "ウィンドウタイトル":
 							ScriptWindowTitle = tokens[1];
 							break;
-							
                         case "動作に必要なEmueraのバージョン":
                             Compatible_EmueraVer = tokens[1];
                             if (!Regex.IsMatch(Compatible_EmueraVer, @"^\d+\.\d+\.\d+\.\d+$"))
@@ -159,8 +161,16 @@ namespace MinorShift.Emuera.GameData
                                 return false;
                             }
                             break;
-					}
-				}
+                        #region EE_UPDATECHECK
+                        case "バージョン情報URL":
+							UpdateCheckURL = tokens[1];
+							break;
+						case "バージョン名":
+							VersionName = tokens[1];
+							break;
+                        #endregion
+                    }
+                }
 			}
 			catch
 			{

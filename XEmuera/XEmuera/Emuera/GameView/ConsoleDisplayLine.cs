@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using MinorShift._Library;
-using SkiaSharp;
-using XEmuera.Drawing;
+using System.Windows.Forms;
 
 namespace MinorShift.Emuera.GameView
 {
@@ -108,12 +107,10 @@ namespace MinorShift.Emuera.GameView
 			buttons = newButtons;
         }
 
-		public void Clear(Brush brush, SKCanvas graph, int pointY)
+		public void Clear(Brush brush, Graphics graph, int pointY)
 		{
             Rectangle rect = new Rectangle(0, pointY, Config.WindowX, Config.LineHeight);
-			//graph.FillRectangle(brush, rect);
-
-			DrawBitmapUtils.DrawRect(graph, brush, rect);
+			graph.FillRectangle(brush, rect);
 		}
 
 		//public ConsoleButtonString GetPointingButton(int pointX)
@@ -134,16 +131,16 @@ namespace MinorShift.Emuera.GameView
 		//	return null;
 		//}
 
-		public void DrawTo(SKCanvas graph, int pointY, bool isBackLog, bool force, TextDrawingMode mode)
+		public void DrawTo(Graphics graph, int pointY, bool isBackLog, bool force, TextDrawingMode mode)
 		{
             foreach (ConsoleButtonString button in buttons)
                 button.DrawTo(graph, pointY, isBackLog, mode);
 		}
 		
-		//public void GDIDrawTo(int pointY, bool isBackLog)
-		//{
-		//	foreach (ConsoleButtonString button in buttons)
-		//		button.GDIDrawTo(pointY, isBackLog);
+		public void GDIDrawTo(int pointY, bool isBackLog)
+		{
+			foreach (ConsoleButtonString button in buttons)
+				button.GDIDrawTo(pointY, isBackLog);
 			//1819 毎回全消去するので穴埋め処理は不要になった
 			//int pointX = 0;
 			//foreach (ConsoleButtonString button in buttons)
@@ -165,7 +162,7 @@ namespace MinorShift.Emuera.GameView
 			//	Rectangle rect = new Rectangle(pointX, pointY, Config.WindowX - pointX, Config.LineHeight);
 			//	GDI.FillRectBGColor(rect);
 			//}
-		//}
+		}
 		
 		public override string ToString()
 		{

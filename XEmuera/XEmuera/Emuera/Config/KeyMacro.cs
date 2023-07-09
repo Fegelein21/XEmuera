@@ -2,7 +2,7 @@
 using System.IO;
 using MinorShift.Emuera.Sub;
 using System;
-using XEmuera.Forms;
+using System.Windows.Forms;
 namespace MinorShift.Emuera
 {
 	internal static class KeyMacro

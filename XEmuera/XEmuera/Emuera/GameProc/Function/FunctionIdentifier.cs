@@ -212,7 +212,9 @@ namespace MinorShift.Emuera.GameProc.Function
 
 			addFunction(FunctionCode.PUTFORM, argb[FunctionArgType.FORM_STR_NULLABLE], METHOD_SAFE);//@SAVEINFO関数でのみ使用可能。PRINTFORMと同様の書式でセーブデータに概要をつける。
 			addFunction(FunctionCode.QUIT, argb[FunctionArgType.VOID]);//ゲームを終了
-			addFunction(FunctionCode.OUTPUTLOG, argb[FunctionArgType.VOID]);
+            #region EE_OUTPUTLOG
+            addFunction(FunctionCode.OUTPUTLOG, argb[FunctionArgType.STR_EXPRESSION_NULLABLE]);
+			#endregion
 
 			addFunction(FunctionCode.BEGIN, new BEGIN_Instruction());//システム関数の実行。実行するとCALLの呼び出し元などを忘れてしまう。
 
@@ -386,6 +388,22 @@ namespace MinorShift.Emuera.GameProc.Function
 			addFunction(FunctionCode.PRINTCPERLINE, argb[FunctionArgType.SP_GETINT], METHOD_SAFE | EXTENDED);//よく考えたら引数の仕様違うや
 			addFunction(FunctionCode.SAVENOS, argb[FunctionArgType.SP_GETINT], METHOD_SAFE | EXTENDED);//引数の仕様が違うので(ry
 			addFunction(FunctionCode.ENCODETOUNI, argb[FunctionArgType.FORM_STR_NULLABLE], METHOD_SAFE | EXTENDED);//式中関数版を追加。処理が全然違う
+            #endregion
+
+            #region EE
+            addFunction(FunctionCode.PLAYSOUND, new PLAYSOUND_Instruction());
+			addFunction(FunctionCode.STOPSOUND, new STOPSOUND_Instruction());
+			addFunction(FunctionCode.PLAYBGM, new PLAYBGM_Instruction());
+            addFunction(FunctionCode.STOPBGM, new STOPBGM_Instruction());
+            addFunction(FunctionCode.SETSOUNDVOLUME, new SETSOUNDVOLUME_Instruction());
+            addFunction(FunctionCode.SETBGMVOLUME, new SETBGMVOLUME_Instruction());
+			addFunction(FunctionCode.TRYCALLF, new TRYCALLF_Instruction(false));
+			addFunction(FunctionCode.TRYCALLFORMF, new TRYCALLF_Instruction(true));
+			addFunction(FunctionCode.UPDATECHECK, new UPDATECHECK_Instruction());
+			addFunction(FunctionCode.QUIT_AND_RESTART, argb[FunctionArgType.VOID]);//ゲームを終了
+			addFunction(FunctionCode.FORCE_QUIT, argb[FunctionArgType.VOID]);
+			addFunction(FunctionCode.FORCE_QUIT_AND_RESTART, argb[FunctionArgType.VOID]);
+			addFunction(FunctionCode.FORCE_BEGIN, new FORCE_BEGIN_Instruction());//強制BEGIN
 			#endregion
 
 			Dictionary<string, FunctionMethod> methodList = FunctionMethodCreator.GetMethodList();
@@ -438,29 +456,29 @@ namespace MinorShift.Emuera.GameProc.Function
 		internal static string getMatchFunction(FunctionCode func)
 		{
             if (funcMatch.TryGetValue(func, out string ret))
-                return ret;
+			return ret;
             else
                 return null;
-        }
+		}
 
 
 		internal static FunctionCode getParentFunc(FunctionCode func)
 		{
-            //1755 どうもenum.ToString()が遅いようなので先に逆引き辞書を作ることに
+			//1755 どうもenum.ToString()が遅いようなので先に逆引き辞書を作ることに
             if (funcParent.TryGetValue(func, out FunctionCode ret))
-                return ret;
+			return ret;
             else
                 return FunctionCode.__NULL__;
-            //if (funcMatch.ContainsValue(func.ToString()))
-            //{
-            //    foreach (FunctionCode pFunc in funcMatch.Keys)
-            //    {
-            //        if (funcMatch[pFunc] == func.ToString())
-            //            return pFunc;
-            //    }
-            //}
-            //return FunctionCode.__NULL__;
-        }
+			//if (funcMatch.ContainsValue(func.ToString()))
+			//{
+			//    foreach (FunctionCode pFunc in funcMatch.Keys)
+			//    {
+			//        if (funcMatch[pFunc] == func.ToString())
+			//            return pFunc;
+			//    }
+			//}
+			//return FunctionCode.__NULL__;
+		}
 		#endregion
 
 		private FunctionIdentifier(string name, FunctionCode code, AbstractInstruction instruction)

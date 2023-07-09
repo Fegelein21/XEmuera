@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Text;
-using XEmuera.Forms;
+using System.Windows.Forms;
 using System.IO;
 using MinorShift._Library;
 using MinorShift.Emuera.Sub;
@@ -14,12 +14,6 @@ using MinorShift.Emuera.Forms;
 using MinorShift.Emuera.GameData.Expression;
 using MinorShift.Emuera.GameProc.Function;
 using MinorShift.Emuera.Content;
-using System.Timers;
-using SkiaSharp.Views.Forms;
-using XEmuera.Drawing;
-using SkiaSharp;
-using XEmuera;
-using Xamarin.Essentials;
 
 namespace MinorShift.Emuera.GameView
 {
@@ -77,13 +71,13 @@ namespace MinorShift.Emuera.GameView
 
 			timer = new Timer();
 			timer.Enabled = false;
-			timer.Elapsed += tickTimer;
+			timer.Tick += new EventHandler(tickTimer);
 			timer.Interval = 10;
 			CBG_Clear();//文字列描画用ダミー追加
 
 			redrawTimer = new Timer();
 			redrawTimer.Enabled = false;//TODO:1824アニメ用再描画タイマー有効化関数の追加
-			redrawTimer.Elapsed += tickRedrawTimer;
+			redrawTimer.Tick += new EventHandler(tickRedrawTimer);
 			redrawTimer.Interval = 10;
         }
 #region 1823 cbg関連
@@ -223,8 +217,8 @@ namespace MinorShift.Emuera.GameView
 			cbgList.Sort();
 			return true;
 		}
-		public int ClientWidth { get { return DisplayUtils.PicBoxWidth; } }
-		public int ClientHeight { get { return DisplayUtils.PicBoxHeight; } }
+		public int ClientWidth { get { return window.MainPicBox.Width; } }
+		public int ClientHeight { get { return window.MainPicBox.Height; } }
 #endregion
 
 		const string ErrorButtonsText = "__openFileWithDebug__";
@@ -232,15 +226,13 @@ namespace MinorShift.Emuera.GameView
 
 		MinorShift.Emuera.GameProc.Process emuera;
 		ConsoleState state = ConsoleState.Initializing;
-		//public bool Enabled { get { return window.Created; } }
-		public bool Enabled { get { return true; } }
+		public bool Enabled { get { return window.Created; } }
 
 		/// <summary>
 		/// 現在、Emueraがアクティブかどうか
 		/// </summary>
 		internal bool IsActive
-		//{ get { return !(window == null || !window.Created || Form.ActiveForm == null); } }
-		{ get { return true; } }
+		{ get { return !(window == null || !window.Created || Form.ActiveForm == null); } }
 
 		/// <summary>
 		/// スクリプトが継続中かどうか
@@ -255,6 +247,15 @@ namespace MinorShift.Emuera.GameView
 				return (state == ConsoleState.Running || runningERBfromMemory);
 			}
 		}
+		#region EM_私家版_INPUT系機能拡張
+		internal bool IsWaintingInputWithMouse
+		{
+			get
+			{
+				return (state == ConsoleState.WaitInput && inputReq.MouseInput);
+			}
+		}
+		#endregion
 
 		internal bool IsInProcess
 		{
@@ -277,15 +278,21 @@ namespace MinorShift.Emuera.GameView
 				return state == ConsoleState.Error;
 			}
 		}
-
-		internal bool IsWaitingEnterKey
+        #region EE_連続FORCE_QUIT_AND_RESTAR対策
+        internal bool IsWaitingEnterKey
 		{
 			get
 			{
 				if ((state == ConsoleState.Quit) || (state == ConsoleState.Error))
+				{
+					GlobalStatic.ForceQuitAndRestart = false;
 					return true;
+				}
 				if(state == ConsoleState.WaitInput)
+                {
+					GlobalStatic.ForceQuitAndRestart = false;
 					return (inputReq.InputType == InputType.AnyKey || inputReq.InputType == InputType.EnterKey);
+				}
 				return false;
 			}
 		}
@@ -294,11 +301,13 @@ namespace MinorShift.Emuera.GameView
         {
             get
 			{
+				GlobalStatic.ForceQuitAndRestart = false;
 				return (state == ConsoleState.WaitInput && inputReq.InputType == InputType.AnyKey);
             }
         }
+		#endregion
 
-        internal bool IsWaintingOnePhrase
+		internal bool IsWaintingOnePhrase
         {
             get
             {
@@ -306,7 +315,7 @@ namespace MinorShift.Emuera.GameView
             }
         }
 
-		internal bool IsRunningTimer
+        internal bool IsRunningTimer
 		{
 			get
 			{
@@ -348,11 +357,11 @@ namespace MinorShift.Emuera.GameView
 			GlobalStatic.MainWindow = window;
             emuera = new GameProc.Process(this);
 			GlobalStatic.Process = emuera;
-			//if (Program.DebugMode && Config.DebugShowWindow)
-			//{
-			//	OpenDebugDialog();
-			//	window.Focus();
-			//}
+			if (Program.DebugMode && Config.DebugShowWindow)
+			{
+				OpenDebugDialog();
+				window.Focus();
+			}
 			ClearDisplay();
 			if (!emuera.Initialize())
 			{
@@ -364,12 +373,33 @@ namespace MinorShift.Emuera.GameView
 			}
 			callEmueraProgram("");
 			RefreshStrings(true);
-
-			RefreshQuickButton();
 		}
 		
 
         public void Quit() { state = ConsoleState.Quit; }
+        #region EE_FORCE_QUIT系
+        public void ForceQuit()
+		{
+			
+			if (GlobalStatic.ForceQuitAndRestart == true)
+			{
+				DialogResult result = MessageBox.Show($"FORCE_QUIT_AND_RESTARTが入力待ちを挟まず連続実行されました。再起動せず終了しますか？",
+					"FORCE_QUIT_AND_RESTART",
+					MessageBoxButtons.YesNo,
+					MessageBoxIcon.None,
+					MessageBoxDefaultButton.Button1
+					);
+				if (result == DialogResult.Yes)
+				{
+					Program.Reboot = false;
+					throw new CodeEE("FORCE_QUIT_AND_RESTARTが連続実行されました");
+				}
+			}
+			GlobalStatic.ForceQuitAndRestart = true;
+			window.Close();
+			return;
+		}
+		#endregion
 		public void ThrowTitleError(bool error)
 		{
 			state = ConsoleState.Error;
@@ -378,8 +408,8 @@ namespace MinorShift.Emuera.GameView
 		}
 		public void ThrowError(bool playSound)
 		{
-			//if (playSound)
-			//	System.Media.SystemSounds.Hand.Play();
+			if (playSound)
+				System.Media.SystemSounds.Hand.Play();
 			forceUpdateGeneration();
 			UseUserStyle = false;
 			PrintFlush(false);
@@ -471,7 +501,7 @@ namespace MinorShift.Emuera.GameView
 			RefreshStrings(true);
 			state = ConsoleState.Sleep;
 			emuera.UpdateCheckInfiniteLoopState();
-			App.DoEvents();
+			System.Windows.Forms.Application.DoEvents();
 			if (time > 0)
 				System.Threading.Thread.Sleep(time);
 			////DoEvents()の間にウインドウが閉じられたらおしまい。
@@ -648,29 +678,26 @@ namespace MinorShift.Emuera.GameView
                 return;
 			stopTimer();
             isTimeout = true;
-
-			ClearQuickButton();
-
 			if(IsWaitingPrimitive)
 			{
 				//callEmueraProgramは呼び出し先で行う。
-				InputMouseKey(4, 0, 0, 0,0);
-				return;
+				#region EE_INPUTMOUSEKEY拡張
+				InputMouseKey(4, 0, 0, 0, 0, 0);
+                #endregion
+                return;
 			}
 			if (inputReq.DisplayTime)
 				changeLastLine(inputReq.TimeUpMes);
 			else if (inputReq.TimeUpMes != null)
 				PrintSingleLine(inputReq.TimeUpMes);
 			callEmueraProgram("");//ディフォルト入力の処理はcallEmueraProgram側で
-			//if (state == ConsoleState.WaitInput && inputReq.NeedValue)
-			//{
-			//	Point point = window.MainPicBox.PointToClient(Control.MousePosition);
-			//	if (window.MainPicBox.ClientRectangle.Contains(point))
-			//		MoveMouse(point);
-			//}
+			if (state == ConsoleState.WaitInput && inputReq.NeedValue)
+			{
+				Point point = window.MainPicBox.PointToClient(Control.MousePosition);
+				if (window.MainPicBox.ClientRectangle.Contains(point))
+					MoveMouse(point);
+			}
 			RefreshStrings(true);
-
-			RefreshQuickButton();
 		}
 
         public void forceStopTimer()
@@ -706,8 +733,10 @@ namespace MinorShift.Emuera.GameView
                 PrintError("emueraのエラー：プログラムの状態を特定できません");
 			}
 			if (state == ConsoleState.Error && !noOutputLog)
-				OutputLog(Program.ExeDir + "emuera.log");
-			PrintFlush(false);
+                #region EE_OUTPUTLOG
+                OutputSystemLog(Program.ExeDir + "emuera.log");
+	            #endregion
+            PrintFlush(false);
 			//1819 Refreshは呼び出し側で行う
 			//RefreshStrings(false);
 			newGeneration();
@@ -766,10 +795,12 @@ namespace MinorShift.Emuera.GameView
 			//clientPointをクライアント左下基準の座標に置き換え
 			Point clientPoint = point;
 			clientPoint.Y = point.Y - ClientHeight;
-			InputMouseKey(2, delta, clientPoint.X, clientPoint.Y, 0);
-		}
+            #region EE_INPUTMOUSEKEY拡張
+            InputMouseKey(2, delta, clientPoint.X, clientPoint.Y, 0, 0);
+            #endregion
+        }
 
-		internal void MouseDown(Point point, SKMouseButton button)
+        internal void MouseDown(Point point, MouseButtons button)
 		{
 			if (!IsWaitingPrimitive)
 				return;
@@ -785,7 +816,7 @@ namespace MinorShift.Emuera.GameView
 				mapPoint.Y = clientPoint.Y + cbgButtonMap.Height;
 				if(mapPoint.X >= 0 && mapPoint.Y >= 0 && mapPoint.X < cbgButtonMap.Width && mapPoint.Y < cbgButtonMap.Height)
 				{
-					Color c = DisplayUtils.ToColor(cbgButtonMap.Bitmap.GetPixel(mapPoint.X, mapPoint.Y));
+					Color c = cbgButtonMap.Bitmap.GetPixel(mapPoint.X, mapPoint.Y);
 					if(c.A == 255)
 					{
 						buttonNum = c.ToArgb() & 0xFFFFFF;
@@ -793,32 +824,45 @@ namespace MinorShift.Emuera.GameView
 				}
 
 			}
-			InputMouseKey(1, (int)button, clientPoint.X, clientPoint.Y, buttonNum);
-		}
+			#region EE_INPUTMOUSEKEY拡張
+			//ボタン押された場合にRESULT:5にボタンの値が代入される
+			if (selectingButton != null)
+			{
+				InputMouseKey(1, (int)button, clientPoint.X, clientPoint.Y, buttonNum, selectingButton.Input);
+			}
+			else
+			{
+				InputMouseKey(1, (int)button, clientPoint.X, clientPoint.Y, buttonNum, 0);
+			}
+            #endregion
+        }
 
-		//1823 Key入力を捕まえる
-		//internal void PressPrimitiveKey(Keys keycode, Keys keydata, Keys keymod)
-		//{
-		//	if (IsWaitingPrimitive)
-		//		InputMouseKey(3, (int)keycode, (int)keydata, 0, 0);
-		//}
-
-		//1823 Key入力を捕まえる
-		internal void InputMouseKey(int type, int result1, int result2, int result3, int result4)
+        //1823 Key入力を捕まえる
+        internal void PressPrimitiveKey(Keys keycode, Keys keydata, Keys keymod)
 		{
-			emuera.InputResult5(type, result1, result2, result3, result4);
+			if (IsWaitingPrimitive)
+				#region EE_INPUTMOUSEKEY拡張
+				InputMouseKey(3, (int)keycode, (int)keydata, 0, 0, 0);
+	            #endregion
+        }
+
+		//1823 Key入力を捕まえる
+		#region EE_INPUTMOUSEKEY拡張
+		internal void InputMouseKey(int type, int result1, int result2, int result3, int result4, long result5)
+		{
+			emuera.InputResult5(type, result1, result2, result3, result4, result5);
 
 			inProcess = true;
 			try
 			{
 				//1823 Escキーもマクロも右クリックも不可。単純に押されたキーを送るのみ。
 				callEmueraProgram(null);
-				//if (state == ConsoleState.WaitInput && inputReq.NeedValue)
-				//{
-				//	Point point = window.MainPicBox.PointToClient(Control.MousePosition);
-				//	if (window.MainPicBox.ClientRectangle.Contains(point))
-				//		MoveMouse(point);
-				//}
+				if (state == ConsoleState.WaitInput && inputReq.NeedValue)
+				{
+					Point point = window.MainPicBox.PointToClient(Control.MousePosition);
+					if (window.MainPicBox.ClientRectangle.Contains(point))
+						MoveMouse(point);
+				}
 			}
 			finally
 			{
@@ -826,12 +870,10 @@ namespace MinorShift.Emuera.GameView
 			}
 			RefreshStrings(true);
 		}
-
-		public void PressEnterKey(bool keySkip, string str, bool changedByMouse)
+        #endregion
+        public void PressEnterKey(bool keySkip, string str, bool changedByMouse)
 		{
 			MesSkip = keySkip;
-			ClearQuickButton();
-
 			if ((state == ConsoleState.Running) || (state == ConsoleState.Initializing))
 				return;
 			else if ((state == ConsoleState.Quit))
@@ -908,7 +950,7 @@ namespace MinorShift.Emuera.GameView
 						callEmueraProgram("");
 						RefreshStrings(false);
 						//DoEventを呼ばないと描画処理すらまったく行われない
-						App.DoEvents();
+						Application.DoEvents();
 						//EscがマクロストップかつEscがスキップ開始だからEscでスキップを止められても即開始しちゃったりするからあんまり意味ないよね
 						//if (KillMacro)
 						//	goto endMacro;
@@ -917,7 +959,7 @@ namespace MinorShift.Emuera.GameView
 					if (state != ConsoleState.WaitInput)
 						break;
 					//マクロループ時は待ち処理が起こらないのでここでシステムキューを捌く
-					App.DoEvents();
+					Application.DoEvents();
 #if DEBUG
 					if (state != ConsoleState.WaitInput || inputReq == null)
 						throw new ExeEE("");
@@ -929,16 +971,14 @@ namespace MinorShift.Emuera.GameView
 			finally
 			{
 				inProcess = false;
-
-				RefreshQuickButton();
 			}
 			endMacro:
-			//if(state == ConsoleState.WaitInput && inputReq.NeedValue)
-			//{
-			//	Point point = window.MainPicBox.PointToClient(Control.MousePosition);
-			//	if (window.MainPicBox.ClientRectangle.Contains(point))
-			//		MoveMouse(point);
-			//}
+			if(state == ConsoleState.WaitInput && inputReq.NeedValue)
+			{
+				Point point = window.MainPicBox.PointToClient(Control.MousePosition);
+				if (window.MainPicBox.ClientRectangle.Contains(point))
+					MoveMouse(point);
+			}
 			RefreshStrings(true);
 		}
 
@@ -987,7 +1027,7 @@ namespace MinorShift.Emuera.GameView
 			}
 			catch (System.ComponentModel.Win32Exception)
 			{
-				//System.Media.SystemSounds.Hand.Play();
+				System.Media.SystemSounds.Hand.Play();
 				PrintError("エディタを開くことができませんでした");
 				forceUpdateGeneration();
 			}
@@ -1105,8 +1145,10 @@ namespace MinorShift.Emuera.GameView
 			}
 			else if (com.Equals("OUTPUT", sc) || com.Equals("OUTPUTLOG", sc))
 			{
-				this.OutputLog(Program.ExeDir + "emuera.log");
-				return;
+				#region EE_OUTPUTLOG
+				this.OutputSystemLog(Program.ExeDir + "emuera.log");
+                #endregion
+                return;
 			}
 			else if ((com.Equals("QUIT", sc)) || (com.Equals("EXIT", sc)))
 			{
@@ -1115,7 +1157,7 @@ namespace MinorShift.Emuera.GameView
 			}
 			else if (com.Equals("CONFIG", sc))
 			{
-				//window.ShowConfigDialog();
+				window.ShowConfigDialog();
 				return;
 			}
 			else if (com.Equals("DEBUG", sc))
@@ -1126,7 +1168,7 @@ namespace MinorShift.Emuera.GameView
 					RefreshStrings(true);
 					return;
 				}
-				//OpenDebugDialog();
+				OpenDebugDialog();
 			}
 			else
 			{
@@ -1162,24 +1204,24 @@ namespace MinorShift.Emuera.GameView
 		string debugTitle = null;
 		public void SetWindowTitle(string str)
 		{
-			//if (Program.DebugMode)
-			//{
-			//	debugTitle = str;
-			//	window.Text = str + " (Debug Mode)";
-			//}
-			//else
-			//	window.Text = str;
+			if (Program.DebugMode)
+			{
+				debugTitle = str;
+				window.Text = str + " (Debug Mode)";
+			}
+			else
+				window.Text = str;
 		}
 
         public void SetEmueraVersionInfo(string str)
         {
-            //window.TextBox.Text = str;
+            window.TextBox.Text = str;
         }
 		public string GetWindowTitle()
 		{
 			if (Program.DebugMode && debugTitle != null)
 				return debugTitle;
-			return window.Title;
+			return window.Text;
 		}
 
 
@@ -1226,14 +1268,10 @@ namespace MinorShift.Emuera.GameView
 				//色変化が速くなりすぎないように一定時間以内の再呼び出しは強制待ちにする
 				while (sec < 200)
 				{
-					App.DoEvents();
+					Application.DoEvents();
 					sec = WinmmTimer.TickCount - lastBgColorChange;
 				}
-				//window.TextBox.BackColor = this.bgColor;
-				MainThread.BeginInvokeOnMainThread(() =>
-				{
-					window.BackgroundColor = this.bgColor;
-				});
+				window.TextBox.BackColor = this.bgColor;
 				lastBgColorChange = WinmmTimer.TickCount;
 			}
 			verticalScrollBarUpdate();
@@ -1241,14 +1279,12 @@ namespace MinorShift.Emuera.GameView
 
 		}
 
-		public System.Threading.SpinLock displayLineListSpinLock = new System.Threading.SpinLock();
-
 		/// <summary>
 		/// 1818以前のRefreshStringsの後半とm_RefreshStringsを融合
 		/// 全面Clear法のみにしたのでさっぱりした。ダブルバッファリングはOnPaintが勝手にやるはず
 		/// </summary>
 		/// <param name="graph"></param>
-		public void OnPaint(SKCanvas graph)
+		public void OnPaint(Graphics graph)
 		{
 
 			//デバッグ用。描画が超重い環境を想定1
@@ -1258,47 +1294,41 @@ namespace MinorShift.Emuera.GameView
 			//OnPaintからgraphをもらった直後だから大丈夫だとは思うけど一応
 			if (!this.Enabled)
 				return;
-
-			bool lockTaken = false;
-			displayLineListSpinLock.Enter(ref lockTaken);
-
 			//1824 アニメスプライト用・現在フレームの時間を決定
 			WinmmTimer.FrameStart();
 			lastUpdate = WinmmTimer.CurrentFrameTime;//WinmmTimer.TickCount;
 
 			bool isBackLog = window.ScrollBar.Value != window.ScrollBar.Maximum;
-			//int pointY = window.MainPicBox.Height - Config.LineHeight;
-			int pointY = ClientHeight - DisplayUtils.HeightOffset;
+			int pointY = window.MainPicBox.Height - Config.LineHeight;
 
 
-			int bottomLineNo = (int)window.ScrollBar.Value - 1;
+			int bottomLineNo = window.ScrollBar.Value - 1;
 			if (displayLineList.Count - 1 < bottomLineNo)
 				bottomLineNo = displayLineList.Count - 1;//1820 この処理不要な気がするけどエラー報告があったので入れとく
 			int topLineNo = bottomLineNo - (pointY / Config.LineHeight + 1);
 			if (topLineNo < 0)
 				topLineNo = 0;
 			pointY -= (bottomLineNo - topLineNo) * Config.LineHeight;
-
-			//if (Config.TextDrawingMode == TextDrawingMode.WINAPI)
-			//{
-			//	GDI.GDIStart(graph, this.bgColor);
-			//	GDI.FillRect(new Rectangle(0, 0, window.MainPicBox.Width, window.MainPicBox.Height));
-			//	//for (int i = bottomLineNo; i >= topLineNo; i--)
-			//	//{
-			//	//	displayLineList[i].GDIDrawTo(pointY, isBackLog);
-			//	//	pointY -= Config.LineHeight;
-			//	//}
-			//	//1820a12 上から下へ描画する方向へ変更
-			//	for (int i = topLineNo; i <= bottomLineNo; i++)
-			//	{
-			//		displayLineList[i].GDIDrawTo(pointY, isBackLog);
-			//		pointY += Config.LineHeight;
-			//	}
-			//	GDI.GDIEnd(graph);
-			//}
-			//else
-			//{
-				graph.Clear(DisplayUtils.ToSKColor(this.bgColor));
+			if (Config.TextDrawingMode == TextDrawingMode.WINAPI)
+			{
+				GDI.GDIStart(graph, this.bgColor);
+				GDI.FillRect(new Rectangle(0, 0, window.MainPicBox.Width, window.MainPicBox.Height));
+				//for (int i = bottomLineNo; i >= topLineNo; i--)
+				//{
+				//	displayLineList[i].GDIDrawTo(pointY, isBackLog);
+				//	pointY -= Config.LineHeight;
+				//}
+				//1820a12 上から下へ描画する方向へ変更
+				for (int i = topLineNo; i <= bottomLineNo; i++)
+				{
+					displayLineList[i].GDIDrawTo(pointY, isBackLog);
+					pointY += Config.LineHeight;
+				}
+				GDI.GDIEnd(graph);
+			}
+			else
+			{
+				graph.Clear(this.bgColor);
 				//1823 cbg追加
 				for (int j = 0; j < cbgList.Count; j++)
 				{
@@ -1310,8 +1340,6 @@ namespace MinorShift.Emuera.GameView
 							displayLineList[i].DrawTo(graph, pointY, isBackLog, true, Config.TextDrawingMode);
 							pointY += Config.LineHeight;
 						}
-						if (lockTaken)
-							displayLineListSpinLock.Exit();
 						continue;
 					}
 					ASprite img = cbgList[j].Img;
@@ -1319,70 +1347,69 @@ namespace MinorShift.Emuera.GameView
 						img = cbgList[j].ImgB;
 					if (img == null || !img.IsCreated)
 						continue;
-					//img.GraphicsDraw(graph, new Point(cbgList[j].x, cbgList[j].y + window.MainPicBox.Height - img.DestBaseSize.Height));
-					img.GraphicsDraw(graph, new Point(cbgList[j].x, cbgList[j].y + ClientHeight - img.DestBaseSize.Height));
+					img.GraphicsDraw(graph, new Point(cbgList[j].x, cbgList[j].y + window.MainPicBox.Height - img.DestBaseSize.Height));
 					//Bitmap bmp = img.Bitmap;
 					//graph.DrawImage(bmp,
 					//	new Rectangle(cbgList[j].x + img.DestBasePosition.X, window.MainPicBox.Height - img.SrcRectangle.Height + cbgList[j].y + img.DestBasePosition.Y, img.SrcRectangle.Width, img.SrcRectangle.Height),
 					//	img.SrcRectangle, GraphicsUnit.Pixel);
 				}
 
-			//}
+			}
 			//ToolTip描画
-			//if (lastPointingString != pointingString || lastSelectingCBGButtonInt != selectingCBGButtonInt)
-			//{
-			//	if (tooltipUsed)
-			//		window.ToolTip.RemoveAll();
-			//	string title = null;
-			//	if (pointingString != null)
-			//		title = pointingString.Title;
-			//	else if (selectingCBGButtonInt > 0)
-			//	{
-			//		foreach (var cbg in cbgList)
-			//		{
-			//			if (!cbg.isButton || cbg.buttonValue != selectingCBGButtonInt)
-			//				continue;
-			//			if (string.IsNullOrEmpty(cbg.tooltipString))
-			//				continue;
-			//			title = cbg.tooltipString;
-			//			break;
-			//		}
-			//	}
-			//	if (!string.IsNullOrEmpty(title))
-			//	{
-			//		if (tooltip_duration == 0)
-			//			window.ToolTip.SetToolTip(window.MainPicBox, title);
-			//		else
-			//		{
-			//			if (window.ToolTip.InitialDelay == 0)
-			//			{
-			//				Point mousePos = window.MainPicBox.PointToClient(MainWindow.MousePosition);
-			//				window.ToolTip.Show(title, window.MainPicBox, new Point(mousePos.X, mousePos.Y + 18), tooltip_duration);
-			//			}
-			//			else
-			//			{
-			//				System.Threading.SynchronizationContext context = System.Threading.SynchronizationContext.Current;
-			//				System.Threading.Tasks.Task.Run(async () =>
-			//				{
-			//					ConsoleButtonString savedPointingString = pointingString;
-			//					await System.Threading.Tasks.Task.Delay(window.ToolTip.InitialDelay);
-			//					context.Post((state) =>
-			//					{
-			//						MoveMouse(GetMousePosition());
-			//						if (lastPointingString == savedPointingString)
-			//						{
-			//							Point mousePos = window.MainPicBox.PointToClient(MainWindow.MousePosition);
-			//							window.ToolTip.Show(title, window.MainPicBox, new Point(mousePos.X, mousePos.Y + 18), tooltip_duration);
-			//						}
-			//					}, null);
-			//				});
-			//			}
-			//		}
-			//		tooltipUsed = true;
-			//	}
-			//	lastPointingString = pointingString;
-			//	lastSelectingCBGButtonInt = selectingCBGButtonInt;
-			//}
+			if (lastPointingString != pointingString || lastSelectingCBGButtonInt != selectingCBGButtonInt)
+			{
+				if (tooltipUsed)
+					window.ToolTip.RemoveAll();
+				string title = null;
+				if (pointingString != null)
+					title = pointingString.Title;
+				else if (selectingCBGButtonInt > 0)
+				{
+					foreach (var cbg in cbgList)
+					{
+						if (!cbg.isButton || cbg.buttonValue != selectingCBGButtonInt)
+							continue;
+						if (string.IsNullOrEmpty(cbg.tooltipString))
+							continue;
+						title = cbg.tooltipString;
+						break;
+					}
+				}
+				if (!string.IsNullOrEmpty(title))
+				{
+                    if (tooltip_duration == 0)
+						window.ToolTip.SetToolTip(window.MainPicBox, title);
+                    else
+                    {
+						if (window.ToolTip.InitialDelay == 0)
+						{
+							Point mousePos = window.MainPicBox.PointToClient(MainWindow.MousePosition);
+							window.ToolTip.Show(title, window.MainPicBox, new Point(mousePos.X, mousePos.Y + 18), tooltip_duration);
+						}
+						else
+						{
+							System.Threading.SynchronizationContext context = System.Threading.SynchronizationContext.Current;
+							System.Threading.Tasks.Task.Run(async () =>
+							{
+								ConsoleButtonString savedPointingString = pointingString;
+								await System.Threading.Tasks.Task.Delay(window.ToolTip.InitialDelay);
+								context.Post((state) =>
+								{
+									MoveMouse(GetMousePosition());
+									if (lastPointingString == savedPointingString)
+									{
+										Point mousePos = window.MainPicBox.PointToClient(MainWindow.MousePosition);
+										window.ToolTip.Show(title, window.MainPicBox, new Point(mousePos.X, mousePos.Y + 18), tooltip_duration);
+									}
+								}, null);
+							});
+						}
+					}
+					tooltipUsed = true;
+				}
+				lastPointingString = pointingString;
+				lastSelectingCBGButtonInt = selectingCBGButtonInt;
+			}
 			if (isBackLog)
 				lastDrawnLineNo = -1;
 			else
@@ -1401,19 +1428,19 @@ namespace MinorShift.Emuera.GameView
 
 		public void SetToolTipColor(Color foreColor, Color backColor)
 		{
-			//window.ToolTip.ForeColor = foreColor;
-			//window.ToolTip.BackColor = backColor;
+			window.ToolTip.ForeColor = foreColor;
+			window.ToolTip.BackColor = backColor;
 
 		}
 		public void SetToolTipDelay(int delay)
 		{
-			//window.ToolTip.InitialDelay = delay;
+			window.ToolTip.InitialDelay = delay;
 		}
 
         int tooltip_duration = 0;
         public void SetToolTipDuration(int duration)
         {
-            //tooltip_duration = duration;
+            tooltip_duration = duration;
         }
 
 
@@ -1431,10 +1458,10 @@ namespace MinorShift.Emuera.GameView
         #endregion
 
         #region DebugMode系
-		//DebugDialog dd = null;
-		//public DebugDialog DebugDialog { get { return dd; } }
-		//StringBuilder dConsoleLog = new StringBuilder("");
-		//public string DebugConsoleLog { get { return dConsoleLog.ToString(); } }
+        DebugDialog dd = null;
+		public DebugDialog DebugDialog { get { return dd; } }
+		StringBuilder dConsoleLog = new StringBuilder("");
+		public string DebugConsoleLog { get { return dConsoleLog.ToString(); } }
 		List<string> dTraceLogList = new List<string>();
 #pragma warning disable CS0414 // フィールド 'EmueraConsole.dTraceLogChanged' が割り当てられていますが、値は使用されていません。
 		bool dTraceLogChanged = true;
@@ -1467,43 +1494,43 @@ namespace MinorShift.Emuera.GameView
 		}
 		public void OpenDebugDialog()
 		{
-			//if (!Program.DebugMode)
-			//	return;
-			//if (dd != null)
-			//{
-			//	if (dd.Created)
-			//	{
-			//		dd.Focus();
-			//		return;
-			//	}
-			//	else
-			//	{
-			//		dd.Dispose();
-			//		dd = null;
-			//	}
-			//}
-			//dd = new DebugDialog();
-			//dd.SetParent(this, emuera);
-			//dd.Show();
+			if (!Program.DebugMode)
+				return;
+			if (dd != null)
+			{
+				if (dd.Created)
+				{
+					dd.Focus();
+					return;
+				}
+				else
+				{
+					dd.Dispose();
+					dd = null;
+				}
+			}
+			dd = new DebugDialog();
+			dd.SetParent(this, emuera);
+			dd.Show();
 		}
 
 		public void DebugPrint(string str)
 		{
 			if (!Program.DebugMode)
 				return;
-			//dConsoleLog.Append(str);
+			dConsoleLog.Append(str);
 		}
 
 		public void DebugClear()
 		{
-			//dConsoleLog.Remove(0, dConsoleLog.Length);
+			dConsoleLog.Remove(0, dConsoleLog.Length);
 		}
 
 		public void DebugNewLine()
 		{
 			if (!Program.DebugMode)
 				return;
-			//dConsoleLog.Append(Environment.NewLine);
+			dConsoleLog.Append(Environment.NewLine);
 		}
 
 		public void DebugAddTraceLog(string str)
@@ -1627,14 +1654,13 @@ namespace MinorShift.Emuera.GameView
 
 		internal Point GetMousePosition()
 		{
-			//if (window == null || !window.Created)
-			//	return new Point();
-			////クライアント左上基準の座標取得
-			//Point pos = window.MainPicBox.PointToClient(Cursor.Position);
-			////クライアント左下基準の座標に置き換え
-			//pos.Y -= ClientHeight;
-			//return pos;
-			return new Point();
+			if (window == null || !window.Created)
+				return new Point();
+			//クライアント左上基準の座標取得
+			Point pos = window.MainPicBox.PointToClient(Cursor.Position);
+			//クライアント左下基準の座標に置き換え
+			pos.Y -= ClientHeight;
+			return pos;
 		}
 
 		/// <summary>
@@ -1657,7 +1683,7 @@ namespace MinorShift.Emuera.GameView
 				mapPoint.Y = mapPoint.Y + cbgButtonMap.Height;
 				if (mapPoint.X >= 0 && mapPoint.Y >= 0 && mapPoint.X < cbgButtonMap.Width && mapPoint.Y < cbgButtonMap.Height)
 				{
-					Color c = DisplayUtils.ToColor(cbgButtonMap.Bitmap.GetPixel(mapPoint.X, mapPoint.Y));
+					Color c = cbgButtonMap.Bitmap.GetPixel(mapPoint.X, mapPoint.Y);
 					if (c.A == 255)
 					{
 						buttonNum = c.ToArgb() & 0xFFFFFF;
@@ -1698,17 +1724,13 @@ namespace MinorShift.Emuera.GameView
 			int pointY = point.Y;
 			ConsoleDisplayLine curLine;
 
-			int bottomLineNo = (int)window.ScrollBar.Value - 1;
+			int bottomLineNo = window.ScrollBar.Value - 1;
 			if (displayLineList.Count - 1 < bottomLineNo)
 				bottomLineNo = displayLineList.Count - 1;//1820 この処理不要な気がするけどエラー報告があったので入れとく
-			//int topLineNo = bottomLineNo - (window.MainPicBox.Height/ Config.LineHeight);
-			int topLineNo = bottomLineNo - (ClientHeight/ Config.LineHeight);
+			int topLineNo = bottomLineNo - (window.MainPicBox.Height/ Config.LineHeight);
 			if (topLineNo < 0)
 				topLineNo = 0;
-
-			//int relPointY = pointY - GameUtils.GetRealLength(window.MainPicBox.Height);
-			int relPointY = pointY - (ClientHeight - DisplayUtils.HeightOffset);
-
+			int relPointY = pointY - window.MainPicBox.Height;
 			//下から上へ探索し発見次第打ち切り
 			for (int i = bottomLineNo; i >= topLineNo; i--)
 			{
@@ -1788,22 +1810,10 @@ namespace MinorShift.Emuera.GameView
 
 		private void verticalScrollBarUpdate()
 		{
-			MainThread.BeginInvokeOnMainThread(() =>
-			{
-				verticalScrollBarUpdateAsync();
-			});
-		}
-
-		private void verticalScrollBarUpdateAsync()
-		{
 			int max = displayLineList.Count;
-			if (max == 0)
-				return;
-
-			int move = max - (int)window.ScrollBar.Maximum;
+			int move = max - window.ScrollBar.Maximum;
 			if (move == 0)
 				return;
-
 			if (move > 0)
 			{
 				window.ScrollBar.Maximum = max;
@@ -1815,7 +1825,7 @@ namespace MinorShift.Emuera.GameView
 					window.ScrollBar.Value = max;
 				window.ScrollBar.Maximum = max;
 			}
-			//window.ScrollBar.IsEnabled = max > 0;
+			window.ScrollBar.Enabled = max > 0;
 		}
 		#endregion
 
@@ -1955,8 +1965,7 @@ namespace MinorShift.Emuera.GameView
 			SearchOption op = SearchOption.AllDirectories;
 			if (!Config.SearchSubdirectory)
 				op = SearchOption.TopDirectoryOnly;
-			//string[] fnames = Directory.GetFiles(erbPath, "*.ERB", op);
-			string[] fnames = FileUtils.GetFiles(erbPath, "*.ERB", op);
+			string[] fnames = Directory.GetFiles(erbPath, "*.ERB", op);
 			for (int i = 0; i < fnames.Length; i++)
 				if (Path.GetExtension(fnames[i]).ToUpper() == ".ERB")
 					paths.Add(fnames[i]);

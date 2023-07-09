@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 using MinorShift.Emuera.Sub;
 using System.Drawing;
 using MinorShift.Emuera.GameData.Expression;
-using XEmuera.Drawing;
 
 namespace MinorShift.Emuera.GameView
 {
@@ -37,6 +36,100 @@ namespace MinorShift.Emuera.GameView
 	/// </summary>
 	internal static class HtmlManager
 	{
+		#region EM_私家版_HtmlManager機能拡張
+		public static int HtmlLength(string s)
+		{
+			ConsoleDisplayLine[] lines = HtmlManager.Html2DisplayLine(s, GlobalStatic.Console.StrMeasure, GlobalStatic.Console);
+			int len = 0;
+			if (lines.Length <= 0) return 0;
+			foreach (var btn in lines[0].Buttons) len += btn.Width;
+			return len;
+		}
+		private static int GetSubStr(string pref, string suff, string s, ref int lmax)
+		{
+			int len = 0, i;
+			for (i = 0; i < s.Length; i++)
+			{
+				int t = HtmlLength(pref + s.Substring(i, 1) + suff);
+				if (len + t > lmax)
+				{
+					i--;
+					break;
+				}
+				len += t;
+			}
+			if (i == s.Length) i--;
+			lmax -= len;
+			return i + 1;
+		}
+		private struct HTMLI
+		{
+			public string tag;
+			public bool isStyleTag;
+
+			public HTMLI(string v1, bool v2) : this()
+			{
+				this.tag = v1;
+				this.isStyleTag = v2;
+			}
+		};
+		public static string[] HtmlSubString(string str, int length)
+		{
+			Stack<HTMLI> beginStack = new Stack<HTMLI>(), endStack = new Stack<HTMLI>();
+
+			length = length * Config.FontSize / 2;
+
+			int found = -1, last = 0, delbr = 0;
+			while (true)
+			{
+				found = str.IndexOf('<', last);
+				if (found != last)
+				{
+					string pref = "", suff = "";
+					foreach (HTMLI s in beginStack) if (s.isStyleTag) pref += s.tag;
+					Stack<HTMLI> arr = new Stack<HTMLI>(endStack);
+					while (arr.Count > 0)
+						if (arr.Peek().isStyleTag) suff += arr.Pop().tag;
+						else arr.Pop();
+					int tmp;
+					string tstr;
+					if (found < 0)
+						tstr = str.Substring(last, str.Length - last);
+					else
+						tstr = str.Substring(last, found - last);
+					tmp = GetSubStr(pref, suff, tstr, ref length);
+					last += tmp + 1;
+					if (found < 0 || tmp < tstr.Length) break;
+				}
+				else last++;
+				found = str.IndexOf('>', last);
+				if (found <= 0) break;
+				if (str[last] == '/')
+				{
+					beginStack.Pop();
+					endStack.Pop();
+				}
+				else
+				{
+					int fspace = str.IndexOf(' ', last, found - last);
+					if (fspace < 0) fspace = found;
+					string tag = str.Substring(last, fspace - last);
+					if (tag == "br") { delbr = 1; break; }
+					bool ist = (tag == "b" || tag == "i" || tag == "s");
+					beginStack.Push(new HTMLI('<' + str.Substring(last, found - last) + '>', ist));
+					endStack.Push(new HTMLI("</" + tag + '>', ist));
+				}
+				last = found + 1;
+			}
+			string[] ret = new string[2];
+			if (last == 0) return new string[] { "", str };
+			ret[0] = str.Substring(0, last - 1);
+			while (endStack.Count > 0) ret[0] += endStack.Pop().tag;
+			while (beginStack.Count > 0) ret[1] = beginStack.Pop().tag + ret[1];
+			ret[1] += str.Substring(last - 1 + delbr * 4, str.Length - last + 1 - delbr * 4);
+			return ret;
+		}
+		#endregion
 		static HtmlManager()
 		{
 			repDic.Add('&', "&amp;");

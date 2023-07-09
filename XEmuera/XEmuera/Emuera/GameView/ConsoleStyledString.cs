@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.Windows.Forms;
 using MinorShift._Library;
 using MinorShift.Emuera;
-using XEmuera.Drawing;
-using SkiaSharp;
 
 namespace MinorShift.Emuera.GameView
 {
@@ -83,7 +82,7 @@ namespace MinorShift.Emuera.GameView
 			XsubPixel = subPixel;
 		}
 
-		public override void DrawTo(SKCanvas graph, int pointY, bool isSelecting, bool isBackLog, TextDrawingMode mode)
+		public override void DrawTo(Graphics graph, int pointY, bool isSelecting, bool isBackLog, TextDrawingMode mode)
 		{
 			if (this.Error)
 				return;
@@ -93,28 +92,27 @@ namespace MinorShift.Emuera.GameView
 			else if (isBackLog && !colorChanged)
                 color = Config.LogColor;
 				
-			//if (mode == TextDrawingMode.GRAPHICS)
-			//	graph.DrawString(Str, Font, new SolidBrush(color), new Point(PointX, pointY));
-			//else
-			//	TextRenderer.DrawText(graph, Str, Font, new Point(PointX, pointY), color, TextFormatFlags.NoPrefix);
+			if (mode == TextDrawingMode.GRAPHICS)
+				graph.DrawString(Str, Font, new SolidBrush(color), new Point(PointX, pointY));
+			else
+				TextRenderer.DrawText(graph, Str, Font, new Point(PointX, pointY), color, TextFormatFlags.NoPrefix);
 
-			DrawTextUtils.DrawText(graph, Str, Font, PointX, pointY, color);
 		}
 
-		//public override void GDIDrawTo(int pointY, bool isSelecting, bool isBackLog)
-		//{
-		//	if (this.Error)
-		//		return;
-		//	Color color = this.Color;
-		//	if(isSelecting)
-		//		color = this.ButtonColor;
-		//	else if (isBackLog && !colorChanged)
-		//		color = Config.LogColor;
-		//	GDI.TabbedTextOutFull(Font,color,Str, PointX, pointY);
-		//	//GDI.SetFont(Font);
-		//	//GDI.SetTextColor(color);
-		//	//GDI.TabbedTextOut(Str, PointX, pointY);
-		//}
+		public override void GDIDrawTo(int pointY, bool isSelecting, bool isBackLog)
+		{
+			if (this.Error)
+				return;
+			Color color = this.Color;
+			if(isSelecting)
+                color = this.ButtonColor;
+			else if (isBackLog && !colorChanged)
+                color = Config.LogColor;
+			GDI.TabbedTextOutFull(Font,color,Str, PointX, pointY);
+			//GDI.SetFont(Font);
+			//GDI.SetTextColor(color);
+			//GDI.TabbedTextOut(Str, PointX, pointY);
+		}
 
 	}
 }

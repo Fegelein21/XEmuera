@@ -3,11 +3,8 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.IO;
 using System;
-using XEmuera.Forms;
+using System.Windows.Forms;
 using MinorShift._Library;
-using XEmuera;
-using XEmuera.Drawing;
-using SkiaSharp;
 
 namespace MinorShift.Emuera
 {
@@ -56,12 +53,10 @@ namespace MinorShift.Emuera
 			SizableWindow = instance.GetConfigValue<bool>(ConfigCode.SizableWindow);
 			//UseImageBuffer = instance.GetConfigValue<bool>(ConfigCode.UseImageBuffer);
 			TextDrawingMode = instance.GetConfigValue<TextDrawingMode>(ConfigCode.TextDrawingMode);
-
-			//WindowX = instance.GetConfigValue<int>(ConfigCode.WindowX);
-			//WindowY = instance.GetConfigValue<int>(ConfigCode.WindowY);
-			//WindowPosX = instance.GetConfigValue<int>(ConfigCode.WindowPosX);
-			//WindowPosY = instance.GetConfigValue<int>(ConfigCode.WindowPosY);
-
+			WindowX = instance.GetConfigValue<int>(ConfigCode.WindowX);
+			WindowY = instance.GetConfigValue<int>(ConfigCode.WindowY);
+			WindowPosX = instance.GetConfigValue<int>(ConfigCode.WindowPosX);
+			WindowPosY = instance.GetConfigValue<int>(ConfigCode.WindowPosY);
 			SetWindowPos = instance.GetConfigValue<bool>(ConfigCode.SetWindowPos);
 			MaxLog = instance.GetConfigValue<int>(ConfigCode.MaxLog);
 			PrintCPerLine = instance.GetConfigValue<int>(ConfigCode.PrintCPerLine);
@@ -70,45 +65,11 @@ namespace MinorShift.Emuera
 			BackColor = instance.GetConfigValue<Color>(ConfigCode.BackColor);
 			FocusColor = instance.GetConfigValue<Color>(ConfigCode.FocusColor);
 			LogColor = instance.GetConfigValue<Color>(ConfigCode.LogColor);
-
-			PanSpeed = instance.GetConfigValue<float>(ConfigCode.PanSpeed);
-
-			QuickButtonWidth = instance.GetConfigValue<int>(ConfigCode.QuickButtonWidth);
-			QuickButtonFontSize = instance.GetConfigValue<int>(ConfigCode.QuickButtonFontSize);
-			QuickButtonSpacing = instance.GetConfigValue<int>(ConfigCode.QuickButtonSpacing);
-			QuickButtonPadding = 2;
-			QuickButtonHeight = QuickButtonFontSize * 3 + QuickButtonPadding * 2;
-
-			AdaptiveFont = instance.GetConfigValue<bool>(ConfigCode.AdaptiveFont);
-			AdaptiveFontSize = instance.GetConfigValue<int>(ConfigCode.AdaptiveFontSize);
-			FontScale = instance.GetConfigValue<float>(ConfigCode.FontScale);
-			TextAntialias = instance.GetConfigValue<bool>(ConfigCode.TextAntialias);
-			ShapeAntialias = instance.GetConfigValue<bool>(ConfigCode.ShapeAntialias);
-			TextFilterQuality = instance.GetConfigValue<SKFilterQuality>(ConfigCode.TextFilterQuality);
-			ShapeFilterQuality = instance.GetConfigValue<SKFilterQuality>(ConfigCode.ShapeFilterQuality);
-
-			LongPressSkip = instance.GetConfigValue<bool>(ConfigCode.LongPressSkip);
-			LongPressSkipTime = instance.GetConfigValue<int>(ConfigCode.LongPressSkipTime);
-
-			FontName = instance.GetConfigValue<string>(ConfigCode.FontName);
 			FontSize = instance.GetConfigValue<int>(ConfigCode.FontSize);
+			FontName = instance.GetConfigValue<string>(ConfigCode.FontName);
 			LineHeight = instance.GetConfigValue<int>(ConfigCode.LineHeight);
-
-			if (AdaptiveFont)
-			{
-				LineHeight = LineHeight * AdaptiveFontSize / FontSize;
-				FontSize = AdaptiveFontSize;
-			}
-
-			if (FontScale != 1f)
-			{
-				FontSize = (int)(FontSize * FontScale);
-				LineHeight = (int)(LineHeight * FontScale);
-			}
-
 			FPS = instance.GetConfigValue<int>(ConfigCode.FPS);
 			//SkipFrame = instance.GetConfigValue<int>(ConfigCode.SkipFrame);
-
 			ScrollHeight = instance.GetConfigValue<int>(ConfigCode.ScrollHeight);
 			InfiniteLoopAlertTime = instance.GetConfigValue<int>(ConfigCode.InfiniteLoopAlertTime);
 			SaveDataNos = instance.GetConfigValue<int>(ConfigCode.SaveDataNos);
@@ -149,8 +110,7 @@ namespace MinorShift.Emuera
 			SystemAllowFullSpace = instance.GetConfigValue<bool>(ConfigCode.SystemAllowFullSpace);
 			SystemSaveInUTF8 = instance.GetConfigValue<bool>(ConfigCode.SystemSaveInUTF8);
 			if (SystemSaveInUTF8)
-				SaveEncode = Encoding.UTF8;
-
+				SaveEncode = Encoding.GetEncoding("UTF-8");
 			SystemSaveInBinary = instance.GetConfigValue<bool>(ConfigCode.SystemSaveInBinary);
 			SystemIgnoreTripleSymbol = instance.GetConfigValue<bool>(ConfigCode.SystemIgnoreTripleSymbol);
 			SystemIgnoreStringSet = instance.GetConfigValue<bool>(ConfigCode.SystemIgnoreStringSet);
@@ -162,10 +122,17 @@ namespace MinorShift.Emuera
 
             AllowLongInputByMouse = instance.GetConfigValue<bool>(ConfigCode.AllowLongInputByMouse);
 
-           TimesNotRigorousCalculation = instance.GetConfigValue<bool>(ConfigCode.TimesNotRigorousCalculation);
+            TimesNotRigorousCalculation = instance.GetConfigValue<bool>(ConfigCode.TimesNotRigorousCalculation);
             //一文字変数の禁止オプションを考えた名残
-		   //ForbidOneCodeVariable = instance.GetConfigValue<bool>(ConfigCode.ForbidOneCodeVariable);
-		   SystemNoTarget = instance.GetConfigValue<bool>(ConfigCode.SystemNoTarget);
+		    //ForbidOneCodeVariable = instance.GetConfigValue<bool>(ConfigCode.ForbidOneCodeVariable);
+		    SystemNoTarget = instance.GetConfigValue<bool>(ConfigCode.SystemNoTarget);
+            #region EE版_UPDATECHECK
+            ForbidUpdateCheck = instance.GetConfigValue<bool>(ConfigCode.ForbidUpdateCheck);
+			#endregion
+
+			#region EM_私家版_LoadText＆SaveText機能拡張
+			ValidExtension = instance.GetConfigValue<List<string>>(ConfigCode.ValidExtension);
+			#endregion
 
 			UseLanguage lang = instance.GetConfigValue<UseLanguage>(ConfigCode.useLanguage);
             switch (lang)
@@ -206,38 +173,19 @@ namespace MinorShift.Emuera
 				MaxLog = 500;
 			}
 
-			//DrawingParam_ShapePositionShift = 0;
-			//if (TextDrawingMode != TextDrawingMode.WINAPI)
-			//	DrawingParam_ShapePositionShift = Math.Max(2, FontSize / 6);
-			//DrawableWidth = WindowX - DrawingParam_ShapePositionShift;
-
-			//ForceSavDir = Program.ExeDir + "sav\\";
-			ForceSavDir = Program.ExeDir + "sav" + Path.DirectorySeparatorChar;
+			DrawingParam_ShapePositionShift = 0;
+			if (TextDrawingMode != TextDrawingMode.WINAPI)
+				DrawingParam_ShapePositionShift = Math.Max(2, FontSize / 6);
+			DrawableWidth = WindowX - DrawingParam_ShapePositionShift;
+			ForceSavDir = Program.ExeDir + "sav\\";
 			if (UseSaveFolder)
-				//SavDir = Program.ExeDir + "sav\\";
-			SavDir = Program.ExeDir + "sav" + Path.DirectorySeparatorChar;
+				SavDir = Program.ExeDir + "sav\\";
 			else
 				SavDir = Program.ExeDir;
 			if (UseSaveFolder && !Directory.Exists(SavDir))
 				createSavDirAndMoveFiles();
 		}
 
-		public static void RefreshDisplayConfig()
-		{
-			WindowX = DisplayUtils.PicBoxWidth;
-			WindowY = DisplayUtils.MainLayoutHeight;
-
-			WindowPosX = 0;
-			WindowPosY = 0;
-
-			DrawingParam_ShapePositionShift = 0;
-			//SkiaSharp上不需要偏移X轴
-			//if (TextDrawingMode != TextDrawingMode.WINAPI)
-			//	DrawingParam_ShapePositionShift = Math.Max(2, FontSize / 6);
-			DrawableWidth = WindowX - DrawingParam_ShapePositionShift;
-
-			DisplayUtils.ShapeHeightOffset = -(LineHeight - 6);
-		}
 
 		static readonly Dictionary<string, Dictionary<FontStyle, Font>> fontDic = new Dictionary<string, Dictionary<FontStyle, Font>>();
 		public static Font Font { get { return GetFont(null, FontStyle.Regular); } }
@@ -247,17 +195,14 @@ namespace MinorShift.Emuera
 			string fn = theFontname;
 			if (string.IsNullOrEmpty(theFontname))
 				fn = FontName;
-			if (!fontDic.TryGetValue(fn, out var fontStyleDic))
-			{
-				fontStyleDic = new Dictionary<FontStyle, Font>();
-				fontDic.Add(fn, fontStyleDic);
-			}
-			//Dictionary<FontStyle, Font> fontStyleDic = fontDic[fn];
-			if (!fontStyleDic.TryGetValue(style, out var styledFont))
+			if (!fontDic.ContainsKey(fn))
+				fontDic.Add(fn, new Dictionary<FontStyle, Font>());
+			Dictionary<FontStyle, Font> fontStyleDic = fontDic[fn];
+			if (!fontStyleDic.ContainsKey(style))
 			{
 				int fontsize = FontSize;
-				//Font styledFont;
-				try
+                Font styledFont;
+                try
 				{
 					styledFont = new Font(fn, fontsize, style, GraphicsUnit.Pixel);
 				}
@@ -267,17 +212,17 @@ namespace MinorShift.Emuera
 				}
 				fontStyleDic.Add(style, styledFont);
 			}
-			return styledFont;
+			return fontStyleDic[style];
 		}
 
 		public static void ClearFont()
 		{
 			foreach (KeyValuePair<string, Dictionary<FontStyle, Font>> fontStyleDicPair in fontDic)
 			{
-				//foreach (KeyValuePair<FontStyle, Font> pair in fontStyleDicPair.Value)
-				//{
-				//	pair.Value.Dispose();
-				//}
+				foreach (KeyValuePair<FontStyle, Font> pair in fontStyleDicPair.Value)
+				{
+					pair.Value.Dispose();
+				}
 				fontStyleDicPair.Value.Clear();
 			}
 			fontDic.Clear();
@@ -316,10 +261,8 @@ namespace MinorShift.Emuera
 				MessageBox.Show("savフォルダの作成に失敗しました", "フォルダ作成失敗");
 				return;
 			}
-			string globalFile = Program.ExeDir + "global.sav";
-			bool existGlobal = FileUtils.Exists(ref globalFile);
-			//string[] savFiles = Directory.GetFiles(Program.ExeDir, "save*.sav", SearchOption.TopDirectoryOnly);
-			string[] savFiles = FileUtils.GetFiles(Program.ExeDir, "save*.sav", SearchOption.TopDirectoryOnly);
+			bool existGlobal = File.Exists(Program.ExeDir + "global.sav");
+			string[] savFiles = Directory.GetFiles(Program.ExeDir, "save*.sav", SearchOption.TopDirectoryOnly);
 			if (!existGlobal && savFiles.Length == 0)
 				return;
 			DialogResult result = MessageBox.Show("savフォルダを作成しました\n現在のデータをsavフォルダ内に移動しますか？", "データ移動", MessageBoxButtons.YesNo);
@@ -334,10 +277,9 @@ namespace MinorShift.Emuera
 			//ダイアログが開いている間にファイルを変更するような邪悪なユーザーがいるかもしれない
 			try
 			{
-				if (FileUtils.Exists(ref globalFile))
-					File.Move(globalFile, SavDir + "global.sav");
-				//savFiles = Directory.GetFiles(Program.ExeDir, "save*.sav", SearchOption.TopDirectoryOnly);
-				savFiles = FileUtils.GetFiles(Program.ExeDir, "save*.sav", SearchOption.TopDirectoryOnly);
+				if (File.Exists(Program.ExeDir + "global.sav"))
+					File.Move(Program.ExeDir + "global.sav", SavDir + "global.sav");
+				savFiles = Directory.GetFiles(Program.ExeDir, "save*.sav", SearchOption.TopDirectoryOnly);
 				foreach (string oldpath in savFiles)
 					File.Move(oldpath, SavDir + Path.GetFileName(oldpath));
 			}
@@ -370,10 +312,8 @@ namespace MinorShift.Emuera
 			SearchOption option = SearchOption.TopDirectoryOnly;
 			if (SearchSubdirectory)
 				option = SearchOption.AllDirectories;
-			//string[] erbFiles = Directory.GetFiles(Program.ErbDir, "*.ERB", option);
-			//string[] csvFiles = Directory.GetFiles(Program.CsvDir, "*.CSV", option);
-			string[] erbFiles = FileUtils.GetFiles(Program.ErbDir, "*.ERB", option);
-			string[] csvFiles = FileUtils.GetFiles(Program.CsvDir, "*.CSV", option);
+			string[] erbFiles = Directory.GetFiles(Program.ErbDir, "*.ERB", option);
+			string[] csvFiles = Directory.GetFiles(Program.CsvDir, "*.CSV", option);
 			long[] writetimes = new long[erbFiles.Length + csvFiles.Length];
 			for (int i = 0; i < erbFiles.Length; i++)
 				if (Path.GetExtension(erbFiles[i]).Equals(".ERB", StringComparison.OrdinalIgnoreCase))
@@ -420,8 +360,7 @@ namespace MinorShift.Emuera
 					if (sort)
 						Array.Sort(dirList, ignoreCaseComparer);
 					for (int i = 0; i < dirList.Length; i++)
-						//retList.AddRange(getFiles(dirList[i], rootdir, pattern, toponly, sort));
-						retList.AddRange(getFiles(dirList[i] + Path.DirectorySeparatorChar, rootdir, pattern, toponly, sort));
+						retList.AddRange(getFiles(dirList[i], rootdir, pattern, toponly, sort));
 				}
 			}
 			string RelativePath;//相対ディレクトリ名
@@ -433,15 +372,11 @@ namespace MinorShift.Emuera
 					RelativePath = dir;
 				else
 					RelativePath = dir.Substring(rootdir.Length);//前方が検索ルートパスと一致するならその部分を切り取る
-				//if (!RelativePath.EndsWith("\\") && !RelativePath.EndsWith("/"))
-				//	RelativePath += "\\";//末尾が\又は/で終わるように。後でFile名を直接加算できるようにしておく
-				if (!RelativePath.EndsWith("\\") && !RelativePath.EndsWith(Path.DirectorySeparatorChar.ToString()))
-					RelativePath += Path.DirectorySeparatorChar;
+				if (!RelativePath.EndsWith("\\") && !RelativePath.EndsWith("/"))
+					RelativePath += "\\";//末尾が\又は/で終わるように。後でFile名を直接加算できるようにしておく
 			}
 			//filepathsは完全パスである
-			//string[] filepaths = Directory.GetFiles(dir, pattern, SearchOption.TopDirectoryOnly);
-			string[] filepaths = FileUtils.GetFiles(dir, pattern, SearchOption.TopDirectoryOnly);
-
+			string[] filepaths = Directory.GetFiles(dir, pattern, SearchOption.TopDirectoryOnly);
 			if (sort)
 				Array.Sort(filepaths, ignoreCaseComparer);
 			for (int i = 0; i < filepaths.Length; i++)
@@ -521,33 +456,12 @@ namespace MinorShift.Emuera
 		public static Color BackColor { get; private set; }
 		public static Color FocusColor { get; private set; }
 		public static Color LogColor { get; private set; }
-
-		public static int QuickButtonFontSize { get; private set; }
-		public static int QuickButtonWidth { get; private set; }
-		public static int QuickButtonHeight { get; private set; }
-		public static int QuickButtonSpacing { get; private set; }
-		public static int QuickButtonPadding { get; private set; }
-
-		public static bool AdaptiveFont { get; private set; }
-		public static int AdaptiveFontSize { get; private set; }
-		public static float FontScale { get; private set; }
-
-		public static bool TextAntialias { get; private set; }
-		public static bool ShapeAntialias { get; private set; }
-
-		public static SKFilterQuality TextFilterQuality { get; private set; }
-		public static SKFilterQuality ShapeFilterQuality { get; private set; }
-
-		public static bool LongPressSkip { get; private set; }
-		public static int LongPressSkipTime { get; private set; }
-
 		public static int FontSize { get; private set; }
 		public static string FontName { get; private set; }
 		public static int LineHeight { get; private set; }
 		public static int FPS { get; private set; }
 		//public static int SkipFrame { get; private set; }
 		public static int ScrollHeight { get; private set; }
-		public static float PanSpeed { get; set; }
 		public static int InfiniteLoopAlertTime { get; private set; }
 		public static int SaveDataNos { get; private set; }
 		public static bool WarnBackCompatibility { get; private set; }
@@ -590,6 +504,7 @@ namespace MinorShift.Emuera
 		public static bool SystemIgnoreTripleSymbol { get; private set; }
 		public static bool SystemNoTarget { get; private set; }
 		public static bool SystemIgnoreStringSet { get; private set; }
+		public static bool ForbidUpdateCheck { get; private set; }
 
 		public static int Language { get; private set; }
 
@@ -667,8 +582,10 @@ namespace MinorShift.Emuera
 		public static Int64 PbandDef { get; private set; }
         public static Int64 RelationDef { get; private set; }
 		#endregion
-		
-		
-		
+
+		#region EM_私家版_LoadText＆SaveText機能拡張
+		public static List<string> ValidExtension { get; private set; }
+		#endregion
+
 	}
 }

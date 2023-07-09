@@ -131,6 +131,10 @@ namespace MinorShift.Emuera
 		SystemNoTarget,
 		SystemIgnoreStringSet,
 
+        #region EE_UPDATECHECK
+        ForbidUpdateCheck,
+		#endregion
+
 		MoneyLabel = 100,
 		MoneyFirst = 101,
 		LoadLabel = 102,
@@ -150,21 +154,8 @@ namespace MinorShift.Emuera
 
 		UseKeyMacro = 162,
 
-		PanSpeed,
-
-		QuickButtonFontSize,
-		QuickButtonWidth,
-		QuickButtonSpacing,
-
-		AdaptiveFont,
-		AdaptiveFontSize,
-		FontScale,
-		TextAntialias,
-		TextFilterQuality,
-		ShapeAntialias,
-		ShapeFilterQuality,
-
-		LongPressSkip,
-		LongPressSkipTime,
+		#region EM_私家版_LoadText＆SaveText機能拡張
+		ValidExtension = 200,
+		#endregion
 	}
 }

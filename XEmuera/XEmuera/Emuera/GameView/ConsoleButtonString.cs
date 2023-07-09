@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-//using System.Drawing;
+using System.Drawing;
 using MinorShift.Emuera.Sub;
-using SkiaSharp;
 
 namespace MinorShift.Emuera.GameView
 {
@@ -218,19 +217,19 @@ namespace MinorShift.Emuera.GameView
 				css.PointX += shiftX;
 		}
 
-		public void DrawTo(SKCanvas graph, int pointY, bool isBackLog, TextDrawingMode mode)
+		public void DrawTo(Graphics graph, int pointY, bool isBackLog, TextDrawingMode mode)
 		{
 			bool isSelecting = (IsButton) && (parent.ButtonIsSelected(this));
 			foreach (AConsoleDisplayPart css in strArray)
 				css.DrawTo(graph, pointY, isSelecting, isBackLog, mode);
 		}
 
-		//public void GDIDrawTo(int pointY, bool isBackLog)
-		//{
-		//	bool isSelecting = (IsButton) && (parent.ButtonIsSelected(this));
-		//	foreach (AConsoleDisplayPart css in strArray)
-		//		css.GDIDrawTo(pointY, isSelecting, isBackLog);
-		//}
+		public void GDIDrawTo(int pointY, bool isBackLog)
+		{
+			bool isSelecting = (IsButton) && (parent.ButtonIsSelected(this));
+			foreach (AConsoleDisplayPart css in strArray)
+				css.GDIDrawTo(pointY, isSelecting, isBackLog);
+		}
 		
 		public override string ToString()
 		{

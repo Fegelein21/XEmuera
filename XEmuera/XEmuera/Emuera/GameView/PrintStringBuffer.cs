@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-//using System.Drawing;
-using XEmuera.Forms;
+using System.Drawing;
+using System.Windows.Forms;
 using MinorShift.Emuera.Sub;
-using XEmuera.Drawing;
 
 namespace MinorShift.Emuera.GameView
 {

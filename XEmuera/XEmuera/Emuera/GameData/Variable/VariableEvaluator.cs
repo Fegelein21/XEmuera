@@ -10,8 +10,7 @@ using MinorShift.Emuera.GameData.Expression;
 using MinorShift.Emuera.GameProc;
 using MinorShift._Library;
 using MinorShift.Emuera.GameProc.Function;
-using XEmuera.Forms;
-using XEmuera;
+//using System.Windows.Forms;
 
 namespace MinorShift.Emuera.GameData.Variable
 {
@@ -1765,7 +1764,7 @@ namespace MinorShift.Emuera.GameData.Variable
 			}
 			catch
 			{
-				MessageBox.Show("datフォルダーの作成に失敗しました");
+				System.Windows.Forms.MessageBox.Show("datフォルダーの作成に失敗しました");
 				throw new CodeEE("datフォルダーの作成に失敗しました");
 			}
 		}
@@ -1778,8 +1777,7 @@ namespace MinorShift.Emuera.GameData.Variable
 			string searchPattern = "var_" + pattern + ".dat";
 			if (charadat)
 				searchPattern = "chara_" + pattern + ".dat";
-			//string[] pathes = Directory.GetFiles(Program.DatDir, searchPattern, SearchOption.TopDirectoryOnly);
-			string[] pathes = FileUtils.GetFiles(Program.DatDir, searchPattern, SearchOption.TopDirectoryOnly);
+			string[] pathes = Directory.GetFiles(Program.DatDir, searchPattern, SearchOption.TopDirectoryOnly);
 			foreach (string path in pathes)
 			{
 				if (!Path.GetExtension(path).Equals(".dat", StringComparison.OrdinalIgnoreCase))
@@ -1847,7 +1845,7 @@ namespace MinorShift.Emuera.GameData.Variable
 		public EraDataResult CheckDataByFilename(string filename, EraSaveFileType type)
 		{
 			EraDataResult result = new EraDataResult();
-			if (!FileUtils.Exists(ref filename))
+			if (!File.Exists(filename))
 			{
 				result.State = EraDataState.FILENOTFOUND;
 				result.DataMes = "----";
@@ -2023,7 +2021,7 @@ namespace MinorShift.Emuera.GameData.Variable
 		{
 			string filepath = getSaveDataPathC(savename);
 			RESULT = 0;
-			if (!FileUtils.Exists(ref filepath))
+			if (!File.Exists(filepath))
 				return;
 			EraBinaryDataReader bReader = null;
 			FileStream fs = null;
@@ -2108,7 +2106,7 @@ namespace MinorShift.Emuera.GameData.Variable
 		{
 			string filepath = getSaveDataPathV(savename);
 			RESULT = 0;
-			if (!FileUtils.Exists(ref filepath))
+			if (!File.Exists(filepath))
 				return;
 			EraBinaryDataReader bReader = null;
 			FileStream fs = null;
@@ -2257,7 +2255,7 @@ namespace MinorShift.Emuera.GameData.Variable
 		public bool LoadGlobal()
 		{
 			string filepath = getSaveDataPathG();
-			if (!FileUtils.Exists(ref filepath))
+			if (!File.Exists(filepath))
 				return false;
 			EraDataReader reader = null;
 			EraBinaryDataReader bReader = null;
@@ -2394,7 +2392,7 @@ namespace MinorShift.Emuera.GameData.Variable
 		public bool LoadFrom(int dataIndex)
 		{
 			string filepath = getSaveDataPath(dataIndex);
-			if (!FileUtils.Exists(ref filepath))
+			if (!File.Exists(filepath))
 				throw new ExeEE("存在しないパスを呼び出した");
 			EraDataReader reader = null;
 			EraBinaryDataReader bReader = null;
@@ -2429,7 +2427,7 @@ namespace MinorShift.Emuera.GameData.Variable
 		public void DelData(int dataIndex)
 		{
 			string filepath = getSaveDataPath(dataIndex);
-			if (!FileUtils.Exists(ref filepath))
+			if (!File.Exists(filepath))
 				return;
 			FileAttributes att = File.GetAttributes(filepath);
 			if ((att & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)

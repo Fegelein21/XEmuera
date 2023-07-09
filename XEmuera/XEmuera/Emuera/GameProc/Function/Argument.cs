@@ -7,6 +7,18 @@ using MinorShift.Emuera.GameData.Function;
 
 namespace MinorShift.Emuera.GameProc.Function
 {
+	#region EM_私家版_INPUT系機能拡張
+	internal sealed class SpInputsArgument : Argument
+	{
+		public SpInputsArgument(IOperandTerm def, IOperandTerm mouse)
+		{
+			Def = def;
+			Mouse = mouse;
+		}
+		readonly public IOperandTerm Def;
+		readonly public IOperandTerm Mouse;
+	}
+	#endregion
 	internal abstract class Argument
 	{
 		public bool IsConst;
@@ -140,17 +152,26 @@ namespace MinorShift.Emuera.GameProc.Function
 
 	internal sealed class SpTInputsArgument : Argument
 	{
-		public SpTInputsArgument(IOperandTerm time, IOperandTerm def, IOperandTerm disp, IOperandTerm timeout)
+		#region EM_私家版_INPUT系機能拡張
+		//public SpTInputsArgument(IOperandTerm time, IOperandTerm def, IOperandTerm disp, IOperandTerm timeout)
+		public SpTInputsArgument(IOperandTerm time, IOperandTerm def, IOperandTerm disp, IOperandTerm timeout, IOperandTerm mouse)
+		#endregion
 		{
 			Time = time;
 			Def = def;
 			Disp = disp;
             Timeout = timeout;
+			#region EM_私家版_INPUT系機能拡張
+			Mouse = mouse;
+			#endregion
 		}
 		readonly public IOperandTerm Time;
 		readonly public IOperandTerm Def;
 		readonly public IOperandTerm Disp;
         readonly public IOperandTerm Timeout;
+		#region EM_私家版_INPUT系機能拡張
+		readonly public IOperandTerm Mouse;
+		#endregion
 	}
 
 	//難読化用属性。enum.ToString()やenum.Parse()を行うなら(Exclude=true)にすること。
@@ -503,7 +524,22 @@ namespace MinorShift.Emuera.GameProc.Function
         readonly public IOperandTerm Term;
         readonly public IOperandTerm Flag;
     }
-    
+
+
+    #region EE
+    internal sealed class StrDoubleArgument : Argument
+    {
+        public StrDoubleArgument(IOperandTerm term, double doublevalue)
+        {
+            Term = term;
+            DoubleValue = doublevalue;
+        }
+        readonly public IOperandTerm Term;
+        readonly public double DoubleValue;
+    }
+	#endregion
+
+
 	#region set系
 	internal sealed class SpSetArgument : Argument
 	{

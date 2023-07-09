@@ -1,13 +1,10 @@
 ﻿using MinorShift._Library;
 using MinorShift.Emuera.Content;
-using SkiaSharp;
-using XEmuera.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Text;
-using XEmuera;
-
 namespace MinorShift.Emuera.GameView
 {
 	class ConsoleImagePart : AConsoleDisplayPart
@@ -129,7 +126,7 @@ namespace MinorShift.Emuera.GameView
 			return AltText;
 		}
 
-		public override void DrawTo(SKCanvas graph, int pointY, bool isSelecting, bool isBackLog, TextDrawingMode mode)
+		public override void DrawTo(Graphics graph, int pointY, bool isSelecting, bool isBackLog, TextDrawingMode mode)
 		{
 			if (this.Error)
 				return;
@@ -142,40 +139,38 @@ namespace MinorShift.Emuera.GameView
 				Rectangle rect = destRect;
 				//PointX微調整
 				rect.X = destRect.X + PointX + Config.DrawingParam_ShapePositionShift;
-				rect.Y = destRect.Y + pointY + DisplayUtils.ShapeHeightOffset;
+				rect.Y = destRect.Y + pointY;
 				img.GraphicsDraw(graph, rect);
 			}
 			else
 			{
-				//if (mode == TextDrawingMode.GRAPHICS)
-				//	graph.DrawString(AltText, Config.Font, new SolidBrush(Config.ForeColor), new Point(PointX, pointY));
-				//else
-				//	System.Windows.Forms.TextRenderer.DrawText(graph, AltText, Config.Font, new Point(PointX, pointY), Config.ForeColor, System.Windows.Forms.TextFormatFlags.NoPrefix);
-
-				DrawTextUtils.DrawText(graph, AltText, Config.Font, PointX, pointY, Config.ForeColor);
+				if (mode == TextDrawingMode.GRAPHICS)
+					graph.DrawString(AltText, Config.Font, new SolidBrush(Config.ForeColor), new Point(PointX, pointY));
+				else
+					System.Windows.Forms.TextRenderer.DrawText(graph, AltText, Config.Font, new Point(PointX, pointY), Config.ForeColor, System.Windows.Forms.TextFormatFlags.NoPrefix);
 			}
 		}
 
-		//public override void GDIDrawTo(int pointY, bool isSelecting, bool isBackLog)
-		//{
-		//	if (this.Error)
-		//		return;
-		//	SpriteF img = cImage as SpriteF;//Graphicsから作成したImageはGDI対象外
-		//	if (isSelecting && cImageB != null)
-		//		img = cImageB as SpriteF;
-		//	if (img != null && img.IsCreated)
-		//	{
-		//		int x = PointX + destRect.X;
-		//		int y = pointY + destRect.Y;
-		//		if (!img.DestBasePosition.IsEmpty)
-		//		{
-		//			x = x + img.DestBasePosition.X * destRect.Width / img.SrcRectangle.Width;
-		//			y = y + img.DestBasePosition.Y * destRect.Height / img.SrcRectangle.Height;
-		//		}
-		//		GDI.DrawImage(x, y, Width, destRect.Height, img.BaseImage.GDIhDC, img.SrcRectangle);
-		//	}
-		//	else
-		//		GDI.TabbedTextOutFull(Config.Font, Config.ForeColor, AltText, PointX, pointY);
-		//}
+		public override void GDIDrawTo(int pointY, bool isSelecting, bool isBackLog)
+		{
+			if (this.Error)
+				return;
+			SpriteF img = cImage as SpriteF;//Graphicsから作成したImageはGDI対象外
+			if (isSelecting && cImageB != null)
+				img = cImageB as SpriteF;
+			if (img != null && img.IsCreated)
+			{
+				int x = PointX + destRect.X;
+				int y = pointY + destRect.Y;
+				if (!img.DestBasePosition.IsEmpty)
+				{
+					x = x + img.DestBasePosition.X * destRect.Width / img.SrcRectangle.Width;
+					y = y + img.DestBasePosition.Y * destRect.Height / img.SrcRectangle.Height;
+				}
+				GDI.DrawImage(x, y, Width, destRect.Height, img.BaseImage.GDIhDC, img.SrcRectangle);
+			}
+			else
+				GDI.TabbedTextOutFull(Config.Font, Config.ForeColor, AltText, PointX, pointY);
+		}
 	}
 }

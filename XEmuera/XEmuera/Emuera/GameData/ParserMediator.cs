@@ -8,7 +8,6 @@ using MinorShift.Emuera.GameProc;
 using MinorShift.Emuera.GameView;
 using System.IO;
 using System.Text.RegularExpressions;
-using XEmuera;
 
 namespace MinorShift.Emuera
 {
@@ -45,7 +44,7 @@ namespace MinorShift.Emuera
 			//とにかく辞書を作る。辞書がnullのときは UseRenameFileがNOの時のみ
 			RenameDic = new Dictionary<string, string>();
 			EraStreamReader eReader = new EraStreamReader(false);
-			if ((!FileUtils.Exists(ref filepath)) || (!eReader.Open(filepath)))
+			if ((!File.Exists(filepath)) || (!eReader.Open(filepath)))
 			{
 				return;
 			}
