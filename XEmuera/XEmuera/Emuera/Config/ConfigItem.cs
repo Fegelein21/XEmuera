@@ -2,258 +2,254 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using System.Windows.Forms;
 using System.Drawing;
 using MinorShift.Emuera.Sub;
+using XEmuera;
+using SkiaSharp;
 
 namespace MinorShift.Emuera
 {
-	internal abstract class AConfigItem
-	{
-		public AConfigItem(ConfigCode code, string text)
-		{
-			this.Code = code;
-			this.Name = code.ToString();
-			this.Text = text;
-		}
 
-		public static ConfigItem<T> Copy<T>(ConfigItem<T> other)
+	internal sealed class ConfigItem
+	{
+		public static ConfigItem Copy(ConfigItem other)
 		{
-			if(other == null)
+			if (other == null)
 				return null;
-			ConfigItem<T> ret = new ConfigItem<T>(other.Code, other.Text, other.Value);
-			ret.Fixed = other.Fixed;
+			ConfigItem ret = new ConfigItem(other.Code, other.Text, other.Value)
+			{
+				Name = other.Name,
+				Fixed = other.Fixed
+			};
 			return ret;
 		}
 
-		public abstract void CopyTo(AConfigItem other);
-		public abstract bool TryParse(string tokens);
-		public abstract void SetValue<U>(U p);
-		public abstract U GetValue<U>();
-		public abstract string ValueToString();
-		public readonly ConfigCode Code;
-		public readonly string Name;
-		public readonly string Text;
-		public bool Fixed;
-	}
-	
-	internal sealed class ConfigItem<T> : AConfigItem
-	{
-		public ConfigItem(ConfigCode code,string text, T t):base(code, text)
+		public ConfigCode Code { get; private set; }
+
+		public string Name { get; private set; }
+
+		public string Text { get; private set; }
+
+		public bool Fixed { get; set; }
+
+		public object Value { get; set; }
+
+		public object DefaultValue { get; private set; }
+
+		public ConfigItem(ConfigCode code, string text, object value)
 		{
-			this.val = t;
-		}
-		private T val;
-		public T Value
-		{
-			get{return val;}
-			set
-			{
-				if(Fixed)
-					return;
-				val = value;
-			}
+			this.Code = code;
+			this.Text = text;
+			this.Value = value;
+			this.DefaultValue = value;
 		}
 
-		public override void CopyTo(AConfigItem other)
+		public void CopyTo(ConfigItem other)
 		{
-
-			ConfigItem<T> item = ((ConfigItem<T>)other);
-			item.Fixed = false;
-			item.Value = this.Value;
-			item.Fixed = this.Fixed;
+			other.Value = this.Value;
+			other.Fixed = this.Fixed;
+			other.DefaultValue = this.Value;
 		}
 
-		public override void SetValue<U>(U p)
+		public void SetValue(object value)
 		{
 			//if (this is ConfigItem<U>)
-				((ConfigItem<U>)(AConfigItem)this).Value = p;
-            //else
-            //    throw new ExeEE("型が一致しない");
+			Value = value;
+			//else
+			//    throw new ExeEE("型が一致しない");
 		}
 
-		public override U GetValue<U>()
+		public U GetValue<U>()
 		{
-            ////if (this is ConfigItem<U>)
-				return ((ConfigItem<U>)(AConfigItem)this).Value;
+			////if (this is ConfigItem<U>)
+			return (U)Value;
 			//throw new ExeEE("型が一致しない");
 		}
 
-		public override string ValueToString()
+		public void ResetDefault()
 		{
-			if(this is ConfigItem<bool>)
+			Value = DefaultValue;
+		}
+
+		internal static string ValueToString(object value)
+		{
+			if (value is bool b)
 			{
 				//ConfigItem<T>をConfigItem<bool>に直接キャストすることはできない
-				bool b = ((ConfigItem<bool>)(AConfigItem)this).Value;
-				if (b)
-					return "YES";
-				return "NO";
+				return b ? "TRUE" : "FALSE";
 			}
-			if (this is ConfigItem<Color>)
+			if (value is Color c)
 			{
-				Color c = ((ConfigItem<Color>)(AConfigItem)this).Value;
 				return string.Format("{0},{1},{2}", c.R, c.G, c.B);
 			}
-			return val.ToString();
+			return value.ToString();
 		}
-		
-		
+
 		public override string ToString()
 		{
-			return Text + ":" + ValueToString();
+			return Text + ":" + ValueToString(Value);
 		}
 
 
 
 		/// ジェネリック化大失敗。なんかうまい方法ないかな～
-		public override bool TryParse(string param)
+		public static bool TryParse(ConfigItem item, string param)
 		{
+			if (string.IsNullOrEmpty(param))
+				return false;
+			if (item.Fixed)
+				return false;
+
 			bool ret = false;
-			if ((param == null) || (param.Length == 0))
-				return false;
-			if(this.Fixed)
-				return false;
 			string str = param.Trim();
-			if (this is ConfigItem<bool>)
+			object Value = item.Value;
+
+			if (Value is bool)
 			{
-				bool b = false;
-				ret = tryStringToBool(str, ref b);
+				ret = TryStringToBool(str, out bool b);
 				if (ret)//ConfigItem<T>をConfigItem<bool>に直接キャストすることはできない
-					((ConfigItem<bool>)(AConfigItem)this).Value = b;
+					Value = b;
 			}
-			else if (this is ConfigItem<Color>)
+			else if (Value is Color)
 			{
-				Color c;
-				ret = tryStringsToColor(str, out c);
+				ret = TryStringsToColor(str, out Color c);
 				if (ret)
-					((ConfigItem<Color>)(AConfigItem)this).Value = c;
+					Value = c;
 				else
-					throw new CodeEE("値をColor指定子として認識できません");
+					ShowError("値をColor指定子として認識できません");
 			}
-			else if (this is ConfigItem<char>)
+			else if (Value is char)
 			{
-				char c;
-				ret = char.TryParse(str, out c);
+				ret = char.TryParse(str, out char c);
 				if (ret)
-					((ConfigItem<char>)(AConfigItem)this).Value = c;
+					Value = c;
 			}
-			else if (this is ConfigItem<Int32>)
+			else if (Value is int)
 			{
-				Int32 i;
-				ret = Int32.TryParse(str, out i);
+				ret = int.TryParse(str, out int i);
 				if (ret)
-					((ConfigItem<Int32>)(AConfigItem)this).Value = i;
+					Value = i;
 				else
-					throw new CodeEE("数字でない文字が含まれています");
+					ShowError("数字でない文字が含まれています");
 			}
-			else if (this is ConfigItem<Int64>)
+			else if (Value is long)
 			{
-				Int64 i;
-				ret = Int64.TryParse(str, out i);
+				ret = long.TryParse(str, out long l);
 				if (ret)
-					((ConfigItem<Int64>)(AConfigItem)this).Value = i;
+					Value = l;
 				else
-					throw new CodeEE("数字でない文字が含まれています");
+					ShowError("数字でない文字が含まれています");
 			}
-			else if (this is ConfigItem<List<Int64>>)
+			else if (Value is float)
 			{
-				((ConfigItem<List<Int64>>)(AConfigItem)this).Value.Clear();
-				Int64 i;
+				ret = float.TryParse(str, out float f);
+				if (ret)
+					Value = f;
+				else
+					ShowError("数字でない文字が含まれています");
+			}
+			else if (Value is List<long> longlist)
+			{
+				longlist.Clear();
 				string[] strs = str.Split('/');
 				foreach (string st in strs)
 				{
-					ret = Int64.TryParse(st.Trim(), out i);
+					ret = long.TryParse(st.Trim(), out long l);
 					if (ret)
-						((ConfigItem<List<Int64>>)(AConfigItem)this).Value.Add(i);
+						longlist.Add(l);
 					else
 					{
-						throw new CodeEE("数字でない文字が含まれています");
+						ShowError("数字でない文字が含まれています");
 					}
 				}
 			}
-			else if (this is ConfigItem<string>)
+			else if (Value is string)
 			{
 				ret = true;
-				((ConfigItem<string>)(AConfigItem)this).Value = str;
+				Value = str;
 			}
-			else if (this is ConfigItem<List<string>>)
+			else if (Value is List<string> stringlist)
 			{
 				{
 					#region EM_私家版_LoadText＆SaveText機能拡張
 					ret = true;
-					var list = ((ConfigItem<List<string>>)(AConfigItem)this).Value;
-					tryStringToStringList(str, ref list);
-					((ConfigItem<List<string>>)(AConfigItem)this).Value = list;
+					var list = (List<string>)Value;
+					TryStringToStringList(str, ref list);
+					Value = list;
 					#endregion
 				}
 			}
-			else if (this is ConfigItem<TextDrawingMode>)
+			else if (Value is TextDrawingMode)
 			{
 				str = str.ToUpper();
 				ret = Enum.IsDefined(typeof(TextDrawingMode), str);
 				if (ret)
 				{
-					((ConfigItem<TextDrawingMode>)(AConfigItem)this).Value
-					 = (TextDrawingMode)Enum.Parse(typeof(TextDrawingMode), str);
+					Value = (TextDrawingMode)Enum.Parse(typeof(TextDrawingMode), str);
 				}
 				else
-					throw new CodeEE("不正な指定です");
+					ShowError("不正な指定です");
 			}
-			else if (this is ConfigItem<ReduceArgumentOnLoadFlag>)
+			else if (Value is ReduceArgumentOnLoadFlag)
 			{
 				str = str.ToUpper();
 				ret = Enum.IsDefined(typeof(ReduceArgumentOnLoadFlag), str);
 				if (ret)
 				{
-					((ConfigItem<ReduceArgumentOnLoadFlag>)(AConfigItem)this).Value
-					 = (ReduceArgumentOnLoadFlag)Enum.Parse(typeof(ReduceArgumentOnLoadFlag), str);
+					Value = (ReduceArgumentOnLoadFlag)Enum.Parse(typeof(ReduceArgumentOnLoadFlag), str);
 				}
 				else
-					throw new CodeEE("不正な指定です");
+					ShowError("不正な指定です");
 			}
-			else if (this is ConfigItem<DisplayWarningFlag>)
+			else if (Value is DisplayWarningFlag)
 			{
 				str = str.ToUpper();
 				ret = Enum.IsDefined(typeof(DisplayWarningFlag), str);
 				if (ret)
 				{
-					((ConfigItem<DisplayWarningFlag>)(AConfigItem)this).Value
-					 = (DisplayWarningFlag)Enum.Parse(typeof(DisplayWarningFlag), str);
+					Value = (DisplayWarningFlag)Enum.Parse(typeof(DisplayWarningFlag), str);
 				}
 				else
-					throw new CodeEE("不正な指定です");
+					ShowError("不正な指定です");
 			}
-			else if (this is ConfigItem<UseLanguage>)
+			else if (Value is UseLanguage)
 			{
 				str = str.ToUpper();
 				ret = Enum.IsDefined(typeof(UseLanguage), str);
 				if (ret)
 				{
-					((ConfigItem<UseLanguage>)(AConfigItem)this).Value
-						= (UseLanguage)Enum.Parse(typeof(UseLanguage), str);
+					Value = (UseLanguage)Enum.Parse(typeof(UseLanguage), str);
 				}
 				else
-					throw new CodeEE("不正な指定です");
+					ShowError("不正な指定です");
 			}
-			else if (this is ConfigItem<TextEditorType>)
+			else if (Value is TextEditorType)
 			{
 				str = str.ToUpper();
 				ret = Enum.IsDefined(typeof(TextEditorType), str);
 				if (ret)
 				{
-					((ConfigItem<TextEditorType>)(AConfigItem)this).Value
-						= (TextEditorType)Enum.Parse(typeof(TextEditorType), str);
+					Value = (TextEditorType)Enum.Parse(typeof(TextEditorType), str);
 				}
 				else
-					throw new CodeEE("不正な指定です");
+					ShowError("不正な指定です");
 			}
-            //else
-            //    throw new ExeEE("型不明なコンフィグ");
+			else if (Value is SKFilterQuality)
+			{
+				ret = Enum.TryParse(str, true, out SKFilterQuality result);
+				if (ret)
+					Value = result;
+				else
+					ShowError("不正な指定です");
+			}
+			//else
+			//    ShowError("型不明なコンフィグ");
+			item.Value = Value;
 			return ret;
 		}
 
 		#region EM_私家版_LoadText＆SaveText機能拡張
-		private bool tryStringToStringList(string arg, ref List<string> vs)
+		static private bool TryStringToStringList(string arg, ref List<string> vs)
 		{
 			string[] tokens = arg.Split(',');
 			vs.Clear();
@@ -265,11 +261,21 @@ namespace MinorShift.Emuera
 		}
 		#endregion
 
+		private static void ShowError(string errorMessage)
+		{
+			if (GameUtils.IsEmueraPage)
+				throw new CodeEE(errorMessage);
+			//else
+			//	MessageBox.QuickShow(errorMessage);
+		}
 
-		private bool tryStringToBool(string arg, ref bool p)
+		private static bool TryStringToBool(string arg, out bool p)
 		{
 			if (arg == null)
+			{
+				p = false;
 				return false;
+			}
 			string str = arg.Trim();
 			if (Int32.TryParse(str, out int i))
 			{
@@ -293,18 +299,17 @@ namespace MinorShift.Emuera
 			throw new CodeEE("不正な指定です");
 		}
 
-		private bool tryStringsToColor(string str, out Color c)
+		public static bool TryStringsToColor(string str, out Color c)
 		{
 			string[] tokens = str.Split(',');
 			c = Color.Black;
-			int r, g, b;
 			if (tokens.Length < 3)
 				return false;
-			if (!Int32.TryParse(tokens[0].Trim(), out r) || (r < 0) || (r > 255))
+			if (!Int32.TryParse(tokens[0].Trim(), out Int32 r) || (r < 0) || (r > 255))
 				return false;
-			if (!Int32.TryParse(tokens[1].Trim(), out g) || (g < 0) || (g > 255))
+			if (!Int32.TryParse(tokens[1].Trim(), out Int32 g) || (g < 0) || (g > 255))
 				return false;
-			if (!Int32.TryParse(tokens[2].Trim(), out b) || (b < 0) || (b > 255))
+			if (!Int32.TryParse(tokens[2].Trim(), out Int32 b) || (b < 0) || (b > 255))
 				return false;
 			c = Color.FromArgb(r, g, b);
 			return true;

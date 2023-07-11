@@ -8,6 +8,7 @@ using MinorShift.Emuera.GameData.Variable;
 using MinorShift.Emuera.GameProc.Function;
 using MinorShift._Library;
 using MinorShift.Emuera.GameData;
+using XEmuera;
 
 namespace MinorShift.Emuera.GameProc
 {
@@ -58,7 +59,7 @@ namespace MinorShift.Emuera.GameProc
 					if (displayReport)
 						output.PrintSystemLine(filename + "読み込み中・・・");
 #endif
-					System.Windows.Forms.Application.DoEvents();
+					App.DoEvents();
 					loadErb(file, filename, isOnlyEvent);
 				}
 				ParserMediator.FlushWarningList();
@@ -87,7 +88,7 @@ namespace MinorShift.Emuera.GameProc
 			catch (Exception e)
 			{
 				ParserMediator.FlushWarningList();
-				System.Media.SystemSounds.Hand.Play();
+				//System.Media.SystemSounds.Hand.Play();
 				output.PrintError("予期しないエラーが発生しました:" + Program.ExeName);
 				output.PrintError(e.GetType().ToString() + ":" + e.Message);
 				return false;
@@ -119,7 +120,7 @@ namespace MinorShift.Emuera.GameProc
 					fname = fpath;
 				if (Program.AnalysisMode)
 					output.PrintSystemLine(fname + "読み込み中・・・");
-				System.Windows.Forms.Application.DoEvents();
+				App.DoEvents();
                 loadErb(fpath, fname, isOnlyEvent);
 			}
             if (Program.AnalysisMode)
@@ -464,7 +465,7 @@ namespace MinorShift.Emuera.GameProc
 				}
 				catch (Exception exc)
 				{
-					System.Media.SystemSounds.Hand.Play();
+					//System.Media.SystemSounds.Hand.Play();
 					string errmes = exc.Message;
 					if (!(exc is EmueraException))
 						errmes = exc.GetType().ToString() + ":" + errmes;
@@ -823,7 +824,7 @@ namespace MinorShift.Emuera.GameProc
 		{//ここでエラーを捕まえることは本来はないはず。ExeEE相当。
 			try
 			{
-				System.Windows.Forms.Application.DoEvents();
+				App.DoEvents();
 				string filename = label.Position.Filename.ToUpper();
 				setArgument(label);
 				nestCheck(label);
@@ -831,7 +832,7 @@ namespace MinorShift.Emuera.GameProc
 			}
 			catch (Exception exc)
 			{
-				System.Media.SystemSounds.Hand.Play();
+				//System.Media.SystemSounds.Hand.Play();
                 //1756beta2+v6.1 修正の効率化のために何かパース関係でハンドリングできてないエラーが出た場合はスタックトレースを投げるようにした
                 string errmes = (exc is EmueraException) ? exc.Message : exc.GetType().ToString() + ":" + exc.Message;
                 ParserMediator.Warn("@" + label.LabelName + " の解析中にエラー:" + errmes, label, 2, true, false, !(exc is EmueraException) ? exc.StackTrace : null);

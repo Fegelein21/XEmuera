@@ -5,7 +5,7 @@ using MinorShift.Emuera.Sub;
 using MinorShift.Emuera.GameProc;
 using MinorShift.Emuera.GameData.Expression;
 
-using System.Windows.Forms;
+using XEmuera.Forms;
 
 namespace MinorShift.Emuera.GameData.Variable
 {

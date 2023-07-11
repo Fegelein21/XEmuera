@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows.Forms;
+using XEmuera.Forms;
 using MinorShift.Emuera.Sub;
 using MinorShift.Emuera.GameData;
 using MinorShift.Emuera.GameData.Variable;
@@ -44,12 +44,12 @@ namespace MinorShift.Emuera.GameProc
 		#region Initialized 前用
 		public FunctionLabelLine GetSameNameLabel(FunctionLabelLine point)
 		{
-			string id = point.LabelName;
-			if (!labelAtDic.ContainsKey(id))
-				return null;
 			if (point.IsError)
 				return null;
-			List<FunctionLabelLine> labelList = labelAtDic[id];
+			string id = point.LabelName;
+			if (!labelAtDic.TryGetValue(id, out var labelList))
+				return null;
+			//List<FunctionLabelLine> labelList = labelAtDic[id];
 			if (labelList.Count <= 1)
 				return null;
 			return labelList[0];
@@ -200,13 +200,13 @@ namespace MinorShift.Emuera.GameProc
 			point.FileIndex = currentFileCount;
 			count++;
 			string id = point.LabelName;
-			if (labelAtDic.ContainsKey(id))
+			if (labelAtDic.TryGetValue(id, out var labelList))
 			{
-				labelAtDic[id].Add(point);
+				labelList.Add(point);
 			}
 			else
 			{
-				List<FunctionLabelLine> labelList = new List<FunctionLabelLine>();
+				labelList = new List<FunctionLabelLine>();
 				labelList.Add(point);
 				labelAtDic.Add(id, labelList);
 			}

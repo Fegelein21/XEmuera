@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using MinorShift.Emuera.Sub;
 using MinorShift.Emuera.GameData.Variable;
 using MinorShift.Emuera.GameData.Function;
-using System.Windows.Forms;
+using XEmuera.Forms;
 
 namespace MinorShift.Emuera.GameData.Expression
 {

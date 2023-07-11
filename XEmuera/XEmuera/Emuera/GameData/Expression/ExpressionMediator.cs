@@ -8,7 +8,8 @@ using MinorShift.Emuera.GameProc;
 using Microsoft.VisualBasic;
 using MinorShift.Emuera.GameProc.Function;
 using MinorShift.Emuera.GameView;
-using System.Windows.Forms;
+using XEmuera.Forms;
+using XEmuera;
 
 namespace MinorShift.Emuera.GameData.Expression
 {

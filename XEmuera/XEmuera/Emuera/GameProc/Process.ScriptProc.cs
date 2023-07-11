@@ -8,6 +8,7 @@ using MinorShift.Emuera.GameData.Variable;
 using MinorShift.Emuera.GameView;
 using MinorShift.Emuera.GameData.Function;
 using MinorShift.Emuera.GameProc.Function;
+using XEmuera.Drawing;
 
 namespace MinorShift.Emuera.GameProc
 {

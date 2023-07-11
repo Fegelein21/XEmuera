@@ -8,6 +8,7 @@ using MinorShift.Emuera.GameProc.Function;
 using MinorShift._Library;
 using MinorShift.Emuera.GameData;
 using MinorShift.Emuera.GameData.Function;
+using XEmuera;
 
 namespace MinorShift.Emuera.GameProc
 {
@@ -47,7 +48,7 @@ namespace MinorShift.Emuera.GameProc
 					noError = loadHeaderFile(file, filename);
 					if (!noError)
 						break;
-					System.Windows.Forms.Application.DoEvents();
+					App.DoEvents();
 				}	
 				//エラーが起きてる場合でも読み込めてる分だけはチェックする
 				if (dimlines.Count > 0)

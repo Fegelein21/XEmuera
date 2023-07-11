@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
 using MinorShift.Emuera.Sub;
+using XEmuera;
 
 namespace MinorShift.Emuera.GameData
 {
@@ -25,8 +26,8 @@ namespace MinorShift.Emuera.GameData
 		public string VersionName = "";
         #endregion
 
-        //1.727 追加。Form.Text
-        public string ScriptWindowTitle = null;
+		//1.727 追加。Form.Text
+		public string ScriptWindowTitle = null;
 		public string ScriptVersionText
 		{
 			get
@@ -89,7 +90,7 @@ namespace MinorShift.Emuera.GameData
 		/// <returns>読み込み続行するなら真、エラー終了なら偽</returns>
 		public bool LoadGameBaseCsv(string basePath)
 		{
-            if (!File.Exists(basePath))
+            if (!FileUtils.Exists(ref basePath))
             {
                 return true;
             }
@@ -146,6 +147,7 @@ namespace MinorShift.Emuera.GameData
 						case "ウィンドウタイトル":
 							ScriptWindowTitle = tokens[1];
 							break;
+							
                         case "動作に必要なEmueraのバージョン":
                             Compatible_EmueraVer = tokens[1];
                             if (!Regex.IsMatch(Compatible_EmueraVer, @"^\d+\.\d+\.\d+\.\d+$"))

@@ -371,7 +371,7 @@ namespace MinorShift.Emuera.GameProc
 				errMes = e.Message;
 			}
 		err:
-			System.Media.SystemSounds.Hand.Play();
+			//System.Media.SystemSounds.Hand.Play();
 			if (isFunction)
 			{
 				if(labelName.Length == 0)
@@ -480,7 +480,7 @@ namespace MinorShift.Emuera.GameProc
 			}
 			catch (CodeEE e)
 			{
-				System.Media.SystemSounds.Hand.Play();
+				//System.Media.SystemSounds.Hand.Play();
 				return new InvalidLine(position, e.Message);
 			}
 		}

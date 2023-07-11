@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:views="clr-namespace:XEmuera.Views"
+	xmlns:eforms="clr-namespace:MinorShift.Emuera.Forms"
+	x:Class="MinorShift.Emuera.MainWindow"
+	NavigationPage.HasNavigationBar="False"
+	SizeChanged="ContentPage_SizeChanged">
+
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style
+				x:Key="TintImageButtonStyle"
+				TargetType="views:TintImageButton">
+				<Setter
+					Property="TintColor"
+					Value="{Binding MainColor}" />
+				<Setter
+					Property="BackgroundColor"
+					Value="{Binding InvertMainColor}" />
+				<Setter
+					Property="CornerRadius"
+					Value="3" />
+				<Setter
+					Property="Padding"
+					Value="6" />
+			</Style>
+		</ResourceDictionary>
+	</ContentPage.Resources>
+
+	<FlexLayout
+		Direction="Column">
+
+		<RelativeLayout
+			x:Name="mainLayout">
+
+			<eforms:EraPictureBox
+				x:Name="mainPicBox"
+				EnableTouchEvents="True"
+				Touch="EraPictureBox_Touch"
+				PaintSurface="mainPicBox_Paint" />
+
+			<StackLayout
+				x:Name="uiLayout"
+				InputTransparent="True"
+				CascadeInputTransparent="False"
+				Orientation="Vertical"
+				SizeChanged="uiLayout_SizeChanged">
+
+				<StackLayout
+					x:Name="ToolButtonGroup"
+					InputTransparent="True"
+					CascadeInputTransparent="False"
+					Orientation="Horizontal"
+					HorizontalOptions="Fill"
+					HeightRequest="36"
+					Padding="0,10,20,10"
+					Spacing="16">
+
+					<BoxView
+						InputTransparent="True"
+						HorizontalOptions="StartAndExpand" />
+
+					<views:TintImageButton
+						x:Name="lock_rotation_button"
+						Image="lock_rotation_open.svg"
+						ToggledImage="lock_rotation.svg"
+						Style="{StaticResource TintImageButtonStyle}"
+						Toggled="lock_rotation_button_Toggled"
+						IsToggled="False" />
+
+					<views:TintImageButton
+						x:Name="edit_button"
+						Image="edit.svg"
+						Style="{StaticResource TintImageButtonStyle}"
+						Toggled="edit_button_Toggled"
+						IsToggled="False" />
+
+					<views:TintImageButton
+						x:Name="scroll_vertical_button"
+						Image="scroll_vertical.svg"
+						Style="{StaticResource TintImageButtonStyle}"
+						Padding="8"
+						Toggled="scroll_vertical_button_Toggled"
+						IsToggled="False" />
+
+					<views:TintImageButton
+						x:Name="gallery_view_button"
+						Image="gallery_view.svg"
+						Style="{StaticResource TintImageButtonStyle}"
+						Toggled="gallery_view_button_Toggled"
+						IsToggled="True" />
+
+                    <views:TintImageButton
+						x:Name="menu_show_button"
+						Image="menu_show.svg"
+						Style="{StaticResource TintImageButtonStyle}"
+						Padding="8"
+						Clicked="ButtonVisibleGroup_Clicked" />
+
+                    <views:TintImageButton
+						x:Name="chevron_right_button"
+						Image="chevron_right.svg"
+						Style="{StaticResource TintImageButtonStyle}"
+						Clicked="quickButton_Clicked" />
+
+				</StackLayout>
+
+				<StackLayout
+					x:Name="ScrollBarLayout"
+					IsVisible="False"
+					HorizontalOptions="End"
+					VerticalOptions="EndAndExpand"
+					Margin="0, 0, 40, 20"
+					Rotation="90"
+					AnchorX="1"
+					AnchorY="0.5">
+					<Slider
+						x:Name="vScrollBar"
+						Maximum="1"
+						Value="1"
+						MaximumTrackColor="LightGray"
+						MinimumTrackColor="LightGray"
+						ValueChanged="scrollBar_ValueChanged"
+						DragStarted="vScrollBar_DragStarted"
+						DragCompleted="vScrollBar_DragCompleted" />
+				</StackLayout>
+
+				<ScrollView
+					x:Name="quickButtonScrollView"
+					x:FieldModifier="public"
+					HorizontalOptions="End"
+					VerticalOptions="EndAndExpand"
+					HorizontalScrollBarVisibility="Never"
+					VerticalScrollBarVisibility="Never"
+					Margin="0,0,20,20"
+					Orientation="Both">
+
+					<StackLayout
+						x:Name="quickButtonGroup"
+						x:FieldModifier="public"
+						Spacing="3"
+						Orientation="Vertical" />
+
+				</ScrollView>
+			</StackLayout>
+		</RelativeLayout>
+
+		<StackLayout
+			x:Name="entryGroup"
+			IsVisible="False"
+			FlexLayout.Basis="70"
+			BackgroundColor="{Binding InvertMainColor}"
+			Padding="4,0,8,0"
+			Orientation="Horizontal">
+
+			<Entry
+				x:Name="richTextBox1"
+				Completed="richTextBox1_Completed"
+				HorizontalOptions="FillAndExpand"
+				Keyboard="Plain"
+				FontSize="16"
+				FontFamily="MS Gothic"
+				TextColor="{Binding MainColor}"
+				TextChanged="richTextBox1_TextChanged" />
+
+			<views:TintImageButton
+				x:Name="publish_button"
+				Image="publish.svg"
+				Style="{StaticResource TintImageButtonStyle}"
+				WidthRequest="50"
+				Clicked="publish_button_Clicked" />
+		</StackLayout>
+	</FlexLayout>
+</ContentPage>

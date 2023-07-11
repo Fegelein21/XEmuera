@@ -157,5 +157,21 @@ namespace MinorShift.Emuera
 		#region EM_私家版_LoadText＆SaveText機能拡張
 		ValidExtension = 200,
 		#endregion
+		PanSpeed,
+
+		QuickButtonFontSize,
+		QuickButtonWidth,
+		QuickButtonSpacing,
+
+		AdaptiveFont,
+		AdaptiveFontSize,
+		FontScale,
+		TextAntialias,
+		TextFilterQuality,
+		ShapeAntialias,
+		ShapeFilterQuality,
+
+		LongPressSkip,
+		LongPressSkipTime,
 	}
 }

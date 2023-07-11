@@ -50,7 +50,7 @@ namespace MinorShift.Emuera.GameProc.Function
 				line.IsError = true;
 			return true;
 		error:
-			System.Media.SystemSounds.Hand.Play();
+			//System.Media.SystemSounds.Hand.Play();
 
 			line.IsError = true;
 			line.ErrMes = errmes;

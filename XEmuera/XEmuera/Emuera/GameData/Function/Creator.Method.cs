@@ -9,15 +9,15 @@ using MinorShift._Library;
 using MinorShift.Emuera.GameData.Variable;
 using System.Drawing;
 using Microsoft.VisualBasic;
-using System.Windows.Forms;
 using MinorShift.Emuera.GameView;
 using MinorShift.Emuera.Content;
-using System.Linq;
-using System.Drawing;
-using WebPWrapper;
-using System.Xml;
+using XEmuera;
+using XEmuera.Models;
+using SkiaSharp;
+using XEmuera.Drawing;
 using System.IO;
-
+using System.Linq;
+using System.Xml;
 
 namespace MinorShift.Emuera.GameData.Function
 {
@@ -1053,19 +1053,25 @@ namespace MinorShift.Emuera.GameData.Function
             public override Int64 GetIntValue(ExpressionMediator exm, IOperandTerm[] arguments)
             {
                 string str = arguments[0].GetStrValue(exm);
-                using (System.Drawing.Text.InstalledFontCollection ifc = new System.Drawing.Text.InstalledFontCollection())
-                {
-                    Int64 isInstalled = 0;
-                    foreach (System.Drawing.FontFamily ff in ifc.Families)
-                    {
-                        if (ff.Name == str)
-                        {
-                            isInstalled = 1;
-                            break;
-                        }
-                    }
-                    return (isInstalled);
-                }
+				//using (System.Drawing.Text.InstalledFontCollection ifc = new System.Drawing.Text.InstalledFontCollection())
+				//{
+				//    Int64 isInstalled = 0;
+				//    foreach (System.Drawing.FontFamily ff in ifc.Families)
+				//    {
+				//        if (ff.Name == str)
+				//        {
+				//            isInstalled = 1;
+				//            break;
+				//        }
+				//    }
+				//    return (isInstalled);
+				//}
+
+                Int64 isInstalled = 0;
+				if (FontModel.HasFont(str))
+					isInstalled = 1;
+
+				return (isInstalled);
             }
 
         }
@@ -3633,12 +3639,12 @@ namespace MinorShift.Emuera.GameData.Function
 		/// <summary>
 		/// argNo番目の引数を5x5のカラーマトリクス配列変数として読み取り、 5x5のfloat[][]形式にして返す。
 		/// </summary>
-		private static float[][] ReadColormatrix(string Name, ExpressionMediator exm, IOperandTerm[] arguments, int argNo)
+		private static float[] ReadColormatrix(string Name, ExpressionMediator exm, IOperandTerm[] arguments, int argNo)
 		{
 			//数値型二次元以上配列変数のはず
 			FixedVariableTerm p = ((VariableTerm)arguments[argNo]).GetFixedVariableTerm(exm);
 			Int64 e1, e2;
-			float[][] cm = new float[5][];
+            float[] cm = new float[SKColorFilter.ColorMatrixSize];
 			if (p.Identifier.IsArray2D)
 			{
 				Int64[,] array;
@@ -3656,14 +3662,13 @@ namespace MinorShift.Emuera.GameData.Function
 				}
 				if (e1 < 0 || e2 < 0 || e1 + 5 > array.GetLength(0) || e2 + 5 > array.GetLength(1))
 					throw new CodeEE(string.Format(Properties.Resources.RuntimeErrMesMethodGColorMatrix0, Name, e1, e2));
-				for (int x = 0; x < 5; x++)
-				{
-					cm[x] = new float[5];
-					for (int y = 0; y < 5; y++)
-					{
-						cm[x][y] = ((float)array[e1+x, e2+y]) / 256f;
-					}
-				}
+				for (int x = 0; x < SKColorFilter.ColorMatrixSize; x++)
+                {
+                    if (x % 5 == 4)
+                        cm[x] = 256 - (array[e1 + x / 5, e2 + 4] + array[e1 + 4, e2 + 4]);
+                    else
+                        cm[x] = (array[e1 + x / 5, e2 + (x % 5)] + array[e1 + 4, e2 + (x % 5)]) / 256f;
+                }
 			}
 			if(p.Identifier.IsArray3D)
 			{
@@ -3683,14 +3688,13 @@ namespace MinorShift.Emuera.GameData.Function
 					throw new CodeEE(string.Format(Properties.Resources.RuntimeErrMesMethodGColorMatrix0, Name, e2, e3));
 				if (e2 < 0 || e3 < 0 || e2 + 5 > array.GetLength(1) || e3 + 5 > array.GetLength(2))
 					throw new CodeEE(string.Format(Properties.Resources.RuntimeErrMesMethodGColorMatrix0, Name, e2, e3));
-				for (int x = 0; x < 5; x++)
+				for (int x = 0; x < SKColorFilter.ColorMatrixSize; x++)
 				{
-					cm[x] = new float[5];
-					for (int y = 0; y < 5; y++)
-					{
-						cm[x][y] = ((float)array[e1,e2+x, e3+y]) / 256f;
-					}
-				}
+                    if (x % 5 == 4)
+                        cm[x] = 256 - (array[e1, e2 + x / 5, e3 + 4] + array[e1, e2 + 4, e3 + 4]);
+                    else
+                        cm[x] = (array[e1, e2 + x / 5, e3 + (x % 5)] + array[e1, e2 + 4, e3 + (x % 5)]) / 256f;
+                }
 			}
 			return cm;
 		}
@@ -3722,7 +3726,7 @@ namespace MinorShift.Emuera.GameData.Function
                     case "GGETFONTSIZE":
                         return g.Fontsize;
                     case "GGETFONTSTYLE":
-                        return g.Fontstyle;
+                        return g.Fnt.StyleToNum();
                     #endregion
                 }
 				throw new ExeEE("GraphicsState:" + Name + ":異常な分岐");
@@ -3754,7 +3758,7 @@ namespace MinorShift.Emuera.GameData.Function
         }
         #endregion
 
-        public sealed class GraphicsGetColorMethod : FunctionMethod
+		public sealed class GraphicsGetColorMethod : FunctionMethod
 		{
 			public GraphicsGetColorMethod()
 			{
@@ -3875,9 +3879,9 @@ namespace MinorShift.Emuera.GameData.Function
 				return 1;
 			}
 		}
-        #endregion
+		#endregion
 
-        public sealed class GraphicsSetPenMethod : FunctionMethod
+		public sealed class GraphicsSetPenMethod : FunctionMethod
 		{
 			public GraphicsSetPenMethod()
 			{
@@ -3948,18 +3952,21 @@ namespace MinorShift.Emuera.GameData.Function
                     g.GDrawString(text, p.X, p.Y);
                 }
                 //生成する画像のサイズを取得
-                var bitmap = new Bitmap(16, 16);
+                //var bitmap = new SKBitmap(16, 16);
                 //Graphics canvas = Graphics.FromImage(bitmap);
-                var graphics = Graphics.FromImage(bitmap);
-                var size = graphics.MeasureString(text, g.Fnt, int.MaxValue, StringFormat.GenericTypographic);
+                SKRect bounds = new SKRect();
+                using (SKPaint paint = new SKPaint { TextSize = g.Fnt.Size })
+                {
+                    paint.MeasureText(text, ref bounds);
+                }
 
                 //TextRenderer
                 //Size tsize = TextRenderer.MeasureText(canvas, text, g.Fnt,
                 //    new Size(2000, 2000), TextFormatFlags.NoPadding);
                 //test用
                 Int64[] resultArray = exm.VEvaluator.RESULT_ARRAY;
-                resultArray[1] = (Int64)size.Width;
-                resultArray[2] = (Int64)size.Height;
+                resultArray[1] = (Int64)bounds.Width;
+                resultArray[2] = (Int64)bounds.Height;
                 return 1;
             }
         }
@@ -4001,18 +4008,21 @@ namespace MinorShift.Emuera.GameData.Function
                         fs |= FontStyle.Underline;
                 }
                 Font fnt = new Font(fontname, fontsize, fs, GraphicsUnit.Pixel);
-                var bitmap = new Bitmap(16, 16);
+                //var bitmap = new SKBitmap(16, 16);
                 //Graphics canvas = Graphics.FromImage(bitmap);
-                var graphics = Graphics.FromImage(bitmap);
-                var size = graphics.MeasureString(text, fnt, int.MaxValue, StringFormat.GenericTypographic);
+                SKRect bounds = new SKRect();
+                using (SKPaint paint = new SKPaint { TextSize = fnt.Size })
+                {
+                    paint.MeasureText(text, ref bounds);
+                }
 
                 //TextRenderer
                 //Size tsize = TextRenderer.MeasureText(canvas, text, fnt,
                 //    new Size(2000, 2000), TextFormatFlags.NoPadding);
                 Int64[] resultArray = exm.VEvaluator.RESULT_ARRAY;
                 //resultArray[1] = (Int64)tsize.Width;
-                resultArray[1] = (Int64)size.Height;
-                return (Int64)size.Width;
+                resultArray[1] = (Int64)bounds.Height;
+                return (Int64)bounds.Width;
             }
         }
         #endregion
@@ -4122,7 +4132,7 @@ namespace MinorShift.Emuera.GameData.Function
         **/
         #endregion
 
-        public sealed class SpriteStateMethod : FunctionMethod
+		public sealed class SpriteStateMethod : FunctionMethod
 		{
 			public SpriteStateMethod()
 			{
@@ -4278,21 +4288,16 @@ namespace MinorShift.Emuera.GameData.Function
 					return 0;
 
 				string filename = arguments[1].GetStrValue(exm);
-				Bitmap bmp = null;
-                try
-                    {
-                    string filepath = filename;
+				SKBitmap bmp = null;
+				try
+				{
+					string filepath = filename;
 					if(!System.IO.Path.IsPathRooted(filepath))
 						filepath = Program.ContentDir + filename;
-					if (!System.IO.File.Exists(filepath))
+					if (!FileUtils.Exists(ref filepath))
 						return 0;
-                    using (WebP webp = new WebP())
-                    if (Path.GetExtension(filepath).ToUpperInvariant() == ".WEBP")
-                        bmp = webp.Load(filepath);
-                    else
-                        bmp = new Bitmap(filepath);
-
-                    if (bmp.Width > AbstractImage.MAX_IMAGESIZE || bmp.Height > AbstractImage.MAX_IMAGESIZE)
+					bmp = SKBitmap.Decode(filepath);
+					if (bmp.Width > AbstractImage.MAX_IMAGESIZE || bmp.Height > AbstractImage.MAX_IMAGESIZE)
 						return 0;
 					g.GCreateFromF(bmp, (Config.TextDrawingMode == TextDrawingMode.WINAPI));
 				}
@@ -4516,7 +4521,7 @@ namespace MinorShift.Emuera.GameData.Function
 					dest.GDrawG(src, destRect, srcRect);
 					return 1;
 				}
-				float[][] cm = ReadColormatrix(Name, exm, arguments, 10);
+				float[] cm = ReadColormatrix(Name, exm, arguments, 10);
 				dest.GDrawG(src, destRect, srcRect, cm);
 				return 1;
 			}
@@ -4649,7 +4654,7 @@ namespace MinorShift.Emuera.GameData.Function
 				}
 				//if (arguments.Length == 7)
 				destRect = ReadRectangle(Name, exm, arguments, 2);
-				float[][] cm = ReadColormatrix(Name, exm, arguments, 6);
+				float[] cm = ReadColormatrix(Name, exm, arguments, 6);
 				dest.GDrawCImg(img, destRect, cm);
 				return 1;
 			}
@@ -4963,8 +4968,8 @@ namespace MinorShift.Emuera.GameData.Function
 				if (z64 < int.MinValue || z64 > int.MaxValue || z64 == 0)
 					throw new CodeEE(string.Format(Properties.Resources.RuntimeErrMesMethodDefaultArgumentOutOfRange0, Name, z64, 5 + 1));
 				string tooltip = null;
-				if(arguments.Length > 6)
-					tooltip = arguments[6].GetStrValue(exm);
+				//if(arguments.Length > 6)
+				//	tooltip = arguments[6].GetStrValue(exm);
 				if (!exm.Console.CBG_SetButtonImage((int)b64, imgN, imgB, p.X, p.Y, (int)z64, tooltip))
 					return 0;
 				return 1;
@@ -4988,7 +4993,8 @@ namespace MinorShift.Emuera.GameData.Function
 				Int64 keycode = arguments[0].GetIntValue(exm);
 				if (keycode < 0 || keycode > 255)
 					return 0;
-				short s = WinInput.GetKeyState((int)keycode);
+				//short s = WinInput.GetKeyState((int)keycode);
+				short s = 0;
 				short toggle = keytoggle[keycode];
 				keytoggle[keycode] = (short)((s & 1) + 1);//初期値0、トグル状態に応じて1か2を代入。
 				switch(Name)
@@ -5078,7 +5084,7 @@ namespace MinorShift.Emuera.GameData.Function
                     if (i == 1 && arguments[i].GetOperandType() == typeof(string)) continue;
                     #endregion
 
-                    if (i < argumentTypeArray.Length && argumentTypeArray[i] != arguments[i].GetOperandType())
+					if (i < argumentTypeArray.Length && argumentTypeArray[i] != arguments[i].GetOperandType())
 						return string.Format(Properties.Resources.SyntaxErrMesMethodDefaultArgumentType0, name, i + 1);
 				}
 				return null;
@@ -5086,33 +5092,32 @@ namespace MinorShift.Emuera.GameData.Function
 			public override Int64 GetIntValue(ExpressionMediator exm, IOperandTerm[] arguments)
 			{
                 #region EM_私家版_LoadText＆SaveText機能拡張
-                //string savText = arguments[0].GetStrValue(exm);
-                //Int64 i64 = arguments[1].GetIntValue(exm);
-                //if (i64 < 0 || i64 > int.MaxValue)
-                //	return 0;
-                //bool forceSavdir = arguments.Length > 2 && (arguments[2].GetIntValue(exm) != 0);
-                //bool forceUTF8 = arguments.Length > 3 && (arguments[3].GetIntValue(exm) != 0);
-                //int fileIndex = (int)i64;
-                //string filepath = forceSavdir ?
-                //	GetSaveDataPathText(fileIndex, Config.ForceSavDir) :
-                //	GetSaveDataPathText(fileIndex, Config.SavDir);
-                //Encoding encoding = forceUTF8 ?
-                //	Encoding.GetEncoding("UTF-8") :
-                //	Config.SaveEncode;
-                //try
-                //{
-                //	if (forceSavdir)
-                //		Config.ForceCreateSavDir();
-                //	else
-                //		Config.CreateSavDir();
-                //	System.IO.File.WriteAllText(filepath, savText, encoding);
-                //}
-                //catch { return 0; }
+                // string savText = arguments[0].GetStrValue(exm);
+                // Int64 i64 = arguments[1].GetIntValue(exm);
+                // if (i64 < 0 || i64 > int.MaxValue)
+                // 	return 0;
+                // bool forceSavdir = arguments.Length > 2 && (arguments[2].GetIntValue(exm) != 0);
+                // bool forceUTF8 = arguments.Length > 3 && (arguments[3].GetIntValue(exm) != 0);
+                // int fileIndex = (int)i64;
+                // string filepath = forceSavdir ?
+                // 	GetSaveDataPathText(fileIndex, Config.ForceSavDir) :
+                // 	GetSaveDataPathText(fileIndex, Config.SavDir);
+                // Encoding encoding = forceUTF8 ?
+                // 	Encoding.UTF8 :
+                // 	Config.SaveEncode;
+                // try
+                // {
+                // 	if (forceSavdir)
+                // 		Config.ForceCreateSavDir();
+                // 	else
+                // 		Config.CreateSavDir();
+                // 	System.IO.File.WriteAllText(filepath, savText, encoding);
+                // }
+                // catch { return 0; }
                 string savText = arguments[0].GetStrValue(exm), filepath;
                 Int64 i64 = -1;
                 bool forceSavdir = arguments.Length > 2 && (arguments[2].GetIntValue(exm) != 0);
                 bool forceUTF8 = arguments.Length > 3 && (arguments[3].GetIntValue(exm) != 0);
-
 
                 if (arguments[1].GetOperandType() == typeof(Int64))
                 {
@@ -5127,9 +5132,10 @@ namespace MinorShift.Emuera.GameData.Function
                 else
                 {
                     filepath = arguments[1].GetStrValue(exm);
-                    filepath = filepath.Replace('/', '\\');
-                    filepath = filepath.Replace("..\\", "");
-                    if (Path.GetPathRoot(filepath) != string.Empty) return 0;
+                    filepath = filepath.Replace('\\', '/');
+                    filepath = filepath.Replace("./", "");
+                    filepath = Program.ExeDir + filepath;
+                    //if (Path.GetPathRoot(filepath) != string.Empty) return 0;
                     string tmp = Path.HasExtension(filepath) ? Path.GetExtension(filepath).ToLower().Substring(1) : "";
                     if (!Config.ValidExtension.Contains(tmp))
                         filepath = Path.ChangeExtension(filepath, "txt");
@@ -5150,8 +5156,8 @@ namespace MinorShift.Emuera.GameData.Function
                     }
                     else
                     {
-                        if (filepath.LastIndexOf('\\') >= 0)
-                            System.IO.Directory.CreateDirectory(filepath.Substring(0, filepath.LastIndexOf('\\')));
+                        if (filepath.LastIndexOf('/') >= 0)
+                            System.IO.Directory.CreateDirectory(filepath.Substring(0, filepath.LastIndexOf('/')));
                     }
 
                     System.IO.File.WriteAllText(filepath, savText, encoding);
@@ -5193,29 +5199,30 @@ namespace MinorShift.Emuera.GameData.Function
 			}
 			public override string GetStrValue(ExpressionMediator exm, IOperandTerm[] arguments)
 			{
-                #region EM_私家版_LoadText＆SaveText機能拡張
-                //Int64 i64 = arguments[0].GetIntValue(exm);
-                //if (i64 < 0 || i64 > int.MaxValue)
-                //	return "";
-                //bool forceSavdir = arguments.Length > 1 && (arguments[1].GetIntValue(exm) != 0);
-                //bool forceUTF8 = arguments.Length > 2 && (arguments[2].GetIntValue(exm) != 0);
-                //int fileIndex = (int)i64;
-                //string filepath = forceSavdir ?
-                //	GetSaveDataPathText(fileIndex, Config.ForceSavDir) :
-                //	GetSaveDataPathText(fileIndex, Config.SavDir);
-                //Encoding encoding = forceUTF8 ?
-                //	Encoding.GetEncoding("UTF-8") :
-                //	Config.SaveEncode;
-                //if (!System.IO.File.Exists(filepath))
-                //	return "";
-                //string ret;
-                //try
-                //{
-                //	ret = System.IO.File.ReadAllText(filepath, encoding);
-                //}
-                //catch { return ""; }
-                //return ret;
-                string ret = "", filepath;
+				#region EM_私家版_LoadText＆SaveText機能拡張
+				// Int64 i64 = arguments[0].GetIntValue(exm);
+				// if (i64 < 0 || i64 > int.MaxValue)
+				// 	return "";
+				// bool forceSavdir = arguments.Length > 1 && (arguments[1].GetIntValue(exm) != 0);
+				// bool forceUTF8 = arguments.Length > 2 && (arguments[2].GetIntValue(exm) != 0);
+				// int fileIndex = (int)i64;
+				// string filepath = forceSavdir ?
+				// 	GetSaveDataPathText(fileIndex, Config.ForceSavDir) :
+				// 	GetSaveDataPathText(fileIndex, Config.SavDir);
+				// Encoding encoding = forceUTF8 ?
+				// 	Encoding.UTF8 :
+				// 	Config.SaveEncode;
+				// if (!FileUtils.Exists(ref filepath))
+				// 	return "";
+				// string ret;
+				// try
+				// {
+				//     ret = System.IO.File.ReadAllText(filepath, encoding);
+				// }
+				// catch { return ""; }
+				// //一貫性の観点で\rには死んでもらう
+				// return ret.Replace("\r","");
+				string ret = "", filepath;
                 Int64 i64 = -1;
                 bool forceSavdir = arguments.Length > 1 && (arguments[1].GetIntValue(exm) != 0);
                 bool forceUTF8 = arguments.Length > 2 && (arguments[2].GetIntValue(exm) != 0);
@@ -5232,9 +5239,10 @@ namespace MinorShift.Emuera.GameData.Function
                 else
                 {
                     filepath = arguments[0].GetStrValue(exm);
-                    filepath = filepath.Replace('/', '\\');
-                    filepath = filepath.Replace("..\\", "");
-                    if (Path.GetPathRoot(filepath) != string.Empty) return string.Empty;
+                    filepath = filepath.Replace('\\', '/');
+                    filepath = filepath.Replace("./", "");
+                    filepath = Program.ExeDir + filepath;
+                    //if (Path.GetPathRoot(filepath) != string.Empty) return string.Empty;
                     string tmp = Path.HasExtension(filepath) ? Path.GetExtension(filepath).ToLower().Substring(1) : "";
                     if (!Config.ValidExtension.Contains(tmp))
                         return "";
@@ -5254,8 +5262,8 @@ namespace MinorShift.Emuera.GameData.Function
                 //一貫性の観点で\rには死んでもらう
                 return ret.Replace("\r", "");
                 #endregion
-            }
-        }
+			}
+		}
 
 
 
@@ -5289,7 +5297,14 @@ namespace MinorShift.Emuera.GameData.Function
 				try
 				{
 					Config.CreateSavDir();
-					g.Bitmap.Save(filepath);
+					//g.Bitmap.Save(filepath);
+                    using(var data = g.Bitmap.Encode(SKEncodedImageFormat.Png, 100))
+					{
+						using (var stream = File.OpenWrite(filepath))
+						{
+							data.SaveTo(stream);
+						}
+					}
 				}
 				catch
 				{
@@ -5322,17 +5337,12 @@ namespace MinorShift.Emuera.GameData.Function
 					return 0;
 
 				string filepath = GetSaveDataPathGraphics((int)i64);
-				Bitmap bmp = null;
+				SKBitmap bmp = null;
 				try
 				{
-					if (!System.IO.File.Exists(filepath))
+					if (!FileUtils.Exists(ref filepath))
 						return 0;
-                    using (WebP webp = new WebP())
-                    if (Path.GetExtension(filepath).ToUpperInvariant() == ".WEBP")
-                        bmp = webp.Load(filepath);
-                    else
-                        bmp = new Bitmap(filepath);
-
+					bmp = SKBitmap.Decode(filepath);
 					if (bmp.Width > AbstractImage.MAX_IMAGESIZE || bmp.Height > AbstractImage.MAX_IMAGESIZE)
 						return 0;
 					g.GCreateFromF(bmp, (Config.TextDrawingMode == TextDrawingMode.WINAPI));
@@ -5364,7 +5374,7 @@ namespace MinorShift.Emuera.GameData.Function
             public override Int64 GetIntValue(ExpressionMediator exm, IOperandTerm[] arguments)
             {
                 string str = arguments[0].GetStrValue(exm);
-                string filepath = System.IO.Path.GetFullPath(".\\sound\\" + str);
+                string filepath = Program.MusicDir + str;
                 if (System.IO.File.Exists(filepath))
                     return 1;
                 return 0;

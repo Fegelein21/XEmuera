@@ -4,7 +4,7 @@ using System.Text;
 using MinorShift.Emuera.GameData.Expression;
 using MinorShift.Emuera.GameData;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
+using XEmuera.Forms;
 
 namespace MinorShift.Emuera.Sub
 {

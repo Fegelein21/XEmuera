@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows.Forms;
+using XEmuera.Forms;
 using MinorShift.Emuera.Sub;
 using MinorShift.Emuera.GameData.Function;
 using MinorShift.Emuera.GameData.Variable;
@@ -81,7 +81,6 @@ namespace MinorShift.Emuera.GameData.Expression
 		
 		public static IOperandTerm ReduceUnaryTerm(OperatorCode op, IOperandTerm o1)
 		{
-            OperatorMethod method = null;
 			if (op == OperatorCode.Increment || op == OperatorCode.Decrement)
 			{
                 if (!(o1 is VariableTerm var))
@@ -89,12 +88,14 @@ namespace MinorShift.Emuera.GameData.Expression
                 if (var.Identifier.IsConst)
 					throw new CodeEE("変更できない変数をインクリメントすることはできません");
 			}
+			OperatorMethod method = null;
 			if (o1.GetOperandType() == typeof(Int64))
 			{
 				if (op == OperatorCode.Plus)
 					return o1;
-				if (unaryDic.ContainsKey(op))
-					method = unaryDic[op];
+				//if (unaryDic.ContainsKey(op))
+				//	method = unaryDic[op];
+				unaryDic.TryGetValue(op, out method);
 			}
 			if(method != null)
 				return new FunctionMethodTerm(method, new IOperandTerm[] { o1 });
@@ -111,7 +112,6 @@ namespace MinorShift.Emuera.GameData.Expression
 		
 		public static IOperandTerm ReduceUnaryAfterTerm(OperatorCode op, IOperandTerm o1)
 		{
-            OperatorMethod method = null;
 			if (op == OperatorCode.Increment || op == OperatorCode.Decrement)
 			{
                 if (!(o1 is VariableTerm var))
@@ -119,10 +119,12 @@ namespace MinorShift.Emuera.GameData.Expression
                 if (var.Identifier.IsConst)
 					throw new CodeEE("変更できない変数をインクリメントすることはできません");
 			}
+            OperatorMethod method = null;
 			if (o1.GetOperandType() == typeof(Int64))
 			{
-				if (unaryAfterDic.ContainsKey(op))
-					method = unaryAfterDic[op];
+				//if (unaryAfterDic.ContainsKey(op))
+				//	method = unaryAfterDic[op];
+				unaryAfterDic.TryGetValue(op, out method);
 			}
 			if (method != null)
 				return new FunctionMethodTerm(method, new IOperandTerm[] { o1 });
@@ -142,13 +144,15 @@ namespace MinorShift.Emuera.GameData.Expression
             OperatorMethod method = null;
 			if ((left.GetOperandType() == typeof(Int64)) && (right.GetOperandType() == typeof(Int64)))
 			{
-				if (binaryIntIntDic.ContainsKey(op))
-					method = binaryIntIntDic[op];
+				//if (binaryIntIntDic.ContainsKey(op))
+				//	method = binaryIntIntDic[op];
+				binaryIntIntDic.TryGetValue(op, out method);
 			}
 			else if ((left.GetOperandType() == typeof(string)) && (right.GetOperandType() == typeof(string)))
 			{
-				if (binaryStrStrDic.ContainsKey(op))
-					method = binaryStrStrDic[op];
+				//if (binaryStrStrDic.ContainsKey(op))
+				//	method = binaryStrStrDic[op];
+				binaryStrStrDic.TryGetValue(op, out method);
 			}
 			else if (((left.GetOperandType() == typeof(Int64)) && (right.GetOperandType() == typeof(string)))
 				 || ((left.GetOperandType() == typeof(string)) && (right.GetOperandType() == typeof(Int64))))

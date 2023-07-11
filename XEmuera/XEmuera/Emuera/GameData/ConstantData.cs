@@ -5,6 +5,8 @@ using System.IO;
 using MinorShift.Emuera.Sub;
 using MinorShift.Emuera.GameView;
 using MinorShift.Emuera.GameData.Variable;
+using System.Diagnostics;
+using XEmuera;
 
 namespace MinorShift.Emuera.GameData
 {
@@ -183,7 +185,7 @@ namespace MinorShift.Emuera.GameData
 
 		private void loadVariableSizeData(string csvPath, bool disp)
 		{
-			if (!File.Exists(csvPath))
+			if (!FileUtils.Exists(ref csvPath))
 				return;
 			EraStreamReader eReader = new EraStreamReader(false);
 			if (!eReader.Open(csvPath))
@@ -206,7 +208,7 @@ namespace MinorShift.Emuera.GameData
 			}
 			catch
 			{
-				System.Media.SystemSounds.Hand.Play();
+				//System.Media.SystemSounds.Hand.Play();
 				if (position != null)
 					ParserMediator.Warn("予期しないエラーが発生しました", position, 3);
 				else
@@ -959,10 +961,10 @@ check1break:
 				{
 					targetList = spList;
 				}
-				if (targetList.ContainsKey(tmpl.No))
+				if (targetList.TryGetValue(tmpl.No, out var template))
 				{
 
-					if (!Config.CompatiSPChara && (tmpl.IsSpchara!= targetList[tmpl.No].IsSpchara))
+					if (!Config.CompatiSPChara && (tmpl.IsSpchara!= template.IsSpchara))
 						ParserMediator.Warn("番号" + tmpl.No.ToString() + "のキャラが複数回定義されています(SPキャラとして定義するには互換性オプション「SPキャラを使用する」をONにしてください)", null, 1);
 					else
 						ParserMediator.Warn("番号" + tmpl.No.ToString() + "のキャラが複数回定義されています", null, 1);
@@ -1043,7 +1045,7 @@ check1break:
 			}
 			catch
 			{
-				System.Media.SystemSounds.Hand.Play();
+				//System.Media.SystemSounds.Hand.Play();
 				if (position != null)
 					ParserMediator.Warn("予期しないエラーが発生しました", position, 3);
 				else
@@ -1266,7 +1268,7 @@ check1break:
 		private void loadDataTo(string csvPath, int targetIndex, Int64[] targetI, bool disp)
 		{
 
-			if (!File.Exists(csvPath))
+			if (!FileUtils.Exists(ref csvPath))
 				return;
 			string[] target = names[targetIndex];
             HashSet<int> defined = new HashSet<int>();
@@ -1325,7 +1327,7 @@ check1break:
 			}
 			catch
 			{
-				System.Media.SystemSounds.Hand.Play();
+				//System.Media.SystemSounds.Hand.Play();
 				if (position != null)
 					ParserMediator.Warn("予期しないエラーが発生しました", position, 3);
 				else

@@ -456,29 +456,29 @@ namespace MinorShift.Emuera.GameProc.Function
 		internal static string getMatchFunction(FunctionCode func)
 		{
             if (funcMatch.TryGetValue(func, out string ret))
-			return ret;
+                return ret;
             else
                 return null;
-		}
+        }
 
 
 		internal static FunctionCode getParentFunc(FunctionCode func)
 		{
-			//1755 どうもenum.ToString()が遅いようなので先に逆引き辞書を作ることに
+            //1755 どうもenum.ToString()が遅いようなので先に逆引き辞書を作ることに
             if (funcParent.TryGetValue(func, out FunctionCode ret))
-			return ret;
+                return ret;
             else
                 return FunctionCode.__NULL__;
-			//if (funcMatch.ContainsValue(func.ToString()))
-			//{
-			//    foreach (FunctionCode pFunc in funcMatch.Keys)
-			//    {
-			//        if (funcMatch[pFunc] == func.ToString())
-			//            return pFunc;
-			//    }
-			//}
-			//return FunctionCode.__NULL__;
-		}
+            //if (funcMatch.ContainsValue(func.ToString()))
+            //{
+            //    foreach (FunctionCode pFunc in funcMatch.Keys)
+            //    {
+            //        if (funcMatch[pFunc] == func.ToString())
+            //            return pFunc;
+            //    }
+            //}
+            //return FunctionCode.__NULL__;
+        }
 		#endregion
 
 		private FunctionIdentifier(string name, FunctionCode code, AbstractInstruction instruction)

@@ -147,7 +147,7 @@ namespace MinorShift.Emuera.GameProc
                 #endregion
                 console.noOutputLog = true;
 				console.PrintSystemLine("エンターキーもしくはクリックで終了します");
-				System.Media.SystemSounds.Asterisk.Play();
+				//System.Media.SystemSounds.Asterisk.Play();
 				console.ThrowTitleError(false);
 				return;
 			}

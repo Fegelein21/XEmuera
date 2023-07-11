@@ -6,6 +6,7 @@ using MinorShift.Emuera.GameData;
 using MinorShift.Emuera.GameData.Expression;
 using MinorShift.Emuera.GameData.Variable;
 using MinorShift.Emuera.GameView;
+using XEmuera.Forms;
 
 namespace MinorShift.Emuera
 {
@@ -45,7 +46,7 @@ namespace MinorShift.Emuera
 #if DEBUG
 		public static List<FunctionLabelLine> StackList = new List<FunctionLabelLine>();
 #endif
-        public static void Reset()
+		public static void Reset()
 		{
 			Process = null;
 			ConstantData = null;

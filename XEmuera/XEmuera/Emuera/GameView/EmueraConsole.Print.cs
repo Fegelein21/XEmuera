@@ -1,11 +1,16 @@
 ﻿using MinorShift._Library;
 using MinorShift.Emuera.Sub;
+using SkiaSharp;
+using XEmuera.Drawing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Text;
-using System.Windows.Forms;
+using XEmuera.Forms;
+using XEmuera;
+using System.Threading;
 
 namespace MinorShift.Emuera.GameView
 {
@@ -96,7 +101,7 @@ namespace MinorShift.Emuera.GameView
 			//色変化が速くなりすぎないように一定時間以内の再呼び出しは強制待ちにする
 			while (sec < 200)
 			{
-				Application.DoEvents();
+				App.DoEvents();
 				sec = WinmmTimer.TickCount - lastBgColorChange;
 			}
 			RefreshStrings(true);
@@ -164,6 +169,9 @@ namespace MinorShift.Emuera.GameView
 
 		public void deleteLine(int argNum)
 		{
+			bool lockTaken = false;
+			displayLineListSpinLock.Enter(ref lockTaken);
+
 			int delNum = 0;
 			int num = argNum;
 			while (delNum < num)
@@ -179,6 +187,10 @@ namespace MinorShift.Emuera.GameView
 					logicalLineCount--;
 				}
 			}
+
+			if (lockTaken)
+				displayLineListSpinLock.Exit();
+
 			if (lineNo < 0)
 				lineNo += int.MaxValue;
 			lastDrawnLineNo = -1;
@@ -569,7 +581,7 @@ namespace MinorShift.Emuera.GameView
 
 		public void setStBar(string barStr)
 		{
-			stBar = getStBar(barStr);
+			stBar = getStBar(barStr ?? "-");
 		}
 		#endregion
 
@@ -618,7 +630,7 @@ namespace MinorShift.Emuera.GameView
 
 			if (outputLog(filename))
 			{
-				if (window.Created)
+				if (window.IsEnabled) // ?
 				{
 					PrintSystemLine("※※※ログファイルを" + filename.Replace(Program.ExeDir, "") + "に出力しました※※※");
 					RefreshStrings(true);
@@ -634,19 +646,19 @@ namespace MinorShift.Emuera.GameView
 		{
 			if (filename == "" || filename == null)
 				filename = Program.ExeDir + "emuera.log";
-			if (!filename.StartsWith(Program.ExeDir, StringComparison.CurrentCultureIgnoreCase))
-			{
-				MessageBox.Show("ログファイルは実行ファイル以下のディレクトリにのみ保存できます", "ログ出力失敗");
-				return false;
-			}
+            if (!filename.StartsWith(Program.ExeDir, StringComparison.CurrentCultureIgnoreCase))
+            {
+                MessageBox.Show("ログファイルは実行ファイル以下のディレクトリにのみ保存できます", "ログ出力失敗");
+                return false;
+            }
 
 			if (outputLog(filename))
 			{
-				if (window.Created)
-				{
+				//if (window.Created)
+				//{
 					PrintSystemLine("※※※ログファイルを" + filename.Replace(Program.ExeDir, "") + "に出力しました※※※");
 					RefreshStrings(true);
-				}
+				//}
 				return true;
 			}
 			else

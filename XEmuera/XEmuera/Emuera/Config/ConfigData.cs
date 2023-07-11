@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using System.Windows.Forms;
 using System.Drawing;
 using MinorShift.Emuera.Sub;
 using System.Text.RegularExpressions;
 using MinorShift.Emuera.GameData.Expression;
+using System.Linq;
+using XEmuera;
+using XEmuera.Models;
+using SkiaSharp;
+using XEmuera.Resources;
 
 namespace MinorShift.Emuera
 {
@@ -17,146 +21,167 @@ namespace MinorShift.Emuera
 	/// </summary>
 	internal sealed class ConfigData
 	{
-		readonly static string configPath = Program.ExeDir + "emuera.config";
-		readonly static string configdebugPath = Program.DebugDir + "debug.config";
+		static string configPath;
+		static string configdebugPath;
 
 		static ConfigData() { }
 		private static ConfigData instance = new ConfigData();
 		public static ConfigData Instance { get { return instance; } }
 
-		private ConfigData() { setDefault(); }
+		private ConfigData() { SetDefault(); }
 
 		//適当に大き目の配列を作っておく。
-		#region EE_configArrayの拡張
-		private AConfigItem[] configArray = new AConfigItem[80];
-		#endregion
-		private AConfigItem[] replaceArray = new AConfigItem[50];
-		private AConfigItem[] debugArray = new AConfigItem[20];
+		private List<ConfigItem> configArray = new List<ConfigItem>();
+		private List<ConfigItem> replaceArray = new List<ConfigItem>();
+		private List<ConfigItem> debugArray = new List<ConfigItem>();
 
-		private void setDefault()
+		private void SetDefault()
 		{
+			ConfigsText.Culture = LanguageModel.Get("ja-JP");
+
 			int i = 0;
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.IgnoreCase, "大文字小文字の違いを無視する", true);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.UseRenameFile, "_Rename.csvを利用する", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.UseReplaceFile, "_Replace.csvを利用する", true);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.UseMouse, "マウスを使用する", true);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.UseMenu, "メニューを使用する", true);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.UseDebugCommand, "デバッグコマンドを使用する", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.AllowMultipleInstances, "多重起動を許可する", true);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.AutoSave, "オートセーブを行なう", true);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.UseKeyMacro, "キーボードマクロを使用する", true);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.SizableWindow, "ウィンドウの高さを可変にする", true);
-			configArray[i++] = new ConfigItem<TextDrawingMode>(ConfigCode.TextDrawingMode, "描画インターフェース", TextDrawingMode.TEXTRENDERER);
-			//configArray[i++] = new ConfigItem<bool>(ConfigCode.UseImageBuffer, "イメージバッファを使用する", true);
-			configArray[i++] = new ConfigItem<int>(ConfigCode.WindowX, "ウィンドウ幅", 760);
-			configArray[i++] = new ConfigItem<int>(ConfigCode.WindowY, "ウィンドウ高さ", 480);
-			configArray[i++] = new ConfigItem<int>(ConfigCode.WindowPosX, "ウィンドウ位置X", 0);
-			configArray[i++] = new ConfigItem<int>(ConfigCode.WindowPosY, "ウィンドウ位置Y", 0);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.SetWindowPos, "起動時のウィンドウ位置を指定する", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.WindowMaximixed, "起動時にウィンドウを最大化する", false);
-			configArray[i++] = new ConfigItem<int>(ConfigCode.MaxLog, "履歴ログの行数", 5000);
-			configArray[i++] = new ConfigItem<int>(ConfigCode.PrintCPerLine, "PRINTCを並べる数", 3);
-			configArray[i++] = new ConfigItem<int>(ConfigCode.PrintCLength, "PRINTCの文字数", 25);
-			configArray[i++] = new ConfigItem<string>(ConfigCode.FontName, "フォント名", "ＭＳ ゴシック");
-			configArray[i++] = new ConfigItem<int>(ConfigCode.FontSize, "フォントサイズ", 18);
-			configArray[i++] = new ConfigItem<int>(ConfigCode.LineHeight, "一行の高さ", 19);
-			configArray[i++] = new ConfigItem<Color>(ConfigCode.ForeColor, "文字色", Color.FromArgb(192, 192, 192));//LIGHTGRAY
-			configArray[i++] = new ConfigItem<Color>(ConfigCode.BackColor, "背景色", Color.FromArgb(0, 0, 0));//BLACK
-			configArray[i++] = new ConfigItem<Color>(ConfigCode.FocusColor, "選択中文字色", Color.FromArgb(255, 255, 0));//YELLOW
-			configArray[i++] = new ConfigItem<Color>(ConfigCode.LogColor, "履歴文字色", Color.FromArgb(192, 192, 192));//LIGHTGRAY//Color.FromArgb(128, 128, 128);//GRAY
-			configArray[i++] = new ConfigItem<int>(ConfigCode.FPS, "フレーム毎秒", 5);
-			configArray[i++] = new ConfigItem<int>(ConfigCode.SkipFrame, "最大スキップフレーム数", 3);
-			configArray[i++] = new ConfigItem<int>(ConfigCode.ScrollHeight, "スクロール行数", 1);
-			configArray[i++] = new ConfigItem<int>(ConfigCode.InfiniteLoopAlertTime, "無限ループ警告までのミリ秒数", 5000);
-			configArray[i++] = new ConfigItem<int>(ConfigCode.DisplayWarningLevel, "表示する最低警告レベル", 1);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.DisplayReport, "ロード時にレポートを表示する", false);
-			configArray[i++] = new ConfigItem<ReduceArgumentOnLoadFlag>(ConfigCode.ReduceArgumentOnLoad, "ロード時に引数を解析する", ReduceArgumentOnLoadFlag.NO);
-			//configArray[i++] = new ConfigItem<bool>(ConfigCode.ReduceFormattedStringOnLoad, "ロード時にFORM文字列を解析する", true);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.IgnoreUncalledFunction, "呼び出されなかった関数を無視する", true);
-			configArray[i++] = new ConfigItem<DisplayWarningFlag>(ConfigCode.FunctionNotFoundWarning, "関数が見つからない警告の扱い", DisplayWarningFlag.IGNORE);
-			configArray[i++] = new ConfigItem<DisplayWarningFlag>(ConfigCode.FunctionNotCalledWarning, "関数が呼び出されなかった警告の扱い", DisplayWarningFlag.IGNORE);
-			//configArray[i++] = new ConfigItem<List<string>>(ConfigCode.IgnoreWarningFiles, "指定したファイル中の警告を無視する", new List<string>());
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.ChangeMasterNameIfDebug, "デバッグコマンドを使用した時にMASTERの名前を変更する", true);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.ButtonWrap, "ボタンの途中で行を折りかえさない", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.SearchSubdirectory, "サブディレクトリを検索する", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.SortWithFilename, "読み込み順をファイル名順にソートする", false);
-			configArray[i++] = new ConfigItem<long>(ConfigCode.LastKey, "最終更新コード", 0);
-			configArray[i++] = new ConfigItem<int>(ConfigCode.SaveDataNos, "表示するセーブデータ数", 20);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.WarnBackCompatibility, "eramaker互換性に関する警告を表示する", true);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.AllowFunctionOverloading, "システム関数の上書きを許可する", true);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.WarnFunctionOverloading, "システム関数が上書きされたとき警告を表示する", true);
-			configArray[i++] = new ConfigItem<string>(ConfigCode.TextEditor, "関連づけるテキストエディタ", "notepad");
-            configArray[i++] = new ConfigItem<TextEditorType>(ConfigCode.EditorType, "テキストエディタコマンドライン指定", TextEditorType.USER_SETTING);
-			configArray[i++] = new ConfigItem<string>(ConfigCode.EditorArgument, "エディタに渡す行指定引数", "");
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.WarnNormalFunctionOverloading, "同名の非イベント関数が複数定義されたとき警告する", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.CompatiErrorLine, "解釈不可能な行があっても実行する", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.CompatiCALLNAME, "CALLNAMEが空文字列の時にNAMEを代入する", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.UseSaveFolder, "セーブデータをsavフォルダ内に作成する", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.CompatiRAND, "擬似変数RANDの仕様をeramakerに合わせる", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.CompatiDRAWLINE, "DRAWLINEを常に新しい行で行う", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.CompatiFunctionNoignoreCase, "関数・属性については大文字小文字を無視しない", false); ;
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.SystemAllowFullSpace, "全角スペースをホワイトスペースに含める", true);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.SystemSaveInUTF8, "セーブデータをUTF-8で保存する", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.CompatiLinefeedAs1739, "ver1739以前の非ボタン折り返しを再現する", false);
-            configArray[i++] = new ConfigItem<UseLanguage>(ConfigCode.useLanguage, "内部で使用する東アジア言語", UseLanguage.JAPANESE);
-            configArray[i++] = new ConfigItem<bool>(ConfigCode.AllowLongInputByMouse, "ONEINPUT系命令でマウスによる2文字以上の入力を許可する", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.CompatiCallEvent, "イベント関数のCALLを許可する", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.CompatiSPChara, "SPキャラを使用する", false);
-			
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.SystemSaveInBinary, "セーブデータをバイナリ形式で保存する", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.CompatiFuncArgOptional, "ユーザー関数の全ての引数の省略を許可する", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.CompatiFuncArgAutoConvert, "ユーザー関数の引数に自動的にTOSTRを補完する", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.SystemIgnoreTripleSymbol, "FORM中の三連記号を展開しない", false);
-            configArray[i++] = new ConfigItem<bool>(ConfigCode.TimesNotRigorousCalculation, "TIMESの計算をeramakerにあわせる", false);
-            //一文字変数の禁止オプションを考えた名残
-			//configArray[i++] = new ConfigItem<bool>(ConfigCode.ForbidOneCodeVariable, "一文字変数の使用を禁止する", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.SystemNoTarget, "キャラクタ変数の引数を補完しない", false);
-			configArray[i++] = new ConfigItem<bool>(ConfigCode.SystemIgnoreStringSet, "文字列変数の代入に文字列式を強制する", false);
+			configArray.Add(new ConfigItem(ConfigCode.IgnoreCase, ConfigsText.IgnoreCase, true));
+			configArray.Add(new ConfigItem(ConfigCode.UseRenameFile, ConfigsText.UseRenameFile, false));
+			configArray.Add(new ConfigItem(ConfigCode.UseReplaceFile, ConfigsText.UseReplaceFile, true));
+			configArray.Add(new ConfigItem(ConfigCode.UseMouse, ConfigsText.UseMouse, true));
+			configArray.Add(new ConfigItem(ConfigCode.UseMenu, ConfigsText.UseMenu, true));
+			configArray.Add(new ConfigItem(ConfigCode.UseDebugCommand, ConfigsText.UseDebugCommand, false));
+			configArray.Add(new ConfigItem(ConfigCode.AllowMultipleInstances, ConfigsText.AllowMultipleInstances, true));
+			configArray.Add(new ConfigItem(ConfigCode.AutoSave, ConfigsText.AutoSave, true));
+			configArray.Add(new ConfigItem(ConfigCode.UseKeyMacro, ConfigsText.UseKeyMacro, true));
+			configArray.Add(new ConfigItem(ConfigCode.SizableWindow, ConfigsText.SizableWindow, true));
+			configArray.Add(new ConfigItem(ConfigCode.TextDrawingMode, ConfigsText.TextDrawingMode, TextDrawingMode.GRAPHICS));
+			//configArray.Add(new ConfigItem(ConfigCode.UseImageBuffer, ConfigsText.UseImageBuffer, true));
+			configArray.Add(new ConfigItem(ConfigCode.WindowX, ConfigsText.WindowX, 760));
+			configArray.Add(new ConfigItem(ConfigCode.WindowY, ConfigsText.WindowY, 480));
+			configArray.Add(new ConfigItem(ConfigCode.WindowPosX, ConfigsText.WindowPosX, 0));
+			configArray.Add(new ConfigItem(ConfigCode.WindowPosY, ConfigsText.WindowPosY, 0));
+			configArray.Add(new ConfigItem(ConfigCode.SetWindowPos, ConfigsText.SetWindowPos, false));
+			configArray.Add(new ConfigItem(ConfigCode.WindowMaximixed, ConfigsText.WindowMaximixed, false));
+			configArray.Add(new ConfigItem(ConfigCode.MaxLog, ConfigsText.MaxLog, 5000));
+			configArray.Add(new ConfigItem(ConfigCode.PrintCPerLine, ConfigsText.PrintCPerLine, 3));
+			configArray.Add(new ConfigItem(ConfigCode.PrintCLength, ConfigsText.PrintCLength, 25));
+			//configArray.Add(new ConfigItem(ConfigCode.FontName, ConfigsText.FontName, "ＭＳ ゴシック"));
+			configArray.Add(new ConfigItem(ConfigCode.FontName, ConfigsText.FontName, "MS Gothic"));
+			configArray.Add(new ConfigItem(ConfigCode.FontSize, ConfigsText.FontSize, 18));
+			configArray.Add(new ConfigItem(ConfigCode.LineHeight, ConfigsText.LineHeight, 19));
+			configArray.Add(new ConfigItem(ConfigCode.ForeColor, ConfigsText.ForeColor, Color.FromArgb(192, 192, 192)));//LIGHTGRAY
+			configArray.Add(new ConfigItem(ConfigCode.BackColor, ConfigsText.BackColor, Color.FromArgb(0, 0, 0)));//BLACK
+			configArray.Add(new ConfigItem(ConfigCode.FocusColor, ConfigsText.FocusColor, Color.FromArgb(255, 255, 0)));//YELLOW
+			configArray.Add(new ConfigItem(ConfigCode.LogColor, ConfigsText.LogColor, Color.FromArgb(192, 192, 192)));//LIGHTGRAY//Color.FromArgb(128, 128, 128));//GRAY
+			configArray.Add(new ConfigItem(ConfigCode.FPS, ConfigsText.FPS, 5));
+			configArray.Add(new ConfigItem(ConfigCode.SkipFrame, ConfigsText.SkipFrame, 3));
+			configArray.Add(new ConfigItem(ConfigCode.ScrollHeight, ConfigsText.ScrollHeight, 1));
+			configArray.Add(new ConfigItem(ConfigCode.InfiniteLoopAlertTime, ConfigsText.InfiniteLoopAlertTime, 5000));
+			configArray.Add(new ConfigItem(ConfigCode.DisplayWarningLevel, ConfigsText.DisplayWarningLevel, 1));
+			configArray.Add(new ConfigItem(ConfigCode.DisplayReport, ConfigsText.DisplayReport, false));
+			configArray.Add(new ConfigItem(ConfigCode.ReduceArgumentOnLoad, ConfigsText.ReduceArgumentOnLoad, ReduceArgumentOnLoadFlag.NO));
+			//configArray.Add(new ConfigItem(ConfigCode.ReduceFormattedStringOnLoad, ConfigsText.ReduceFormattedStringOnLoad, true));
+			configArray.Add(new ConfigItem(ConfigCode.IgnoreUncalledFunction, ConfigsText.IgnoreUncalledFunction, true));
+			configArray.Add(new ConfigItem(ConfigCode.FunctionNotFoundWarning, ConfigsText.FunctionNotFoundWarning, DisplayWarningFlag.IGNORE));
+			configArray.Add(new ConfigItem(ConfigCode.FunctionNotCalledWarning, ConfigsText.FunctionNotCalledWarning, DisplayWarningFlag.IGNORE));
+			//configArray.Add(new ConfigItem(ConfigCode.IgnoreWarningFiles, ConfigsText.IgnoreWarningFiles, new List<string>()));
+			configArray.Add(new ConfigItem(ConfigCode.ChangeMasterNameIfDebug, ConfigsText.ChangeMasterNameIfDebug, true));
+			configArray.Add(new ConfigItem(ConfigCode.ButtonWrap, ConfigsText.ButtonWrap, false));
+			configArray.Add(new ConfigItem(ConfigCode.SearchSubdirectory, ConfigsText.SearchSubdirectory, false));
+			configArray.Add(new ConfigItem(ConfigCode.SortWithFilename, ConfigsText.SortWithFilename, false));
+			configArray.Add(new ConfigItem(ConfigCode.LastKey, ConfigsText.LastKey, 0L));
+			configArray.Add(new ConfigItem(ConfigCode.SaveDataNos, ConfigsText.SaveDataNos, 20));
+			configArray.Add(new ConfigItem(ConfigCode.WarnBackCompatibility, ConfigsText.WarnBackCompatibility, true));
+			configArray.Add(new ConfigItem(ConfigCode.AllowFunctionOverloading, ConfigsText.AllowFunctionOverloading, true));
+			configArray.Add(new ConfigItem(ConfigCode.WarnFunctionOverloading, ConfigsText.WarnFunctionOverloading, true));
+			configArray.Add(new ConfigItem(ConfigCode.TextEditor, ConfigsText.TextEditor, "notepad"));
+			configArray.Add(new ConfigItem(ConfigCode.EditorType, ConfigsText.EditorType, TextEditorType.USER_SETTING));
+			configArray.Add(new ConfigItem(ConfigCode.EditorArgument, ConfigsText.EditorArgument, ""));
+			configArray.Add(new ConfigItem(ConfigCode.WarnNormalFunctionOverloading, ConfigsText.WarnNormalFunctionOverloading, false));
+			configArray.Add(new ConfigItem(ConfigCode.CompatiErrorLine, ConfigsText.CompatiErrorLine, false));
+			configArray.Add(new ConfigItem(ConfigCode.CompatiCALLNAME, ConfigsText.CompatiCALLNAME, false));
+			configArray.Add(new ConfigItem(ConfigCode.UseSaveFolder, ConfigsText.UseSaveFolder, false));
+			configArray.Add(new ConfigItem(ConfigCode.CompatiRAND, ConfigsText.CompatiRAND, false));
+			configArray.Add(new ConfigItem(ConfigCode.CompatiDRAWLINE, ConfigsText.CompatiDRAWLINE, false));
+			configArray.Add(new ConfigItem(ConfigCode.CompatiFunctionNoignoreCase, ConfigsText.CompatiFunctionNoignoreCase, false));
+			configArray.Add(new ConfigItem(ConfigCode.SystemAllowFullSpace, ConfigsText.SystemAllowFullSpace, true));
+			configArray.Add(new ConfigItem(ConfigCode.SystemSaveInUTF8, ConfigsText.SystemSaveInUTF8, false));
+			configArray.Add(new ConfigItem(ConfigCode.CompatiLinefeedAs1739, ConfigsText.CompatiLinefeedAs1739, false));
+			configArray.Add(new ConfigItem(ConfigCode.useLanguage, ConfigsText.useLanguage, UseLanguage.JAPANESE));
+			configArray.Add(new ConfigItem(ConfigCode.AllowLongInputByMouse, ConfigsText.AllowLongInputByMouse, false));
+			configArray.Add(new ConfigItem(ConfigCode.CompatiCallEvent, ConfigsText.CompatiCallEvent, false));
+			configArray.Add(new ConfigItem(ConfigCode.CompatiSPChara, ConfigsText.CompatiSPChara, false));
+
+			configArray.Add(new ConfigItem(ConfigCode.SystemSaveInBinary, ConfigsText.SystemSaveInBinary, false));
+			configArray.Add(new ConfigItem(ConfigCode.CompatiFuncArgOptional, ConfigsText.CompatiFuncArgOptional, false));
+			configArray.Add(new ConfigItem(ConfigCode.CompatiFuncArgAutoConvert, ConfigsText.CompatiFuncArgAutoConvert, false));
+			configArray.Add(new ConfigItem(ConfigCode.SystemIgnoreTripleSymbol, ConfigsText.SystemIgnoreTripleSymbol, false));
+			configArray.Add(new ConfigItem(ConfigCode.TimesNotRigorousCalculation, ConfigsText.TimesNotRigorousCalculation, false));
+			//一文字変数の禁止オプションを考えた名残
+			//configArray.Add(new ConfigItem(ConfigCode.ForbidOneCodeVariable, ConfigsText.ForbidOneCodeVariable, false));
+			configArray.Add(new ConfigItem(ConfigCode.SystemNoTarget, ConfigsText.SystemNoTarget, false));
+			configArray.Add(new ConfigItem(ConfigCode.SystemIgnoreStringSet, ConfigsText.SystemIgnoreStringSet, false));
             #region EE_UPDATECHECK
-            configArray[i++] = new ConfigItem<bool>(ConfigCode.ForbidUpdateCheck, "UPDATECHECKを許可しない", false);
+            configArray.Add(new ConfigItem(ConfigCode.ForbidUpdateCheck, "UPDATECHECKを許可しない", false));
 			#endregion
 			#region EM_私家版_LoadText＆SaveText機能拡張
-			configArray[i++] = new ConfigItem<List<string>>(ConfigCode.ValidExtension, "LOADTEXTとSAVETEXTで使える拡張子", new List<string> { "txt" });
+			configArray.Add(new ConfigItem(ConfigCode.ValidExtension, "LOADTEXTとSAVETEXTで使える拡張子", new List<string> { "txt" }));
 			#endregion
 
-			i = 0;
-			debugArray[i++] = new ConfigItem<bool>(ConfigCode.DebugShowWindow, "起動時にデバッグウインドウを表示する", true);
-			debugArray[i++] = new ConfigItem<bool>(ConfigCode.DebugWindowTopMost, "デバッグウインドウを最前面に表示する", true);
-			debugArray[i++] = new ConfigItem<int>(ConfigCode.DebugWindowWidth, "デバッグウィンドウ幅", 400);
-			debugArray[i++] = new ConfigItem<int>(ConfigCode.DebugWindowHeight, "デバッグウィンドウ高さ", 300);
-			debugArray[i++] = new ConfigItem<bool>(ConfigCode.DebugSetWindowPos, "デバッグウィンドウ位置を指定する", false);
-			debugArray[i++] = new ConfigItem<int>(ConfigCode.DebugWindowPosX, "デバッグウィンドウ位置X", 0);
-			debugArray[i++] = new ConfigItem<int>(ConfigCode.DebugWindowPosY, "デバッグウィンドウ位置Y", 0);
+
+			configArray.Add(new ConfigItem(ConfigCode.PanSpeed, ConfigsText.PanSpeed, 2.0f));
+
+			configArray.Add(new ConfigItem(ConfigCode.QuickButtonFontSize, ConfigsText.QuickButtonFontSize, 12));
+			configArray.Add(new ConfigItem(ConfigCode.QuickButtonWidth, ConfigsText.QuickButtonWidth, 90));
+			configArray.Add(new ConfigItem(ConfigCode.QuickButtonSpacing, ConfigsText.QuickButtonSpacing, 3));
+
+			configArray.Add(new ConfigItem(ConfigCode.AdaptiveFont, ConfigsText.AdaptiveFont, true));
+			configArray.Add(new ConfigItem(ConfigCode.AdaptiveFontSize, ConfigsText.AdaptiveFontSize, 32));
+			configArray.Add(new ConfigItem(ConfigCode.FontScale, ConfigsText.FontScale, 1f));
+			configArray.Add(new ConfigItem(ConfigCode.TextAntialias, ConfigsText.TextAntialias, true));
+			configArray.Add(new ConfigItem(ConfigCode.ShapeAntialias, ConfigsText.ShapeAntialias, true));
+			configArray.Add(new ConfigItem(ConfigCode.TextFilterQuality, ConfigsText.TextFilterQuality, SKFilterQuality.Low));
+			configArray.Add(new ConfigItem(ConfigCode.ShapeFilterQuality, ConfigsText.ShapeFilterQuality, SKFilterQuality.Low));
+
+			configArray.Add(new ConfigItem(ConfigCode.LongPressSkip, ConfigsText.LongPressSkip, true));
+			configArray.Add(new ConfigItem(ConfigCode.LongPressSkipTime, ConfigsText.LongPressSkipTime, 800));
 
 			i = 0;
-			replaceArray[i++] = new ConfigItem<string>(ConfigCode.MoneyLabel, "お金の単位", "$");
-			replaceArray[i++] = new ConfigItem<bool>(ConfigCode.MoneyFirst, "単位の位置", true);
-			replaceArray[i++] = new ConfigItem<string>(ConfigCode.LoadLabel, "起動時簡略表示", "Now Loading...");
-			replaceArray[i++] = new ConfigItem<int>(ConfigCode.MaxShopItem, "販売アイテム数", 100);
-			replaceArray[i++] = new ConfigItem<string>(ConfigCode.DrawLineString, "DRAWLINE文字", "-");
-			replaceArray[i++] = new ConfigItem<char>(ConfigCode.BarChar1, "BAR文字1", '*');
-			replaceArray[i++] = new ConfigItem<char>(ConfigCode.BarChar2, "BAR文字2", '.');
-			replaceArray[i++] = new ConfigItem<string>(ConfigCode.TitleMenuString0, "システムメニュー0", "最初からはじめる");
-			replaceArray[i++] = new ConfigItem<string>(ConfigCode.TitleMenuString1, "システムメニュー1", "ロードしてはじめる");
-			replaceArray[i++] = new ConfigItem<int>(ConfigCode.ComAbleDefault, "COM_ABLE初期値", 1);
-			replaceArray[i++] = new ConfigItem<List<Int64>>(ConfigCode.StainDefault, "汚れの初期値", new List<Int64>(new Int64[] { 0, 0, 2, 1, 8 }));
-			replaceArray[i++] = new ConfigItem<string>(ConfigCode.TimeupLabel, "時間切れ表示", "時間切れ");
-			replaceArray[i++] = new ConfigItem<List<Int64>>(ConfigCode.ExpLvDef, "EXPLVの初期値", new List<long>(new Int64[] { 0, 1, 4, 20, 50, 200 }));
-			replaceArray[i++] = new ConfigItem<List<Int64>>(ConfigCode.PalamLvDef, "PALAMLVの初期値", new List<long>(new Int64[] { 0, 100, 500, 3000, 10000, 30000, 60000, 100000, 150000, 250000 }));
-			replaceArray[i++] = new ConfigItem<Int64>(ConfigCode.pbandDef, "PBANDの初期値", 4);
-            replaceArray[i++] = new ConfigItem<Int64>(ConfigCode.RelationDef, "RELATIONの初期値", 0);
+			debugArray.Add(new ConfigItem(ConfigCode.DebugShowWindow, ConfigsText.DebugShowWindow, true));
+			debugArray.Add(new ConfigItem(ConfigCode.DebugWindowTopMost, ConfigsText.DebugWindowTopMost, true));
+			debugArray.Add(new ConfigItem(ConfigCode.DebugWindowWidth, ConfigsText.DebugWindowWidth, 400));
+			debugArray.Add(new ConfigItem(ConfigCode.DebugWindowHeight, ConfigsText.DebugWindowHeight, 300));
+			debugArray.Add(new ConfigItem(ConfigCode.DebugSetWindowPos, ConfigsText.DebugSetWindowPos, false));
+			debugArray.Add(new ConfigItem(ConfigCode.DebugWindowPosX, ConfigsText.DebugWindowPosX, 0));
+			debugArray.Add(new ConfigItem(ConfigCode.DebugWindowPosY, ConfigsText.DebugWindowPosY, 0));
+
+			i = 0;
+			replaceArray.Add(new ConfigItem(ConfigCode.MoneyLabel, ConfigsText.MoneyLabel, "$"));
+			replaceArray.Add(new ConfigItem(ConfigCode.MoneyFirst, ConfigsText.MoneyFirst, true));
+			replaceArray.Add(new ConfigItem(ConfigCode.LoadLabel, ConfigsText.LoadLabel, "Now Loading..."));
+			replaceArray.Add(new ConfigItem(ConfigCode.MaxShopItem, ConfigsText.MaxShopItem, 100));
+			replaceArray.Add(new ConfigItem(ConfigCode.DrawLineString, ConfigsText.DrawLineString, "-"));
+			replaceArray.Add(new ConfigItem(ConfigCode.BarChar1, ConfigsText.BarChar1, '*'));
+			replaceArray.Add(new ConfigItem(ConfigCode.BarChar2, ConfigsText.BarChar2, '.'));
+			replaceArray.Add(new ConfigItem(ConfigCode.TitleMenuString0, ConfigsText.TitleMenuString0, "最初からはじめる"));
+			replaceArray.Add(new ConfigItem(ConfigCode.TitleMenuString1, ConfigsText.TitleMenuString1, "ロードしてはじめる"));
+			replaceArray.Add(new ConfigItem(ConfigCode.ComAbleDefault, ConfigsText.ComAbleDefault, 1));
+			replaceArray.Add(new ConfigItem(ConfigCode.StainDefault, ConfigsText.StainDefault, new List<Int64>(new Int64[] { 0, 0, 2, 1, 8 })));
+			replaceArray.Add(new ConfigItem(ConfigCode.TimeupLabel, ConfigsText.TimeupLabel, "時間切れ"));
+			replaceArray.Add(new ConfigItem(ConfigCode.ExpLvDef, ConfigsText.ExpLvDef, new List<long>(new Int64[] { 0, 1, 4, 20, 50, 200 })));
+			replaceArray.Add(new ConfigItem(ConfigCode.PalamLvDef, ConfigsText.PalamLvDef, new List<long>(new Int64[] { 0, 100, 500, 3000, 10000, 30000, 60000, 100000, 150000, 250000 })));
+			replaceArray.Add(new ConfigItem(ConfigCode.pbandDef, ConfigsText.pbandDef, 4L));
+			replaceArray.Add(new ConfigItem(ConfigCode.RelationDef, ConfigsText.RelationDef, 0L));
+
+			ConfigsText.Culture = LanguageModel.Current;
 		}
         
 		public ConfigData Copy()
 		{
 			ConfigData config = new ConfigData();
-			for (int i = 0; i < configArray.Length; i++)
+			for (int i = 0; i < configArray.Count; i++)
 				if ((this.configArray[i] != null) && (config.configArray[i] != null))
 					this.configArray[i].CopyTo(config.configArray[i]);
-			for (int i = 0; i < configArray.Length; i++)
+			for (int i = 0; i < configArray.Count; i++)
 				if ((this.configArray[i] != null) && (config.configArray[i] != null))
 					this.configArray[i].CopyTo(config.configArray[i]);
-			for (int i = 0; i < replaceArray.Length; i++)
+			for (int i = 0; i < replaceArray.Count; i++)
 				if ((this.replaceArray[i] != null) && (config.replaceArray[i] != null))
 					this.replaceArray[i].CopyTo(config.replaceArray[i]);
 			return config;
@@ -165,7 +190,7 @@ namespace MinorShift.Emuera
 		public Dictionary<ConfigCode,string> GetConfigNameDic()
 		{
 			Dictionary<ConfigCode, string> ret = new Dictionary<ConfigCode, string>();
-			foreach (AConfigItem item in configArray)
+			foreach (ConfigItem item in configArray)
 			{
 				if (item != null)
 					ret.Add(item.Code, item.Text);
@@ -175,16 +200,30 @@ namespace MinorShift.Emuera
 
 		public T GetConfigValue<T>(ConfigCode code)
 		{
-			AConfigItem item = GetItem(code);
-            //if ((item != null) && (item is ConfigItem<T>))
-				return ((ConfigItem<T>)item).Value;
-            //throw new ExeEE("GetConfigValueのCodeまたは型が不適切");
+			//AConfigItem item = GetItem(code);
+			//if ((item != null) && (item is ConfigItem<T>))
+			//	return ((ConfigItem<T>)item).Value;
+			//throw new ExeEE("GetConfigValueのCodeまたは型が不適切");
+
+			ConfigModel model = ConfigModel.Get(code);
+			ConfigItem item;
+
+			if (model == null)
+				item = GetItem(code);
+			else
+			{
+				if (model.Enabled)
+					return (T)model.Value;
+				item = model.ConfigItem;
+			}
+
+			return (T)item.Value;
 		}
 
 #region getitem
-		public AConfigItem GetItem(ConfigCode code)
+		public ConfigItem GetItem(ConfigCode code)
 		{
-			AConfigItem item = GetConfigItem(code);
+			ConfigItem item = GetConfigItem(code);
             if (item == null)
             {
                 item = GetReplaceItem(code);
@@ -195,9 +234,9 @@ namespace MinorShift.Emuera
             }
 			return item;
 		}
-		public AConfigItem GetItem(string key)
+		public ConfigItem GetItem(string key)
 		{
-			AConfigItem item = GetConfigItem(key);
+			ConfigItem item = GetConfigItem(key);
 			if (item == null)
 			{
 				item = GetReplaceItem(key);
@@ -209,84 +248,39 @@ namespace MinorShift.Emuera
 			return item;
 		}
 
-		public AConfigItem GetConfigItem(ConfigCode code)
+		public ConfigItem GetConfigItem(ConfigCode code)
 		{
-			foreach (AConfigItem item in configArray)
-			{
-				if (item == null)
-					continue;
-				if (item.Code == code)
-					return item;
-			}
-			return null;
-		}
-		public AConfigItem GetConfigItem(string key)
-		{
-			foreach (AConfigItem item in configArray)
-			{
-				if (item == null)
-					continue;
-				if (item.Name == key)
-					return item;
-				if (item.Text == key)
-					return item;
-			}
-			return null;
+			return configArray.FirstOrDefault(item => item.Code == code);
 		}
 
-		public AConfigItem GetReplaceItem(ConfigCode code)
+		public ConfigItem GetConfigItem(string key)
 		{
-			foreach (AConfigItem item in replaceArray)
-			{
-				if (item == null)
-					continue;
-				if (item.Code == code)
-					return item;
-			}
-			return null;
+			return configArray.FirstOrDefault(item => item.Name == key || item.Text == key);
 		}
-		public AConfigItem GetReplaceItem(string key)
+
+		public ConfigItem GetReplaceItem(ConfigCode code)
 		{
-			foreach (AConfigItem item in replaceArray)
-			{
-				if (item == null)
-					continue;
-				if (item.Name == key)
-					return item;
-				if (item.Text == key)
-					return item;
-			}
-			return null;
+			return replaceArray.FirstOrDefault(item => item.Code == code);
+		}
+
+		public ConfigItem GetReplaceItem(string key)
+		{
+			return replaceArray.FirstOrDefault(item => item.Name == key || item.Text == key);
 		}
 		
-		public AConfigItem GetDebugItem(ConfigCode code)
+		public ConfigItem GetDebugItem(ConfigCode code)
 		{
-			foreach (AConfigItem item in debugArray)
-			{
-				if (item == null)
-					continue;
-				if (item.Code == code)
-					return item;
-			}
-			return null;
+			return debugArray.FirstOrDefault(item => item.Code == code);
 		}
-		public AConfigItem GetDebugItem(string key)
+
+		public ConfigItem GetDebugItem(string key)
 		{
-			foreach (AConfigItem item in debugArray)
-			{
-				if (item == null)
-					continue;
-				if (item.Name == key)
-					return item;
-				if (item.Text == key)
-					return item;
-			}
-			return null;
+			return debugArray.FirstOrDefault(item => item.Name == key || item.Text == key);
 		}
 		
 		public SingleTerm GetConfigValueInERB(string text, ref string errMes)
 		{
-			AConfigItem item = ConfigData.Instance.GetItem(text);
+			ConfigItem item = Instance.GetItem(text);
 			if(item == null)
 			{
 				errMes = "文字列\"" + text + "\"は適切なコンフィグ名ではありません";
@@ -369,9 +363,9 @@ namespace MinorShift.Emuera
 			try
 			{
 				writer = new StreamWriter(configPath, false, Config.Encode);
-				for (int i = 0; i < configArray.Length; i++)
+				for (int i = 0; i < configArray.Count; i++)
 				{
-					AConfigItem item = configArray[i];
+					ConfigItem item = configArray[i];
 					if (item == null)
 						continue;
 					
@@ -385,10 +379,11 @@ namespace MinorShift.Emuera
 					#region EM_私家版_LoadText＆SaveText機能拡張
 					if ((item.Code == ConfigCode.ValidExtension))
 					{
-						var ex = (ConfigItem<List<string>>)item;
+						var ex = (ConfigItem)item;
 						var sb = new System.Text.StringBuilder();
 						sb.Append(ex.Text).Append(":");
-						foreach (var str in ex.Value)
+						var values = (List<string>)ex.Value;
+						foreach (var str in values)
 						{
 							sb.Append(str).Append(",");
 						}
@@ -422,7 +417,7 @@ namespace MinorShift.Emuera
         public bool ReLoadConfig()
         {
             //_fixed.configの中身が変わった場合、非固定になったものが保持されてしまうので、ここで一旦すべて解除
-            foreach (AConfigItem item in configArray)
+            foreach (ConfigItem item in configArray)
             {
                 if (item == null)
                     continue;
@@ -435,21 +430,24 @@ namespace MinorShift.Emuera
 
 		public bool LoadConfig()
 		{
+			configPath = Program.ExeDir + "emuera.config";
+			configdebugPath = Program.DebugDir + "debug.config";
+
 			Config.ClearFont();
 			string defaultConfigPath = Program.CsvDir + "_default.config";
 			string fixedConfigPath = Program.CsvDir + "_fixed.config";
-			if(!File.Exists(defaultConfigPath))
+			if(!FileUtils.Exists(ref defaultConfigPath))
 				defaultConfigPath = Program.CsvDir + "default.config";
-			if (!File.Exists(fixedConfigPath))
+			if (!FileUtils.Exists(ref fixedConfigPath))
 				fixedConfigPath = Program.CsvDir + "fixed.config";
 
-			loadConfig(defaultConfigPath, false);
-			loadConfig(configPath, false);
-			loadConfig(fixedConfigPath, true);
+			LoadConfig(defaultConfigPath, false);
+			LoadConfig(configPath, false);
+			LoadConfig(fixedConfigPath, true);
 			
 			Config.SetConfig(this);
 			bool needSave = false;
-			if (!File.Exists(configPath))
+			if (!FileUtils.Exists(ref configPath))
 				needSave = true;
 			if (Config.CheckUpdate())
 			{
@@ -458,12 +456,13 @@ namespace MinorShift.Emuera
 			}
 			if (needSave)
 				SaveConfig();
-            return true;
+
+			return true;
 		}
 
-		private bool loadConfig(string confPath, bool fix)
+		private bool LoadConfig(string confPath, bool fix)
 		{
-			if (!File.Exists(confPath))
+			if (!FileUtils.Exists(ref confPath))
 				return false;
 			EraStreamReader eReader = new EraStreamReader(false);
 			if (!eReader.Open(confPath))
@@ -481,9 +480,12 @@ namespace MinorShift.Emuera
 					string[] tokens = line.Split(new char[] { ':' });
 					if (tokens.Length < 2)
 						continue;
-					AConfigItem item = GetConfigItem(tokens[0].Trim());
+					ConfigItem item = GetConfigItem(tokens[0].Trim());
 					if (item != null)
 					{
+						if (item.Code == ConfigCode.TextDrawingMode)
+							item.Value = TextDrawingMode.GRAPHICS;
+
 						//1806beta001 CompatiDRAWLINEの廃止、CompatiLinefeedAs1739へ移行
 						if(item.Code == ConfigCode.CompatiDRAWLINE)
 						{
@@ -517,7 +519,7 @@ namespace MinorShift.Emuera
 						if (item.Code == ConfigCode.EditorArgument)
 						{
 							//半角スペースを要求する引数が必要なエディタがあるので別処理で
-							((ConfigItem<string>)item).Value = tokens[1];
+							item.Value = tokens[1];
 							continue;
 						}
                         if (item.Code == ConfigCode.MaxLog && Program.AnalysisMode)
@@ -525,7 +527,8 @@ namespace MinorShift.Emuera
                             //解析モード時はここを上書きして十分な長さを確保する
                             tokens[1] = "10000";
                         }
-						if ((item.TryParse(tokens[1])) && (fix))
+						item.Fixed = false;
+						if ((ConfigItem.TryParse(item, tokens[1])) && (fix))
 							item.Fixed = true;
 					}
 #if DEBUG
@@ -569,9 +572,9 @@ namespace MinorShift.Emuera
                     tokens[1] = line.Substring(tokens[0].Length + 1);
                     if (string.IsNullOrEmpty(tokens[1].Trim()))
                         continue;
-                    AConfigItem item = GetReplaceItem(itemName);
+                    ConfigItem item = GetReplaceItem(itemName);
                     if (item != null)
-                        item.TryParse(tokens[1]);
+                        ConfigItem.TryParse(item, tokens[1]);
 				}
 			}
 			catch (EmueraException ee)
@@ -596,9 +599,9 @@ namespace MinorShift.Emuera
 			try
 			{
 				writer = new StreamWriter(configdebugPath, false, Config.Encode);
-				for (int i = 0; i < debugArray.Length; i++)
+				for (int i = 0; i < debugArray.Count; i++)
 				{
-					AConfigItem item = debugArray[i];
+					ConfigItem item = debugArray[i];
 					if (item == null)
 						continue;
 					writer.WriteLine(item.ToString());
@@ -618,7 +621,7 @@ namespace MinorShift.Emuera
 		
 		public bool LoadDebugConfig()
 		{
-			if (!File.Exists(configdebugPath))
+			if (!FileUtils.Exists(ref configdebugPath))
 				goto err;
 			EraStreamReader eReader = new EraStreamReader(false);
 			if (!eReader.Open(configdebugPath))
@@ -635,10 +638,10 @@ namespace MinorShift.Emuera
 					string[] tokens = line.Split(new char[] { ':' });
 					if (tokens.Length < 2)
 						continue;
-					AConfigItem item = GetDebugItem(tokens[0].Trim());
+					ConfigItem item = GetDebugItem(tokens[0].Trim());
 					if (item != null)
 					{
-						item.TryParse(tokens[1]);
+						ConfigItem.TryParse(item, tokens[1]);
 					}
 #if DEBUG
 					//else

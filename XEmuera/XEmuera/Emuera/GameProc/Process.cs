@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using System.Windows.Forms;
+using XEmuera.Forms;
 using MinorShift.Emuera.GameData;
 using MinorShift.Emuera.Sub;
 using MinorShift.Emuera.GameView;
@@ -11,6 +11,7 @@ using MinorShift.Emuera.GameData.Variable;
 using MinorShift.Emuera.GameProc.Function;
 using MinorShift.Emuera.GameData.Function;
 using System.Linq;
+using XEmuera;
 
 namespace MinorShift.Emuera.GameProc
 {
@@ -78,21 +79,23 @@ namespace MinorShift.Emuera.GameProc
 				//キーマクロ読み込み
                 if (Config.UseKeyMacro && !Program.AnalysisMode)
                 {
-                    if (File.Exists(Program.ExeDir + "macro.txt"))
+					string macroFile = Program.ExeDir + "macro.txt";
+					if (FileUtils.Exists(ref macroFile))
                     {
                         if (Config.DisplayReport)
 							console.PrintSystemLine("macro.txt読み込み中・・・");
-                        KeyMacro.LoadMacroFile(Program.ExeDir + "macro.txt");
+                        KeyMacro.LoadMacroFile(macroFile);
                     }
 				}
 				//_replace.csv読み込み
                 if (Config.UseReplaceFile && !Program.AnalysisMode)
                 {
-					if (File.Exists(Program.CsvDir + "_Replace.csv"))
+					string replaceFile = Program.CsvDir + "_Replace.csv";
+					if (FileUtils.Exists(ref replaceFile))
 					{
 						if (Config.DisplayReport)
 							console.PrintSystemLine("_Replace.csv読み込み中・・・");
-						ConfigData.Instance.LoadReplaceFile(Program.CsvDir + "_Replace.csv");
+						ConfigData.Instance.LoadReplaceFile(replaceFile);
 						if (ParserMediator.HasWarning)
 						{
 							ParserMediator.FlushWarningList();
@@ -112,14 +115,16 @@ namespace MinorShift.Emuera.GameProc
 				//_rename.csv読み込み
 				if (Config.UseRenameFile)
                 {
-					if (File.Exists(Program.CsvDir + "_Rename.csv"))
+					string renameFile = Program.CsvDir + "_Rename.csv";
+					if (FileUtils.Exists(ref renameFile))
                     {
                         if (Config.DisplayReport || Program.AnalysisMode)
 							console.PrintSystemLine("_Rename.csv読み込み中・・・");
-						ParserMediator.LoadEraExRenameFile(Program.CsvDir + "_Rename.csv");
+						ParserMediator.LoadEraExRenameFile(renameFile);
                     }
                     else
-                        console.PrintError("csv\\_Rename.csvが見つかりません");
+                        //console.PrintError("csv\\_Rename.csvが見つかりません");
+						console.PrintError($"csv{Path.DirectorySeparatorChar}_Rename.csvが見つかりません");
                 }
                 if (!Config.DisplayReport)
                 {
@@ -458,10 +463,10 @@ namespace MinorShift.Emuera.GameProc
 			console.ThrowError(playSound);
 			ScriptPosition position = null;
             if ((exc is EmueraException ee) && (ee.Position != null))
-				position = ee.Position;
+                position = ee.Position;
             else if ((current != null) && (current.Position != null))
-				position = current.Position;
-			string posString = "";
+                position = current.Position;
+            string posString = "";
 			if (position != null)
 			{
 				if (position.LineNo >= 0)
@@ -482,9 +487,9 @@ namespace MinorShift.Emuera.GameProc
                     }
                     else
                     {
-						console.PrintErrorButton(posString + "エラーが発生しました:" + Program.ExeName, position);
+                        console.PrintErrorButton(posString + "エラーが発生しました:" + Program.ExeName, position);
 						printRawLine(position);
-                        console.PrintError("エラー内容：" + exc.Message);
+						console.PrintError("エラー内容：" + exc.Message);
                     }
                     console.PrintError("現在の関数：@" + current.ParentLabelLine.LabelName + "（" + current.ParentLabelLine.Position.Filename + "の" + current.ParentLabelLine.Position.LineNo.ToString() + "行目）");
                     console.PrintError("関数呼び出しスタック：");
@@ -546,5 +551,6 @@ namespace MinorShift.Emuera.GameProc
 			else
 				return "";
 		}
+
 	}
 }
