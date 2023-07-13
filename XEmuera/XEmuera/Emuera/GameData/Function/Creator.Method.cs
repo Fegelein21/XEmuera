@@ -842,8 +842,10 @@ namespace MinorShift.Emuera.GameData.Function
             public override Int64 GetIntValue(ExpressionMediator exm, IOperandTerm[] arguments)
             {
                 var filepath = arguments[0].GetStrValue(exm);
-                filepath = filepath.Replace('/', '\\');
-                filepath = filepath.Replace("..\\", "");
+                filepath = filepath.Replace('\\', '/');
+                filepath = filepath.Replace("./", "");
+                filepath = filepath.Replace("../", "");
+                filepath = Program.ExeDir + filepath;
                 if (File.Exists(filepath)) return 1;
                 return 0;
             }
@@ -5536,6 +5538,7 @@ namespace MinorShift.Emuera.GameData.Function
                     filepath = arguments[1].GetStrValue(exm);
                     filepath = filepath.Replace('\\', '/');
                     filepath = filepath.Replace("./", "");
+                    filepath = filepath.Replace("../", "");
                     filepath = Program.ExeDir + filepath;
                     //if (Path.GetPathRoot(filepath) != string.Empty) return 0;
                     string tmp = Path.HasExtension(filepath) ? Path.GetExtension(filepath).ToLower().Substring(1) : "";
@@ -5643,6 +5646,7 @@ namespace MinorShift.Emuera.GameData.Function
                     filepath = arguments[0].GetStrValue(exm);
                     filepath = filepath.Replace('\\', '/');
                     filepath = filepath.Replace("./", "");
+                    filepath = filepath.Replace("../", "");
                     filepath = Program.ExeDir + filepath;
                     //if (Path.GetPathRoot(filepath) != string.Empty) return string.Empty;
                     string tmp = Path.HasExtension(filepath) ? Path.GetExtension(filepath).ToLower().Substring(1) : "";
