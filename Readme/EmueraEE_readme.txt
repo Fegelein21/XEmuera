@@ -1,7 +1,7 @@
-﻿タイトル：EmueraEE 最終更新日:2022/04/13
-バージョン：1.824+v15+EM+EE+v12
+﻿タイトル：EmueraEE 最終更新日:2022/05/05
+バージョン：1.824+v15+EMv5+EEv13
 改変者：Enter
-元となったアプリケーション：Emuera1.824+v14（妊）|дﾟ)の中の人、及びMinorShift制作）、WebP-wrapper(JosePineiro制作)、Emuera.EM（EvilMask制作）
+元となったアプリケーション：Emuera1.824+v15（妊）|дﾟ)の中の人、及びMinorShift制作）、WebP-wrapper(JosePineiro制作)、Emuera.EM（EvilMask制作）
 連絡先：Twitter/@eraBEMANI Discord/https://discord.gg/p5rb5uK
 
 ※eramakerの作者様及びMinorShift様、妊の人様はEmueraEEの製作には関与していません。
@@ -115,6 +115,11 @@ WebPWrapperについては東etoマン氏、M氏が改良を行ったものを�
 同梱の「libwebp_x64.dll」をEmueraと同ディレクトリに置いて使用＆配布してください WebPを使わないのであれば削除しても大丈夫です
 WebP-wrapperのGitHub:https://github.com/JosePineiro/WebP-wrapper
 参考にしたWebP版Emueraのリンク:http://book-shelf-end.com/up/dwlink.cgi?eraRx2231.7z
+
+・ERHで定義した変数にcsvファイルで名前を付けられるように
+ERHで定義した変数名を準拠にファイルを読み込み、既存のcsv変数と同じように配列に名前を付けることができる。現時点では一次元配列変数にのみ対応
+CSVフォルダ内で使えるものは従来どおり「変数名.csv」、ERB内で使えるものは「変数名.ERD」ファイルとなる。書式はCSV変数のファイルと同じ。これらが2つ以上存在する場合は起動時にエラー吐いて終了する
+ただしABLNAMEやTRAINNAMEに相当する変数は無し。今後命令や式中関数を実装する予定
 
 ・UPDATECHECK
 アップデートチェック命令を追加。以下使い方

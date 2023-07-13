@@ -9,6 +9,7 @@ using MinorShift._Library;
 using MinorShift.Emuera.GameData;
 using MinorShift.Emuera.GameData.Function;
 using XEmuera;
+using System.IO;
 
 namespace MinorShift.Emuera.GameProc
 {
@@ -284,6 +285,23 @@ namespace MinorShift.Emuera.GameProc
 						else
 							var = parentProcess.VEvaluator.VariableData.CreateUserDefVariable(data);
 						idDic.AddUseDefinedVariable(var);
+						#region EE_ERD
+						//とりあえず一次元配列だけ対応
+						if (data.Dimension == 1)
+						{
+
+							string csvpath = (Program.CsvDir + data.Name.ToUpper() + ".CSV");
+							string[] erdpath = Directory.GetFiles(Program.ErbDir, data.Name.ToUpper()+".ERD", SearchOption.AllDirectories);
+							if (File.Exists(csvpath) && erdpath.Length > 0)
+								throw new CodeEE("変数" + data.Name + "用の定義ファイルがCSVとERD両方で存在します。どちらかに統一してください");
+							if (erdpath != null && erdpath.Length >= 2)
+								throw new CodeEE("変数" + data.Name + "用のERDファイルが2つ以上存在します。どちらかに統一してください");
+							if (File.Exists(csvpath))
+								GlobalStatic.ConstantData.UserDefineLoadData(csvpath, data.Name, data.Lengths[0], Config.DisplayReport);
+							else if (erdpath.Length > 0 && !string.IsNullOrEmpty(erdpath[0]))
+								GlobalStatic.ConstantData.UserDefineLoadData(erdpath[0], data.Name, data.Lengths[0], Config.DisplayReport);
+						}
+						#endregion
 					}
 					catch (IdentifierNotFoundCodeEE e)
 					{

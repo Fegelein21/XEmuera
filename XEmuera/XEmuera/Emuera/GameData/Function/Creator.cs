@@ -242,6 +242,11 @@ namespace MinorShift.Emuera.GameData.Function
                 ["XML_SET"] = new XmlSetMethod(),
                 ["XML_EXIST"] = new XmlDocumentMethod(XmlDocumentMethod.Operation.Check),
                 ["XML_TOSTR"] = new XmlToStrMethod(),
+                ["XML_ADDNODE"] = new XmlAddNodeMethod(XmlAddNodeMethod.Operation.Node),
+                ["XML_REMOVENODE"] = new XmlRemoveNodeMethod(XmlRemoveNodeMethod.Operation.Node),
+                ["XML_REPLACE"] = new XmlReplaceMethod(),
+                ["XML_ADDATTRIBUTE"] = new XmlAddNodeMethod(XmlAddNodeMethod.Operation.Attribute),
+                ["XML_REMOVEATTRIBUTE"] = new XmlRemoveNodeMethod(XmlRemoveNodeMethod.Operation.Attribute),
 
                 ["MAP_CREATE"] = new MapManagementMethod(MapManagementMethod.Operation.Create),
                 ["MAP_EXIST"] = new MapManagementMethod(MapManagementMethod.Operation.Check),

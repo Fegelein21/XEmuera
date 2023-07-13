@@ -675,7 +675,7 @@ namespace MinorShift.Emuera.GameData.Function
             {
                 if (arguments.Length < (op == Operation.Create ? 2 : 1))
                     return string.Format("{0}関数:少なくとも{1}の引数が必要です", name, (op == Operation.Create ? 2 : 1));
-                if (arguments.Length > (op == Operation.Create ? 2 : 1)) 
+                if (arguments.Length > (op == Operation.Create ? 2 : 1))
                     return string.Format("{0}関数:引数が多すぎます", name);
                 if (arguments[0].GetOperandType() != typeof(Int64))
                     return string.Format("{0}関数:1番目の引数が整数ではありません", name);
@@ -781,7 +781,7 @@ namespace MinorShift.Emuera.GameData.Function
                     }
                     catch (XmlException e)
                     {
-                        throw new CodeEE("XML_GET関数:\"" + xml + "\"の解析エラー:" + e.Message);
+                        throw new CodeEE("XML_SET関数:\"" + xml + "\"の解析エラー:" + e.Message);
                     }
                 }
 
@@ -799,15 +799,18 @@ namespace MinorShift.Emuera.GameData.Function
                 var style = arguments.Length == 5 ? arguments[4].GetIntValue(exm) : 0;
                 if (style > 2 || style < 0) style = 0;
                 var val = arguments[2].GetStrValue(exm);
-                if (nodes.Count != 1)
+                if (nodes.Count > 0)
                 {
-                    if (setAllNodes)
-                        for (int i = 0; i < nodes.Count; i++) SetNode(nodes[i], val, style);
-                }
-                else SetNode(nodes[0], val, style);
-                if (saveToArg0)
-                {
-                    (arguments[0] as VariableTerm).SetValue(doc.OuterXml, exm);
+                    if (nodes.Count != 1)
+                    {
+                        if (setAllNodes)
+                            for (int i = 0; i < nodes.Count; i++) SetNode(nodes[i], val, style);
+                    }
+                    else SetNode(nodes[0], val, style);
+                    if (saveToArg0)
+                    {
+                        (arguments[0] as VariableTerm).SetValue(doc.OuterXml, exm);
+                    }
                 }
                 return nodes.Count;
             }
@@ -824,11 +827,406 @@ namespace MinorShift.Emuera.GameData.Function
             {
                 var idx = (int)arguments[0].GetIntValue(exm);
                 var xmlDict = exm.VEvaluator.VariableData.DataXmlDocument;
-                if (!xmlDict.ContainsKey(idx))
-                {
-                    throw new CodeEE("XML_TOSTR関数:XmlDocument(" + idx + ")は存在していません");
-                }
+                if (!xmlDict.ContainsKey(idx)) return string.Empty;
                 return xmlDict[idx].OuterXml;
+            }
+        }
+        private sealed class XmlAddNodeMethod : FunctionMethod
+        {
+            public enum Operation { Node, Attribute };
+            public XmlAddNodeMethod(Operation op)
+            {
+                ReturnType = typeof(Int64);
+                argumentTypeArray = null;
+                CanRestructure = false;
+                this.op = op;
+                methodName = op == Operation.Node ? "XML_ADDNODE" : "XML_ADDATTRIBUTE";
+            }
+            Operation op;
+            string methodName;
+            public override string CheckArgumentType(string name, IOperandTerm[] arguments)
+            {
+                int max = op == Operation.Attribute ? 6 : 5;
+                if (arguments.Length < 3)
+                    return string.Format("{0}関数:少なくとも3の引数が必要です", name);
+                if (arguments.Length > max)
+                    return string.Format("{0}関数:引数が多すぎます", name);
+                if (arguments[0].GetOperandType() != typeof(Int64)
+                    && (!(arguments[0] is VariableTerm varTerm)
+                    || varTerm.Identifier.IsCalc
+                    || !varTerm.Identifier.IsArray1D
+                    || !varTerm.Identifier.IsString
+                    || varTerm.Identifier.IsConst))
+                    return string.Format("{0}関数:1番目の引数が一次元文字列配列変数でも整数でもありません", name);
+                for (int i = 1; i < arguments.Length; i++)
+                {
+                    if (i == 1 || i == 2 || (i == 3 && op == Operation.Attribute))
+                    {
+                        if (arguments[i].GetOperandType() != typeof(string))
+                            return string.Format("{0}関数:{1}番目の引数が文字列ではありません", name, i + 1);
+                    }
+                    else if (arguments[i].GetOperandType() != typeof(Int64))
+                        return string.Format("{0}関数:{1}番目の引数が整数ではありません", name, i + 1);
+                }
+                return null;
+            }
+            bool Insert(XmlNode node, XmlNode child, int method)
+            {
+                if (op == Operation.Node)
+                {
+                    switch (method)
+                    {
+                        case 0: node.AppendChild(child); break;
+                        case 1:
+                            if (node.ParentNode == null) return false;
+                            node.ParentNode.InsertBefore(child, node);
+                            break;
+                        case 2:
+                            if (node.ParentNode == null) return false;
+                            node.ParentNode.InsertAfter(child, node);
+                            break;
+                    }
+                    return true;
+                }
+                else
+                {
+                    if (child is XmlAttribute newAttr)
+                    {
+                        XmlAttribute attr;
+                        if (method > 0 && !(node is XmlAttribute)) return false;
+                        attr = method == 0 ? null : node as XmlAttribute;
+                        switch (method)
+                        {
+                            case 0: node.Attributes.Append(newAttr); break;
+                            case 1: attr.OwnerElement.Attributes.InsertBefore(newAttr, attr); break;
+                            case 2: attr.OwnerElement.Attributes.InsertAfter(newAttr, attr); break;
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            }
+            public override Int64 GetIntValue(ExpressionMediator exm, IOperandTerm[] arguments)
+            {
+                XmlDocument doc;
+                int methodPos = op == Operation.Node ? 4 : 5;
+                int method = arguments.Length >= methodPos ? (int)arguments[methodPos-1].GetIntValue(exm) : 0;
+                if (method > 2 || method < 0) method = 0;
+                bool saveToArg0 = true;
+                if (arguments[0].GetOperandType() == typeof(Int64))
+                {
+                    saveToArg0 = false;
+                    var idx = arguments[0].GetIntValue(exm);
+                    var dict = exm.VEvaluator.VariableData.DataXmlDocument;
+                    if (dict.ContainsKey(idx)) doc = dict[idx];
+                    else return -1;
+                }
+                else
+                {
+                    string xml = arguments[0].GetStrValue(exm);
+                    doc = new XmlDocument();
+                    try
+                    {
+                        doc.LoadXml(xml);
+                    }
+                    catch (XmlException e)
+                    {
+                        throw new CodeEE(methodName + "関数:\"" + xml + "\"の解析エラー:" + e.Message);
+                    }
+                }
+
+                string path = arguments[1].GetStrValue(exm);
+                XmlNodeList nodes;
+                try
+                {
+                    nodes = doc.SelectNodes(path);
+                }
+                catch (System.Xml.XPath.XPathException e)
+                {
+                    throw new CodeEE(methodName + "関数:XPath\"" + path + "\"の解析エラー:" + e.Message);
+                }
+                if (nodes.Count > 0)
+                {
+                    int setAllPos = op == Operation.Node ? 5 : 6;
+                    bool setAllNodes = arguments.Length == setAllPos ? arguments[setAllPos-1].GetIntValue(exm) != 0 : false;
+                    XmlNode child;
+                    if (op == Operation.Node)
+                    {
+                        var childNode = new XmlDocument();
+                        var xml = arguments[2].GetStrValue(exm);
+                        try
+                        {
+                            childNode.LoadXml(xml);
+                        }
+                        catch (XmlException e)
+                        {
+                            throw new CodeEE(methodName + "関数:\"" + xml + "\"の解析エラー:" + e.Message);
+                        }
+                        var newNode = childNode.FirstChild;
+                        child = doc.CreateNode(newNode.NodeType, newNode.Name, newNode.NamespaceURI);
+                        for (int i = 0; i < newNode.Attributes.Count; i++)
+                        {
+                            var xattr = newNode.Attributes[i];
+                            var attr = doc.CreateAttribute(xattr.Name);
+                            attr.Value = xattr.Value;
+                            child.Attributes.Append(attr);
+                        }
+                        child.InnerXml = newNode.InnerXml;
+                    }
+                    else
+                    {
+                        child = doc.CreateAttribute(arguments[2].GetStrValue(exm));
+                        if (arguments.Length >= 4) child.Value = arguments[3].GetStrValue(exm);
+                    }
+                    if (nodes.Count != 1)
+                    { 
+                        if (setAllNodes)
+                            for (int i = 0; i < nodes.Count; i++) Insert(nodes[i], child, method);
+                    }
+                    else if (!Insert(nodes[0], child, method) && method > 0) return 0;
+                    if (saveToArg0)
+                    {
+                        (arguments[0] as VariableTerm).SetValue(doc.OuterXml, exm);
+                    }
+                }
+                return nodes.Count;
+            }
+        }
+        private sealed class XmlRemoveNodeMethod : FunctionMethod
+        {
+            public enum Operation { Node, Attribute };
+            public XmlRemoveNodeMethod(Operation op)
+            {
+                ReturnType = typeof(Int64);
+                argumentTypeArray = null;
+                CanRestructure = false;
+                this.op = op;
+                methodName = op == Operation.Node ? "XML_REMOVENODE" : "XML_REMOVEATTRIBUTE";
+            }
+            Operation op;
+            string methodName;
+            public override string CheckArgumentType(string name, IOperandTerm[] arguments)
+            {
+                if (arguments.Length < 2)
+                    return string.Format("{0}関数:少なくとも3の引数が必要です", name);
+                if (arguments.Length > 3)
+                    return string.Format("{0}関数:引数が多すぎます", name);
+                if (arguments[0].GetOperandType() != typeof(Int64)
+                    && (!(arguments[0] is VariableTerm varTerm)
+                    || varTerm.Identifier.IsCalc
+                    || !varTerm.Identifier.IsArray1D
+                    || !varTerm.Identifier.IsString
+                    || varTerm.Identifier.IsConst))
+                    return string.Format("{0}関数:1番目の引数が一次元文字列配列変数でも整数でもありません", name);
+                for (int i = 1; i < arguments.Length; i++)
+                {
+                    if (i == 1)
+                    {
+                        if (arguments[i].GetOperandType() != typeof(string))
+                            return string.Format("{0}関数:{1}番目の引数が文字列ではありません", name, i + 1);
+                    }
+                    else if (arguments[i].GetOperandType() != typeof(Int64))
+                        return string.Format("{0}関数:{1}番目の引数が整数ではありません", name, i + 1);
+                }
+                return null;
+            }
+            bool Remove(XmlNode node)
+            {
+                if (op == Operation.Attribute)
+                {
+                    if (node is XmlAttribute attr)
+                    {
+                        attr.Attributes.Remove(attr);
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (node.ParentNode != null)
+                    {
+                        var parent = node.ParentNode;
+                        node.ParentNode.RemoveChild(node);
+                        return true;
+                    }
+                }
+                return false;
+            }
+            public override Int64 GetIntValue(ExpressionMediator exm, IOperandTerm[] arguments)
+            {
+                XmlDocument doc;
+                int method = arguments.Length >= 4 ? (int)arguments[3].GetIntValue(exm) : 0;
+                if (method > 2 || method < 0) method = 0;
+                bool saveToArg0 = true;
+                if (arguments[0].GetOperandType() == typeof(Int64))
+                {
+                    saveToArg0 = false;
+                    var idx = arguments[0].GetIntValue(exm);
+                    var dict = exm.VEvaluator.VariableData.DataXmlDocument;
+                    if (dict.ContainsKey(idx)) doc = dict[idx];
+                    else return -1;
+                }
+                else
+                {
+                    string xml = arguments[0].GetStrValue(exm);
+                    doc = new XmlDocument();
+                    try
+                    {
+                        doc.LoadXml(xml);
+                    }
+                    catch (XmlException e)
+                    {
+                        throw new CodeEE(methodName + "関数:\"" + xml + "\"の解析エラー:" + e.Message);
+                    }
+                }
+
+                string path = arguments[1].GetStrValue(exm);
+                XmlNodeList nodes;
+                try
+                {
+                    nodes = doc.SelectNodes(path);
+                }
+                catch (System.Xml.XPath.XPathException e)
+                {
+                    throw new CodeEE(methodName + "関数:XPath\"" + path + "\"の解析エラー:" + e.Message);
+                }
+                if (nodes.Count > 0)
+                {
+                    bool setAllNodes = arguments.Length == 3 ? arguments[2].GetIntValue(exm) != 0 : false;
+                    if (nodes.Count != 1)
+                    {
+                        if (setAllNodes)
+                            for (int i = 0; i < nodes.Count; i++) Remove(nodes[i]);
+                    }
+                    else if (!Remove(nodes[0])) return 0;
+                    if (saveToArg0)
+                    {
+                        (arguments[0] as VariableTerm).SetValue(doc.OuterXml, exm);
+                    }
+                }
+                return nodes.Count;
+            }
+        }
+        private sealed class XmlReplaceMethod : FunctionMethod
+        {
+            public XmlReplaceMethod()
+            {
+                ReturnType = typeof(Int64);
+                argumentTypeArray = null;
+                CanRestructure = false;
+            }
+            bool Replace(XmlNode node, XmlNode newNode)
+            {
+                if (node.ParentNode != null)
+                {
+                    node.ParentNode.ReplaceChild(newNode, node);
+                    return true;
+                }
+                return false;
+            }
+            public override string CheckArgumentType(string name, IOperandTerm[] arguments)
+            {
+                if (arguments.Length < 2)
+                    return string.Format("{0}関数:少なくとも3の引数が必要です", name);
+                if (arguments.Length > 4)
+                    return string.Format("{0}関数:引数が多すぎます", name);
+                if (arguments.Length == 2 && arguments[0].GetOperandType() != typeof(Int64))
+                    return string.Format("{0}関数:1番目の引数が整数ではありません", name);
+                if (arguments.Length > 2 && arguments[0].GetOperandType() != typeof(Int64)
+                    && (!(arguments[0] is VariableTerm varTerm)
+                    || varTerm.Identifier.IsCalc
+                    || !varTerm.Identifier.IsArray1D
+                    || !varTerm.Identifier.IsString
+                    || varTerm.Identifier.IsConst))
+                    return string.Format("{0}関数:1番目の引数が一次元文字列配列変数でも整数でもありません", name);
+                for (int i = 1; i < arguments.Length; i++)
+                {
+                    if (i < 3)
+                    {
+                        if (arguments[i].GetOperandType() != typeof(string))
+                            return string.Format("{0}関数:{1}番目の引数が文字列ではありません", name, i + 1);
+                    }
+                    else if (arguments[i].GetOperandType() != typeof(Int64))
+                        return string.Format("{0}関数:{1}番目の引数が整数ではありません", name, i + 1);
+                }
+                return null;
+            }
+            public override Int64 GetIntValue(ExpressionMediator exm, IOperandTerm[] arguments)
+            {
+                XmlDocument newXml = new XmlDocument();
+                {
+                    string xml = arguments.Length > 2 ? arguments[2].GetStrValue(exm) : arguments[1].GetStrValue(exm);
+                    try
+                    {
+                        newXml.LoadXml(xml);
+                    }
+                    catch (XmlException e)
+                    {
+                        throw new CodeEE("XML_REPLACE関数:\"" + xml + "\"の解析エラー:" + e.Message);
+                    }
+                }
+                bool saveToArg0 = true;
+                XmlDocument doc = null;
+                if (arguments[0].GetOperandType() == typeof(Int64))
+                {
+                    saveToArg0 = false;
+                    var idx = arguments[0].GetIntValue(exm);
+                    var dict = exm.VEvaluator.VariableData.DataXmlDocument;
+                    if (!dict.ContainsKey(idx)) return -1;
+                    if (arguments.Length == 2)
+                    {
+                        dict[idx] = newXml;
+                        return 1;
+                    }
+                    doc = dict[idx];
+                }
+                else
+                {
+                    string xml = arguments[0].GetStrValue(exm);
+                    doc = new XmlDocument();
+                    try
+                    {
+                        doc.LoadXml(xml);
+                    }
+                    catch (XmlException e)
+                    {
+                        throw new CodeEE("XML_REPLACE関数:\"" + xml + "\"の解析エラー:" + e.Message);
+                    }
+                }
+                string path = arguments[1].GetStrValue(exm);
+                XmlNodeList nodes;
+                try
+                {
+                    nodes = doc.SelectNodes(path);
+                }
+                catch (System.Xml.XPath.XPathException e)
+                {
+                    throw new CodeEE("XML_REPLACE関数:XPath\"" + path + "\"の解析エラー:" + e.Message);
+                }
+                if (nodes.Count > 0)
+                {
+                    var newNode = newXml.FirstChild;
+                    var child = doc.CreateNode(newNode.NodeType, newNode.Name, newNode.NamespaceURI);
+                    for (int i = 0; i < newNode.Attributes.Count; i++)
+                    {
+                        var xattr = newNode.Attributes[i];
+                        var attr = doc.CreateAttribute(xattr.Name);
+                        attr.Value = xattr.Value;
+                        child.Attributes.Append(attr);
+                    }
+                    child.InnerXml = newNode.InnerXml;
+                    bool setAllNodes = arguments.Length >= 4 ? arguments[3].GetIntValue(exm) != 0 : false;
+                    if (nodes.Count != 1)
+                    {
+                        if (setAllNodes)
+                            for (int i = 0; i < nodes.Count; i++) Replace(nodes[i], child);
+                    }
+                    else if (!Replace(nodes[0], child)) return 0;
+                    if (saveToArg0)
+                    {
+                        (arguments[0] as VariableTerm).SetValue(doc.OuterXml, exm);
+                    }
+                }
+                return nodes.Count;
             }
         }
         private sealed class ExistFileMethod : FunctionMethod
@@ -2712,8 +3110,13 @@ namespace MinorShift.Emuera.GameData.Function
             {
                 VariableTerm vToken = (VariableTerm)arguments[0];
                 VariableCode varCode = vToken.Identifier.Code;
+                #region EE_ERD
+                string varname = vToken.Identifier.Name;
+                #endregion
                 string key = arguments[1].GetStrValue(exm);
-                if (exm.VEvaluator.Constant.TryKeywordToInteger(out int ret, varCode, key, -1))
+                #region EE_ERD
+                if (exm.VEvaluator.Constant.TryKeywordToInteger(out int ret, varCode, key, -1, varname))
+                #endregion
                     return ret;
                 else
                     return -1;
@@ -2754,7 +3157,10 @@ namespace MinorShift.Emuera.GameData.Function
 				if (var == null)
 					throw new CodeEE("GETNUMBの1番目の引数(\"" + arguments[0].GetStrValue(exm) + "\")が変数名ではありません");
 				string key = arguments[1].GetStrValue(exm);
-                if (exm.VEvaluator.Constant.TryKeywordToInteger(out int ret, var.Code, key, -1))
+                #region EE_ERD
+                //GETNUMBは使ってないのでテストしていない
+                if (exm.VEvaluator.Constant.TryKeywordToInteger(out int ret, var.Code, key, -1, arguments[0].GetStrValue(exm)))
+                #endregion
                     return ret;
                 else
                     return -1;

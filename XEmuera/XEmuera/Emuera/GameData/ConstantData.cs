@@ -83,8 +83,12 @@ namespace MinorShift.Emuera.GameData
 		public Int64[] CharacterStrArray2DLength;
 
 		//private readonly GameBase gamebase;
-		private readonly string[][] names = new string[(int)VariableCode.__COUNT_CSV_STRING_ARRAY_1D__][];
-		private readonly Dictionary<string, int>[] nameToIntDics = new Dictionary<string, int>[(int)VariableCode.__COUNT_CSV_STRING_ARRAY_1D__];
+		#region EE_ERD
+		//private readonly string[][] names = new string[(int)VariableCode.__COUNT_CSV_STRING_ARRAY_1D__][];
+		//private readonly Dictionary<string, int>[] nameToIntDics = new Dictionary<string, int>[(int)VariableCode.__COUNT_CSV_STRING_ARRAY_1D__];
+		private readonly string[][] names = new string[10000][];
+		private readonly Dictionary<string, int>[] nameToIntDics = new Dictionary<string, int>[10000];
+		#endregion
 		private readonly Dictionary<string, int> relationDic = new Dictionary<string, int>();
 		public string[] GetCsvNameList(VariableCode code)
 		{
@@ -587,37 +591,41 @@ check1break:
 				nameToIntDics[i] = new Dictionary<string, int>();
 			}
 			ItemPrice = new Int64[MaxDataList[itemIndex]];
-			loadDataTo(csvDir + "ABL.CSV", ablIndex, null, disp);
-			loadDataTo(csvDir + "EXP.CSV", expIndex, null, disp);
-			loadDataTo(csvDir + "TALENT.CSV", talentIndex, null, disp);
-			loadDataTo(csvDir + "PALAM.CSV", paramIndex, null, disp);
-			loadDataTo(csvDir + "TRAIN.CSV", trainIndex, null, disp);
-			loadDataTo(csvDir + "MARK.CSV", markIndex, null, disp);
-			loadDataTo(csvDir + "ITEM.CSV", itemIndex, ItemPrice, disp);
-			loadDataTo(csvDir + "BASE.CSV", baseIndex, null, disp);
-			loadDataTo(csvDir + "SOURCE.CSV", sourceIndex, null, disp);
-			loadDataTo(csvDir + "EX.CSV", exIndex, null, disp);
-			loadDataTo(csvDir + "STR.CSV", strIndex, null, disp);
-			loadDataTo(csvDir + "EQUIP.CSV", equipIndex, null, disp);
-			loadDataTo(csvDir + "TEQUIP.CSV", tequipIndex, null, disp);
-			loadDataTo(csvDir + "FLAG.CSV", flagIndex, null, disp);
-			loadDataTo(csvDir + "TFLAG.CSV", tflagIndex, null, disp);
-			loadDataTo(csvDir + "CFLAG.CSV", cflagIndex, null, disp);
-			loadDataTo(csvDir + "TCVAR.CSV", tcvarIndex, null, disp);
-			loadDataTo(csvDir + "CSTR.CSV", cstrIndex, null, disp);
-			loadDataTo(csvDir + "STAIN.CSV", stainIndex, null, disp);
-			loadDataTo(csvDir + "CDFLAG1.CSV", cdflag1Index, null, disp);
-			loadDataTo(csvDir + "CDFLAG2.CSV", cdflag2Index, null, disp);
+			#region EE_ERD
+			loadDataTo(csvDir + "ABL.CSV", ablIndex, null, disp, false);
+			loadDataTo(csvDir + "EXP.CSV", expIndex, null, disp, false);
+			loadDataTo(csvDir + "TALENT.CSV", talentIndex, null, disp, false);
+			loadDataTo(csvDir + "PALAM.CSV", paramIndex, null, disp, false);
+			loadDataTo(csvDir + "TRAIN.CSV", trainIndex, null, disp, false);
+			loadDataTo(csvDir + "MARK.CSV", markIndex, null, disp, false);
+			loadDataTo(csvDir + "ITEM.CSV", itemIndex, ItemPrice, disp, false);
+			loadDataTo(csvDir + "BASE.CSV", baseIndex, null, disp, false);
+			loadDataTo(csvDir + "SOURCE.CSV", sourceIndex, null, disp, false);
+			loadDataTo(csvDir + "EX.CSV", exIndex, null, disp, false);
+			loadDataTo(csvDir + "STR.CSV", strIndex, null, disp, false);
+			loadDataTo(csvDir + "EQUIP.CSV", equipIndex, null, disp, false);
+			loadDataTo(csvDir + "TEQUIP.CSV", tequipIndex, null, disp, false);
+			loadDataTo(csvDir + "FLAG.CSV", flagIndex, null, disp, false);
+			loadDataTo(csvDir + "TFLAG.CSV", tflagIndex, null, disp, false);
+			loadDataTo(csvDir + "CFLAG.CSV", cflagIndex, null, disp, false);
+			loadDataTo(csvDir + "TCVAR.CSV", tcvarIndex, null, disp, false);
+			loadDataTo(csvDir + "CSTR.CSV", cstrIndex, null, disp, false);
+			loadDataTo(csvDir + "STAIN.CSV", stainIndex, null, disp, false);
+			loadDataTo(csvDir + "CDFLAG1.CSV", cdflag1Index, null, disp, false);
+			loadDataTo(csvDir + "CDFLAG2.CSV", cdflag2Index, null, disp, false);
 			
-			loadDataTo(csvDir + "STRNAME.CSV", strnameIndex, null, disp);
-			loadDataTo(csvDir + "TSTR.CSV", tstrnameIndex, null, disp);
-			loadDataTo(csvDir + "SAVESTR.CSV", savestrnameIndex, null, disp);
-			loadDataTo(csvDir + "GLOBAL.CSV", globalIndex, null, disp);
-			loadDataTo(csvDir + "GLOBALS.CSV", globalsIndex, null, disp);
+			loadDataTo(csvDir + "STRNAME.CSV", strnameIndex, null, disp, false);
+			loadDataTo(csvDir + "TSTR.CSV", tstrnameIndex, null, disp, false);
+			loadDataTo(csvDir + "SAVESTR.CSV", savestrnameIndex, null, disp, false);
+			loadDataTo(csvDir + "GLOBAL.CSV", globalIndex, null, disp, false);
+			loadDataTo(csvDir + "GLOBALS.CSV", globalsIndex, null, disp, false);
+			#endregion
 			//逆引き辞書を作成
 			for (int i = 0; i < names.Length; i++)
 			{
 				if (i == 10)//Strは逆引き無用
+					continue;
+				if (names[i] == null)
 					continue;
 				string[] nameArray = names[i];
 				for (int j = 0; j < nameArray.Length; j++)
@@ -641,6 +649,23 @@ check1break:
                     relationDic.Add(tmpl.Nickname, (int)tmpl.No);
 			}
 		}
+		#region EE_ERD
+		public void UserDefineLoadData(string filepath, string varname, int varlength, bool disp)
+		{
+			int varid = Array.IndexOf(GlobalStatic.IdentifierDictionary.VarKeys, varname);
+			//throw new CodeEE("varid" + varid);
+			names[varid] = new string[varlength];
+			nameToIntDics[varid] = new Dictionary<string, int>();
+
+			loadDataTo(filepath, varid, null, disp, true);
+			//逆引き辞書を作成
+			string[] nameArray = names[varid];
+			for (int j = 0; j < nameArray.Length; j++)
+			{
+				if (!string.IsNullOrEmpty(nameArray[j]) && !nameToIntDics[varid].ContainsKey(nameArray[j]))
+					nameToIntDics[varid].Add(nameArray[j], j);
+			}
+		}
 
 		public bool isDefined(VariableCode varCode, string str)
 		{
@@ -649,41 +674,67 @@ check1break:
             Dictionary<string, int> dic;
             if (varCode == VariableCode.CDFLAG)
             {
-                dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME1, -1);
+                dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME1, -1, null);
                 if ((dic == null) || (!dic.ContainsKey(str)))
-                    dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME2, -1);
+                    dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME2, -1, null);
                 if (dic == null)
                     return false;
                 return dic.ContainsKey(str);
             }
-            dic = GetKeywordDictionary(out _, varCode, -1);
+            dic = GetKeywordDictionary(out _, varCode, -1, null);
 			if (dic == null)
 				return false;
 			return dic.ContainsKey(str);
 		}
 
-        
-		public bool TryKeywordToInteger(out int ret, VariableCode code, string key, int index)
+		public bool isUserDefined(string varname, string str)
+		{
+			if (string.IsNullOrEmpty(str))
+				return false;
+			int varindex = Array.IndexOf(GlobalStatic.IdentifierDictionary.VarKeys, varname);
+			Dictionary<string, int> dic = nameToIntDics[varindex];
+			return dic.ContainsKey(str);
+		}
+		#endregion
+
+
+		#region EE_ERD
+		public bool TryKeywordToInteger(out int ret, VariableCode code, string key, int index, string varname)
         {
             ret = 0;
             if (string.IsNullOrEmpty(key))
                 return false;
             Dictionary<string, int> dic;
-            try
+
+			try
             {
-                dic = GetKeywordDictionary(out string errPos, code, index);
-				if (dic == null)
-					return false;
-            }
-            catch { return false; }
-            return (dic.TryGetValue(key, out ret));
-        }
+                dic = GetKeywordDictionary(out string errPos, code, index, null);
+				//ここで見つからなかったら下の処理でも通す
+				if (dic.TryGetValue(key, out ret))
+					return (dic.TryGetValue(key, out ret));
+			}
+            catch { }
+			if (!string.IsNullOrEmpty(varname))
+			{
+				try
+				{
+					int varindex = Array.IndexOf(GlobalStatic.IdentifierDictionary.VarKeys, varname);
+					dic = nameToIntDics[varindex];
+					if (dic == null)
+						return false;
+				}
+				catch { return false; }
+				return (dic.TryGetValue(key, out ret));
+			}
+			return false;
+		}
+		#endregion
 
 		public int KeywordToInteger(VariableCode code, string key, int index)
 		{
 			if (string.IsNullOrEmpty(key))
 				throw new CodeEE("キーワードを空には出来ません");
-            Dictionary<string, int> dic = GetKeywordDictionary(out string errPos, code, index);
+            Dictionary<string, int> dic = GetKeywordDictionary(out string errPos, code, index, null);
             if (dic.TryGetValue(key, out int ret))
                 return ret;
             if (errPos == null)
@@ -692,7 +743,7 @@ check1break:
 				throw new CodeEE(errPos + "の中に\"" + key + "\"の定義がありません");
 		}
 
-		public Dictionary<string, int> GetKeywordDictionary(out string errPos, VariableCode code, int index)
+		public Dictionary<string, int> GetKeywordDictionary(out string errPos, VariableCode code, int index, string varname)
 		{
 			errPos = null;
 			int allowIndex = -1;
@@ -876,8 +927,21 @@ check1break:
 					errPos = "chara*.csv";
 					allowIndex = -1;
 					break;
-
 			}
+			#region EE_ERD
+			int varindex = Array.IndexOf(GlobalStatic.IdentifierDictionary.VarKeys, varname);
+			if (varindex < 0 || string.IsNullOrEmpty(varname))
+				return ret;
+			else
+            {
+				ret = nameToIntDics[varindex];
+				errPos = varname + ".csv";
+				allowIndex = 0;
+				if (code == VariableCode.CVAR)
+					allowIndex = 1;
+			}
+			#endregion
+
 			if (index < 0)
 				return ret;
 			if (ret == null)
@@ -1265,7 +1329,9 @@ check1break:
 		}
 
 
-		private void loadDataTo(string csvPath, int targetIndex, Int64[] targetI, bool disp)
+		#region EE_ERD
+		private void loadDataTo(string csvPath, int targetIndex, Int64[] targetI, bool disp, bool userdef)
+		#endregion
 		{
 
 			if (!FileUtils.Exists(ref csvPath))
@@ -1273,14 +1339,17 @@ check1break:
 			string[] target = names[targetIndex];
             HashSet<int> defined = new HashSet<int>();
 			EraStreamReader eReader = new EraStreamReader(false);
-			if (!eReader.Open(csvPath))
+			#region EE_ERD
+			if (!eReader.Open(csvPath) && output != null)
+			#endregion
 			{
 				output.PrintError(eReader.Filename + "のオープンに失敗しました");
 				return;
 			}
 			ScriptPosition position = null;
-
-			if (disp || Program.AnalysisMode)
+			#region EE_ERD
+			if ((disp || Program.AnalysisMode) && output != null)
+			#endregion
 				output.PrintSystemLine(eReader.Filename + "読み込み中・・・");
 			try
 			{
@@ -1294,12 +1363,12 @@ check1break:
 						ParserMediator.Warn("\",\"が必要です", position, 1);
 						continue;
 					}
-                    if (!Int32.TryParse(tokens[0], out int index))
+					if (!Int32.TryParse(tokens[0], out int index))
                     {
                         ParserMediator.Warn("一つ目の値を整数値に変換できません", position, 1);
                         continue;
                     }
-                    if (target.Length == 0)
+					if (target.Length == 0)
 					{
 						ParserMediator.Warn("禁止設定された名前配列です", position, 2);
 						break;

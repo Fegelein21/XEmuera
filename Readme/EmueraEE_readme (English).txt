@@ -1,7 +1,7 @@
-﻿App name:EmueraEE Latest update:2022/04/02
-Version:1.824+v14+EEv12
+﻿App name:EmueraEE Latest update:2022/05/05
+Version:1.824+v15+EMv5+EEv13
 Developer:Enter
-Original Application:Emuera1.824+v14(Developed by 妊）|дﾟ)の中の人 and MinorShift),WebP-wrapper(Developed by JosePineiro)
+Original Application:Emuera1.824+v15(Developed by 妊）|дﾟ)の中の人 and MinorShift),WebP-wrapper(Developed by JosePineiro)
 Contact:Twitter/@eraBEMANI Discord/https://discord.gg/p5rb5uK
 
 ※eramaker's dev,MinorShift and 妊の人 were not relate EmueraEE's development.
@@ -87,6 +87,9 @@ Force run of BEGIN.
 
 ・Now usable WebP files
 resources/csv and GCREATEFROMFILE can use WebP files.
+
+・Can assign variable name to ERH variables
+Like CSV variables. Using [VariableName].csv(in CSV directory) or [VariableName].ERD(in ERB directory) file.
 
 ・UPDATECHECK
 Browse server and check for new version.
