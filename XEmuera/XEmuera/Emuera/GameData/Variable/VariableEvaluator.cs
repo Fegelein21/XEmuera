@@ -1134,7 +1134,6 @@ namespace MinorShift.Emuera.GameData.Variable
 		{
 			//グローバルは初期化しない方が都合がよい。
 			//varData.SetDefaultGlobalValue();
-
 			#region EM_私家版_XMLDocument_連想配列
 			varData.DataXmlDocument.Clear();
 			varData.DataStringMaps.Clear();

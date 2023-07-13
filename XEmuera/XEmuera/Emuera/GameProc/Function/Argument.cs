@@ -524,21 +524,18 @@ namespace MinorShift.Emuera.GameProc.Function
         readonly public IOperandTerm Term;
         readonly public IOperandTerm Flag;
     }
-
-
-    #region EE
-    internal sealed class StrDoubleArgument : Argument
-    {
-        public StrDoubleArgument(IOperandTerm term, double doublevalue)
-        {
-            Term = term;
-            DoubleValue = doublevalue;
-        }
-        readonly public IOperandTerm Term;
-        readonly public double DoubleValue;
-    }
+	#region EE
+	internal sealed class StrDoubleArgument : Argument
+	{
+		public StrDoubleArgument(IOperandTerm term, double doublevalue)
+		{
+			Term = term;
+			DoubleValue = doublevalue;
+		}
+		readonly public IOperandTerm Term;
+		readonly public double DoubleValue;
+	}
 	#endregion
-
 
 	#region set系
 	internal sealed class SpSetArgument : Argument

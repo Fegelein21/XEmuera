@@ -249,9 +249,9 @@
    第一引数で指定した連想配列(Dictionary<string, string>)に含まったキー-値ペアを全部削除する。1を返す
    連想配列自体が存在しない場合，-1を返す
 
-◆ <1> str MAP_GEKEYS str
-   <2> str MAP_GEKEYS str, int
-   <3> str MAP_GEKEYS str, strArray, int
+◆ <1> str MAP_GETKEYS str
+   <2> str MAP_GETKEYS str, int
+   <3> str MAP_GETKEYS str, strArray, int
    第一引数で指定した連想配列(Dictionary<string, string>)に:
    <1> "キー1,キー2,キー3,..."のような形の文字列を返す
    <2> 第二引数が0ではない場合，RESULTSにキーを順次代入。RESULTS:0を返す

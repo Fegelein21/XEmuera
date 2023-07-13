@@ -12,6 +12,7 @@ namespace MinorShift.Emuera.GameData.Variable
 	internal sealed class VariableStrArgTerm : IOperandTerm
 	{
 		#region EE_ERD
+		// public VariableStrArgTerm(VariableCode code, IOperandTerm strTerm, int index)
 		public VariableStrArgTerm(VariableCode code, IOperandTerm strTerm, int index, string varname)
 		#endregion
 			: base(typeof(Int64))
@@ -22,6 +23,7 @@ namespace MinorShift.Emuera.GameData.Variable
 			#region EE_ERD
 			this.varname = varname;
 			#endregion
+
 		}
 		IOperandTerm strTerm;
 		readonly VariableCode parentCode;
@@ -36,6 +38,7 @@ namespace MinorShift.Emuera.GameData.Variable
 		{
 			if (dic == null)
 				#region EE_ERD
+				// dic = exm.VEvaluator.Constant.GetKeywordDictionary(out errPos, parentCode, index);
 				dic = exm.VEvaluator.Constant.GetKeywordDictionary(out errPos, parentCode, index, varname);
 				#endregion
 			string key = strTerm.GetStrValue(exm);
@@ -48,7 +51,7 @@ namespace MinorShift.Emuera.GameData.Variable
 
 			if (!dic.TryGetValue(key, out int i))
             {
-				if (errPos == null)
+                if (errPos == null)
                     throw new CodeEE("配列変数" + parentCode.ToString() + "の要素を文字列で指定することはできません");
                 else
                     throw new CodeEE(errPos + "の中に\"" + key + "\"の定義がありません");
@@ -60,8 +63,10 @@ namespace MinorShift.Emuera.GameData.Variable
         {
 			if (dic == null)
 				#region EE_ERD
+				// dic = exm.VEvaluator.Constant.GetKeywordDictionary(out errPos, parentCode, index);
 				dic = exm.VEvaluator.Constant.GetKeywordDictionary(out errPos, parentCode, index, null);
 				#endregion
+
 			strTerm = strTerm.Restructure(exm);
 			if (!(strTerm is SingleTerm))
 				return this;

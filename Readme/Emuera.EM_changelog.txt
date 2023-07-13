@@ -1,4 +1,8 @@
-﻿v20220502(v5)
+﻿v20220518(v6)
+◆ セキュリティ対策のため，webpソリューションをImageProcessor+libwebpに変更
+ライセンスはImageProcessor.LICENSE.txtとLibwebp.LICENSE.txtに参照してください。
+
+v20220502(v5)
 ◆ XML_SET, XML_GETの説明文の修正
 ◆ XML_TOSTRの説明文追加
 ◆ 関数追加：XML_TOSTR(v4で追加), XML_ADDNODE, XML_REMOVENODE, XML_ADDATTRIBUTE, XML_REMOVEATTRIBUTE, XML_REPLACE。

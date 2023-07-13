@@ -625,8 +625,10 @@ check1break:
 			{
 				if (i == 10)//Strは逆引き無用
 					continue;
+				#region EE_ERD
 				if (names[i] == null)
 					continue;
+				#endregion
 				string[] nameArray = names[i];
 				for (int j = 0; j < nameArray.Length; j++)
 				{
@@ -674,14 +676,17 @@ check1break:
             Dictionary<string, int> dic;
             if (varCode == VariableCode.CDFLAG)
             {
-                dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME1, -1, null);
-                if ((dic == null) || (!dic.ContainsKey(str)))
-                    dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME2, -1, null);
-                if (dic == null)
+                // dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME1, -1);
+				dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME1, -1, null);
+				if ((dic == null) || (!dic.ContainsKey(str)))
+                   // dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME2, -1);
+					dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME2, -1, null);
+				if (dic == null)
                     return false;
                 return dic.ContainsKey(str);
             }
-            dic = GetKeywordDictionary(out _, varCode, -1, null);
+            // dic = GetKeywordDictionary(out _, varCode, -1);
+			dic = GetKeywordDictionary(out _, varCode, -1, null);
 			if (dic == null)
 				return false;
 			return dic.ContainsKey(str);
@@ -699,27 +704,30 @@ check1break:
 
 
 		#region EE_ERD
+		// public bool TryKeywordToInteger(out int ret, VariableCode code, string key, int index)
 		public bool TryKeywordToInteger(out int ret, VariableCode code, string key, int index, string varname)
-        {
-            ret = 0;
-            if (string.IsNullOrEmpty(key))
-                return false;
-            Dictionary<string, int> dic;
-
+		{
+			ret = 0;
+			if (string.IsNullOrEmpty(key))
+				return false;
+			Dictionary<string, int> dic;
 			try
-            {
-                dic = GetKeywordDictionary(out string errPos, code, index, null);
+			{
+				// dic = GetKeywordDictionary(out string errPos, code, index);
+				dic = GetKeywordDictionary(out string errPos, code, index, null);
+
 				//ここで見つからなかったら下の処理でも通す
 				if (dic.TryGetValue(key, out ret))
 					return (dic.TryGetValue(key, out ret));
 			}
-            catch { }
+			catch { }
 			if (!string.IsNullOrEmpty(varname))
 			{
 				try
 				{
 					int varindex = Array.IndexOf(GlobalStatic.IdentifierDictionary.VarKeys, varname);
 					dic = nameToIntDics[varindex];
+
 					if (dic == null)
 						return false;
 				}
@@ -730,12 +738,16 @@ check1break:
 		}
 		#endregion
 
+
 		public int KeywordToInteger(VariableCode code, string key, int index)
 		{
 			if (string.IsNullOrEmpty(key))
 				throw new CodeEE("キーワードを空には出来ません");
-            Dictionary<string, int> dic = GetKeywordDictionary(out string errPos, code, index, null);
-            if (dic.TryGetValue(key, out int ret))
+			#region EE_ERD
+			// Dictionary<string, int> dic = GetKeywordDictionary(out string errPos, code, index);
+			Dictionary<string, int> dic = GetKeywordDictionary(out string errPos, code, index, null);
+			#endregion
+			if (dic.TryGetValue(key, out int ret))
                 return ret;
             if (errPos == null)
 				throw new CodeEE("配列変数" + code.ToString() + "の要素を文字列で指定することはできません");
@@ -743,7 +755,10 @@ check1break:
 				throw new CodeEE(errPos + "の中に\"" + key + "\"の定義がありません");
 		}
 
+		#region EE_ERD
+		//public Dictionary<string, int> GetKeywordDictionary(out string errPos, VariableCode code, int index)
 		public Dictionary<string, int> GetKeywordDictionary(out string errPos, VariableCode code, int index, string varname)
+		#endregion
 		{
 			errPos = null;
 			int allowIndex = -1;
@@ -927,13 +942,15 @@ check1break:
 					errPos = "chara*.csv";
 					allowIndex = -1;
 					break;
+
 			}
+
 			#region EE_ERD
 			int varindex = Array.IndexOf(GlobalStatic.IdentifierDictionary.VarKeys, varname);
 			if (varindex < 0 || string.IsNullOrEmpty(varname))
 				return ret;
 			else
-            {
+			{
 				ret = nameToIntDics[varindex];
 				errPos = varname + ".csv";
 				allowIndex = 0;
@@ -941,7 +958,6 @@ check1break:
 					allowIndex = 1;
 			}
 			#endregion
-
 			if (index < 0)
 				return ret;
 			if (ret == null)
@@ -1328,10 +1344,11 @@ check1break:
 			}
 		}
 
-
 		#region EE_ERD
+		// private void loadDataTo(string csvPath, int targetIndex, Int64[] targetI, bool disp)
 		private void loadDataTo(string csvPath, int targetIndex, Int64[] targetI, bool disp, bool userdef)
 		#endregion
+
 		{
 
 			if (!FileUtils.Exists(ref csvPath))
@@ -1340,6 +1357,7 @@ check1break:
             HashSet<int> defined = new HashSet<int>();
 			EraStreamReader eReader = new EraStreamReader(false);
 			#region EE_ERD
+			// if (!eReader.Open(csvPath))
 			if (!eReader.Open(csvPath) && output != null)
 			#endregion
 			{
@@ -1348,6 +1366,7 @@ check1break:
 			}
 			ScriptPosition position = null;
 			#region EE_ERD
+			// if (disp || Program.AnalysisMode)
 			if ((disp || Program.AnalysisMode) && output != null)
 			#endregion
 				output.PrintSystemLine(eReader.Filename + "読み込み中・・・");
@@ -1363,12 +1382,12 @@ check1break:
 						ParserMediator.Warn("\",\"が必要です", position, 1);
 						continue;
 					}
-					if (!Int32.TryParse(tokens[0], out int index))
+                    if (!Int32.TryParse(tokens[0], out int index))
                     {
                         ParserMediator.Warn("一つ目の値を整数値に変換できません", position, 1);
                         continue;
                     }
-					if (target.Length == 0)
+                    if (target.Length == 0)
 					{
 						ParserMediator.Warn("禁止設定された名前配列です", position, 2);
 						break;

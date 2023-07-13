@@ -684,8 +684,22 @@ namespace MinorShift.Emuera
 
 		private void mainPicBox_Paint(object sender, SKPaintSurfaceEventArgs e)
 		{
-			//if (console == null)
-			//    return;
+			// if (console == null)
+			// 	return;
+			// saveFileDialog.InitialDirectory = Program.ExeDir;
+			// DateTime time = DateTime.Now;
+			// string fname = time.ToString("yyyyMMdd-HHmmss");
+			// fname += ".log";
+			// saveFileDialog.FileName = fname;
+			// DialogResult result = saveFileDialog.ShowDialog();
+			// if (result == DialogResult.OK)
+			// {
+			// 	#region EE_OUTPUTLOG
+			// 	// console.OutputLog(Path.GetFullPath(saveFileDialog.FileName));
+			// 	console.OutputSystemLog(Path.GetFullPath(saveFileDialog.FileName));
+			// 	#endregion
+
+			// }
 
 			if (IsWindowClosing)
 				return;
@@ -878,7 +892,7 @@ namespace MinorShift.Emuera
             //    richTextBox1.Text = richTextBox1.Text.Remove(1);
             PressEnterKey(false, false);
             textBox_flag = true;
-        }
+		}
 		#region EM_私家版_INPUT系機能拡張
 		// Keys? modifiersWhileWaintingInputWithMouse = null;
 		// private void richTextBox1_ModifierRecorder_KeyUp(object sender, KeyEventArgs e)

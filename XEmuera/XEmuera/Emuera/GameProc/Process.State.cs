@@ -177,8 +177,9 @@ namespace MinorShift.Emuera.GameProc
             //sequential = false;
 			//ShfitNextLine();
 		}
-        #region EE_FORCE_QUIT系
-        public void SetBegin(string keyword, bool force)
+		#region EE_FORCE_QUIT系
+		// public void SetBegin(string keyword)
+		public void SetBegin(string keyword, bool force)
 		{//TrimとToUpper済みのはず
 			switch (keyword)
 			{
@@ -200,6 +201,7 @@ namespace MinorShift.Emuera.GameProc
 			throw new CodeEE("BEGINのキーワード\"" + keyword + "\"は未定義です");
 		}
 
+		//public void SetBegin(BeginType type)
 		public void SetBegin(BeginType type, bool force)
 		{
 			string errmes;
@@ -232,8 +234,9 @@ namespace MinorShift.Emuera.GameProc
 			string funcName = func.FunctionName;
 			throw new CodeEE("@" + funcName + "中で" + errmes + "命令を実行することはできません");
 		}
-        #endregion
-        public void SaveLoadData(bool saveData)
+		#endregion
+
+		public void SaveLoadData(bool saveData)
 		{
 
 			if (saveData)

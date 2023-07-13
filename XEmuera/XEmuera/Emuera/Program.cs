@@ -208,8 +208,8 @@ namespace MinorShift.Emuera
 		public static string DatDir { get; private set; }
 		public static string ContentDir { get; private set; }
 		public static string ExeName { get; private set; }
-        #region EE_PLAYSOUND系
-        public static string MusicDir {get; private set; }
+		#region EE_PLAYSOUND系
+		public static string MusicDir {get; private set; }
 		//public static IPlayer[] sound = new IPlayer[10];
 		//public static IPlayer bgm = null;
 		#endregion

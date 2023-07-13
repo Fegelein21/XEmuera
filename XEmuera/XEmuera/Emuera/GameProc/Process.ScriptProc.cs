@@ -298,8 +298,8 @@ namespace MinorShift.Emuera.GameProc
 				case FunctionCode.QUIT://ゲームを終了
 					exm.Console.Quit();
 					break;
-                #region EE_FORCE_QUIT系
-                case FunctionCode.QUIT_AND_RESTART:
+				#region EE_FORCE_QUIT系
+				case FunctionCode.QUIT_AND_RESTART:
 					Program.Reboot = true;
 					exm.Console.Quit();
 					break;
@@ -310,8 +310,9 @@ namespace MinorShift.Emuera.GameProc
 					Program.Reboot = true;
 					exm.Console.ForceQuit();
 					break;
-                #endregion
-                case FunctionCode.VARSIZE:
+				#endregion
+
+				case FunctionCode.VARSIZE:
 					{
 						SpVarsizeArgument versizeArg = (SpVarsizeArgument)func.Argument;
 						VariableToken varID = versizeArg.VariableID;
@@ -594,12 +595,13 @@ namespace MinorShift.Emuera.GameProc
 					}
 					break;
 				case FunctionCode.OUTPUTLOG:
-                    #region EE_OUTPUTLOG
-                    if (func.Argument.IsConst)
+					#region EE_OUTPUTLOG
+					if (func.Argument.IsConst)
 						str = func.Argument.ConstStr;
 					else
 						str = ((ExpressionArgument)func.Argument).Term.GetStrValue(exm);
 					exm.Console.OutputLog(str);
+					// exm.Console.OutputLog(null);
 					#endregion
 					break;
 				case FunctionCode.ARRAYSHIFT: //配列要素をずらす

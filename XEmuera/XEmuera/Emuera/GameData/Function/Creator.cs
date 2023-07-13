@@ -256,14 +256,13 @@ namespace MinorShift.Emuera.GameData.Function
                 ["MAP_CLEAR"] = new MapDataOperationMethod(MapDataOperationMethod.Operation.Clear),
                 ["MAP_SIZE"] = new MapDataOperationMethod(MapDataOperationMethod.Operation.Size),
                 ["MAP_HAS"] = new MapDataOperationMethod(MapDataOperationMethod.Operation.Has),
-                ["MAP_SET"]= new MapDataOperationMethod(MapDataOperationMethod.Operation.Set),
-                ["MAP_REMOVE"]= new MapDataOperationMethod(MapDataOperationMethod.Operation.Remove),
-                ["MAP_GETKEYS"]= new MapGetStrMethod(MapGetStrMethod.Operation.GetKeys),
+                ["MAP_SET"] = new MapDataOperationMethod(MapDataOperationMethod.Operation.Set),
+                ["MAP_REMOVE"] = new MapDataOperationMethod(MapDataOperationMethod.Operation.Remove),
+                ["MAP_GETKEYS"] = new MapGetStrMethod(MapGetStrMethod.Operation.GetKeys),
 
                 ["MAP_TOXML"] = new MapGetStrMethod(MapGetStrMethod.Operation.ToXml),
                 ["MAP_FROMXML"] = new MapFromXmlMethod(),
                 #endregion
-
 
                 #region EEで追加されたやつ
                 ["EXISTSOUND"] = new ExistSoundMethod(),

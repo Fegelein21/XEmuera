@@ -797,6 +797,25 @@ namespace XEmuera.Resources {
                 return ResourceManager.GetString("SystemIgnoreStringSet", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   查找类似 禁用检查更新功能 的本地化字符串。
+        /// </summary>
+        internal static string ForbidUpdateCheck {
+            get {
+                return ResourceManager.GetString("ForbidUpdateCheck", resourceCulture);
+            }
+        }
+
+
+        /// <summary>
+        ///   查找类似 输出log功能扩展 的本地化字符串。
+        /// </summary>
+        internal static string ValidExtension {
+            get {
+                return ResourceManager.GetString("ValidExtension", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   查找类似 展开FORM中的三连记号 的本地化字符串。

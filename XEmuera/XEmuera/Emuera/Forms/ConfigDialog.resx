@@ -1531,7 +1531,7 @@
     <value>colorBoxBacklog</value>
   </data>
   <data name="&gt;&gt;colorBoxBacklog.Type" xml:space="preserve">
-    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.6904.3472, Culture=neutral, PublicKeyToken=null</value>
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8173.38019, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;colorBoxBacklog.Parent" xml:space="preserve">
     <value>tabPageFont</value>
@@ -1552,7 +1552,7 @@
     <value>colorBoxSelecting</value>
   </data>
   <data name="&gt;&gt;colorBoxSelecting.Type" xml:space="preserve">
-    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.6904.3472, Culture=neutral, PublicKeyToken=null</value>
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8173.38019, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;colorBoxSelecting.Parent" xml:space="preserve">
     <value>tabPageFont</value>
@@ -1573,7 +1573,7 @@
     <value>colorBoxFG</value>
   </data>
   <data name="&gt;&gt;colorBoxFG.Type" xml:space="preserve">
-    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.6904.3472, Culture=neutral, PublicKeyToken=null</value>
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8173.38019, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;colorBoxFG.Parent" xml:space="preserve">
     <value>tabPageFont</value>
@@ -1594,7 +1594,7 @@
     <value>colorBoxBG</value>
   </data>
   <data name="&gt;&gt;colorBoxBG.Type" xml:space="preserve">
-    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.6904.3472, Culture=neutral, PublicKeyToken=null</value>
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8173.38019, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;colorBoxBG.Parent" xml:space="preserve">
     <value>tabPageFont</value>

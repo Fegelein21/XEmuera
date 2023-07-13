@@ -317,7 +317,13 @@
     <value>禁用角色变量的参数自动补全</value>
   </data>
   <data name="SystemIgnoreStringSet" xml:space="preserve">
-    <value></value>
+    <value>强制将字符串变量的赋值转换为字符串</value>
+  </data>
+    <data name="ForbidUpdateCheck" xml:space="preserve">
+    <value>禁用UPDATECHECK</value>
+  </data>
+  <data name="ValidExtension" xml:space="preserve">
+    <value>能够在LOADTEXT和SAVETEXT中使用的扩展名</value>
   </data>
   <data name="FontScale" xml:space="preserve">
     <value>文字与图像缩放倍数</value>

@@ -179,7 +179,6 @@ namespace MinorShift.Emuera.GameProc.Function
 			argb[FunctionArgType.STR_EXPRESSION_NULLABLE] = new STR_EXPRESSION_ArgumentBuilder(true);
 			argb[FunctionArgType.STR] = new STR_ArgumentBuilder(false);
 			argb[FunctionArgType.STR_NULLABLE] = new STR_ArgumentBuilder(true);
-			argb[FunctionArgType.STR_DOUBLE] = new STR_DOUBLE_ArgumentBuilder();
 			argb[FunctionArgType.FORM_STR] = new FORM_STR_ArgumentBuilder(false);
 			argb[FunctionArgType.FORM_STR_NULLABLE] = new FORM_STR_ArgumentBuilder(true);
 			argb[FunctionArgType.SP_PRINTV] = new SP_PRINTV_ArgumentBuilder();
@@ -255,7 +254,7 @@ namespace MinorShift.Emuera.GameProc.Function
 				WordCollection wc = LexicalAnalyzer.Analyse(st, LexEndWith.Comma, LexAnalyzeFlag.None);
 				st.ShiftNext();
 				if (st.EOS)
-				{ warn("引数が足りません", line, 2, false); return null; }
+					{ warn("引数が足りません", line, 2, false); return null; }
 				double d;
 				try
 				{
@@ -451,7 +450,6 @@ namespace MinorShift.Emuera.GameProc.Function
 
 		private sealed class SP_SORTCHARA_ArgumentBuilder : ArgumentBuilder
 		{
-
 			public override Argument CreateArgument(InstructionLine line, ExpressionMediator exm)
 			{
 				VariableTerm varTerm = new VariableTerm(GlobalStatic.VariableData.GetSystemVariableToken("NO"), new IOperandTerm[] { new SingleTerm(0) });
@@ -845,7 +843,6 @@ namespace MinorShift.Emuera.GameProc.Function
 				}
 			}
 		}
-
 		private sealed class METHOD_ArgumentBuilder : ArgumentBuilder
 		{
 			public override Argument CreateArgument(InstructionLine line, ExpressionMediator exm)
@@ -1338,7 +1335,6 @@ namespace MinorShift.Emuera.GameProc.Function
 				return new SpSwapVarArgument(x, y);
 			}
 		}
-
 		private sealed class VAR_INT_ArgumentBuilder : ArgumentBuilder
 		{
 			public VAR_INT_ArgumentBuilder()
@@ -1640,7 +1636,6 @@ namespace MinorShift.Emuera.GameProc.Function
 				return new SpHtmlSplitArgument(terms[0], destVar, term);
 			}
 		}
-
 		private sealed class SP_GETINT_ArgumentBuilder : ArgumentBuilder
 		{
 			public SP_GETINT_ArgumentBuilder()
@@ -2041,7 +2036,7 @@ namespace MinorShift.Emuera.GameProc.Function
 			}
 		}
 
-		//ここからEnter版
+		#region EE版
 		private sealed class STR_DOUBLE_ArgumentBuilder : ArgumentBuilder
 		{
 			public STR_DOUBLE_ArgumentBuilder()
@@ -2079,6 +2074,6 @@ namespace MinorShift.Emuera.GameProc.Function
 			}
 
 		}
-
+		#endregion
 	}
 }

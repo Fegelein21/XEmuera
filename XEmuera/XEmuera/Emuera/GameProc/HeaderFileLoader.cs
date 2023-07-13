@@ -291,7 +291,7 @@ namespace MinorShift.Emuera.GameProc
 						{
 
 							string csvpath = (Program.CsvDir + data.Name.ToUpper() + ".CSV");
-							string[] erdpath = Directory.GetFiles(Program.ErbDir, data.Name.ToUpper()+".ERD", SearchOption.AllDirectories);
+							string[] erdpath = Directory.GetFiles(Program.ErbDir, data.Name.ToUpper() + ".ERD", SearchOption.AllDirectories);
 							if (File.Exists(csvpath) && erdpath.Length > 0)
 								throw new CodeEE("変数" + data.Name + "用の定義ファイルがCSVとERD両方で存在します。どちらかに統一してください");
 							if (erdpath != null && erdpath.Length >= 2)
@@ -300,8 +300,10 @@ namespace MinorShift.Emuera.GameProc
 								GlobalStatic.ConstantData.UserDefineLoadData(csvpath, data.Name, data.Lengths[0], Config.DisplayReport);
 							else if (erdpath.Length > 0 && !string.IsNullOrEmpty(erdpath[0]))
 								GlobalStatic.ConstantData.UserDefineLoadData(erdpath[0], data.Name, data.Lengths[0], Config.DisplayReport);
+							App.DoEvents();
 						}
 						#endregion
+
 					}
 					catch (IdentifierNotFoundCodeEE e)
 					{

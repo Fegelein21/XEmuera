@@ -242,19 +242,20 @@ namespace MinorShift.Emuera.GameProc
             skipPrint = true;
             return (callFunction("CALLTRAINEND", false, false));
         }
-        #region EE_INPUTMOUSEKEYのボタン対応
-        public void InputResult5(int r0, int r1, int r2, int r3, int r4, long r5)
+		#region EE_INPUTMOUSEKEYのボタン対応
+		// public void InputResult5(int r0, int r1, int r2, int r3, int r4)
+		public void InputResult5(int r0, int r1, int r2, int r3, int r4, long r5)
 		{
 			long[] result = vEvaluator.RESULT_ARRAY;
 			result[0] = r0;
 			result[1] = r1;
 			result[2] = r2;
 			result[3] = r3;
-			result[4] = r4;
-			result[5] = r5;
+			result[4] = r4; result[5] = r5;
+
 		}
-        #endregion
-        public void InputInteger(Int64 i)
+		#endregion
+		public void InputInteger(Int64 i)
 		{
 			vEvaluator.RESULT = i;
 		}

@@ -280,6 +280,7 @@ namespace XEmuera.Models
 						ConfigCode.SystemSaveInBinary,
 						ConfigCode.SystemSaveInUTF8,
 						ConfigCode.SystemNoTarget,
+						ConfigCode.ForbidUpdateCheck,
 					}
 				},
 				new ConfigCodeGroup

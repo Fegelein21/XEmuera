@@ -27,23 +27,23 @@ namespace MinorShift.Emuera
 		WINAPI = 2,
 	}
 
-    [global::System.Reflection.Obfuscation(Exclude = true)]
-    internal enum UseLanguage
-    {
-        JAPANESE = 0,
-        KOREAN = 1,
-        CHINESE_HANS = 2,
-        CHINESE_HANT = 3,        
-    }
+	[global::System.Reflection.Obfuscation(Exclude = true)]
+	internal enum UseLanguage
+	{
+		JAPANESE = 0,
+		KOREAN = 1,
+		CHINESE_HANS = 2,
+		CHINESE_HANT = 3,        
+	}
 
-    [global::System.Reflection.Obfuscation(Exclude = true)]
-    internal enum TextEditorType
-    {
-        SAKURA = 0,
-        TERAPAD = 1,
-        EMEDITOR = 2,
-        USER_SETTING = 3,
-    }
+	[global::System.Reflection.Obfuscation(Exclude = true)]
+	internal enum TextEditorType
+	{
+		SAKURA = 0,
+		TERAPAD = 1,
+		EMEDITOR = 2,
+		USER_SETTING = 3,
+	}
 
 	//数字に意味は無い。
 	[global::System.Reflection.Obfuscation(Exclude = true)]
@@ -98,7 +98,7 @@ namespace MinorShift.Emuera
 		WarnFunctionOverloading = 46,
 		WindowMaximixed = 47,
 		TextEditor = 48,
-        EditorType = 99,
+		EditorType = 99,
 		EditorArgument = 49,
 		WarnNormalFunctionOverloading = 50,
 		CompatiErrorLine = 51,
@@ -117,7 +117,7 @@ namespace MinorShift.Emuera
 		SystemAllowFullSpace,
 		SystemSaveInUTF8,
 		CompatiLinefeedAs1739,
-        useLanguage,
+		useLanguage,
 		SystemSaveInBinary,
 		CompatiFuncArgAutoConvert,
 		CompatiFuncArgOptional,
@@ -125,15 +125,11 @@ namespace MinorShift.Emuera
 		CompatiCallEvent,
 		SystemIgnoreTripleSymbol,
 		CompatiSPChara,
-        TimesNotRigorousCalculation,
-        //一文字変数の禁止オプションを考えた名残
-        //ForbidOneCodeVariable,
+		TimesNotRigorousCalculation,
+		//一文字変数の禁止オプションを考えた名残
+		//ForbidOneCodeVariable,
 		SystemNoTarget,
 		SystemIgnoreStringSet,
-
-        #region EE_UPDATECHECK
-        ForbidUpdateCheck,
-		#endregion
 
 		MoneyLabel = 100,
 		MoneyFirst = 101,
@@ -150,9 +146,13 @@ namespace MinorShift.Emuera
 		ExpLvDef = 112,
 		PalamLvDef = 113,
 		pbandDef = 114,
-        RelationDef = 115,
+		RelationDef = 115,
 
 		UseKeyMacro = 162,
+
+		#region EE_UPDATECHECK
+		ForbidUpdateCheck,
+		#endregion
 
 		#region EM_私家版_LoadText＆SaveText機能拡張
 		ValidExtension = 200,

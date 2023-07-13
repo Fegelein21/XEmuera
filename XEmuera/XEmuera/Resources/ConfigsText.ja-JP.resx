@@ -339,6 +339,12 @@
   <data name="SystemIgnoreStringSet" xml:space="preserve">
     <value>文字列変数の代入に文字列式を強制する</value>
   </data>
+  <data name="ForbidUpdateCheck" xml:space="preserve">
+    <value>UPDATECHECKを許可しない</value>
+  </data>
+  <data name="ValidExtension" xml:space="preserve">
+    <value>LOADTEXTとSAVETEXTで使える拡張子</value>
+  </data>
   <data name="FontScale" xml:space="preserve">
     <value>文字与图像缩放倍数</value>
   </data>

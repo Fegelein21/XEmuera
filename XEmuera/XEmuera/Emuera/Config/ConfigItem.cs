@@ -248,6 +248,7 @@ namespace MinorShift.Emuera
 			return ret;
 		}
 
+
 		#region EM_私家版_LoadText＆SaveText機能拡張
 		static private bool TryStringToStringList(string arg, ref List<string> vs)
 		{

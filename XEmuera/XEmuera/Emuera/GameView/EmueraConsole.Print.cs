@@ -610,9 +610,10 @@ namespace MinorShift.Emuera.GameView
 			return true;
 		}
 
-        #region EE_OUTPUTLOG
-        public bool OutputLog(string filename)
+		#region EE_OUTPUTLOG
+		public bool OutputLog(string filename)
 		{
+			// if (filename == null)
 			if (filename == "" || filename == null)
 				filename = Program.ExeDir + "emuera.log";
 			else
@@ -643,13 +644,13 @@ namespace MinorShift.Emuera.GameView
 			else
 				return false;
 		}
-        #endregion
 
-        public bool OutputSystemLog(string filename)
+		public bool OutputSystemLog(string filename)
 		{
 			if (filename == "" || filename == null)
 				filename = Program.ExeDir + "emuera.log";
-            if (!filename.StartsWith(Program.ExeDir, StringComparison.CurrentCultureIgnoreCase))
+
+			if (!filename.StartsWith(Program.ExeDir, StringComparison.CurrentCultureIgnoreCase))
             {
                 MessageBox.Show("ログファイルは実行ファイル以下のディレクトリにのみ保存できます", "ログ出力失敗");
                 return false;
@@ -671,6 +672,7 @@ namespace MinorShift.Emuera.GameView
 				return false;
 		}
 
+		#endregion
 		public void GetDisplayStrings(StringBuilder builder)
 		{
 			if (displayLineList.Count == 0)

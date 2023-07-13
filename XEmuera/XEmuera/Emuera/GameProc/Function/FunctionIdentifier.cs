@@ -212,8 +212,9 @@ namespace MinorShift.Emuera.GameProc.Function
 
 			addFunction(FunctionCode.PUTFORM, argb[FunctionArgType.FORM_STR_NULLABLE], METHOD_SAFE);//@SAVEINFO関数でのみ使用可能。PRINTFORMと同様の書式でセーブデータに概要をつける。
 			addFunction(FunctionCode.QUIT, argb[FunctionArgType.VOID]);//ゲームを終了
-            #region EE_OUTPUTLOG
-            addFunction(FunctionCode.OUTPUTLOG, argb[FunctionArgType.STR_EXPRESSION_NULLABLE]);
+			#region EE_OUTPUTLOG
+			// addFunction(FunctionCode.OUTPUTLOG, argb[FunctionArgType.VOID]);
+			addFunction(FunctionCode.OUTPUTLOG, argb[FunctionArgType.STR_EXPRESSION_NULLABLE]);
 			#endregion
 
 			addFunction(FunctionCode.BEGIN, new BEGIN_Instruction());//システム関数の実行。実行するとCALLの呼び出し元などを忘れてしまう。
@@ -388,15 +389,15 @@ namespace MinorShift.Emuera.GameProc.Function
 			addFunction(FunctionCode.PRINTCPERLINE, argb[FunctionArgType.SP_GETINT], METHOD_SAFE | EXTENDED);//よく考えたら引数の仕様違うや
 			addFunction(FunctionCode.SAVENOS, argb[FunctionArgType.SP_GETINT], METHOD_SAFE | EXTENDED);//引数の仕様が違うので(ry
 			addFunction(FunctionCode.ENCODETOUNI, argb[FunctionArgType.FORM_STR_NULLABLE], METHOD_SAFE | EXTENDED);//式中関数版を追加。処理が全然違う
-            #endregion
+			#endregion
 
-            #region EE
-            addFunction(FunctionCode.PLAYSOUND, new PLAYSOUND_Instruction());
+			#region EE
+			addFunction(FunctionCode.PLAYSOUND, new PLAYSOUND_Instruction());
 			addFunction(FunctionCode.STOPSOUND, new STOPSOUND_Instruction());
 			addFunction(FunctionCode.PLAYBGM, new PLAYBGM_Instruction());
-            addFunction(FunctionCode.STOPBGM, new STOPBGM_Instruction());
-            addFunction(FunctionCode.SETSOUNDVOLUME, new SETSOUNDVOLUME_Instruction());
-            addFunction(FunctionCode.SETBGMVOLUME, new SETBGMVOLUME_Instruction());
+			addFunction(FunctionCode.STOPBGM, new STOPBGM_Instruction());
+			addFunction(FunctionCode.SETSOUNDVOLUME, new SETSOUNDVOLUME_Instruction());
+			addFunction(FunctionCode.SETBGMVOLUME, new SETBGMVOLUME_Instruction());
 			addFunction(FunctionCode.TRYCALLF, new TRYCALLF_Instruction(false));
 			addFunction(FunctionCode.TRYCALLFORMF, new TRYCALLF_Instruction(true));
 			addFunction(FunctionCode.UPDATECHECK, new UPDATECHECK_Instruction());

@@ -356,13 +356,13 @@ namespace MinorShift.Emuera.GameProc.Function
 
 		INPUTMOUSEKEY,
 
-        #region EE
-        PLAYSOUND,
+		#region EE
+		PLAYSOUND,
 		STOPSOUND,
 		PLAYBGM,
-        STOPBGM,
-        SETSOUNDVOLUME,
-        SETBGMVOLUME,
+		STOPBGM,
+		SETSOUNDVOLUME,
+		SETBGMVOLUME,
 		TRYCALLF,
 		TRYCALLFORMF,
 		UPDATECHECK,

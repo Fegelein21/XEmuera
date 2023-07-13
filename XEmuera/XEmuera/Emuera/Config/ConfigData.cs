@@ -117,11 +117,13 @@ namespace MinorShift.Emuera
 			//configArray.Add(new ConfigItem(ConfigCode.ForbidOneCodeVariable, ConfigsText.ForbidOneCodeVariable, false));
 			configArray.Add(new ConfigItem(ConfigCode.SystemNoTarget, ConfigsText.SystemNoTarget, false));
 			configArray.Add(new ConfigItem(ConfigCode.SystemIgnoreStringSet, ConfigsText.SystemIgnoreStringSet, false));
-            #region EE_UPDATECHECK
-            configArray.Add(new ConfigItem(ConfigCode.ForbidUpdateCheck, "UPDATECHECKを許可しない", false));
+			
+			#region EE_UPDATECHECK
+			configArray.Add(new ConfigItem(ConfigCode.ForbidUpdateCheck, ConfigsText.ForbidUpdateCheck, false));
 			#endregion
+
 			#region EM_私家版_LoadText＆SaveText機能拡張
-			configArray.Add(new ConfigItem(ConfigCode.ValidExtension, "LOADTEXTとSAVETEXTで使える拡張子", new List<string> { "txt" }));
+			configArray.Add(new ConfigItem(ConfigCode.ValidExtension, ConfigsText.ValidExtension, new List<string> { "txt" }));
 			#endregion
 
 
