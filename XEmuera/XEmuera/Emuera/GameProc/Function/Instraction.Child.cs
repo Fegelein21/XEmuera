@@ -7,7 +7,6 @@ using MinorShift.Emuera.GameData.Variable;
 using MinorShift.Emuera.GameData;
 using MinorShift._Library;
 using MinorShift.Emuera.GameData.Function;
-using System.Drawing;
 using System.IO;
 using XEmuera.Drawing;
 using XEmuera.Forms;
@@ -1994,11 +1993,11 @@ namespace MinorShift.Emuera.GameProc.Function
 				{
 					if (httpClient == null) httpClient = new System.Net.Http.HttpClient();
 
-					var response = await httpClient.GetAsync(url);
+					var response = httpClient.GetAsync(url).Result;
 					Stream st = null;
                 	if (response.StatusCode == HttpStatusCode.OK)
                 	{
-                	    st = await response.Content.ReadAsStreamAsync();
+                	    st = response.Content.ReadAsStreamAsync().Result;
                 	}
 					StreamReader sr = new StreamReader(st, Encoding.GetEncoding("Shift-JIS"));
 					try

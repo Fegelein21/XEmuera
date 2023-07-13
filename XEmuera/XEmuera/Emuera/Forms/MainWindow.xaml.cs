@@ -92,6 +92,7 @@ namespace MinorShift.Emuera
 			LongPressTimer.Elapsed += LongPressTimer_Elapsed;
 
 			InitGameView();
+			InitEmuera();
 		}
 
 		private void LongPressTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -174,7 +175,7 @@ namespace MinorShift.Emuera
 
 			Config.RefreshDisplayConfig();
 
-			InitEmuera();
+			//InitEmuera();
 		}
 
 		private void UpdateView()

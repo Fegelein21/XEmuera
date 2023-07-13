@@ -43,7 +43,7 @@ namespace MinorShift.Emuera
 		{
 			ExeDir = Sys.ExeDir;
 #if DEBUG
-			//debugMode = true;
+			debugMode = true;
 
 			//ExeDirにバリアントのパスを代入することでテスト実行するためのコード。
 			//ローカルパスの末尾には\必須。
