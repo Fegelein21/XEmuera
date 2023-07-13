@@ -5,6 +5,7 @@ using System.IO;
 using XEmuera.Forms;
 using MinorShift.Emuera.Sub;
 using MinorShift.Emuera.GameProc;
+using System.Xml;
 
 namespace MinorShift.Emuera.GameData.Variable
 {
@@ -13,7 +14,12 @@ namespace MinorShift.Emuera.GameData.Variable
 	/// </summary>
 	internal sealed partial class VariableData : IDisposable
 	{
-
+		#region EM_私家版_XMLDocument_連想配列
+		readonly Dictionary<Int64, XmlDocument> xmlDict = new Dictionary<Int64, XmlDocument>();
+		public Dictionary<Int64, XmlDocument> DataXmlDocument { get { return xmlDict; } }
+		readonly Dictionary<string, Dictionary<string, string>> mapDict = new Dictionary<string, Dictionary<string, string>>();
+		public Dictionary<string, Dictionary<string, string>> DataStringMaps { get { return mapDict; } }
+		#endregion
 		readonly Int64[] dataInteger;
 		readonly string[] dataString;
 		readonly Int64[][] dataIntegerArray;

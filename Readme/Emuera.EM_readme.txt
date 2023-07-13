@@ -1,28 +1,20 @@
-﻿#region EM_私家版_space制限解除
-◆ HTML_PRINTの<space>タグでparaに負数を指定できます
+﻿◆ HTML_PRINTの<space>タグでparaに負数を指定できます
 
-#region EM_私家版_ファイル占用解除
 ◆ プログラム動作中Resourceフォルダーの画像ファイルを常時占用しないようにしました
 
-#region EM_私家版_INPUT系機能拡張
 ◆ INPUT, INPUTS, ONEINPUT, ONEINPUTS に第二引数追加(整数型，省略可，デフォルトは0)
 TINPUT, TINPUTS, TONEINPUT, TONEINPUTS に第五引数追加(整数型，省略可，デフォルトは0)
 追加引数==0時、または省略した時 本家版と同じです。
-追加引数!=0時 マウスクリックをエンターキーにみなす、左クリックの時RESULT:1を1、右クリックの時RESULT:1を2にします。また、同時にShift Ctrl Altを押した場合、そのキー状態をRESULT:2に保存します。(bit 17 18 19)
+追加引数!=0時 マウスクリックをエンターキーにみなす(RESULTSに空文字列を代入。ボタンを押した場合，ボタンのインデックスをRESULTS:1に代入)、左クリックの時RESULT:1を1、右クリックの時RESULT:1を2にします。また、同時にShift Ctrl Altを押した場合、そのキー状態をRESULT:2に保存します。(bit 17 18 19)
 
-#region EM_私家版_INPUT系機能拡張＆ONEINPUT系制限解除
 ◆ ONEINPUT, ONEINPUTS, TONEINPUT, TONEINPUTS デフォルト値に2桁以上/2文字以上を指定できます
 
-#region EM_私家版_LoadText＆SaveText機能拡張
 ◆ LOADTEXT, SAVETEXT の第一引数が文字列の場合、第一引数をパスとしてファイルをロード/セーブします。Emuera.exeを相対パスで指定(".."は無効)。更に、configにで「LOADTEXTとSAVETEXTで使える拡張子」が決められた拡張子しか使えません。(デフォルトはtxtのみ)
 例文:LOADTEXTとSAVETEXTで使える拡張子:txt,(任意の拡張子),(任意の拡張子)
 
-#region EM_私家版_StringMeasure獲得
-#region EM_私家版_HtmlManager機能拡張
 ◆ int HTML_STRINGLEN html
 HTML_PRINTでhtmlを表示した結果の幅(半角文字単位)を返す、複数行がある場合1行目の幅を返す
 
-#region EM_私家版_HtmlManager機能拡張
 ◆ int HTML_SUBSTRING str, int
 strを2つに分ける
 例：
@@ -34,12 +26,9 @@ strを2つに分ける
 	<b>D</b>EFG
 (太字は普通より幅広いからです)
 
-#region EM_私家版_辞書獲得
-◆ int FUNCEXIST str
-	与えられた文字列と同名な関数(式中で使える関数も含め)が定義されていたら1を返します(ユーザが定義した関数のみ)。定義されていない場合0を返します。
 ◆ int ISDEFINED str
 	与えられた文字列と同名なマクロ(#DEFINE XXX)が定義されていたら1を返します。定義されていない場合0を返します。
-◆ int VAREXIST str
+◆ int EXISTVAR str
 	与えられた文字列と同名な変数が定義されたら変数の性質によって正数を返します。定義されていない場合0を返します。
 	変数が整数型の場合、返り値 setbit 1
 	変数が文字列型の場合、返り値 setbit 2
@@ -57,12 +46,12 @@ strを2つに分ける
 
 		...
 
-		IF VAREXIST("FOO")==(VAR_IS_NUM|VAR_IS_2DARRAY)
+		IF EXISTVAR("FOO")==(VAR_IS_NUM|VAR_IS_2DARRAY)
 			PRINTL TRUE
 		ELSE
 			PRINTL FALSE
 		ENDIF
-		IF VAREXIST("FOO2")
+		IF EXISTVAR("FOO2")
 			PRINTL TRUE
 		ELSE
 			PRINTL FALSE
@@ -144,8 +133,19 @@ strを2つに分ける
 ◆ int REGEXPMATCH str, patter
 	strが正規表現パターンpatterに合うなら1を返す，そうでない場合0を返す
 
+◆ int XML_DOCUMENT id, xml
+	xmlを解析し、XmlDocumentで保存する。1を返す
+	id(整数型)に対応するXmlDocumentがすでに存在している場合，0を返す
+
+◆ int XML_RELEASE id
+	id(整数型)に対応するXmlDocumentを削除する。1を返す
+	
+◆ int XML_EXIST id
+	id(整数型)に対応するXmlDocumentが存在してい場合1を返す，そうでない場合0を返す
+
 ◆ int XML_GET xml, xpath(, strArray/int, int)
-	xpathの規則でxmlを解析します、結果数を返す
+	xpath(文字列型)の規則でxmlを解析します、結果数を返す
+	第1引数は整数の場合，それをIDにみなして保存したXmlDocumentを使う。そのIDに対応するXmlDocumentが存在していない場合，-1を返す
 	第3引数は0以外または省略した場合，総数のみ返す，他の整数の場合，RESULTS結果を返す
 	第3引数は文字列配列の場合，その配列に結果代入
 	第4引数は結果のタイプを決めます
@@ -153,3 +153,92 @@ strを2つに分ける
 	2: InnerXml
 	3: OuterXml
 	他: Value
+
+◆ int XML_SET xml, xpath, str(, setall, int)
+	xpath(文字列型)の規則でxmlを解析し、strを代入します。xpathの合致結果の数を返す
+	第1引数は整数の場合，それをIDにみなして保存したXmlDocumentを使う。そのIDに対応するXmlDocumentが存在していない場合，-1を返す
+	第4引数(整数型)は0以外または省略した場合，一つ以上の合致結果に対して，代入を行わない
+	第5引数は代入のタイプを決めます
+	1: InnerText
+	2: InnerXml
+	他: Value
+
+◆ int EXISTFILE str
+	第一引数をパスとしてファイルの存否をチェックします。Emuera.exeを相対パスで指定(".."は無効)。
+	存在しているなら1を返す，そうでない場合0を返す
+
+◆ int MAP_CREATE str
+	第一引数で指定した連想配列(Dictionary<string, string>)を作ります。1を返す
+	すでに存在している場合0を返す
+
+◆ int MAP_EXIST str
+	第一引数で指定した連想配列(Dictionary<string, string>)の存否をチェックします
+	存在しているなら1を返す，そうでない場合0を返す
+
+◆ int MAP_RELEASE str
+	第一引数で指定した連想配列(Dictionary<string, string>)を削除します。1を返す
+
+◆ str MAP_GET str, str
+	第一引数で指定した連想配列(Dictionary<string, string>)に，第二引数のキーが存在する場合，その値を返す。
+	存在していない場合，または連想配列自体が存在しない場合も，空文字列を返す
+	(例外発生しないので必要があればMAP_HASで確認してください)
+
+◆ int MAP_HAS str, str
+	第一引数で指定した連想配列(Dictionary<string, string>)に，第二引数のキーの存否をチェックします
+	存在しているなら1を返す，そうでない場合0を返すください
+	連想配列自体が存在しない場合，-1を返す
+
+◆ int MAP_SET str, str, str
+	第一引数で指定した連想配列(Dictionary<string, string>)に，第二引数のキーとペアした値に第三引数を代入
+	キーが存在していない場合キーを作る。1を返す。
+	連想配列自体が存在しない場合，-1を返す
+
+◆ int MAP_REMOVE str, str
+	第一引数で指定した連想配列(Dictionary<string, string>)に，第二引数のキーとペアした値を削除する。1を返す。
+	連想配列自体が存在しない場合，-1を返す
+
+◆ int MAP_SIZE str
+	第一引数で指定した連想配列(Dictionary<string, string>)に含まったキー-値ペアを返す
+	連想配列自体が存在しない場合，-1を返す
+
+◆ int MAP_CLEAR str
+	第一引数で指定した連想配列(Dictionary<string, string>)に含まったキー-値ペアを全部削除する。1を返す
+	連想配列自体が存在しない場合，-1を返す
+
+◆ <1> str MAP_GEKEYS str
+	<2> str MAP_GEKEYS str, int
+	<3> str MAP_GEKEYS str, strArray, int
+	第一引数で指定した連想配列(Dictionary<string, string>)に:
+	<1> "キー1,キー2,キー3,..."のような形の文字列を返す
+	<2> 第二引数が0ではない場合，RESULTSにキーを順次代入。RESULTS:0を返す
+	<3> 第三引数が0ではない場合，第二引数が指定した文字列配列変数にキーを順次代入。空文字列を返す
+	連想配列自体が存在しない場合，空文字列を返す
+	キーの数をRESULTに代入
+
+◆ str MAP_TOXML str
+	第一引数で指定した連想配列(Dictionary<string, string>)をXML文字列に変換し，XML文字列を返す。
+	連想配列自体が存在しない場合，空文字列を返す
+
+	返したXMLは
+	<map>
+		<p><k>キー1</k><v>値1</v></p>
+		<p><k>キー2</k><v>値2</v></p>
+		<p><k>キー3</k><v>値3</v></p>
+		....
+	</map>
+	のような形です
+
+◆ int MAP_FROMXML str, str
+	第一引数で指定した連想配列(Dictionary<string, string>)に第二引数のXML文字列からキー-値ペアを読み取る。
+	キーが存在している場合その値を上書きします。1を返す
+	連想配列自体が存在しない場合，0を返す
+
+	XMLは、必ず
+	<map>
+		<p><k>キー1</k><v>値1</v></p>
+		<p><k>キー2</k><v>値2</v></p>
+		<p><k>キー3</k><v>値3</v></p>
+		....
+	</map>
+	のようにしないといけません
+
