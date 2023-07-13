@@ -13,6 +13,7 @@ using XEmuera.Forms;
 using Xamarin.Forms;
 using System.Net;
 using Xamarin.Essentials;
+using XEmuera;
 
 namespace MinorShift.Emuera.GameProc.Function
 {
@@ -1838,7 +1839,7 @@ namespace MinorShift.Emuera.GameProc.Function
 				else
 					datFilename = soundArg.Term.GetStrValue(exm);
 				string filepath = Program.MusicDir + datFilename;
-				if (System.IO.File.Exists(filepath))
+				if (FileUtils.Exists(ref filepath))
 				{
 					for (int i = 0; i < sound.Length; i++)
 					{
@@ -1894,7 +1895,7 @@ namespace MinorShift.Emuera.GameProc.Function
 				else
 					datFilename = arg.Term.GetStrValue(exm);
 				string filepath = Program.MusicDir + datFilename;
-				if (System.IO.File.Exists(filepath))
+				if (FileUtils.Exists(ref filepath))
 				{
 					if (bgm == null) bgm = DependencyService.Get<IPlayer>(DependencyFetchTarget.NewInstance);
 					bgm.Load(filepath);

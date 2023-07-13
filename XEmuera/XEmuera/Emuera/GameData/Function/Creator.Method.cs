@@ -1242,7 +1242,7 @@ namespace MinorShift.Emuera.GameData.Function
 				var filepath = arguments[0].GetStrValue(exm);
 				filepath = filepath.Replace('/', '\\');
 				filepath = filepath.Replace("..\\", "");
-				if (File.Exists(filepath)) return 1;
+				if (FileUtils.Exists(ref filepath)) return 1;
 				return 0;
 			}
 		}
@@ -6075,7 +6075,7 @@ namespace MinorShift.Emuera.GameData.Function
 				Encoding encoding = forceUTF8 ?
 					Encoding.GetEncoding("UTF-8") :
 					Config.SaveEncode;
-				if (!System.IO.File.Exists(filepath))
+				if (!FileUtils.Exists(ref filepath))
 					return "";
 				try
 				{
@@ -6206,7 +6206,7 @@ namespace MinorShift.Emuera.GameData.Function
 			{
 				string str = arguments[0].GetStrValue(exm);
 				string filepath = Program.MusicDir + str;
-				if (System.IO.File.Exists(filepath))
+				if (FileUtils.Exists(ref filepath))
 					return 1;
 				return 0;
 			}
