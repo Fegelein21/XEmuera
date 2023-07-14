@@ -1143,6 +1143,8 @@ namespace MinorShift.Emuera.GameData.Variable
 			foreach (CharacterData chara in varData.CharacterList)
 				chara.Dispose();
 			varData.CharacterList.Clear();
+			//GC.Collect();
+
 		}
 
 		public void ResetGlobalData()

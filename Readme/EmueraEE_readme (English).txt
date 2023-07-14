@@ -1,5 +1,5 @@
-﻿App name:EmueraEE Latest update:2022/05/05
-Version:1.824+v15+EMv5+EEv13
+﻿App name:EmueraEE Latest update:2022/05/21
+Version:1.824+v15+EMv7+EEv14
 Developer:Enter
 Original Application:Emuera1.824+v15(Developed by 妊）|дﾟ)の中の人 and MinorShift),WebP-wrapper(Developed by JosePineiro)
 Contact:Twitter/@eraBEMANI Discord/https://discord.gg/p5rb5uK
@@ -90,6 +90,12 @@ resources/csv and GCREATEFROMFILE can use WebP files.
 
 ・Can assign variable name to ERH variables
 Like CSV variables. Using [VariableName].csv(in CSV directory) or [VariableName].ERD(in ERB directory) file.
+
+・GETMEMORYUSAGE()
+Return memory usage of Emuera(byte).
+
+・CLEARMEMORY()
+Freeing up memory used by Emuera and return freeing memory size(byte).
 
 ・UPDATECHECK
 Browse server and check for new version.

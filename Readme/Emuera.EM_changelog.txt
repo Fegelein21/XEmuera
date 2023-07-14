@@ -1,4 +1,9 @@
-﻿v20220518(v6)
+﻿v20220518(v7)
+◆ HTML_STRINGLEN機能拡張
+◆ REGEXPMATCH機能拡張
+Emuera.EM_readme.txtに参照してください。
+
+v20220518(v6)
 ◆ セキュリティ対策のため，webpソリューションをImageProcessor+libwebpに変更
 ライセンスはImageProcessor.LICENSE.txtとLibwebp.LICENSE.txtに参照してください。
 

@@ -1,16 +1,23 @@
-﻿タイトル：EmueraEE 最終更新日:2022/05/05
-バージョン：1.824+v15+EMv5+EEv13
+﻿タイトル：EmueraEE 最終更新日:2022/05/31
+バージョン：1.824+v15+EMv8+EEv15
 改変者：Enter
 元となったアプリケーション：Emuera1.824+v15（妊）|дﾟ)の中の人、及びMinorShift制作）、WebP-wrapper(JosePineiro制作)、Emuera.EM（EvilMask制作）
 連絡先：Twitter/@eraBEMANI Discord/https://discord.gg/p5rb5uK
+eraシリーズまとめwikiのページ：https://seesaawiki.jp/eraseries/d/EmueraEM%2bEE%a4%ce%c4%c9%b2%c3%b5%a1%c7%bd
+docs：https://evilmask.gitlab.io/emuera.em.doc/
 
 ※eramakerの作者様及びMinorShift様、妊の人様はEmueraEEの製作には関与していません。
-当アプリの不具合は上記連絡先にご報告ください
+　当アプリの不具合は上記連絡先にご報告ください
 
 ※同梱のEmuera-Anchor-EEは英語圏のeraコミュニティで使用されている「Emuera-Anchor」をEEに対応させたものです
-各UIやエラーメッセージ等が英語になっています。必要に応じて使い分けてください
+　各UIやエラーメッセージ等が英語になっています。必要に応じて使い分けてください
+
+※使用しているセキュリティソフト次第では危険なファイルとして警告・削除される場合があります
+　セキュリティソフトの設定を変更して使用することはできますが、自己責任でお願いします
+　virustotal(ファイルの安全性確認サイト)のリンク：https://www.virustotal.com/gui/file/7f01cb80d602268eb79bb29ca2f7d8a32d6b59c873f0fd47d7107be63d6cbd7a
 
 [v12にてEmuera.EMと機能統合。詳しくは同梱のEmuera.EM_read me.txtをご覧ください]
+[EMv8+EEv15にてhtml形式のドキュメントを同梱。追加機能などがより詳しく書かれています]
 
 [概要]
 Emueraをベースに改造を施したバージョンです。追加された機能は以下の通り
@@ -112,14 +119,20 @@ BEGINの制約を受けずに強制的にBEGINを実行する。フローを意�
 がめら氏作の「src1824+v11+webp+Secure」を参考にWebP読み込み機能を追加
 あくまで参考で(=完全マージではない ベースバージョンが違うため)、ファイル読み込み処理だけWebP対応にしただけなので元のWebP版には無いエラーが起こる可能性があります
 WebPWrapperについては東etoマン氏、M氏が改良を行ったものを使用しています 僭越ながら同梱の「WebP版read me」に文書をまとめさせていただきました 感謝
-同梱の「libwebp_x64.dll」をEmueraと同ディレクトリに置いて使用＆配布してください WebPを使わないのであれば削除しても大丈夫です
-WebP-wrapperのGitHub:https://github.com/JosePineiro/WebP-wrapper
-参考にしたWebP版Emueraのリンク:http://book-shelf-end.com/up/dwlink.cgi?eraRx2231.7z
+EMv6+EEv13にてセキュリティ上の観点から別のライブラリに変更しました。同梱のlibwebp.dllをEmueraと同ディレクトリにコピーしてお使いください
 
 ・ERHで定義した変数にcsvファイルで名前を付けられるように
 ERHで定義した変数名を準拠にファイルを読み込み、既存のcsv変数と同じように配列に名前を付けることができる。現時点では一次元配列変数にのみ対応
 CSVフォルダ内で使えるものは従来どおり「変数名.csv」、ERB内で使えるものは「変数名.ERD」ファイルとなる。書式はCSV変数のファイルと同じ。これらが2つ以上存在する場合は起動時にエラー吐いて終了する
 ただしABLNAMEやTRAINNAMEに相当する変数は無し。今後命令や式中関数を実装する予定
+
+・GETMEMORYUSAGE()
+現在起動中のEmueraのメモリ使用量を返す（byte）。ワーキングセットの値なのでタスクマネージャーの数値とは差異が生じます
+
+・CLEARMEMORY()
+メモリを解放する。解放されたメモリ量（byte）を返す
+DELCHARAやセーブデータのロード、RESETDATA等データ削除した際に使うと効果がありますが、それらが行われないタイミングで使用しても特に効果はありません
+そこそこ重いため乱用は控えたほうが無難
 
 ・UPDATECHECK
 アップデートチェック命令を追加。以下使い方

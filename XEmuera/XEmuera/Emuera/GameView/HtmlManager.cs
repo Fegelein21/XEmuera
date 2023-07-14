@@ -40,7 +40,7 @@ namespace MinorShift.Emuera.GameView
 		#region EM_私家版_HtmlManager機能拡張
 		public static int HtmlLength(string s)
 		{
-			ConsoleDisplayLine[] lines = HtmlManager.Html2DisplayLine(s, GlobalStatic.Console.StrMeasure, GlobalStatic.Console);
+			ConsoleDisplayLine[] lines = HtmlManager.Html2DisplayLine(s, GlobalStatic.Console.StrMeasure, null);
 			int len = 0;
 			if (lines.Length <= 0) return 0;
 			foreach (var btn in lines[0].Buttons) len += btn.Width;

@@ -115,7 +115,7 @@ namespace MinorShift.Emuera.Content
 				throw new NullReferenceException();
 			Font usingFont = font;
 			if (usingFont == null)
-				usingFont = Config.Font;
+				usingFont = new Font(Config.FontName, 100, GlobalStatic.Console.StringStyle.FontStyle, GraphicsUnit.Pixel);
 			if (brush != null)
 			{
 				//g.DrawString(text, usingFont, brush, x, y);

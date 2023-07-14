@@ -12,8 +12,9 @@
 ◆ LOADTEXT, SAVETEXT の第一引数が文字列の場合、第一引数をパスとしてファイルをロード/セーブします。Emuera.exeを相対パスで指定(".."は無効)。更に、configにで「LOADTEXTとSAVETEXTで使える拡張子」が決められた拡張子しか使えません。(デフォルトはtxtのみ)
    例文:LOADTEXTとSAVETEXTで使える拡張子:txt,(任意の拡張子),(任意の拡張子)
 
-◆ int HTML_STRINGLEN html
-   HTML_PRINTでhtmlを表示した結果の幅(半角文字単位)を返す、複数行がある場合1行目の幅を返す
+◆ int HTML_STRINGLEN html(, returnPixel)
+   HTML_PRINTでhtmlを表示した結果の幅を返す、複数行がある場合1行目の幅を返す
+   第2引数は0または省略した場半角文字単位で返す、そうでないばあいはピクセル数を返す
 
 ◆ int HTML_SUBSTRING str, int
    strを2つに分ける
@@ -130,8 +131,11 @@
       > AA == 1,3,2,4
       > BB == 5,1,3,2
 
-◆ int REGEXPMATCH str, patter
-   strが正規表現パターンpatterに合うなら1を返す，そうでない場合0を返す
+◆ <1> int REGEXPMATCH str, pattern(, output)
+   <2> int REGEXPMATCH str, pattern, groupCount, matches
+   strが正規表現パターンpatternに合うなら合致結果の数を返す，そうでない場合0を返す
+   <1> outputが0以外の整数の場合，マッチグループ数をRESULT:1に、各マッチ結果をRESULTSに代入(合計「グループ数」×「戻り値」個)
+   <2> マッチグループ数をgroupCount(整数変数)に、各マッチ結果をmatches(文字列変数)に代入(合計「グループ数」×「戻り値」個)
 
 ◆ int XML_DOCUMENT id, xml
    xmlを解析し、XmlDocumentで保存する。1を返す

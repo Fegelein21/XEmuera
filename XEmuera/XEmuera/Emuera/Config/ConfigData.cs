@@ -300,11 +300,16 @@ namespace MinorShift.Emuera
 						term = new SingleTerm(0);
 					break;
 				//<int>
+				// 
+				case ConfigCode.FontSize:// "フォントサイズ"
+					term = new SingleTerm(Config.FontSize);
+					break;
+				case ConfigCode.LineHeight:// "一行の高さ"
+					term = new SingleTerm(Config.LineHeight);
+					break;
 				case ConfigCode.WindowX:// "ウィンドウ幅"
 				case ConfigCode.PrintCPerLine:// "PRINTCを並べる数"
 				case ConfigCode.PrintCLength:// "PRINTCの文字数"
-				case ConfigCode.FontSize:// "フォントサイズ"
-				case ConfigCode.LineHeight:// "一行の高さ"
 				case ConfigCode.SaveDataNos:// "表示するセーブデータ数"
 				case ConfigCode.MaxShopItem:// "販売アイテム数"
 				case ConfigCode.ComAbleDefault:// "COM_ABLE初期値"

@@ -697,8 +697,15 @@ check1break:
 			if (string.IsNullOrEmpty(str))
 				return false;
 			int varindex = Array.IndexOf(GlobalStatic.IdentifierDictionary.VarKeys, varname);
-			Dictionary<string, int> dic = nameToIntDics[varindex];
-			return dic.ContainsKey(str);
+            try
+            {
+				Dictionary<string, int> dic = nameToIntDics[varindex];
+				return dic.ContainsKey(str);
+			}
+            catch
+            {
+				throw new CodeEE("変数\"" + varname + "\"には\"" + str + "\"の定義がありません");
+            }
 		}
 		#endregion
 

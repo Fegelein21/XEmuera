@@ -1,0 +1,145 @@
+=== Change Log ===
+This is the change log for the Emuera Anchor Program
+
+
+= [1.00] - 2016/11/15
+First public version of Anchor, rewritten from the modified EmuEra-Hook that was floating around.
+
+= [1.01] - 2016/11/31
+*Fixed
+    A crash that occurs when a game script attempts to delete negative lines
+
+= [1.02] - 2016/12/06
+*Added
+    Translations for errors and other situations
+    Allowed non-japanese number formats to be used by the system
+    Folded in the prototype of the csv translation system
+
+= [1.03]
+*Fixed
+	Reworked the csv translation system.
+
+= [1.04]
+*Fixed
+	Changed the name of the files used by the csv translation system from *Translation.csv to *_TR.csv
+
+= [1.05] - 2016/12/11
+*Fixed
+	A crash that occured when null was send to be translated
+
+= [1.06] - 2016/12/15
+*Added
+    Middle Click is now a clipboard trigger
+	Clipboard now updates at the end of the delay time if an update was triggered during the delay.
+	Added a new way (ALL_TR.csv) to translate to the csv translation system if the first one fails.
+*Fixed
+    Changed the default settings to be the same as the old Hook
+	
+= [1.07] - 2016/12/17
+*Fixed
+	Changed the new way to translate in the csv translation system to only translate words that are to be immediately printed.
+	Increased the size of the controller EmuVerToolStripTextBox to be able to see the version number on the new windows window type.
+	
+= [1.08] - 2016/12/18
+*Fixed	
+	Added the find and replace way to translate as a temporary solution to things not being translated.
+	
+= [1.09] - 2016/12/19
+*Added
+	Error messages to the csv translation system
+*Fixed	
+	Changed the logic of the temporary solution to stripping strings of excess characters.
+	
+= [1.09a] - 2016/12/19
+*Fixed	
+	A bug when ALL_TR.csv was not created.
+	
+= [1.10] - 2016/12/20
+*Added
+	A way for the csv translation system to know what variable name is the most likely to be in a %% on a pint line.
+*Fixed	
+	Cleaned up the code.
+	
+= [1.11] - 2016/12/22
+*Added
+	PALAM/PARAM support.
+	Comments in the TR files.
+	Translation to PRINT_SHOPITEM.
+*Changed
+	Default first choices (start/load).
+	
+= [1.12] - 2016/12/22
+*Changed
+	Translation for the train variables if the printing is done by the engine.
+
+= [1.13] - 2016/12/25
+*Added
+	Support for PRINTS for the csv translation system.
+
+= [1.14] - 2016/12/26
+*Fixed
+	STRLENS and STRLENSU now return the translated string's length instead of the original one's when necessary.
+	
+= [1.15] - 2016/12/31
+*Added
+	Support for HTML to the csv translation system.
+	
+= [1.16] - 2017/01/04
+*Added
+	PRINTPLAIN support to the csv translation system.
+*Changed
+	More special characters to strip in the csv translation system.
+	Strlens now look at ALL too.
+
+= [1.17] - 2017/01/04
+*Fixed
+	Strings translated by TR now show the right length on STRLENS on cases like "[%TALENTNAME:518%]" inside an argument.
+	
+= [1.18] - 2017/01/07
+*Fixed
+	Stripping number logic in translateALL.
+	Faulty logic translateALL that made Translation forget the last switch.
+	
+= [1.19] - 2017/01/09
+*Fixed
+	Str_TR.csv now translate.
+*Added
+	TRChara character translation system. (Will only translate by starting a new game, for now)
+	
+= [1.20] - 2017/01/13
+*Changed
+	Increased the memory of Translation
+	Removed a true flag in SET do_instruction <- May cause aligment problem
+*Fixed
+	A bug where too much stuff would get translated like returnf
+
+= [1.21] - 2017/01/14
+*Changed
+	Tooltip autoPop timer to 30 sec
+*Fixed
+	RETURNF will now translate if it feeds into a strlens
+	replace will now translate it it's on a printform line
+
+= [1.22] - 2017/01/18
+*Added
+	Hotkeys: CTRL-R Restart/ CTRL-O Reload file/ CTRL-T Return to Title Screen
+*Fixed
+	PRINT_PALAM and PRINT_ITEM are now showing trying to translate
+	
+= [1.23] - 2017/01/20
+*Fixed
+	Doesn't translate every PRINT_HTML instance.
+
+= [1.24] - 2017/01/25
+*Added
+	TR_NAME command added. Check readme_Translation.txt for more information.
+
+= [1.25] - 2017/05/08
+*Added
+	Translation of the debug window
+*Fixed
+	changed logic on the prints translation to make it go quicker
+	
+= [1.3]  - 2017/7/21
+*Changed
+	Updated to japanese version 1821-v4
