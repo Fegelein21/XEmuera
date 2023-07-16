@@ -67,7 +67,14 @@ namespace MinorShift.Emuera.GameData
 		private const int globalIndex = (int)(VariableCode.GLOBALNAME & VariableCode.__LOWERCASE__);
 		private const int globalsIndex = (int)(VariableCode.GLOBALSNAME & VariableCode.__LOWERCASE__);
 		private const int countNameCsv = (int)VariableCode.__COUNT_CSV_STRING_ARRAY_1D__;
-		
+
+		#region EE_CSV変数拡張
+		private const int dayIndex = (int)(VariableCode.DAYNAME & VariableCode.__LOWERCASE__);
+		private const int timeIndex = (int)(VariableCode.TIMENAME & VariableCode.__LOWERCASE__);
+		private const int moneyIndex = (int)(VariableCode.MONEYNAME & VariableCode.__LOWERCASE__);
+		#endregion
+
+
 		public int[] MaxDataList = new int[countNameCsv];
         readonly HashSet<VariableCode> changedCode = new HashSet<VariableCode>();
 		
@@ -139,6 +146,12 @@ namespace MinorShift.Emuera.GameData
 			MaxDataList[savestrnameIndex] = 100;
 			MaxDataList[globalIndex] = 1000;
 			MaxDataList[globalsIndex] = 100;
+
+			#region EE_CSV拡張機能
+			MaxDataList[dayIndex] = 100;
+			MaxDataList[timeIndex] = 100;
+			MaxDataList[moneyIndex] = 100;
+			#endregion
 
 			VariableIntArrayLength = new int[(int)VariableCode.__COUNT_INTEGER_ARRAY__];
 			VariableStrArrayLength = new int[(int)VariableCode.__COUNT_STRING_ARRAY__];
@@ -371,7 +384,7 @@ namespace MinorShift.Emuera.GameData
 					return;
 				}
 			}
-check1break:
+			check1break:
 			switch (id.Code)
 			{
 				//1753a PALAMだけ仕様が違うのはかえって問題なので、変数と要素文字列配列数の同期は全部バックアウト
@@ -409,6 +422,11 @@ check1break:
 				case VariableCode.STRNAME:
 				case VariableCode.GLOBALNAME:
 				case VariableCode.GLOBALSNAME:
+				#region EE_CSV機能拡張
+				case VariableCode.DAYNAME:
+				case VariableCode.TIMENAME:
+				case VariableCode.MONEYNAME:
+				#endregion
 					MaxDataList[(int)(id.Code & VariableCode.__LOWERCASE__)] = length;
 					break;
 				default:
@@ -509,11 +527,16 @@ check1break:
 			_decideActualArraySize_sub(VariableCode.SAVESTR, VariableCode.SAVESTRNAME, VariableStrArrayLength, position);
 			_decideActualArraySize_sub(VariableCode.GLOBAL, VariableCode.GLOBALNAME, VariableIntArrayLength, position);
 			_decideActualArraySize_sub(VariableCode.GLOBALS, VariableCode.GLOBALSNAME, VariableStrArrayLength, position);
+			#region EE_CSV機能拡張
+			_decideActualArraySize_sub(VariableCode.DAY, VariableCode.DAYNAME, VariableIntArrayLength, position);
+			_decideActualArraySize_sub(VariableCode.TIME, VariableCode.TIMENAME, VariableIntArrayLength, position);
+			_decideActualArraySize_sub(VariableCode.MONEY, VariableCode.MONEYNAME, VariableIntArrayLength, position);
+            #endregion
 
 
-			//PALAM(JUEL込み)
-			//PALAMかJUELが変わっているときは大きい方をとる
-			if (changedCode.Contains(VariableCode.PALAM) || changedCode.Contains(VariableCode.JUEL))
+            //PALAM(JUEL込み)
+            //PALAMかJUELが変わっているときは大きい方をとる
+            if (changedCode.Contains(VariableCode.PALAM) || changedCode.Contains(VariableCode.JUEL))
 			{
 				int palamJuelMax = Math.Max(CharacterIntArrayLength[(int)(VariableCode.__LOWERCASE__ & VariableCode.PALAM)]
 						, CharacterIntArrayLength[(int)(VariableCode.__LOWERCASE__ & VariableCode.JUEL)]);
@@ -619,6 +642,11 @@ check1break:
 			loadDataTo(csvDir + "SAVESTR.CSV", savestrnameIndex, null, disp, false);
 			loadDataTo(csvDir + "GLOBAL.CSV", globalIndex, null, disp, false);
 			loadDataTo(csvDir + "GLOBALS.CSV", globalsIndex, null, disp, false);
+			#endregion
+			#region EE_CSV機能拡張
+			loadDataTo(csvDir + "DAY.CSV", dayIndex, null, disp, false);
+			loadDataTo(csvDir + "TIME.CSV", timeIndex, null, disp, false);
+			loadDataTo(csvDir + "MONEY.CSV", moneyIndex, null, disp, false);
 			#endregion
 			//逆引き辞書を作成
 			for (int i = 0; i < names.Length; i++)
@@ -949,20 +977,40 @@ check1break:
 					errPos = "chara*.csv";
 					allowIndex = -1;
 					break;
+				#region EE_CSV機能拡張
+				case VariableCode.DAY:
+					ret = nameToIntDics[dayIndex];
+					errPos = "day.csv";
+					allowIndex = 0;
+					break;
+				case VariableCode.TIME:
+					ret = nameToIntDics[timeIndex];
+					errPos = "time.csv";
+					allowIndex = 0;
+					break;
+				case VariableCode.MONEY:
+					ret = nameToIntDics[moneyIndex];
+					errPos = "money.csv";
+					allowIndex = 0;
+					break;
+				#endregion
 
 			}
 
 			#region EE_ERD
-			int varindex = Array.IndexOf(GlobalStatic.IdentifierDictionary.VarKeys, varname);
-			if (varindex < 0 || string.IsNullOrEmpty(varname))
-				return ret;
-			else
+			if (ret == null && Config.UseERD)
 			{
-				ret = nameToIntDics[varindex];
-				errPos = varname + ".csv";
-				allowIndex = 0;
-				if (code == VariableCode.CVAR)
-					allowIndex = 1;
+				int varindex = Array.IndexOf(GlobalStatic.IdentifierDictionary.VarKeys, varname);
+				if (varindex < 0 || string.IsNullOrEmpty(varname))
+					return ret;
+				else
+				{
+					ret = nameToIntDics[varindex];
+					errPos = varname + ".csv";
+					allowIndex = 0;
+					if (code == VariableCode.CVAR)
+						allowIndex = 1;
+				}
 			}
 			#endregion
 			if (index < 0)

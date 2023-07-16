@@ -103,7 +103,7 @@ namespace MinorShift.Emuera
 				return;
 
 			IsLongPressed = true;
-			PressEnterKey(null);
+			//PressEnterKey(null);
 		}
 
 		static bool LoadSuccess;
@@ -363,7 +363,7 @@ namespace MinorShift.Emuera
 
 		private void MouseReleased(SKTouchEventArgs e)
 		{
-			if (IsMouseMove(e.Location) || IsLongPressed)
+			if (IsMouseMove(e.Location))
 				return;
 
 			//if (!Config.UseMouse)
@@ -372,9 +372,11 @@ namespace MinorShift.Emuera
 			//	return;
 			if (console.IsInProcess)
 				return;
+
 			if (console.IsWaitingPrimitive)
 			//			if (console.IsWaitingPrimitiveMouse)
 			{
+				if (IsLongPressed) console.MouseDown(MouseLocation, SKMouseButton.Right);
 				console.MouseDown(MouseLocation, e.MouseButton);
 				return;
 			}
@@ -394,7 +396,7 @@ namespace MinorShift.Emuera
 					return;
 				if (e.MouseButton == SKMouseButton.Left || e.MouseButton == SKMouseButton.Right)
 				{
-					if (e.MouseButton == SKMouseButton.Right)
+					if (e.MouseButton == SKMouseButton.Right || IsLongPressed)
 						PressEnterKey(true, true);
 					else
 						PressEnterKey(false, true);

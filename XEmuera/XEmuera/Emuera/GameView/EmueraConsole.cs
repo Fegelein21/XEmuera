@@ -695,6 +695,13 @@ namespace MinorShift.Emuera.GameView
 				#region EE_INPUTMOUSEKEY拡張
 				// InputMouseKey(4, 0, 0, 0, 0);
 				InputMouseKey(4, 0, 0, 0, 0, 0);
+				//if (state == ConsoleState.WaitInput && inputReq.NeedValue)
+				//{
+				//	Point point = window.MainPicBox.PointToClient(Control.MousePosition);
+				//	if (window.MainPicBox.ClientRectangle.Contains(point))
+				//		MoveMouse(point);
+				//}
+				//RefreshStrings(true);
 				#endregion
 				return;
 			}
@@ -846,7 +853,15 @@ namespace MinorShift.Emuera.GameView
 			//ボタン押された場合にRESULT:5にボタンの値が代入される
 			if (selectingButton != null)
 			{
-				InputMouseKey(1, (int)button, clientPoint.X, clientPoint.Y, buttonNum, selectingButton.Input);
+				if (!selectingButton.IsInteger)
+                {
+					GlobalStatic.VEvaluator.RESULTS = selectingButton.Inputs;
+					InputMouseKey(1, (int)button, clientPoint.X, clientPoint.Y, buttonNum, 0);
+				}
+                else
+                {
+					InputMouseKey(1, (int)button, clientPoint.X, clientPoint.Y, buttonNum, selectingButton.Input);
+				}
 			}
 			else
 			{
@@ -1608,6 +1623,12 @@ namespace MinorShift.Emuera.GameView
             GlobalStatic.Process.saveCurrentState(false);
             try
 			{
+				//デバッグコマンドはReadEnabledLineを通してないのでRename変換を入れる
+				if (Config.UseRenameFile && (com.IndexOf("[[") >= 0) && (com.IndexOf("]]") >= 0))
+				{
+					foreach (KeyValuePair<string, string> pair in ParserMediator.RenameDic)
+						com = com.Replace(pair.Key, pair.Value);
+				}
 				LogicalLine line = null;
 				if (!com.StartsWith("@") && !com.StartsWith("\"") && !com.StartsWith("\\"))
 					line = LogicalLineParser.ParseLine(com, null);

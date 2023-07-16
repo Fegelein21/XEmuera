@@ -342,6 +342,9 @@
   <data name="ForbidUpdateCheck" xml:space="preserve">
     <value>UPDATECHECKを許可しない</value>
   </data>
+  <data name="UseERD" xml:space="preserve">
+    <value>ERD機能を利用する</value>
+  </data>
   <data name="ValidExtension" xml:space="preserve">
     <value>LOADTEXTとSAVETEXTで使える拡張子</value>
   </data>

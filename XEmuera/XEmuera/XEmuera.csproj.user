@@ -4,11 +4,20 @@
     <_LastSelectedProfileId>E:\Projects\Games\Era\XEmuera\XEmuera\XEmuera\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Resources\ConfigsText.ja-JP.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ConfigsText.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\StringsText.ja-JP.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Update="Emuera\Forms\ConfigDialog.resx">
+      <SubType>Designer</SubType>
+    </None>
     <None Update="Emuera\Forms\MainWindow.resx">
       <SubType>Designer</SubType>
     </None>

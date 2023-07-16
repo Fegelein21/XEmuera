@@ -251,8 +251,8 @@ namespace MinorShift.Emuera.GameProc
 			result[1] = r1;
 			result[2] = r2;
 			result[3] = r3;
-			result[4] = r4; result[5] = r5;
-
+			result[4] = r4;
+			result[5] = r5;
 		}
 		#endregion
 		public void InputInteger(Int64 i)

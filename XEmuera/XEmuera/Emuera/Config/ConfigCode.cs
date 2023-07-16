@@ -153,6 +153,9 @@ namespace MinorShift.Emuera
 		#region EE_UPDATECHECK
 		ForbidUpdateCheck,
 		#endregion
+		#region EE_ERDConfig
+		UseERD,
+		#endregion
 
 		#region EM_私家版_LoadText＆SaveText機能拡張
 		ValidExtension = 200,

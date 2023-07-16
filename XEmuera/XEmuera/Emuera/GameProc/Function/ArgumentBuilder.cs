@@ -974,6 +974,10 @@ namespace MinorShift.Emuera.GameProc.Function
 
 				if (line.FunctionCode == FunctionCode.REPEAT)
 				{
+					if (GlobalStatic.IdentifierDictionary.getVarTokenIsForbid("COUNT"))
+					{
+						throw new CodeEE("COUNTが使用禁止変数になっているため、REPEATは使用できません");
+					}
 					if ((term is SingleTerm) && (term.GetIntValue(null) <= 0L))
 					{
 						warn("0回以下のREPEATです。(eramakerではエラーになります)", line, 0, true);

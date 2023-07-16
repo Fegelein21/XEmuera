@@ -281,6 +281,7 @@ namespace XEmuera.Models
 						ConfigCode.SystemSaveInUTF8,
 						ConfigCode.SystemNoTarget,
 						ConfigCode.ForbidUpdateCheck,
+						ConfigCode.UseERD,
 					}
 				},
 				new ConfigCodeGroup

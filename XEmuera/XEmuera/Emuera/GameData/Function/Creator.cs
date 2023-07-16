@@ -226,6 +226,7 @@ namespace MinorShift.Emuera.GameData.Function
                 ["ENUMMACROBEGINSWITH"] = new EnumNameMethod(EnumNameMethod.EType.Macro, EnumNameMethod.EAction.BeginsWith),
                 ["ENUMMACROENDSWITH"] = new EnumNameMethod(EnumNameMethod.EType.Macro, EnumNameMethod.EAction.EndsWith),
                 ["ENUMMACROWITH"] = new EnumNameMethod(EnumNameMethod.EType.Macro, EnumNameMethod.EAction.With),
+                ["ENUMFILES"] = new EnumFilesMethod(),
 
                 ["GETVAR"] = new GetVarMethod(),
                 ["GETVARS"] = new GetVarsMethod(),

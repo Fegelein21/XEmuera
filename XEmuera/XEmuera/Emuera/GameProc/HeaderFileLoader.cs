@@ -38,6 +38,11 @@ namespace MinorShift.Emuera.GameProc
 			List<KeyValuePair<string, string>> headerFiles = Config.GetFiles(headerDir, "*.ERH");
 			bool noError = true;
 			dimlines = new Queue<DimLineWC>();
+			#region EE_ERD
+			//ERD読み込み
+			if (Config.UseERD)
+				PrepareERDFileNames();
+			#endregion
 			try
 			{
 				for (int i = 0; i < headerFiles.Count; i++)
@@ -63,6 +68,9 @@ namespace MinorShift.Emuera.GameProc
 			finally
 			{
 				ParserMediator.FlushWarningList();
+				#region EE_ERD
+				erdFileNames = null;
+				#endregion
 			}
 			return noError;
 		}
@@ -155,21 +163,21 @@ namespace MinorShift.Emuera.GameProc
 			if (Config.ICVariable)
 				srcID = srcID.ToUpper();
 
-            //ここで名称重複判定しないと、大変なことになる
-            string errMes = "";
-            int errLevel = -1;
-            idDic.CheckUserMacroName(ref errMes, ref errLevel, srcID);
-            if (errLevel >= 0)
-            {
-                ParserMediator.Warn(errMes, position, errLevel);
-                if (errLevel >= 2)
-                {
-                    noError = false;
-                    return;
-                }
-            }
-            
-            bool hasArg = st.Current == '(';//引数を指定する場合には直後に(が続いていなければならない。ホワイトスペースも禁止。
+			//ここで名称重複判定しないと、大変なことになる
+			string errMes = "";
+			int errLevel = -1;
+			idDic.CheckUserMacroName(ref errMes, ref errLevel, srcID);
+			if (errLevel >= 0)
+			{
+				ParserMediator.Warn(errMes, position, errLevel);
+				if (errLevel >= 2)
+				{
+					noError = false;
+					return;
+				}
+			}
+			
+			bool hasArg = st.Current == '(';//引数を指定する場合には直後に(が続いていなければならない。ホワイトスペースも禁止。
 			//1808a3 代入演算子許可（関数宣言用）
 			WordCollection wc = LexicalAnalyzer.Analyse(st, LexEndWith.EoL, LexAnalyzeFlag.AllowAssignment);
 			if (wc.EOL)
@@ -287,19 +295,18 @@ namespace MinorShift.Emuera.GameProc
 						idDic.AddUseDefinedVariable(var);
 						#region EE_ERD
 						//とりあえず一次元配列だけ対応
-						if (data.Dimension == 1)
+						if (data.Dimension == 1 && Config.UseERD)
 						{
-
-							string csvpath = (Program.CsvDir + data.Name.ToUpper() + ".CSV");
-							string[] erdpath = FileUtils.GetFiles(Program.ErbDir, data.Name.ToUpper() + ".ERD", SearchOption.AllDirectories);
-							if (FileUtils.Exists(ref csvpath) && erdpath.Length > 0)
-								throw new CodeEE("変数" + data.Name + "用の定義ファイルがCSVとERD両方で存在します。どちらかに統一してください");
-							if (erdpath != null && erdpath.Length >= 2)
-								throw new CodeEE("変数" + data.Name + "用のERDファイルが2つ以上存在します。どちらかに統一してください");
-							if (FileUtils.Exists(ref csvpath))
-								GlobalStatic.ConstantData.UserDefineLoadData(csvpath, data.Name, data.Lengths[0], Config.DisplayReport);
-							else if (erdpath.Length > 0 && !string.IsNullOrEmpty(erdpath[0]))
-								GlobalStatic.ConstantData.UserDefineLoadData(erdpath[0], data.Name, data.Lengths[0], Config.DisplayReport);
+							var key = data.Name.ToUpper();
+							if (erdFileNames.ContainsKey(key))
+							{
+								var info = erdFileNames[key];
+								if (info.duplicatedBoth)
+									throw new CodeEE("変数" + data.Name + "用の定義ファイルがCSVとERD両方で存在します。どちらかに統一してください");
+								if (info.duplicatedErd)
+									throw new CodeEE("変数" + data.Name + "用のERDファイルが2つ以上存在します。どちらかに統一してください");
+								GlobalStatic.ConstantData.UserDefineLoadData(info.path, data.Name, data.Lengths[0], Config.DisplayReport);
+							}
 							App.DoEvents();
 						}
 						#endregion
@@ -330,7 +337,35 @@ namespace MinorShift.Emuera.GameProc
 			}
 			return noError;
 		}
+		#region EE_ERD
+		private class ERDPath
+		{
+			public string path;
+			public bool duplicatedErd;
+			public bool duplicatedBoth;
+		}
+		private Dictionary<string, ERDPath> erdFileNames;
 
+		private void PrepareERDFileNames()
+		{
+			if (erdFileNames == null) erdFileNames = new Dictionary<string, ERDPath>();
+			foreach (var path in FileUtils.GetFiles(Program.ErbDir, "*.erd", SearchOption.AllDirectories))
+			{
+				var key = Path.GetFileNameWithoutExtension(path).ToUpper();
+				if (!erdFileNames.ContainsKey(key))
+					erdFileNames[key] = new ERDPath() { path = path, duplicatedBoth = false, duplicatedErd = false };
+				else
+					erdFileNames[key].duplicatedErd = true;
+			}
+			foreach (var path in FileUtils.GetFiles(Program.CsvDir, "*.csv", SearchOption.TopDirectoryOnly))
+			{
+				var key = Path.GetFileNameWithoutExtension(path).ToUpper();
+				if (!erdFileNames.ContainsKey(key))
+					erdFileNames[key] = new ERDPath() { path = path, duplicatedBoth = false, duplicatedErd = false };
+				else erdFileNames[key].duplicatedBoth = true;
+			}
+		}
+		#endregion
 		private void analyzeSharpFunction(StringStream st, ScriptPosition position, bool funcs)
 		{
 			throw new NotImplCodeEE();

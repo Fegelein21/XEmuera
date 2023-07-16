@@ -319,8 +319,11 @@
   <data name="SystemIgnoreStringSet" xml:space="preserve">
     <value>强制将字符串变量的赋值转换为字符串</value>
   </data>
-    <data name="ForbidUpdateCheck" xml:space="preserve">
+  <data name="ForbidUpdateCheck" xml:space="preserve">
     <value>禁用UPDATECHECK</value>
+  </data>
+  <data name="UseERD" xml:space="preserve">
+    <value>启用ERD功能</value>
   </data>
   <data name="ValidExtension" xml:space="preserve">
     <value>能够在LOADTEXT和SAVETEXT中使用的扩展名</value>

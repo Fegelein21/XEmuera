@@ -121,6 +121,9 @@ namespace MinorShift.Emuera
 			#region EE_UPDATECHECK
 			configArray.Add(new ConfigItem(ConfigCode.ForbidUpdateCheck, ConfigsText.ForbidUpdateCheck, false));
 			#endregion
+			#region EE_ERDConfig
+			configArray.Add(new ConfigItem(ConfigCode.UseERD, ConfigsText.UseERD, true));
+			#endregion
 
 			#region EM_私家版_LoadText＆SaveText機能拡張
 			configArray.Add(new ConfigItem(ConfigCode.ValidExtension, ConfigsText.ValidExtension, new List<string> { "txt" }));

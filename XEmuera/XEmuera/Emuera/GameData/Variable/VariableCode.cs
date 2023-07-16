@@ -42,7 +42,7 @@ namespace MinorShift.Emuera.GameData.Variable
 		EJAC = 0x08 | __INTEGER__ | __ARRAY_1D__ | __CAN_FORBID__,//射精チェックのための一時変数。
 		DOWN = 0x09 | __INTEGER__ | __ARRAY_1D__ | __CAN_FORBID__,//調教中パラメータの減少値。indexはPALAM.CSVのもの
 		RESULT = 0x0A | __INTEGER__ | __ARRAY_1D__,//戻り値(数値)
-		COUNT = 0x0B | __INTEGER__ | __ARRAY_1D__,//繰り返しカウンター
+		COUNT = 0x0B | __INTEGER__ | __ARRAY_1D__ | __CAN_FORBID__,//繰り返しカウンター
 		TARGET = 0x0C | __INTEGER__ | __ARRAY_1D__,//調教中のキャラの"登録番号"
 		ASSI = 0x0D | __INTEGER__ | __ARRAY_1D__ | __CAN_FORBID__,//助手のキャラの"登録番号"
 		MASTER = 0x0E | __INTEGER__ | __ARRAY_1D__ | __CAN_FORBID__,//主人公のキャラの"登録番号"。通常0
@@ -228,8 +228,13 @@ namespace MinorShift.Emuera.GameData.Variable
 		GLOBALNAME = 0x18 | __STRING__ | __ARRAY_1D__ | __UNCHANGEABLE__ | __EXTENDED__ | __CONSTANT__ | __CAN_FORBID__,
 		GLOBALSNAME = 0x19 | __STRING__ | __ARRAY_1D__ | __UNCHANGEABLE__ | __EXTENDED__ | __CONSTANT__ | __CAN_FORBID__,
 
-        __COUNT_CSV_STRING_ARRAY_1D__ = 0x1A,
+		#region EE_CSV機能拡張
+		DAYNAME = 0x1A | __STRING__ | __ARRAY_1D__ | __UNCHANGEABLE__ | __EXTENDED__ | __CONSTANT__ | __CAN_FORBID__,
+		TIMENAME = 0x1B | __STRING__ | __ARRAY_1D__ | __UNCHANGEABLE__ | __EXTENDED__ | __CONSTANT__ | __CAN_FORBID__,
+		MONEYNAME = 0x1C | __STRING__ | __ARRAY_1D__ | __UNCHANGEABLE__ | __EXTENDED__ | __CONSTANT__ | __CAN_FORBID__,
+		#endregion
 
+		__COUNT_CSV_STRING_ARRAY_1D__ = 0x1D,
 
 		GAMEBASE_AUTHER = 0x04 | __STRING__ | __CALC__ | __UNCHANGEABLE__ | __EXTENDED__,//文字列型。作者。綴りを間違えていたが互換性のため残す。
 		GAMEBASE_AUTHOR = 0x00 | __STRING__ | __CALC__ | __UNCHANGEABLE__ | __EXTENDED__,//文字列型。作者

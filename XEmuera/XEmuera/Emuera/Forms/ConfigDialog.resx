@@ -1531,7 +1531,7 @@
     <value>colorBoxBacklog</value>
   </data>
   <data name="&gt;&gt;colorBoxBacklog.Type" xml:space="preserve">
-    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8173.38019, Culture=neutral, PublicKeyToken=null</value>
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8204.3934, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;colorBoxBacklog.Parent" xml:space="preserve">
     <value>tabPageFont</value>
@@ -1552,7 +1552,7 @@
     <value>colorBoxSelecting</value>
   </data>
   <data name="&gt;&gt;colorBoxSelecting.Type" xml:space="preserve">
-    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8173.38019, Culture=neutral, PublicKeyToken=null</value>
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8204.3934, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;colorBoxSelecting.Parent" xml:space="preserve">
     <value>tabPageFont</value>
@@ -1573,7 +1573,7 @@
     <value>colorBoxFG</value>
   </data>
   <data name="&gt;&gt;colorBoxFG.Type" xml:space="preserve">
-    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8173.38019, Culture=neutral, PublicKeyToken=null</value>
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8204.3934, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;colorBoxFG.Parent" xml:space="preserve">
     <value>tabPageFont</value>
@@ -1594,7 +1594,7 @@
     <value>colorBoxBG</value>
   </data>
   <data name="&gt;&gt;colorBoxBG.Type" xml:space="preserve">
-    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8173.38019, Culture=neutral, PublicKeyToken=null</value>
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8204.3934, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;colorBoxBG.Parent" xml:space="preserve">
     <value>tabPageFont</value>
@@ -1987,6 +1987,63 @@ ERBスクリプトが正常に動作しないことがあります</value>
   <data name="&gt;&gt;tabPageSystem.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="checkBox31.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox31.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="checkBox31.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 151</value>
+  </data>
+  <data name="checkBox31.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 16</value>
+  </data>
+  <data name="checkBox31.TabIndex" type="System.Int32, mscorlib">
+    <value>85</value>
+  </data>
+  <data name="checkBox31.Text" xml:space="preserve">
+    <value>ERD機能を利用する</value>
+  </data>
+  <data name="&gt;&gt;checkBox31.Name" xml:space="preserve">
+    <value>checkBox31</value>
+  </data>
+  <data name="&gt;&gt;checkBox31.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox31.Parent" xml:space="preserve">
+    <value>tabPageSystem2</value>
+  </data>
+  <data name="&gt;&gt;checkBox31.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="checkBox30.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox30.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 129</value>
+  </data>
+  <data name="checkBox30.Size" type="System.Drawing.Size, System.Drawing">
+    <value>169, 16</value>
+  </data>
+  <data name="checkBox30.TabIndex" type="System.Int32, mscorlib">
+    <value>84</value>
+  </data>
+  <data name="checkBox30.Text" xml:space="preserve">
+    <value>UPDATECHECKを許可しない</value>
+  </data>
+  <data name="&gt;&gt;checkBox30.Name" xml:space="preserve">
+    <value>checkBox30</value>
+  </data>
+  <data name="&gt;&gt;checkBox30.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox30.Parent" xml:space="preserve">
+    <value>tabPageSystem2</value>
+  </data>
+  <data name="&gt;&gt;checkBox30.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="checkBox29.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -2012,7 +2069,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>tabPageSystem2</value>
   </data>
   <data name="&gt;&gt;checkBox29.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="checkBox26.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2039,7 +2096,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>tabPageSystem2</value>
   </data>
   <data name="&gt;&gt;checkBox26.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="checkBox27.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2066,7 +2123,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>tabPageSystem2</value>
   </data>
   <data name="&gt;&gt;checkBox27.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="checkBoxSystemTripleSymbol.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2093,7 +2150,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>tabPageSystem2</value>
   </data>
   <data name="&gt;&gt;checkBoxSystemTripleSymbol.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="label24.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2121,7 +2178,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>tabPageSystem2</value>
   </data>
   <data name="&gt;&gt;label24.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="tabPageSystem2.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 40</value>

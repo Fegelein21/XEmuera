@@ -2,6 +2,7 @@
 using System.IO;
 using MinorShift.Emuera.Sub;
 using System;
+using System.Text;
 using XEmuera.Forms;
 namespace MinorShift.Emuera
 {
@@ -48,7 +49,7 @@ namespace MinorShift.Emuera
 
 			try
 			{
-				writer = new StreamWriter(macroPath, false, Config.Encode);
+				writer = new StreamWriter(macroPath, false, Encoding.UTF8);
 				for (int g = 0; g < MaxGroup; g++)
 				{
 					writer.WriteLine(gID + g.ToString() + ":" + groupName[g]);

@@ -98,32 +98,39 @@ namespace MinorShift.Emuera.GameData.Function
 			}
 			public override Int64 GetIntValue(ExpressionMediator exm, IOperandTerm[] arguments)
 			{
-				string xml;
+				XmlDocument doc = null;
+				XmlNodeList nodes = null;
 				if (arguments[0].GetOperandType() == typeof(Int64))
 				{
 					var idx = arguments[0].GetIntValue(exm);
 					var dict = exm.VEvaluator.VariableData.DataXmlDocument;
-					if (dict.ContainsKey(idx)) xml = dict[idx].OuterXml;
+					if (dict.ContainsKey(idx)) doc = dict[idx];
 					else return -1;
 				}
-				else xml = arguments[0].GetStrValue(exm);
+				else
+				{
+					doc = new XmlDocument();
+					var xml = arguments[0].GetStrValue(exm);
+					try
+					{
+						doc.LoadXml(xml);
+					}
+					catch (XmlException e)
+					{
+						throw new CodeEE("XML_GET関数:\"" + xml + "\"の解析エラー:" + e.Message);
+					}
+				}
 				string path = arguments[1].GetStrValue(exm);
-				long outputStyle = arguments.Length == 4 ? arguments[3].GetIntValue(exm) : 0;
-				XmlDocument doc = new XmlDocument();
-				XmlNodeList nodes = null;
 				try
 				{
-					doc.LoadXml(xml);
 					nodes = doc.SelectNodes(path);
-				}
-				catch (XmlException e)
-				{
-					throw new CodeEE("XML_GET関数:\"" + xml + "\"の解析エラー:" + e.Message);
 				}
 				catch (System.Xml.XPath.XPathException e)
 				{
 					throw new CodeEE("XML_GET関数:XPath\"" + path + "\"の解析エラー:" + e.Message);
 				}
+				long outputStyle = arguments.Length == 4 ? arguments[3].GetIntValue(exm) : 0;
+				
 				if (arguments.Length >= 3)
 				{
 					if (arguments[2].GetOperandType() == typeof(Int64) && arguments[2].GetIntValue(exm) != 0)
@@ -240,6 +247,58 @@ namespace MinorShift.Emuera.GameData.Function
 				int outputlength = Math.Min(output.Length, ret.Length);
 				Array.Copy(ret, output, outputlength);
 				return outputlength;
+			}
+		}
+		private sealed class EnumFilesMethod : FunctionMethod
+		{
+			public EnumFilesMethod()
+			{
+				ReturnType = typeof(Int64);
+				argumentTypeArray = null;
+				CanRestructure = false;
+			}
+			public override string CheckArgumentType(string name, IOperandTerm[] arguments)
+			{
+				if (arguments.Length < 1)
+					return string.Format("{0}関数:少なくとも1の引数が必要です", name);
+				if (arguments.Length > 3)
+					return string.Format("{0}関数:引数が多すぎます", name);
+				for (int i = 0; i < arguments.Length; i++)
+				{
+					if (i == 2)
+					{
+						if (arguments[2].GetOperandType() != typeof(Int64))
+							return string.Format("{0}関数:3番目の引数が整数ではありません", name);
+					}
+					else if (arguments[i].GetOperandType() != typeof(string))
+						return string.Format("{0}関数:{1}番目の引数が文字列ではありません", name, i + 1);
+				}
+				return null;
+			}
+			public override Int64 GetIntValue(ExpressionMediator exm, IOperandTerm[] arguments)
+			{
+				var dir = arguments[0].GetStrValue(exm);
+				dir = dir.Replace('\\', '/');
+				dir = dir.Replace("./", "");
+				dir = dir.Replace("../", "");
+				dir = Program.ExeDir + dir;
+				if (!Directory.Exists(dir)) return -1;
+				var pattern = arguments.Length > 1 ? arguments[1].GetStrValue(exm) : "*";
+				var option = arguments.Length > 2
+					? (arguments[2].GetIntValue(exm) == 0 ? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories)
+					: SearchOption.TopDirectoryOnly;
+				string[] files;
+				try
+				{
+					files = Directory.EnumerateFiles(dir, pattern, option).ToArray();
+				}
+				catch
+				{
+					return -1;
+				}
+				var ret = Math.Min(files.Length, GlobalStatic.VEvaluator.RESULTS_ARRAY.Length);
+				Array.Copy(files, 0, GlobalStatic.VEvaluator.RESULTS_ARRAY, 0, ret);
+				return ret;
 			}
 		}
 		private sealed class GetVarMethod : FunctionMethod
@@ -1325,8 +1384,9 @@ namespace MinorShift.Emuera.GameData.Function
 			public override Int64 GetIntValue(ExpressionMediator exm, IOperandTerm[] arguments)
 			{
 				var filepath = arguments[0].GetStrValue(exm);
-				filepath = filepath.Replace('/', '\\');
-				filepath = filepath.Replace("..\\", "");
+				filepath = filepath.Replace('\\', '/');
+				filepath = filepath.Replace("./", "");
+				filepath = filepath.Replace("../", "");
 				if (FileUtils.Exists(ref filepath)) return 1;
 				return 0;
 			}
@@ -6103,7 +6163,7 @@ namespace MinorShift.Emuera.GameData.Function
 				}
 
 				Encoding encoding = forceUTF8 ?
-					Encoding.GetEncoding("UTF-8") :
+					Encoding.UTF8 :
 					Config.SaveEncode;
 				try
 				{
@@ -6211,7 +6271,7 @@ namespace MinorShift.Emuera.GameData.Function
 				}
 
 				Encoding encoding = forceUTF8 ?
-					Encoding.GetEncoding("UTF-8") :
+					Encoding.UTF8 :
 					Config.SaveEncode;
 				if (!FileUtils.Exists(ref filepath))
 					return "";

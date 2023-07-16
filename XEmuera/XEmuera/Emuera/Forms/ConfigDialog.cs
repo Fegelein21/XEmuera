@@ -144,7 +144,8 @@
 // 			setCheckBox(checkBoxCompatiSP, ConfigCode.CompatiSPChara);
 // 			setCheckBox(checkBox9, ConfigCode.TimesNotRigorousCalculation);
 // 			setCheckBox(checkBox29, ConfigCode.SystemNoTarget);
-// 			setCheckBox(checkBox30, ConfigCode.ForbidUpdateCheck); 
+// 			setCheckBox(checkBox30, ConfigCode.ForbidUpdateCheck);
+// 			setCheckBox(checkBox31, ConfigCode.UseERD);
 // 			setNumericUpDown(numericUpDown2, ConfigCode.WindowX);
 // 			setNumericUpDown(numericUpDown3, ConfigCode.WindowY);
 // 			setNumericUpDown(numericUpDown4, ConfigCode.MaxLog);
@@ -314,11 +315,13 @@
 //			config.GetConfigItem(ConfigCode.SystemSaveInBinary).SetValue(checkBox26.Checked);
 //			config.GetConfigItem(ConfigCode.SystemIgnoreTripleSymbol).SetValue(checkBoxSystemTripleSymbol.Checked);
 
-//			config.GetConfigItem(ConfigCode.CompatiFunctionNoignoreCase).SetValue(checkBoxFuncNoIgnoreCase.Checked);
-//			config.GetConfigItem(ConfigCode.SystemAllowFullSpace).SetValue(checkBoxSystemFullSpace.Checked);
-//			config.GetConfigItem(ConfigCode.CompatiSPChara).SetValue(checkBoxCompatiSP.Checked);
-//			config.GetConfigItem(ConfigCode.TimesNotRigorousCalculation).SetValue(checkBox9.Checked);
-//			config.GetConfigItem(ConfigCode.SystemNoTarget).SetValue(checkBox29.Checked);
+			// config.GetConfigItem(ConfigCode.CompatiFunctionNoignoreCase).SetValue<bool>(checkBoxFuncNoIgnoreCase.Checked);
+			// config.GetConfigItem(ConfigCode.SystemAllowFullSpace).SetValue<bool>(checkBoxSystemFullSpace.Checked);
+			// config.GetConfigItem(ConfigCode.CompatiSPChara).SetValue<bool>(checkBoxCompatiSP.Checked);
+			// config.GetConfigItem(ConfigCode.TimesNotRigorousCalculation).SetValue<bool>(checkBox9.Checked);
+			// config.GetConfigItem(ConfigCode.SystemNoTarget).SetValue<bool>(checkBox29.Checked);
+			// config.GetConfigItem(ConfigCode.ForbidUpdateCheck).SetValue<bool>(checkBox30.Checked);
+			// config.GetConfigItem(ConfigCode.UseERD).SetValue<bool>(checkBox31.Checked);
 
 
 			// config.GetConfigItem(ConfigCode.WindowX).SetValue<int>((int)numericUpDown2.Value);
