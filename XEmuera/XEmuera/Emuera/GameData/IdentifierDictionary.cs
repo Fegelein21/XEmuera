@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using MinorShift.Emuera.GameProc.Function;
 using MinorShift.Emuera.GameData.Expression;
 using MinorShift._Library;
+using System.Linq;
 
 namespace MinorShift.Emuera
 {
@@ -19,6 +20,10 @@ namespace MinorShift.Emuera
 	//また、使用されている名前を記憶し衝突を検出する。
 	internal sealed class IdentifierDictionary
 	{
+		#region EM_私家版_辞書獲得
+		public string[] VarKeys => varTokenDic.Keys.ToArray();
+		public string[] MacroKeys => macroDic.Keys.ToArray();
+		#endregion
 		private enum DefinedNameType
 		{
 			None = 0,

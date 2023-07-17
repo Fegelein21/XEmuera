@@ -43,7 +43,7 @@ namespace MinorShift.Emuera
 		{
 			ExeDir = Sys.ExeDir;
 #if DEBUG
-			//debugMode = true;
+			debugMode = true;
 
 			//ExeDirにバリアントのパスを代入することでテスト実行するためのコード。
 			//ローカルパスの末尾には\必須。
@@ -62,6 +62,7 @@ namespace MinorShift.Emuera
 			DebugDir = ExeDir + "debug" + Path.DirectorySeparatorChar;
 			DatDir = ExeDir + "dat" + Path.DirectorySeparatorChar;
 			ContentDir = ExeDir + "resources" + Path.DirectorySeparatorChar;
+			MusicDir = ExeDir + "sound" + Path.DirectorySeparatorChar;
 
 			//エラー出力用
 			//1815 .exeが東方板のNGワードに引っかかるそうなので除去
@@ -192,7 +193,6 @@ namespace MinorShift.Emuera
 				ParserMediator.Initialize(null);
 				GlobalStatic.Reset();
 				//GC.Collect();
-				Reboot = false;
 				ConfigData.Instance.ReLoadConfig();
 			}
 			WinmmTimer.Reset();
@@ -208,6 +208,11 @@ namespace MinorShift.Emuera
 		public static string DatDir { get; private set; }
 		public static string ContentDir { get; private set; }
 		public static string ExeName { get; private set; }
+		#region EE_PLAYSOUND系
+		public static string MusicDir {get; private set; }
+		//public static IPlayer[] sound = new IPlayer[10];
+		//public static IPlayer bgm = null;
+		#endregion
 
 		public static bool Reboot = false;
 		//public static int RebootClientX = 0;

@@ -137,7 +137,7 @@ namespace MinorShift.Emuera
 			ButtonWrap = instance.GetConfigValue<bool>(ConfigCode.ButtonWrap);
 
 			TextEditor = instance.GetConfigValue<string>(ConfigCode.TextEditor);
-            EditorType = instance.GetConfigValue<TextEditorType>(ConfigCode.EditorType);
+			EditorType = instance.GetConfigValue<TextEditorType>(ConfigCode.EditorType);
 			EditorArg = instance.GetConfigValue<string>(ConfigCode.EditorArgument);
 
 			CompatiErrorLine = instance.GetConfigValue<bool>(ConfigCode.CompatiErrorLine);
@@ -160,25 +160,36 @@ namespace MinorShift.Emuera
 			CompatiCallEvent = instance.GetConfigValue<bool>(ConfigCode.CompatiCallEvent);
 			CompatiSPChara = instance.GetConfigValue<bool>(ConfigCode.CompatiSPChara);
 
-            AllowLongInputByMouse = instance.GetConfigValue<bool>(ConfigCode.AllowLongInputByMouse);
+			AllowLongInputByMouse = instance.GetConfigValue<bool>(ConfigCode.AllowLongInputByMouse);
 
-           TimesNotRigorousCalculation = instance.GetConfigValue<bool>(ConfigCode.TimesNotRigorousCalculation);
-            //一文字変数の禁止オプションを考えた名残
-		   //ForbidOneCodeVariable = instance.GetConfigValue<bool>(ConfigCode.ForbidOneCodeVariable);
-		   SystemNoTarget = instance.GetConfigValue<bool>(ConfigCode.SystemNoTarget);
+			TimesNotRigorousCalculation = instance.GetConfigValue<bool>(ConfigCode.TimesNotRigorousCalculation);
+			//一文字変数の禁止オプションを考えた名残
+			//ForbidOneCodeVariable = instance.GetConfigValue<bool>(ConfigCode.ForbidOneCodeVariable);
+			SystemNoTarget = instance.GetConfigValue<bool>(ConfigCode.SystemNoTarget);
+
+			#region EE版_UPDATECHECK
+			ForbidUpdateCheck = instance.GetConfigValue<bool>(ConfigCode.ForbidUpdateCheck);
+			#endregion
+			#region EE版_ERDConfig
+			UseERD = instance.GetConfigValue<bool>(ConfigCode.UseERD);
+			#endregion
+
+			#region EM_私家版_LoadText＆SaveText機能拡張
+			ValidExtension = instance.GetConfigValue<List<string>>(ConfigCode.ValidExtension);
+			#endregion
 
 			UseLanguage lang = instance.GetConfigValue<UseLanguage>(ConfigCode.useLanguage);
-            switch (lang)
-            {
-                case UseLanguage.JAPANESE:
-                    Language = 0x0411; LangManager.setEncode(932); break;
-                case UseLanguage.KOREAN:
-                    Language = 0x0412; LangManager.setEncode(949);  break;
-                case UseLanguage.CHINESE_HANS:
-                    Language = 0x0804; LangManager.setEncode(936); break;
-                case UseLanguage.CHINESE_HANT:
-                    Language = 0x0404; LangManager.setEncode(950); break;
-            }
+			switch (lang)
+			{
+				case UseLanguage.JAPANESE:
+					Language = 0x0411; LangManager.setEncode(932); break;
+				case UseLanguage.KOREAN:
+					Language = 0x0412; LangManager.setEncode(949);  break;
+				case UseLanguage.CHINESE_HANS:
+					Language = 0x0804; LangManager.setEncode(936); break;
+				case UseLanguage.CHINESE_HANT:
+					Language = 0x0404; LangManager.setEncode(950); break;
+			}
 
 			if (FontSize < 8)
 			{
@@ -359,9 +370,9 @@ namespace MinorShift.Emuera
 				return false;
 			}
 
-            long key = getUpdateKey();
-            bool updated = LastKey != key;
-            LastKey = key;
+			long key = getUpdateKey();
+			bool updated = LastKey != key;
+			LastKey = key;
 			return updated;
 		}
 
@@ -571,7 +582,7 @@ namespace MinorShift.Emuera
 		public static bool ButtonWrap { get; private set; }
 
 		public static string TextEditor { get; private set; }
-        public static TextEditorType EditorType { get; private set; }
+		public static TextEditorType EditorType { get; private set; }
 		public static string EditorArg { get; private set; }
 
 		public static bool CompatiErrorLine { get; private set; }
@@ -598,11 +609,11 @@ namespace MinorShift.Emuera
 
 		public static bool NeedReduceArgumentOnLoad { get; private set; }
 
-        public static bool AllowLongInputByMouse { get; private set; }
+		public static bool AllowLongInputByMouse { get; private set; }
 
-        public static bool TimesNotRigorousCalculation { get; private set; }
-        //一文字変数の禁止オプションを考えた名残
-        //public static bool ForbidOneCodeVariable { get; private set; }
+		public static bool TimesNotRigorousCalculation { get; private set; }
+		//一文字変数の禁止オプションを考えた名残
+		//public static bool ForbidOneCodeVariable { get; private set; }
 		#endregion
 
 		#region debug
@@ -647,7 +658,7 @@ namespace MinorShift.Emuera
 			ExpLvDef = instance.GetConfigValue<List<Int64>>(ConfigCode.ExpLvDef);
 			PalamLvDef = instance.GetConfigValue<List<Int64>>(ConfigCode.PalamLvDef);
 			PbandDef = instance.GetConfigValue<Int64>(ConfigCode.pbandDef);
-            RelationDef = instance.GetConfigValue<Int64>(ConfigCode.RelationDef);
+			RelationDef = instance.GetConfigValue<Int64>(ConfigCode.RelationDef);
 		}
 
 		public static string MoneyLabel { get; private set; }
@@ -665,10 +676,18 @@ namespace MinorShift.Emuera
 		public static List<Int64> ExpLvDef { get; private set; }
 		public static List<Int64> PalamLvDef { get; private set; }
 		public static Int64 PbandDef { get; private set; }
-        public static Int64 RelationDef { get; private set; }
+		public static Int64 RelationDef { get; private set; }
 		#endregion
-		
-		
-		
+
+		#region EE版_UPDATECHECK
+		public static bool ForbidUpdateCheck { get; private set; }
+		#endregion
+		#region EE版_ERDConfig
+		public static bool UseERD { get; private set; }
+		#endregion
+		#region EM_私家版_LoadText＆SaveText機能拡張
+		public static List<string> ValidExtension { get; private set; }
+		#endregion
+
 	}
 }

@@ -170,8 +170,14 @@ namespace MinorShift.Emuera
 			}
 			else if (Value is List<string> stringlist)
 			{
-				ret = true;
-				stringlist.Add(str);
+				{
+					#region EM_私家版_LoadText＆SaveText機能拡張
+					ret = true;
+					var list = (List<string>)Value;
+					TryStringToStringList(str, ref list);
+					Value = list;
+					#endregion
+				}
 			}
 			else if (Value is TextDrawingMode)
 			{
@@ -241,6 +247,20 @@ namespace MinorShift.Emuera
 			item.Value = Value;
 			return ret;
 		}
+
+
+		#region EM_私家版_LoadText＆SaveText機能拡張
+		static private bool TryStringToStringList(string arg, ref List<string> vs)
+		{
+			string[] tokens = arg.Split(',');
+			vs.Clear();
+			foreach (var token in tokens)
+			{
+				vs.Add(token.Trim());
+			}
+			return true;
+		}
+		#endregion
 
 		private static void ShowError(string errorMessage)
 		{

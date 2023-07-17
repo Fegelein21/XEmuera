@@ -67,7 +67,14 @@ namespace MinorShift.Emuera.GameData
 		private const int globalIndex = (int)(VariableCode.GLOBALNAME & VariableCode.__LOWERCASE__);
 		private const int globalsIndex = (int)(VariableCode.GLOBALSNAME & VariableCode.__LOWERCASE__);
 		private const int countNameCsv = (int)VariableCode.__COUNT_CSV_STRING_ARRAY_1D__;
-		
+
+		#region EE_CSV変数拡張
+		private const int dayIndex = (int)(VariableCode.DAYNAME & VariableCode.__LOWERCASE__);
+		private const int timeIndex = (int)(VariableCode.TIMENAME & VariableCode.__LOWERCASE__);
+		private const int moneyIndex = (int)(VariableCode.MONEYNAME & VariableCode.__LOWERCASE__);
+		#endregion
+
+
 		public int[] MaxDataList = new int[countNameCsv];
         readonly HashSet<VariableCode> changedCode = new HashSet<VariableCode>();
 		
@@ -83,8 +90,12 @@ namespace MinorShift.Emuera.GameData
 		public Int64[] CharacterStrArray2DLength;
 
 		//private readonly GameBase gamebase;
-		private readonly string[][] names = new string[(int)VariableCode.__COUNT_CSV_STRING_ARRAY_1D__][];
-		private readonly Dictionary<string, int>[] nameToIntDics = new Dictionary<string, int>[(int)VariableCode.__COUNT_CSV_STRING_ARRAY_1D__];
+		#region EE_ERD
+		//private readonly string[][] names = new string[(int)VariableCode.__COUNT_CSV_STRING_ARRAY_1D__][];
+		//private readonly Dictionary<string, int>[] nameToIntDics = new Dictionary<string, int>[(int)VariableCode.__COUNT_CSV_STRING_ARRAY_1D__];
+		private readonly string[][] names = new string[10000][];
+		private readonly Dictionary<string, int>[] nameToIntDics = new Dictionary<string, int>[10000];
+		#endregion
 		private readonly Dictionary<string, int> relationDic = new Dictionary<string, int>();
 		public string[] GetCsvNameList(VariableCode code)
 		{
@@ -135,6 +146,12 @@ namespace MinorShift.Emuera.GameData
 			MaxDataList[savestrnameIndex] = 100;
 			MaxDataList[globalIndex] = 1000;
 			MaxDataList[globalsIndex] = 100;
+
+			#region EE_CSV拡張機能
+			MaxDataList[dayIndex] = 100;
+			MaxDataList[timeIndex] = 100;
+			MaxDataList[moneyIndex] = 100;
+			#endregion
 
 			VariableIntArrayLength = new int[(int)VariableCode.__COUNT_INTEGER_ARRAY__];
 			VariableStrArrayLength = new int[(int)VariableCode.__COUNT_STRING_ARRAY__];
@@ -367,7 +384,7 @@ namespace MinorShift.Emuera.GameData
 					return;
 				}
 			}
-check1break:
+			check1break:
 			switch (id.Code)
 			{
 				//1753a PALAMだけ仕様が違うのはかえって問題なので、変数と要素文字列配列数の同期は全部バックアウト
@@ -405,6 +422,11 @@ check1break:
 				case VariableCode.STRNAME:
 				case VariableCode.GLOBALNAME:
 				case VariableCode.GLOBALSNAME:
+				#region EE_CSV機能拡張
+				case VariableCode.DAYNAME:
+				case VariableCode.TIMENAME:
+				case VariableCode.MONEYNAME:
+				#endregion
 					MaxDataList[(int)(id.Code & VariableCode.__LOWERCASE__)] = length;
 					break;
 				default:
@@ -505,11 +527,16 @@ check1break:
 			_decideActualArraySize_sub(VariableCode.SAVESTR, VariableCode.SAVESTRNAME, VariableStrArrayLength, position);
 			_decideActualArraySize_sub(VariableCode.GLOBAL, VariableCode.GLOBALNAME, VariableIntArrayLength, position);
 			_decideActualArraySize_sub(VariableCode.GLOBALS, VariableCode.GLOBALSNAME, VariableStrArrayLength, position);
+			#region EE_CSV機能拡張
+			_decideActualArraySize_sub(VariableCode.DAY, VariableCode.DAYNAME, VariableIntArrayLength, position);
+			_decideActualArraySize_sub(VariableCode.TIME, VariableCode.TIMENAME, VariableIntArrayLength, position);
+			_decideActualArraySize_sub(VariableCode.MONEY, VariableCode.MONEYNAME, VariableIntArrayLength, position);
+            #endregion
 
 
-			//PALAM(JUEL込み)
-			//PALAMかJUELが変わっているときは大きい方をとる
-			if (changedCode.Contains(VariableCode.PALAM) || changedCode.Contains(VariableCode.JUEL))
+            //PALAM(JUEL込み)
+            //PALAMかJUELが変わっているときは大きい方をとる
+            if (changedCode.Contains(VariableCode.PALAM) || changedCode.Contains(VariableCode.JUEL))
 			{
 				int palamJuelMax = Math.Max(CharacterIntArrayLength[(int)(VariableCode.__LOWERCASE__ & VariableCode.PALAM)]
 						, CharacterIntArrayLength[(int)(VariableCode.__LOWERCASE__ & VariableCode.JUEL)]);
@@ -587,38 +614,49 @@ check1break:
 				nameToIntDics[i] = new Dictionary<string, int>();
 			}
 			ItemPrice = new Int64[MaxDataList[itemIndex]];
-			loadDataTo(csvDir + "ABL.CSV", ablIndex, null, disp);
-			loadDataTo(csvDir + "EXP.CSV", expIndex, null, disp);
-			loadDataTo(csvDir + "TALENT.CSV", talentIndex, null, disp);
-			loadDataTo(csvDir + "PALAM.CSV", paramIndex, null, disp);
-			loadDataTo(csvDir + "TRAIN.CSV", trainIndex, null, disp);
-			loadDataTo(csvDir + "MARK.CSV", markIndex, null, disp);
-			loadDataTo(csvDir + "ITEM.CSV", itemIndex, ItemPrice, disp);
-			loadDataTo(csvDir + "BASE.CSV", baseIndex, null, disp);
-			loadDataTo(csvDir + "SOURCE.CSV", sourceIndex, null, disp);
-			loadDataTo(csvDir + "EX.CSV", exIndex, null, disp);
-			loadDataTo(csvDir + "STR.CSV", strIndex, null, disp);
-			loadDataTo(csvDir + "EQUIP.CSV", equipIndex, null, disp);
-			loadDataTo(csvDir + "TEQUIP.CSV", tequipIndex, null, disp);
-			loadDataTo(csvDir + "FLAG.CSV", flagIndex, null, disp);
-			loadDataTo(csvDir + "TFLAG.CSV", tflagIndex, null, disp);
-			loadDataTo(csvDir + "CFLAG.CSV", cflagIndex, null, disp);
-			loadDataTo(csvDir + "TCVAR.CSV", tcvarIndex, null, disp);
-			loadDataTo(csvDir + "CSTR.CSV", cstrIndex, null, disp);
-			loadDataTo(csvDir + "STAIN.CSV", stainIndex, null, disp);
-			loadDataTo(csvDir + "CDFLAG1.CSV", cdflag1Index, null, disp);
-			loadDataTo(csvDir + "CDFLAG2.CSV", cdflag2Index, null, disp);
+			#region EE_ERD
+			loadDataTo(csvDir + "ABL.CSV", ablIndex, null, disp, false);
+			loadDataTo(csvDir + "EXP.CSV", expIndex, null, disp, false);
+			loadDataTo(csvDir + "TALENT.CSV", talentIndex, null, disp, false);
+			loadDataTo(csvDir + "PALAM.CSV", paramIndex, null, disp, false);
+			loadDataTo(csvDir + "TRAIN.CSV", trainIndex, null, disp, false);
+			loadDataTo(csvDir + "MARK.CSV", markIndex, null, disp, false);
+			loadDataTo(csvDir + "ITEM.CSV", itemIndex, ItemPrice, disp, false);
+			loadDataTo(csvDir + "BASE.CSV", baseIndex, null, disp, false);
+			loadDataTo(csvDir + "SOURCE.CSV", sourceIndex, null, disp, false);
+			loadDataTo(csvDir + "EX.CSV", exIndex, null, disp, false);
+			loadDataTo(csvDir + "STR.CSV", strIndex, null, disp, false);
+			loadDataTo(csvDir + "EQUIP.CSV", equipIndex, null, disp, false);
+			loadDataTo(csvDir + "TEQUIP.CSV", tequipIndex, null, disp, false);
+			loadDataTo(csvDir + "FLAG.CSV", flagIndex, null, disp, false);
+			loadDataTo(csvDir + "TFLAG.CSV", tflagIndex, null, disp, false);
+			loadDataTo(csvDir + "CFLAG.CSV", cflagIndex, null, disp, false);
+			loadDataTo(csvDir + "TCVAR.CSV", tcvarIndex, null, disp, false);
+			loadDataTo(csvDir + "CSTR.CSV", cstrIndex, null, disp, false);
+			loadDataTo(csvDir + "STAIN.CSV", stainIndex, null, disp, false);
+			loadDataTo(csvDir + "CDFLAG1.CSV", cdflag1Index, null, disp, false);
+			loadDataTo(csvDir + "CDFLAG2.CSV", cdflag2Index, null, disp, false);
 			
-			loadDataTo(csvDir + "STRNAME.CSV", strnameIndex, null, disp);
-			loadDataTo(csvDir + "TSTR.CSV", tstrnameIndex, null, disp);
-			loadDataTo(csvDir + "SAVESTR.CSV", savestrnameIndex, null, disp);
-			loadDataTo(csvDir + "GLOBAL.CSV", globalIndex, null, disp);
-			loadDataTo(csvDir + "GLOBALS.CSV", globalsIndex, null, disp);
+			loadDataTo(csvDir + "STRNAME.CSV", strnameIndex, null, disp, false);
+			loadDataTo(csvDir + "TSTR.CSV", tstrnameIndex, null, disp, false);
+			loadDataTo(csvDir + "SAVESTR.CSV", savestrnameIndex, null, disp, false);
+			loadDataTo(csvDir + "GLOBAL.CSV", globalIndex, null, disp, false);
+			loadDataTo(csvDir + "GLOBALS.CSV", globalsIndex, null, disp, false);
+			#endregion
+			#region EE_CSV機能拡張
+			loadDataTo(csvDir + "DAY.CSV", dayIndex, null, disp, false);
+			loadDataTo(csvDir + "TIME.CSV", timeIndex, null, disp, false);
+			loadDataTo(csvDir + "MONEY.CSV", moneyIndex, null, disp, false);
+			#endregion
 			//逆引き辞書を作成
 			for (int i = 0; i < names.Length; i++)
 			{
 				if (i == 10)//Strは逆引き無用
 					continue;
+				#region EE_ERD
+				if (names[i] == null)
+					continue;
+				#endregion
 				string[] nameArray = names[i];
 				for (int j = 0; j < nameArray.Length; j++)
 				{
@@ -641,6 +679,23 @@ check1break:
                     relationDic.Add(tmpl.Nickname, (int)tmpl.No);
 			}
 		}
+		#region EE_ERD
+		public void UserDefineLoadData(string filepath, string varname, int varlength, bool disp)
+		{
+			int varid = Array.IndexOf(GlobalStatic.IdentifierDictionary.VarKeys, varname);
+			//throw new CodeEE("varid" + varid);
+			names[varid] = new string[varlength];
+			nameToIntDics[varid] = new Dictionary<string, int>();
+
+			loadDataTo(filepath, varid, null, disp, true);
+			//逆引き辞書を作成
+			string[] nameArray = names[varid];
+			for (int j = 0; j < nameArray.Length; j++)
+			{
+				if (!string.IsNullOrEmpty(nameArray[j]) && !nameToIntDics[varid].ContainsKey(nameArray[j]))
+					nameToIntDics[varid].Add(nameArray[j], j);
+			}
+		}
 
 		public bool isDefined(VariableCode varCode, string str)
 		{
@@ -649,42 +704,85 @@ check1break:
             Dictionary<string, int> dic;
             if (varCode == VariableCode.CDFLAG)
             {
-                dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME1, -1);
-                if ((dic == null) || (!dic.ContainsKey(str)))
-                    dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME2, -1);
-                if (dic == null)
+                // dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME1, -1);
+				dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME1, -1, null);
+				if ((dic == null) || (!dic.ContainsKey(str)))
+                   // dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME2, -1);
+					dic = GetKeywordDictionary(out _, VariableCode.CDFLAGNAME2, -1, null);
+				if (dic == null)
                     return false;
                 return dic.ContainsKey(str);
             }
-            dic = GetKeywordDictionary(out _, varCode, -1);
+            // dic = GetKeywordDictionary(out _, varCode, -1);
+			dic = GetKeywordDictionary(out _, varCode, -1, null);
 			if (dic == null)
 				return false;
 			return dic.ContainsKey(str);
 		}
 
-        
-		public bool TryKeywordToInteger(out int ret, VariableCode code, string key, int index)
-        {
-            ret = 0;
-            if (string.IsNullOrEmpty(key))
-                return false;
-            Dictionary<string, int> dic;
+		public bool isUserDefined(string varname, string str)
+		{
+			if (string.IsNullOrEmpty(str))
+				return false;
+			int varindex = Array.IndexOf(GlobalStatic.IdentifierDictionary.VarKeys, varname);
             try
             {
-                dic = GetKeywordDictionary(out string errPos, code, index);
-				if (dic == null)
-					return false;
+				Dictionary<string, int> dic = nameToIntDics[varindex];
+				return dic.ContainsKey(str);
+			}
+            catch
+            {
+				throw new CodeEE("変数\"" + varname + "\"には\"" + str + "\"の定義がありません");
             }
-            catch { return false; }
-            return (dic.TryGetValue(key, out ret));
-        }
+		}
+		#endregion
+
+
+		#region EE_ERD
+		// public bool TryKeywordToInteger(out int ret, VariableCode code, string key, int index)
+		public bool TryKeywordToInteger(out int ret, VariableCode code, string key, int index, string varname)
+		{
+			ret = 0;
+			if (string.IsNullOrEmpty(key))
+				return false;
+			Dictionary<string, int> dic;
+			try
+			{
+				// dic = GetKeywordDictionary(out string errPos, code, index);
+				dic = GetKeywordDictionary(out string errPos, code, index, null);
+
+				//ここで見つからなかったら下の処理でも通す
+				if (dic.TryGetValue(key, out ret))
+					return (dic.TryGetValue(key, out ret));
+			}
+			catch { }
+			if (!string.IsNullOrEmpty(varname))
+			{
+				try
+				{
+					int varindex = Array.IndexOf(GlobalStatic.IdentifierDictionary.VarKeys, varname);
+					dic = nameToIntDics[varindex];
+
+					if (dic == null)
+						return false;
+				}
+				catch { return false; }
+				return (dic.TryGetValue(key, out ret));
+			}
+			return false;
+		}
+		#endregion
+
 
 		public int KeywordToInteger(VariableCode code, string key, int index)
 		{
 			if (string.IsNullOrEmpty(key))
 				throw new CodeEE("キーワードを空には出来ません");
-            Dictionary<string, int> dic = GetKeywordDictionary(out string errPos, code, index);
-            if (dic.TryGetValue(key, out int ret))
+			#region EE_ERD
+			// Dictionary<string, int> dic = GetKeywordDictionary(out string errPos, code, index);
+			Dictionary<string, int> dic = GetKeywordDictionary(out string errPos, code, index, null);
+			#endregion
+			if (dic.TryGetValue(key, out int ret))
                 return ret;
             if (errPos == null)
 				throw new CodeEE("配列変数" + code.ToString() + "の要素を文字列で指定することはできません");
@@ -692,7 +790,10 @@ check1break:
 				throw new CodeEE(errPos + "の中に\"" + key + "\"の定義がありません");
 		}
 
-		public Dictionary<string, int> GetKeywordDictionary(out string errPos, VariableCode code, int index)
+		#region EE_ERD
+		//public Dictionary<string, int> GetKeywordDictionary(out string errPos, VariableCode code, int index)
+		public Dictionary<string, int> GetKeywordDictionary(out string errPos, VariableCode code, int index, string varname)
+		#endregion
 		{
 			errPos = null;
 			int allowIndex = -1;
@@ -876,8 +977,42 @@ check1break:
 					errPos = "chara*.csv";
 					allowIndex = -1;
 					break;
+				#region EE_CSV機能拡張
+				case VariableCode.DAY:
+					ret = nameToIntDics[dayIndex];
+					errPos = "day.csv";
+					allowIndex = 0;
+					break;
+				case VariableCode.TIME:
+					ret = nameToIntDics[timeIndex];
+					errPos = "time.csv";
+					allowIndex = 0;
+					break;
+				case VariableCode.MONEY:
+					ret = nameToIntDics[moneyIndex];
+					errPos = "money.csv";
+					allowIndex = 0;
+					break;
+				#endregion
 
 			}
+
+			#region EE_ERD
+			if (ret == null && Config.UseERD)
+			{
+				int varindex = Array.IndexOf(GlobalStatic.IdentifierDictionary.VarKeys, varname);
+				if (varindex < 0 || string.IsNullOrEmpty(varname))
+					return ret;
+				else
+				{
+					ret = nameToIntDics[varindex];
+					errPos = varname + ".csv";
+					allowIndex = 0;
+					if (code == VariableCode.CVAR)
+						allowIndex = 1;
+				}
+			}
+			#endregion
 			if (index < 0)
 				return ret;
 			if (ret == null)
@@ -1264,8 +1399,11 @@ check1break:
 			}
 		}
 
+		#region EE_ERD
+		// private void loadDataTo(string csvPath, int targetIndex, Int64[] targetI, bool disp)
+		private void loadDataTo(string csvPath, int targetIndex, Int64[] targetI, bool disp, bool userdef)
+		#endregion
 
-		private void loadDataTo(string csvPath, int targetIndex, Int64[] targetI, bool disp)
 		{
 
 			if (!FileUtils.Exists(ref csvPath))
@@ -1273,14 +1411,19 @@ check1break:
 			string[] target = names[targetIndex];
             HashSet<int> defined = new HashSet<int>();
 			EraStreamReader eReader = new EraStreamReader(false);
-			if (!eReader.Open(csvPath))
+			#region EE_ERD
+			// if (!eReader.Open(csvPath))
+			if (!eReader.Open(csvPath) && output != null)
+			#endregion
 			{
 				output.PrintError(eReader.Filename + "のオープンに失敗しました");
 				return;
 			}
 			ScriptPosition position = null;
-
-			if (disp || Program.AnalysisMode)
+			#region EE_ERD
+			// if (disp || Program.AnalysisMode)
+			if ((disp || Program.AnalysisMode) && output != null)
+			#endregion
 				output.PrintSystemLine(eReader.Filename + "読み込み中・・・");
 			try
 			{

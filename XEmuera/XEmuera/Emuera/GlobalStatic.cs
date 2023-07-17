@@ -6,6 +6,7 @@ using MinorShift.Emuera.GameData;
 using MinorShift.Emuera.GameData.Expression;
 using MinorShift.Emuera.GameData.Variable;
 using MinorShift.Emuera.GameView;
+using XEmuera.Forms;
 
 namespace MinorShift.Emuera
 {
@@ -39,6 +40,10 @@ namespace MinorShift.Emuera
 		//ERBloaderに引数解析の結果を渡すための橋渡し変数
 		//1756 Processから移動。Program.AnalysisMode用
 		public static Dictionary<string, Int64> tempDic = new Dictionary<string, long>();
+		#region EE_FORCE_QUIT_AND_RESTART
+		public static bool ForceQuitAndRestart = false;//連続実行を防ぐ
+		#endregion
+
 #if DEBUG
 		public static List<FunctionLabelLine> StackList = new List<FunctionLabelLine>();
 #endif

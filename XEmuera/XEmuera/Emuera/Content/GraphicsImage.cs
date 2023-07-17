@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using XEmuera;
 using XEmuera.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MinorShift.Emuera.Content
 {
@@ -28,7 +32,11 @@ namespace MinorShift.Emuera.Content
 		Size size;
 		Brush brush = null;
 		Pen pen = null;
-		Font font = null;
+        #region EE_GDRAWTEXT
+        Font font = null;
+		//FontStyle style = default;
+		#endregion
+		
 		//Bitmap b;
 		//Graphics g;
 
@@ -51,7 +59,7 @@ namespace MinorShift.Emuera.Content
 		//	//locked = false;
 		//}
 
-#region Bitmap書き込み・作成
+		#region Bitmap書き込み・作成
 
 		/// <summary>
 		/// GCREATE(int ID, int width, int height)
@@ -100,48 +108,49 @@ namespace MinorShift.Emuera.Content
 		/// GDRAWTEXTGDRAWTEXT int ID, str text, int x, int y
 		/// エラーチェックは呼び出し元でのみ行う
 		/// </summary>
+		#region EE_GDRAWTEXT 元のソースコードにあったものを改良
 		public void GDrawString(string text, int x, int y)
 		{
 			if (g == null)
 				throw new NullReferenceException();
 			Font usingFont = font;
 			if (usingFont == null)
-				usingFont = Config.Font;
+				usingFont = new Font(Config.FontName, 100, GlobalStatic.Console.StringStyle.FontStyle, GraphicsUnit.Pixel);
 			if (brush != null)
 			{
 				//g.DrawString(text, usingFont, brush, x, y);
-				DrawTextUtils.DrawText(g, text, usingFont, x, y, brush.DrawingColor);
+				DrawTextUtils.DrawText(g, text, usingFont, x, y + font.Size, brush.DrawingColor); // add font.Size to be compatible with SKCanvas.DrawText
 			}
 			else
 			{
 				//using (SolidBrush b = new SolidBrush(Config.ForeColor))
 				//	g.DrawString(text, usingFont, b, x, y);
-				DrawTextUtils.DrawText(g, text, usingFont, x, y, Config.ForeColor);
+				DrawTextUtils.DrawText(g, text, usingFont, x, y + font.Size, Config.ForeColor); // add font.Size to be compatible with SKCanvas.DrawText
 			}
 		}
+		#endregion
+
 		/// <summary>
 		/// GDRAWTEXTGDRAWTEXT int ID, str text, int x, int y, int width, int height
 		/// エラーチェックは呼び出し元でのみ行う
 		/// </summary>
-		public void GDrawString(string text, int x, int y, int width, int height)
-		{
-			if (g == null)
-				throw new NullReferenceException();
-			Font usingFont = font;
-			if (usingFont == null)
-				usingFont = Config.Font;
-			if (brush != null)
-			{
-				//g.DrawString(text, usingFont, brush, new RectangleF(x,y,width,height));
-				DrawTextUtils.DrawText(g, text, usingFont, new RectangleF(x, y, width, height), brush.DrawingColor);
-			}
-			else
-			{
-				//using (SolidBrush b = new SolidBrush(Config.ForeColor))
-				//	g.DrawString(text, usingFont, b, new RectangleF(x, y, width, height));
-				DrawTextUtils.DrawText(g, text, usingFont, new RectangleF(x, y, width, height), Config.ForeColor);
-			}
-		}
+		// public void GDrawString(string text, int x, int y, int width, int height)
+		// {
+		// 	if (g == null)
+		// 		throw new NullReferenceException();
+		// 	Font usingFont = font;
+		// 	if (usingFont == null)
+		// 		usingFont = Config.Font;
+		// 	if (brush != null)
+		// 	{
+		// 		g.DrawString(text, usingFont, brush, new RectangleF(x,y,width,height));
+		// 	}
+		// 	else
+		// 	{
+		// 		using (SolidBrush b = new SolidBrush(Config.ForeColor))
+		// 			g.DrawString(text, usingFont, b, new RectangleF(x, y, width, height));
+		// 	}
+		// }
 
 		/// <summary>
 		/// GDRAWRECTANGLE(int ID, int x, int y, int width, int height)
@@ -201,7 +210,7 @@ namespace MinorShift.Emuera.Content
 		}
 
 		/// <summary>
-		/// GDRAWCIMG(int ID, str imgName, int destX, int destY, int destWidth, int destHeight, float[][] cm)
+		/// GDRAWCIMG(int ID, str imgName, int destX, int destY, int destWidth, int destHeight, float[] cm)
 		/// エラーチェックは呼び出し元でのみ行う
 		/// </summary>
 		public void GDrawCImg(ASprite img, Rectangle destRect, float[] cm)
@@ -234,7 +243,7 @@ namespace MinorShift.Emuera.Content
 
 
 		/// <summary>
-		/// GDRAWG(int ID, int srcID, int destX, int destY, int destWidth, int destHeight, int srcX, int srcY, int srcWidth, int srcHeight, float[][] cm)
+		/// GDRAWG(int ID, int srcID, int destX, int destY, int destWidth, int destHeight, int srcX, int srcY, int srcWidth, int srcHeight, float[] cm)
 		/// エラーチェックは呼び出し元でのみ行う
 		/// </summary>
 		public void GDrawG(GraphicsImage srcGra, Rectangle destRect, Rectangle srcRect, float[] cm)
@@ -320,12 +329,56 @@ namespace MinorShift.Emuera.Content
 			}
 		}
 
-		public void GSetFont(Font r)
+		#region EE_GDRAWGWITHROTATE
+		/// <summary>
+		/// GROTATE(int ID, int angle, int x, int y)
+		/// </summary>
+		public void GRotate(Int64 a, int x, int y)
+		{
+		 	if (g == null)
+		 		throw new NullReferenceException();
+		 	float angle = a;
+
+			g.RotateDegrees(angle, x, y);
+			DrawBitmapUtils.DrawBitmap(g, Bitmap, new Rectangle(Bitmap.Width, Bitmap.Height, Bitmap.Width, Bitmap.Height));
+		// 	g.TranslateTransform(-x, -y, System.Drawing.Drawing2D.MatrixOrder.Append);
+		// 	g.RotateTransform(angle, System.Drawing.Drawing2D.MatrixOrder.Append);
+		// 	g.TranslateTransform(x, y, System.Drawing.Drawing2D.MatrixOrder.Append);
+
+		// 	g.DrawImageUnscaled(Bitmap, 0, 0);
+		// 	//g.DrawImage(Bitmap, new Rectangle(Bitmap.Width, Bitmap.Height, Bitmap.Width, Bitmap.Height));
+		}
+		/// <summary>
+		/// GDRAWGWITHROTATE
+		/// </summary>
+		public void GDrawGWithRotate(GraphicsImage srcGra, Int64 a, int x, int y)
+		{
+		 	if (g == null || srcGra == null)
+		 		throw new NullReferenceException();
+		 	float angle = a;
+			g.RotateDegrees(angle, x, y);
+			SKBitmap src = srcGra.GetBitmap();
+			DrawBitmapUtils.DrawBitmap(g, src, new Rectangle(0, 0, src.Width, src.Height), new Rectangle(0, 0, Bitmap.Width, Bitmap.Height));
+			// 	g.TranslateTransform(-x, -y, System.Drawing.Drawing2D.MatrixOrder.Append);
+			// 	g.RotateTransform(angle, System.Drawing.Drawing2D.MatrixOrder.Append);
+			// 	g.TranslateTransform(x, y, System.Drawing.Drawing2D.MatrixOrder.Append);
+			// 	Bitmap src = srcGra.GetBitmap();
+			// 	g.DrawImage(src, 0, 0);
+		}
+		#endregion
+
+		#region EE_GDRAWTEXT フォントスタイルも指定できるように
+		// public void GSetFont(Font r)
+		public void GSetFont(Font r, FontStyle fs)
 		{
 			//if (font != null)
 			//	font.Dispose();
 			font = r;
+			#region EE_GDRAWTEXT フォントスタイルも指定できるように
+			font.SetStyle(fs);
+			#endregion
 		}
+		#endregion
 		public void GSetBrush(Brush r)
 		{
 			if (brush != null)
@@ -371,8 +424,8 @@ namespace MinorShift.Emuera.Content
 		/// GTOARRAY int ID, var array
 		/// エラーチェックは呼び出し元でのみ行う
 		/// <returns></returns>
-		//public bool GBitmapToInt64Array(Int64[,] array, int xstart, int ystart)
-		//{
+		public bool GBitmapToInt64Array(Int64[,] array, int xstart, int ystart)
+		{
 		//	if (g == null || Bitmap == null)
 		//		throw new NullReferenceException();
 		//	int w = Bitmap.Width;
@@ -400,15 +453,16 @@ namespace MinorShift.Emuera.Content
 		//		}
 		//	}
 		//	return true;
-		//}
+			return false;
+		}
 
 
 		/// <summary>
 		/// GFROMARRAY int ID, var array
 		/// エラーチェックは呼び出し元でのみ行う
 		/// <returns></returns>
-		//public bool GByteArrayToBitmap(Int64[,] array, int xstart, int ystart)
-		//{
+		public bool GByteArrayToBitmap(Int64[,] array, int xstart, int ystart)
+		{
 		//	if (g == null || Bitmap == null)
 		//		throw new NullReferenceException();
 		//	int w = Bitmap.Width;
@@ -437,7 +491,8 @@ namespace MinorShift.Emuera.Content
 		//	Marshal.Copy(rgbValues, 0, ptr, rgbValues.Length);
 		//	Bitmap.UnlockBits(bmpData);
 		//	return true;
-		//}
+			return false;
+		}
 #endregion
 #region Bitmap読み込み・削除
 		/// <summary>
@@ -527,6 +582,29 @@ namespace MinorShift.Emuera.Content
 		/// int GHEIGHT(int ID)
 		/// </summary>
 		public int Height { get { return size.Height; } }
+        #region EE_GDRAWTEXTに付随する様々な要素
+        public string Fontname { get { return font.FontModel.Name; } }
+		public int Fontsize { get { return (int)font.Size; } }
+
+		//public int Fontstyle
+  //      {
+  //          get
+  //          {
+		//		int ret = 0;
+		//		if ((style & FontStyle.Bold) == FontStyle.Bold)
+		//			ret |= 1;
+		//		if ((style & FontStyle.Italic) == FontStyle.Italic)
+		//			ret |= 2;
+		//		if ((style & FontStyle.Strikeout) == FontStyle.Strikeout)
+		//			ret |= 4;
+		//		if ((style & FontStyle.Underline) == FontStyle.Underline)
+		//			ret |= 8;
+		//		return (ret);
+		//	}
+		//}
+
+		public Font Fnt { get { return font; } }
+		#endregion
 
 
 

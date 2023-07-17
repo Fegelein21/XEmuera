@@ -88,73 +88,75 @@
 //			updown.Enabled = !item.Fixed;
 //		}
 
-//		void setColorBox(ColorBox colorBox, ConfigCode code)
-//		{
-//			ConfigItem item = ConfigData.Instance.GetConfigItem(code);
-//			colorBox.SelectingColor = (Color)item.Value;
-//			colorBox.Enabled = !item.Fixed;
-//		}
-///*		void setTextBox(TextBox textBox, ConfigCode code)
-//		{
-//			ConfigItem<string> item = (ConfigItem<string>)ConfigData.Instance.GetConfigItem(code);
-//			textBox.Text = item.Value;
-//			textBox.Enabled = !item.Fixed;
-//		}
-//*/
-//		MainWindow parent = null;
-//		public void SetConfig(MainWindow mainWindow)
-//		{
-//			parent = mainWindow;
-//			//ConfigData config = ConfigData.Instance;
-//			setCheckBox(checkBox1, ConfigCode.IgnoreCase);
-//			setCheckBox(checkBox2, ConfigCode.UseRenameFile);
-//			setCheckBox(checkBox3, ConfigCode.UseMouse);
-//			setCheckBox(checkBox4, ConfigCode.UseMenu);
-//			setCheckBox(checkBox5, ConfigCode.UseDebugCommand);
-//			setCheckBox(checkBox6, ConfigCode.AllowMultipleInstances);
-//			setCheckBox(checkBox7, ConfigCode.AutoSave);
-//			setCheckBox(checkBox8, ConfigCode.SizableWindow);
-//			setCheckBox(checkBox10, ConfigCode.UseReplaceFile);
-//			setCheckBox(checkBox11, ConfigCode.IgnoreUncalledFunction);
-//			//setCheckBox(checkBox12, ConfigCode.ReduceFormattedStringOnLoad);
-//			setCheckBox(checkBox13, ConfigCode.DisplayReport);
-//			setCheckBox(checkBox14, ConfigCode.ButtonWrap);
-//			setCheckBox(checkBox15, ConfigCode.SearchSubdirectory);
-//			setCheckBox(checkBox16, ConfigCode.SortWithFilename);
-//			setCheckBox(checkBox17, ConfigCode.SetWindowPos);
-//			setCheckBox(checkBox18, ConfigCode.UseKeyMacro);
-//			setCheckBox(checkBox20, ConfigCode.AllowFunctionOverloading);
-//			setCheckBox(checkBox19, ConfigCode.WarnFunctionOverloading);
-//            setCheckBox(checkBox21, ConfigCode.WindowMaximixed);
-//            setCheckBox(checkBox22, ConfigCode.WarnNormalFunctionOverloading);
-//			setCheckBox(checkBox23, ConfigCode.WarnBackCompatibility);
-//			setCheckBox(checkBoxCompatiErrorLine, ConfigCode.CompatiErrorLine);
-//			setCheckBox(checkBoxCompatiCALLNAME, ConfigCode.CompatiCALLNAME);
-//			setCheckBox(checkBox24, ConfigCode.UseSaveFolder);
-//			setCheckBox(checkBox27, ConfigCode.SystemSaveInUTF8);
-//			setCheckBox(checkBoxCompatiRAND, ConfigCode.CompatiRAND);
-//			setCheckBox(checkBoxCompatiLinefeedAs1739, ConfigCode.CompatiLinefeedAs1739);
-//			setCheckBox(checkBox28, ConfigCode.CompatiCallEvent);
-//			setCheckBox(checkBoxFuncNoIgnoreCase, ConfigCode.CompatiFunctionNoignoreCase);
-//			setCheckBox(checkBoxSystemFullSpace, ConfigCode.SystemAllowFullSpace);
-//			setCheckBox(checkBox12, ConfigCode.CompatiFuncArgOptional);
-//			setCheckBox(checkBox25, ConfigCode.CompatiFuncArgAutoConvert);
-//			setCheckBox(checkBox26, ConfigCode.SystemSaveInBinary);
-//			setCheckBox(checkBoxSystemTripleSymbol, ConfigCode.SystemIgnoreTripleSymbol);
-//			setCheckBox(checkBoxCompatiSP, ConfigCode.CompatiSPChara);
-//			setCheckBox(checkBox9, ConfigCode.TimesNotRigorousCalculation);
-//			setCheckBox(checkBox29, ConfigCode.SystemNoTarget);
-//			setNumericUpDown(numericUpDown2, ConfigCode.WindowX);
-//			setNumericUpDown(numericUpDown3, ConfigCode.WindowY);
-//			setNumericUpDown(numericUpDown4, ConfigCode.MaxLog);
-//			setNumericUpDown(numericUpDown1, ConfigCode.PrintCPerLine);
-//			setNumericUpDown(numericUpDown9, ConfigCode.PrintCLength);
-//			setNumericUpDown(numericUpDown6, ConfigCode.LineHeight);
-//			setNumericUpDown(numericUpDown7, ConfigCode.FPS);
-//			setNumericUpDown(numericUpDown8, ConfigCode.ScrollHeight);
-//			setNumericUpDown(numericUpDown5, ConfigCode.FontSize);
-//			setNumericUpDown(numericUpDown10, ConfigCode.InfiniteLoopAlertTime);
-//            setNumericUpDown(numericUpDown11, ConfigCode.SaveDataNos);
+// 		void setColorBox(ColorBox colorBox, ConfigCode code)
+// 		{
+// 			ConfigItem<Color> item = (ConfigItem<Color>)ConfigData.Instance.GetConfigItem(code);
+// 			colorBox.SelectingColor = item.Value;
+// 			colorBox.Enabled = !item.Fixed;
+// 		}
+// /*		void setTextBox(TextBox textBox, ConfigCode code)
+// 		{
+// 			ConfigItem<string> item = (ConfigItem<string>)ConfigData.Instance.GetConfigItem(code);
+// 			textBox.Text = item.Value;
+// 			textBox.Enabled = !item.Fixed;
+// 		}
+// */
+// 		MainWindow parent = null;
+// 		public void SetConfig(MainWindow mainWindow)
+// 		{
+// 			parent = mainWindow;
+// 			//ConfigData config = ConfigData.Instance;
+// 			setCheckBox(checkBox1, ConfigCode.IgnoreCase);
+// 			setCheckBox(checkBox2, ConfigCode.UseRenameFile);
+// 			setCheckBox(checkBox3, ConfigCode.UseMouse);
+// 			setCheckBox(checkBox4, ConfigCode.UseMenu);
+// 			setCheckBox(checkBox5, ConfigCode.UseDebugCommand);
+// 			setCheckBox(checkBox6, ConfigCode.AllowMultipleInstances);
+// 			setCheckBox(checkBox7, ConfigCode.AutoSave);
+// 			setCheckBox(checkBox8, ConfigCode.SizableWindow);
+// 			setCheckBox(checkBox10, ConfigCode.UseReplaceFile);
+// 			setCheckBox(checkBox11, ConfigCode.IgnoreUncalledFunction);
+// 			//setCheckBox(checkBox12, ConfigCode.ReduceFormattedStringOnLoad);
+// 			setCheckBox(checkBox13, ConfigCode.DisplayReport);
+// 			setCheckBox(checkBox14, ConfigCode.ButtonWrap);
+// 			setCheckBox(checkBox15, ConfigCode.SearchSubdirectory);
+// 			setCheckBox(checkBox16, ConfigCode.SortWithFilename);
+// 			setCheckBox(checkBox17, ConfigCode.SetWindowPos);
+// 			setCheckBox(checkBox18, ConfigCode.UseKeyMacro);
+// 			setCheckBox(checkBox20, ConfigCode.AllowFunctionOverloading);
+// 			setCheckBox(checkBox19, ConfigCode.WarnFunctionOverloading);
+//             setCheckBox(checkBox21, ConfigCode.WindowMaximixed);
+//             setCheckBox(checkBox22, ConfigCode.WarnNormalFunctionOverloading);
+// 			setCheckBox(checkBox23, ConfigCode.WarnBackCompatibility);
+// 			setCheckBox(checkBoxCompatiErrorLine, ConfigCode.CompatiErrorLine);
+// 			setCheckBox(checkBoxCompatiCALLNAME, ConfigCode.CompatiCALLNAME);
+// 			setCheckBox(checkBox24, ConfigCode.UseSaveFolder);
+// 			setCheckBox(checkBox27, ConfigCode.SystemSaveInUTF8);
+// 			setCheckBox(checkBoxCompatiRAND, ConfigCode.CompatiRAND);
+// 			setCheckBox(checkBoxCompatiLinefeedAs1739, ConfigCode.CompatiLinefeedAs1739);
+// 			setCheckBox(checkBox28, ConfigCode.CompatiCallEvent);
+// 			setCheckBox(checkBoxFuncNoIgnoreCase, ConfigCode.CompatiFunctionNoignoreCase);
+// 			setCheckBox(checkBoxSystemFullSpace, ConfigCode.SystemAllowFullSpace);
+// 			setCheckBox(checkBox12, ConfigCode.CompatiFuncArgOptional);
+// 			setCheckBox(checkBox25, ConfigCode.CompatiFuncArgAutoConvert);
+// 			setCheckBox(checkBox26, ConfigCode.SystemSaveInBinary);
+// 			setCheckBox(checkBoxSystemTripleSymbol, ConfigCode.SystemIgnoreTripleSymbol);
+// 			setCheckBox(checkBoxCompatiSP, ConfigCode.CompatiSPChara);
+// 			setCheckBox(checkBox9, ConfigCode.TimesNotRigorousCalculation);
+// 			setCheckBox(checkBox29, ConfigCode.SystemNoTarget);
+// 			setCheckBox(checkBox30, ConfigCode.ForbidUpdateCheck);
+// 			setCheckBox(checkBox31, ConfigCode.UseERD);
+// 			setNumericUpDown(numericUpDown2, ConfigCode.WindowX);
+// 			setNumericUpDown(numericUpDown3, ConfigCode.WindowY);
+// 			setNumericUpDown(numericUpDown4, ConfigCode.MaxLog);
+// 			setNumericUpDown(numericUpDown1, ConfigCode.PrintCPerLine);
+// 			setNumericUpDown(numericUpDown9, ConfigCode.PrintCLength);
+// 			setNumericUpDown(numericUpDown6, ConfigCode.LineHeight);
+// 			setNumericUpDown(numericUpDown7, ConfigCode.FPS);
+// 			setNumericUpDown(numericUpDown8, ConfigCode.ScrollHeight);
+// 			setNumericUpDown(numericUpDown5, ConfigCode.FontSize);
+// 			setNumericUpDown(numericUpDown10, ConfigCode.InfiniteLoopAlertTime);
+//             setNumericUpDown(numericUpDown11, ConfigCode.SaveDataNos);
 
 //			setNumericUpDown(numericUpDownPosX, ConfigCode.WindowPosX);
 //			setNumericUpDown(numericUpDownPosY, ConfigCode.WindowPosY);
@@ -313,23 +315,25 @@
 //			config.GetConfigItem(ConfigCode.SystemSaveInBinary).SetValue(checkBox26.Checked);
 //			config.GetConfigItem(ConfigCode.SystemIgnoreTripleSymbol).SetValue(checkBoxSystemTripleSymbol.Checked);
 
-//			config.GetConfigItem(ConfigCode.CompatiFunctionNoignoreCase).SetValue(checkBoxFuncNoIgnoreCase.Checked);
-//			config.GetConfigItem(ConfigCode.SystemAllowFullSpace).SetValue(checkBoxSystemFullSpace.Checked);
-//			config.GetConfigItem(ConfigCode.CompatiSPChara).SetValue(checkBoxCompatiSP.Checked);
-//			config.GetConfigItem(ConfigCode.TimesNotRigorousCalculation).SetValue(checkBox9.Checked);
-//			config.GetConfigItem(ConfigCode.SystemNoTarget).SetValue(checkBox29.Checked);
+			// config.GetConfigItem(ConfigCode.CompatiFunctionNoignoreCase).SetValue<bool>(checkBoxFuncNoIgnoreCase.Checked);
+			// config.GetConfigItem(ConfigCode.SystemAllowFullSpace).SetValue<bool>(checkBoxSystemFullSpace.Checked);
+			// config.GetConfigItem(ConfigCode.CompatiSPChara).SetValue<bool>(checkBoxCompatiSP.Checked);
+			// config.GetConfigItem(ConfigCode.TimesNotRigorousCalculation).SetValue<bool>(checkBox9.Checked);
+			// config.GetConfigItem(ConfigCode.SystemNoTarget).SetValue<bool>(checkBox29.Checked);
+			// config.GetConfigItem(ConfigCode.ForbidUpdateCheck).SetValue<bool>(checkBox30.Checked);
+			// config.GetConfigItem(ConfigCode.UseERD).SetValue<bool>(checkBox31.Checked);
 
 
-//			config.GetConfigItem(ConfigCode.WindowX).SetValue((int)numericUpDown2.Value);
-//			config.GetConfigItem(ConfigCode.WindowY).SetValue((int)numericUpDown3.Value);
-//			config.GetConfigItem(ConfigCode.MaxLog).SetValue((int)numericUpDown4.Value);
-//			config.GetConfigItem(ConfigCode.PrintCPerLine).SetValue((int)numericUpDown1.Value);
-//			config.GetConfigItem(ConfigCode.PrintCLength).SetValue((int)numericUpDown9.Value);
-//			config.GetConfigItem(ConfigCode.LineHeight).SetValue((int)numericUpDown6.Value);
-//			config.GetConfigItem(ConfigCode.FPS).SetValue((int)numericUpDown7.Value);
-//			config.GetConfigItem(ConfigCode.ScrollHeight).SetValue((int)numericUpDown8.Value);
-//			config.GetConfigItem(ConfigCode.InfiniteLoopAlertTime).SetValue((int)numericUpDown10.Value);
-//            config.GetConfigItem(ConfigCode.SaveDataNos).SetValue((int)numericUpDown11.Value);
+			// config.GetConfigItem(ConfigCode.WindowX).SetValue<int>((int)numericUpDown2.Value);
+			// config.GetConfigItem(ConfigCode.WindowY).SetValue<int>((int)numericUpDown3.Value);
+			// config.GetConfigItem(ConfigCode.MaxLog).SetValue<int>((int)numericUpDown4.Value);
+			// config.GetConfigItem(ConfigCode.PrintCPerLine).SetValue<int>((int)numericUpDown1.Value);
+			// config.GetConfigItem(ConfigCode.PrintCLength).SetValue<int>((int)numericUpDown9.Value);
+			// config.GetConfigItem(ConfigCode.LineHeight).SetValue<int>((int)numericUpDown6.Value);
+			// config.GetConfigItem(ConfigCode.FPS).SetValue<int>((int)numericUpDown7.Value);
+			// config.GetConfigItem(ConfigCode.ScrollHeight).SetValue<int>((int)numericUpDown8.Value);
+			// config.GetConfigItem(ConfigCode.InfiniteLoopAlertTime).SetValue<int>((int)numericUpDown10.Value);
+            // config.GetConfigItem(ConfigCode.SaveDataNos).SetValue<int>((int)numericUpDown11.Value);
 
 //			config.GetConfigItem(ConfigCode.WindowPosX).SetValue((int)numericUpDownPosX.Value);
 //			config.GetConfigItem(ConfigCode.WindowPosY).SetValue((int)numericUpDownPosY.Value);

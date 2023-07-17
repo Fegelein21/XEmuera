@@ -1,4 +1,6 @@
-﻿using SkiaSharp;
+﻿//need check
+
+using SkiaSharp;
 using SkiaSharp.Views.Forms;
 using System;
 using System.Collections.Generic;
@@ -90,6 +92,7 @@ namespace MinorShift.Emuera
 			LongPressTimer.Elapsed += LongPressTimer_Elapsed;
 
 			InitGameView();
+			InitEmuera();
 		}
 
 		private void LongPressTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -100,7 +103,7 @@ namespace MinorShift.Emuera
 				return;
 
 			IsLongPressed = true;
-			PressEnterKey(null);
+			//PressEnterKey(null);
 		}
 
 		static bool LoadSuccess;
@@ -172,7 +175,7 @@ namespace MinorShift.Emuera
 
 			Config.RefreshDisplayConfig();
 
-			InitEmuera();
+			//InitEmuera();
 		}
 
 		private void UpdateView()
@@ -197,7 +200,7 @@ namespace MinorShift.Emuera
 
 		protected override bool OnBackButtonPressed()
 		{
-			if (console.IsError)
+			if (console != null && console.IsError)
 			{
 				Close();
 			}
@@ -215,7 +218,8 @@ namespace MinorShift.Emuera
 
 		private bool IsInitializing(bool showMessage = false)
 		{
-			if (GlobalStatic.Process == null || GlobalStatic.Process.inInitializeing)
+			// Process is null mostly because of closing
+			if (GlobalStatic.Process != null && GlobalStatic.Process.inInitializeing)
 			{
 				if (showMessage)
 					this.DisplaySnackBarAsync(StringsText.GameIsProcessing, null, null);
@@ -226,6 +230,10 @@ namespace MinorShift.Emuera
 
 		public void Close()
 		{
+			if (IsInitializing(false))
+            {
+				return;
+            }
 			IsWindowClosing = true;
 			MainThread.BeginInvokeOnMainThread(() =>
 			{
@@ -278,6 +286,12 @@ namespace MinorShift.Emuera
 				//	break;
 				case SKTouchAction.Pressed:
 
+					// when rebooting, clicking may cause unexpected closing
+					if (IsInitializing(false) || GlobalStatic.Process == null)
+                    {
+						return;
+                    }
+
 					IsMouseMoveAction = false;
 					IsDragScrollBar = true;
 					PrevPoint = e.Location;
@@ -325,7 +339,6 @@ namespace MinorShift.Emuera
 					return;
 
 				case SKTouchAction.Released:
-
 					IsDragScrollBar = false;
 
 					if (Config.LongPressSkip)
@@ -350,7 +363,7 @@ namespace MinorShift.Emuera
 
 		private void MouseReleased(SKTouchEventArgs e)
 		{
-			if (IsMouseMove(e.Location) || IsLongPressed)
+			if (IsMouseMove(e.Location))
 				return;
 
 			//if (!Config.UseMouse)
@@ -359,9 +372,11 @@ namespace MinorShift.Emuera
 			//	return;
 			if (console.IsInProcess)
 				return;
+
 			if (console.IsWaitingPrimitive)
 			//			if (console.IsWaitingPrimitiveMouse)
 			{
+				if (IsLongPressed) console.MouseDown(MouseLocation, SKMouseButton.Right);
 				console.MouseDown(MouseLocation, e.MouseButton);
 				return;
 			}
@@ -381,7 +396,7 @@ namespace MinorShift.Emuera
 					return;
 				if (e.MouseButton == SKMouseButton.Left || e.MouseButton == SKMouseButton.Right)
 				{
-					if (e.MouseButton == SKMouseButton.Right)
+					if (e.MouseButton == SKMouseButton.Right || IsLongPressed)
 						PressEnterKey(true, true);
 					else
 						PressEnterKey(false, true);

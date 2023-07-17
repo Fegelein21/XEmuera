@@ -110,21 +110,21 @@ namespace MinorShift.Emuera.Content
 						string[] tokens = str.Split(',');
 						//AContentItem item = CreateFromCsv(tokens);
 						ScriptPosition sp = new ScriptPosition(filename, lineNo);
-                        if (CreateFromCsv(tokens, directory, currentAnime, sp) is ASprite item)
-                        {
-                            //アニメスプライト宣言ならcurrentAnime上書きしてフレーム追加モードにする。そうでないならnull
-                            currentAnime = item as SpriteAnime;
-                            if (!imageDictionary.ContainsKey(item.Name))
-                            {
-                                imageDictionary.Add(item.Name, item);
-                            }
-                            else
-                            {
-                                ParserMediator.Warn("同名のリソースがすでに作成されています:" + item.Name, sp, 0);
-                                item.Dispose();
-                            }
-                        }
-                    }
+						if (CreateFromCsv(tokens, directory, currentAnime, sp) is ASprite item)
+						{
+							//アニメスプライト宣言ならcurrentAnime上書きしてフレーム追加モードにする。そうでないならnull
+							currentAnime = item as SpriteAnime;
+							if (!imageDictionary.ContainsKey(item.Name))
+							{
+								imageDictionary.Add(item.Name, item);
+							}
+							else
+							{
+								ParserMediator.Warn("同名のリソースがすでに作成されています:" + item.Name, sp, 0);
+								item.Dispose();
+							}
+						}
+					}
 				}
 			}
 			catch
@@ -153,7 +153,31 @@ namespace MinorShift.Emuera.Content
 				graph.GDispose();
 			gList.Clear();
 		}
+		#region EM_私家版_ファイル占用解除
+		// filepathの安全性(ゲームフォルダ以外のフォルダか)を確認しない
+		//static public SKBitmap LoadImage(string filepath)
+		//{
+		//	SKBitmap bmp = null;
+		//	FileStream fs = null;
+		//	if (!File.Exists(filepath)) return null;
 
+		//	try
+		//	{
+		//		fs = new FileStream(filepath, FileMode.Open);
+		//		var factory = new ImageProcessor.ImageFactory();
+		//		factory.Load(fs);
+		//		bmp = (SKBitmap)factory.Image;
+		//	}
+		//	catch { }
+		//	finally
+		//	{
+		//		fs?.Close();
+		//		fs?.Dispose();
+		//	}
+		//	return bmp;
+
+		//}
+		#endregion
 		/// <summary>
 		/// resourcesフォルダ中のcsvの1行を読んで新しいリソースを作る(or既存のアニメーションスプライトに1フレーム追加する)
 		/// </summary>
@@ -164,10 +188,8 @@ namespace MinorShift.Emuera.Content
 		/// <returns></returns>
 		static private AContentItem CreateFromCsv(string[] tokens, string dir, SpriteAnime currentAnime, ScriptPosition sp)
 		{
-
 			if (tokens.Length < 2)
 				return null;
-
 			string name = tokens[0].Trim().ToUpper();//
 			//string arg2 = tokens[1].ToUpper();//画像ファイル名
 			string arg2 = tokens[1].Replace('\\', Path.DirectorySeparatorChar);

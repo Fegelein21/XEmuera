@@ -5,6 +5,7 @@ using System.IO;
 using XEmuera.Forms;
 using MinorShift.Emuera.Sub;
 using MinorShift.Emuera.GameProc;
+using System.Xml;
 
 namespace MinorShift.Emuera.GameData.Variable
 {
@@ -13,7 +14,12 @@ namespace MinorShift.Emuera.GameData.Variable
 	/// </summary>
 	internal sealed partial class VariableData : IDisposable
 	{
-
+		#region EM_私家版_XMLDocument_連想配列
+		readonly Dictionary<Int64, XmlDocument> xmlDict = new Dictionary<Int64, XmlDocument>();
+		public Dictionary<Int64, XmlDocument> DataXmlDocument { get { return xmlDict; } }
+		readonly Dictionary<string, Dictionary<string, string>> mapDict = new Dictionary<string, Dictionary<string, string>>();
+		public Dictionary<string, Dictionary<string, string>> DataStringMaps { get { return mapDict; } }
+		#endregion
 		readonly Int64[] dataInteger;
 		readonly string[] dataString;
 		readonly Int64[][] dataIntegerArray;
@@ -277,12 +283,21 @@ namespace MinorShift.Emuera.GameData.Variable
 			varTokenDic.Add("GLOBALNAME", new Str1DConstantToken(VariableCode.GLOBALNAME, this));
 			varTokenDic.Add("GLOBALSNAME", new Str1DConstantToken(VariableCode.GLOBALSNAME, this));
 
+			#region EE_CSV機能拡張
+			varTokenDic.Add("DAYNAME", new Str1DConstantToken(VariableCode.DAYNAME, this));
+			varTokenDic.Add("TIMENAME", new Str1DConstantToken(VariableCode.TIMENAME, this));
+			varTokenDic.Add("MONEYNAME", new Str1DConstantToken(VariableCode.MONEYNAME, this));
+			#endregion
+
 			StrConstantToken token = new StrConstantToken(VariableCode.GAMEBASE_AUTHOR, this, gamebase.ScriptAutherName);
 			varTokenDic.Add("GAMEBASE_AUTHER", token);
 			varTokenDic.Add("GAMEBASE_AUTHOR", token);
 			varTokenDic.Add("GAMEBASE_INFO", new StrConstantToken(VariableCode.GAMEBASE_INFO, this, gamebase.ScriptDetail));
 			varTokenDic.Add("GAMEBASE_YEAR", new StrConstantToken(VariableCode.GAMEBASE_YEAR, this, gamebase.ScriptYear));
 			varTokenDic.Add("GAMEBASE_TITLE", new StrConstantToken(VariableCode.GAMEBASE_TITLE, this, gamebase.ScriptTitle));
+			#region EE_UPDATECHECK
+			varTokenDic.Add("GAMEBASE_URL", new StrConstantToken(VariableCode.GAMEBASE_URL, this, gamebase.UpdateCheckURL));
+			#endregion
 
 
 			varTokenDic.Add("GAMEBASE_GAMECODE", new IntConstantToken(VariableCode.GAMEBASE_GAMECODE, this, gamebase.ScriptUniqueCode));

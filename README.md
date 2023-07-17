@@ -21,6 +21,7 @@ https://github.com/Fegelein21/XEmuera/releases
 ## 目前存在问题
 - 尚未规范本地化翻译。
 - 窘于个人技术力，未能实现真正意义上的纵向滑动条。
+- 字体的加粗倾斜等可能与字体真正的行为不符
 
 ## 支持作者
 https://afdian.net/@fegelein21

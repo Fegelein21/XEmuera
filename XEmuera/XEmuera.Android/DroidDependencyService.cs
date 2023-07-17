@@ -12,8 +12,11 @@ using System.Text;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using XEmuera.Droid;
+using Android.Media;
+using XEmuera.Forms;
 
 [assembly: Dependency(typeof(DroidDependencyService))]
+[assembly: Dependency(typeof(MobileMediaPlayer))]
 namespace XEmuera.Droid
 {
 	internal class DroidDependencyService : IPlatformService
@@ -90,6 +93,70 @@ namespace XEmuera.Droid
 		public void UnlockScreenOrientation()
 		{
 			MainActivity.Instance.RequestedOrientation = ScreenOrientation.Sensor;
+		}
+	}
+
+	public class MobileMediaPlayer : IPlayer
+	{
+		public MobileMediaPlayer()
+		{
+			MediaPlayer = new MediaPlayer();
+			MediaPlayer.Reset();
+			Volume = 100f;
+		}
+
+		MediaPlayer MediaPlayer { get; set; }
+
+		float _volume;
+		public float Volume
+		{
+			get
+			{
+				return _volume;
+			}
+			set
+			{
+				_volume = value;
+				MediaPlayer.SetVolume(Volume, Volume);
+			}
+		}
+		public bool Looping
+		{
+			get
+			{
+				return MediaPlayer.Looping;
+			}
+			set
+			{
+				MediaPlayer.Looping = value;
+			}
+		}
+
+		public bool IsPlaying
+		{
+			get
+			{
+				return MediaPlayer.IsPlaying;
+			}
+		}
+
+
+		public void Load(string filepath)
+		{
+			MediaPlayer.Reset();
+			MediaPlayer.SetDataSource(filepath);
+		}
+
+		public void Play()
+		{
+			MediaPlayer.Prepare();
+			MediaPlayer.Start();
+			MediaPlayer.SetVolume(Volume, Volume);
+		}
+
+		public void Stop()
+		{
+			MediaPlayer.Stop();
 		}
 	}
 }

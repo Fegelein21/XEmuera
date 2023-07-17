@@ -273,6 +273,184 @@ namespace MinorShift.Emuera
 		private void InitConsole()
 		{
 			console = new EmueraConsole(this);
+			//1823 INPUTMOUSEKEY Key入力全てを捕まえてERB側で処理する
+			//if (console != null && console.IsWaitingPrimitiveKey)
+			// if (console != null && console.IsWaitingPrimitive)
+			// {
+			// 	return false;
+			// }
+            #region EE_ホットキー拡張
+        //     DialogResult result;
+		// 	switch (keyData & Keys.KeyCode)
+		// 	{
+		// 		case Keys.B when (keyData & Keys.Modifiers & Keys.Control) == Keys.Control:
+		// 			if (WindowState != FormWindowState.Minimized)
+		// 			{
+		// 				WindowState = FormWindowState.Minimized;
+		// 				return true;
+		// 			}
+		// 			break;
+		// 		case Keys.C when (keyData & Keys.Modifiers & Keys.Control) == Keys.Control:
+		// 		case Keys.Insert when (keyData & Keys.Modifiers & Keys.Control) == Keys.Control:
+		// 			if (TextBox.SelectedText == "")
+		// 			{
+		// 				var dialog = new ClipBoardDialog { StartPosition = FormStartPosition.CenterParent };
+		// 				dialog.Setup(console);
+		// 				dialog.ShowDialog();
+		// 				return true;
+		// 			}
+		// 			break;
+		// 		case Keys.O when (keyData & Keys.Modifiers & Keys.Control) == Keys.Control:
+		// 		case Keys.Insert when (keyData & Keys.Modifiers & Keys.Control) == Keys.Control:
+		// 			{
+		// 				var doit = console != null;
+		// 				if (console != null && console.IsInProcess)
+		// 				{
+		// 					MessageBox.Show("スクリプト動作中には使用できません");
+		// 					doit = false;
+		// 				}
+		// 				if (doit)
+		// 				{
+		// 					result = openFileDialog.ShowDialog();
+		// 					var filepath = new List<string>();
+		// 					if (result == DialogResult.OK)
+		// 					{
+		// 						foreach (var fname in openFileDialog.FileNames)
+		// 						{
+		// 							if (!File.Exists(fname))
+		// 							{
+		// 								MessageBox.Show("ファイルがありません");
+		// 								doit = false;
+		// 							}
+		// 							else if (Path.GetExtension(fname).ToUpper() != ".ERB")
+		// 							{
+		// 								MessageBox.Show("ERBファイル以外は読み込めません  , ファイル形式エラー"); //
+		// 								doit = false;
+		// 							}
+		// 							if (fname.StartsWith(Program.ErbDir, StringComparison.OrdinalIgnoreCase))
+		// 								filepath.Add(Program.ErbDir + fname.Substring(Program.ErbDir.Length));
+		// 							else
+		// 								filepath.Add(fname);
+		// 						}
+		// 						if (doit)
+		// 						{
+		// 							console.ReloadPartialErb(filepath);
+		// 							return true;
+		// 						}
+		// 					}
+		// 				}
+		// 				break;
+		// 			}
+		// 		case Keys.T when (keyData & Keys.Modifiers & Keys.Control) == Keys.Control:
+		// 		case Keys.Insert when (keyData & Keys.Modifiers & Keys.Control) == Keys.Control:
+		// 			{
+		// 				var doit = true;
+		// 				{
+		// 					if (console == null)
+		// 						doit = false;
+		// 					if (console != null && console.IsInProcess)
+		// 					{
+		// 						MessageBox.Show(
+		// 							"スクリプト動作中には使用できません");
+		// 						doit = false;
+		// 					}
+		// 					if (console.notToTitle)
+		// 					{
+		// 						if (console.byError)
+		// 							MessageBox.Show(
+		// 								"コード解析でエラーが発見されたため、タイトルへは飛べません");
+		// 						else
+		// 							MessageBox.Show(
+		// 								"解析モードのためタイトルへは飛べません");
+		// 						doit = false;
+		// 					}
+		// 					if (doit)
+		// 					{
+		// 						result = MessageBox.Show("タイトル画面に戻りますか？", "タイトルに戻る",
+		// 							MessageBoxButtons.OKCancel);
+		// 						if (result != DialogResult.OK)
+		// 							doit = false;
+		// 						if (doit)
+		// 						{
+		// 							GotoTitle();
+		// 							return true;
+		// 						}
+		// 					}
+		// 				}
+		// 				break;
+		// 			}
+		// 		case Keys.R when (keyData & Keys.Modifiers & Keys.Control) == Keys.Control:
+		// 		case Keys.Insert when (keyData & Keys.Modifiers & Keys.Control) == Keys.Control:
+		// 			result = MessageBox.Show("再起動しますか？", "再起動", MessageBoxButtons.OKCancel);
+		// 			if (result == DialogResult.OK)
+		// 			{
+		// 				Reboot();
+		// 				return true;
+		// 			}
+		// 			break;
+		// 		case Keys.V when (keyData & Keys.Modifiers & Keys.Control) == Keys.Control:
+		// 		case Keys.Insert when (keyData & Keys.Modifiers & Keys.Shift) == Keys.Shift:
+		// 			if (Clipboard.GetDataObject() == null || !Clipboard.ContainsText())
+		// 			{
+		// 				return true;
+		// 			}
+		// 			else
+		// 			{
+		// 				if (Clipboard.GetDataObject().GetDataPresent(DataFormats.Text))
+		// 					TextBox.Paste(DataFormats.GetFormat(DataFormats.UnicodeText));
+		// 				return true;
+		// 			}
+		// 		//else if (((int)keyData == (int)Keys.Control + (int)Keys.D) && Program.DebugMode)
+		// 		//{
+		// 		//    console.OpenDebugDialog();
+		// 		//    return true;
+		// 		//}
+		// 		//else if (((int)keyData == (int)Keys.Control + (int)Keys.R) && Program.DebugMode)
+		// 		//{
+		// 		//    if ((console.DebugDialog != null) && (console.DebugDialog.Created))
+		// 		//        console.DebugDialog.UpdateData();
+		// 		//}
+		// 		default:
+		// 			if (Config.UseKeyMacro)
+		// 			{
+		// 				int keyCode = (int)(keyData & Keys.KeyCode);
+		// 				bool shiftPressed = (keyData & Keys.Modifiers) == Keys.Shift;
+		// 				bool ctrlPressed = (keyData & Keys.Modifiers) == Keys.Control;
+		// 				bool unPressed = (int)(keyData & Keys.Modifiers) == 0;
+		// 				if (keyCode >= (int)Keys.F1 && keyCode <= (int)Keys.F12)
+		// 				{
+		// 					int macroNum = keyCode - (int)Keys.F1;
+		// 					if (shiftPressed)
+		// 					{
+		// 						if (this.richTextBox1.Text != "")
+		// 							KeyMacro.SetMacro(macroNum, macroGroup, this.richTextBox1.Text);
+		// 						return true;
+		// 					}
+		// 					else if (unPressed)
+		// 					{
+		// 						this.richTextBox1.Text = KeyMacro.GetMacro(macroNum, macroGroup);
+		// 						this.richTextBox1.SelectionStart = this.richTextBox1.Text.Length;
+		// 						return true;
+		// 					}
+		// 				}
+		// 				else if (ctrlPressed)
+		// 				{
+		// 					int newGroupNum = -1;
+		// 					if (keyCode >= (int)Keys.D0 && keyCode <= (int)Keys.D9)
+		// 						newGroupNum = keyCode - (int)Keys.D0;
+		// 					else if (keyCode >= (int)Keys.NumPad0 && keyCode <= (int)Keys.NumPad9)
+		// 						newGroupNum = keyCode - (int)Keys.NumPad0;
+		// 					if (newGroupNum >= 0)
+		// 					{
+		// 						setNewMacroGroup(newGroupNum);
+		// 					}
+		// 				}
+		// 			}
+		// 			break;
+		// 	}
+		// 	return base.ProcessCmdKey(ref msg, keyData);
+		// }
+        #endregion
 
 			DrawTextUtils.Reset();
 			DrawBitmapUtils.Reset();
@@ -402,22 +580,46 @@ namespace MinorShift.Emuera
 		//			return;
 		//		}
 		//	}
-		//	//左が押されたなら選択。
-		//	if (str != null && (e.Button & MouseButtons.Left) == MouseButtons.Left)
-		//	{
-		//		changeTextbyMouse = console.IsWaintingOnePhrase;
-		//		richTextBox1.Text = str;
-		//		//念のため
-		//		if (console.IsWaintingOnePhrase)
-		//			last_inputed = "";
-		//		//右が押しっぱなしならスキップ追加。
-		//		if ((Control.MouseButtons & MouseButtons.Right) == MouseButtons.Right)
-		//			PressEnterKey(true, true);
-		//		else
-		//			PressEnterKey(false, true);
-		//		return;
-		//	}
-		//}
+		// 	#region EM_私家版_INPUT系機能拡張
+		// 	else if (console.IsWaintingInputWithMouse && (!console.IsError && str != null))
+		// 	{
+		// 		if ((e.Button == MouseButtons.Left) || (e.Button == MouseButtons.Right))
+		// 		{
+		// 			if (modifiersWhileWaintingInputWithMouse != null)
+		// 			{
+		// 				GlobalStatic.Process.InputInteger(2, (long)modifiersWhileWaintingInputWithMouse);
+		// 			}
+		// 			GlobalStatic.Process.InputString(1, str);
+		// 			if (e.Button == MouseButtons.Right)
+		// 			{
+		// 				GlobalStatic.Process.InputInteger(1, 2);
+		// 				PressEnterKey(true, true);
+		// 			}
+		// 			else
+		// 			{
+		// 				GlobalStatic.Process.InputInteger(1, 1);
+		// 				PressEnterKey(false, true);
+		// 			}
+		// 			return;
+		// 		}
+		// 	}
+		// 	#endregion
+		// 	//左が押されたなら選択。
+		// 	if (str != null && ((e.Button & MouseButtons.Left) == MouseButtons.Left))
+		// 	{ 
+		// 		changeTextbyMouse = console.IsWaintingOnePhrase;
+		// 		richTextBox1.Text = str;
+        //         //念のため
+        //         if (console.IsWaintingOnePhrase)
+        //             last_inputed = "";
+		// 		//右が押しっぱなしならスキップ追加。
+		// 		if ((Control.MouseButtons & MouseButtons.Right) == MouseButtons.Right)
+		// 			PressEnterKey(true, true);
+		// 		else
+		// 			PressEnterKey(false, true);
+		// 		return;
+		// 	}
+		// }
 
 		//private void vScrollBar_Scroll(object sender, ScrollEventArgs e)
 		//{
@@ -427,10 +629,15 @@ namespace MinorShift.Emuera
 		//	console.RefreshStrings(vScrollBar.Value == vScrollBar.Maximum || vScrollBar.Value == vScrollBar.Minimum);
 		//}
 
+
+		// EM_私家版_INPUT系機能拡張!
+
 		bool PressEnterKeyInProcess;
 
 		public void PressEnterKey(bool mesSkip, bool inputsByMouse)
 		{
+			if (IsInitializing(false))
+				return;
 			if (PressEnterKeyInProcess)
 				return;
             if (console == null || console.IsInProcess)
@@ -564,7 +771,6 @@ namespace MinorShift.Emuera
 				console.forceStopTimer();
 				Program.Reboot = true;
 				Close();
-				GameUtils.StartEmuera();
 			});
 		}
 
@@ -656,8 +862,22 @@ namespace MinorShift.Emuera
 
 		private void mainPicBox_Paint(object sender, SKPaintSurfaceEventArgs e)
 		{
-			//if (console == null)
-			//    return;
+			// if (console == null)
+			// 	return;
+			// saveFileDialog.InitialDirectory = Program.ExeDir;
+			// DateTime time = DateTime.Now;
+			// string fname = time.ToString("yyyyMMdd-HHmmss");
+			// fname += ".log";
+			// saveFileDialog.FileName = fname;
+			// DialogResult result = saveFileDialog.ShowDialog();
+			// if (result == DialogResult.OK)
+			// {
+			// 	#region EE_OUTPUTLOG
+			// 	// console.OutputLog(Path.GetFullPath(saveFileDialog.FileName));
+			// 	console.OutputSystemLog(Path.GetFullPath(saveFileDialog.FileName));
+			// 	#endregion
+
+			// }
 
 			if (IsWindowClosing)
 				return;
@@ -850,7 +1070,22 @@ namespace MinorShift.Emuera
             //    richTextBox1.Text = richTextBox1.Text.Remove(1);
             PressEnterKey(false, false);
             textBox_flag = true;
-        }
+		}
+		#region EM_私家版_INPUT系機能拡張
+		// Keys? modifiersWhileWaintingInputWithMouse = null;
+		// private void richTextBox1_ModifierRecorder_KeyUp(object sender, KeyEventArgs e)
+		// {
+		// 	if (console == null || !console.IsWaintingInputWithMouse)
+		// 		return;
+		// 	modifiersWhileWaintingInputWithMouse = null;
+		// }
+		// private void richTextBox1_ModifierRecorder_KeyDown(object sender, KeyEventArgs e)
+		// {
+		// 	if (console == null || !console.IsWaintingInputWithMouse)
+		// 		return;
+		// 	modifiersWhileWaintingInputWithMouse = e.Modifiers;
+		// }
+		#endregion
 
 		//private void richTextBox1_KeyDown(object sender, KeyEventArgs e)
 		//{

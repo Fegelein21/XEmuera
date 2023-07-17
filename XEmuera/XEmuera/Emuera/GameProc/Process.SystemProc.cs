@@ -142,7 +142,10 @@ namespace MinorShift.Emuera.GameProc
 			if (Program.AnalysisMode)
 			{
 				console.PrintSystemLine("ファイル解析終了：Analysis.logに出力します");
-				console.OutputLog(Program.ExeDir + "Analysis.log");
+				#region EE_OUTPUTLOG
+				// console.OutputLog(Program.ExeDir + "Analysis.log");
+				console.OutputSystemLog(Program.ExeDir + "Analysis.log");
+				#endregion
 				console.noOutputLog = true;
 				console.PrintSystemLine("エンターキーもしくはクリックで終了します");
 				//System.Media.SystemSounds.Asterisk.Play();
@@ -154,7 +157,10 @@ namespace MinorShift.Emuera.GameProc
 				console.PrintSystemLine("ERBコードに解釈不可能な行があるためEmueraを終了します");
 				console.PrintSystemLine("※互換性オプション「" + Config.GetConfigName(ConfigCode.CompatiErrorLine) + "」により強制的に動作させることができます");
 				console.PrintSystemLine("emuera.logにログを出力します");
-				console.OutputLog(Program.ExeDir + "emuera.log");
+				#region EE_OUTPUTLOG
+				// console.OutputLog(Program.ExeDir + "emuera.log");
+				console.OutputSystemLog(Program.ExeDir + "emuera.log");
+				#endregion
 				console.noOutputLog = true;
 				console.PrintSystemLine("エンターキーもしくはクリックで終了します");
 				//System.Media.SystemSounds.Asterisk.Play();

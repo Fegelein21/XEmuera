@@ -960,6 +960,10 @@ namespace MinorShift.Emuera.GameProc
 				switch (func.FunctionCode)
 				{
 					case FunctionCode.REPEAT:
+						if (GlobalStatic.IdentifierDictionary.getVarTokenIsForbid("COUNT"))
+						{
+							ParserMediator.Warn("COUNTが使用禁止変数になっているため、REPEATは使用できません", func, 1, false, false);
+						}
 						foreach (InstructionLine iLine in nestStack)
 						{
 							if (iLine.FunctionCode == FunctionCode.REPEAT)

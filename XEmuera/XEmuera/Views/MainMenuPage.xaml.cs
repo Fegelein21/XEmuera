@@ -22,12 +22,24 @@ namespace XEmuera.Views
 
 			MainMenuListView.ItemsSource = MenuList;
 
+			GameUtils.EmueraSwitched -= CheckGameReboot;
 			GameUtils.EmueraSwitched -= RefreshMainMenuListView;
 			GameUtils.EmueraSwitched += RefreshMainMenuListView;
+			GameUtils.EmueraSwitched += CheckGameReboot;
+		}
+
+		private void CheckGameReboot()
+        {
+			if (Program.Reboot)
+			{
+				Program.Reboot = false;
+				GameUtils.StartEmuera();
+			}
 		}
 
 		private void RefreshMainMenuListView()
 		{
+
 			MenuList.Clear();
 
 			if (GameUtils.IsEmueraPage)

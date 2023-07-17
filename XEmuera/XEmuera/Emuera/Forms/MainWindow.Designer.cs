@@ -279,6 +279,10 @@ namespace MinorShift.Emuera
 			//this.richTextBox1.Text = "";
 			//this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
 			//this.richTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.richTextBox1_KeyDown);
+			// #region EM_私家版_INPUT系機能拡張
+			// this.richTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.richTextBox1_ModifierRecorder_KeyUp);
+			// this.richTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.richTextBox1_ModifierRecorder_KeyDown);
+			// #endregion
 			//// 
 			//// AutoVerbMenu
 			//// 

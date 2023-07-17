@@ -250,6 +250,7 @@ namespace XEmuera.Drawing
 		}
 	}
 
+	// TODO: mixed style
 	public enum FontStyle
 	{
 		Regular = 0,
@@ -274,7 +275,7 @@ namespace XEmuera.Drawing
 	{
 		public FontModel FontModel { get; }
 		public float Size { get; }
-		public FontStyle Style { get; }
+		public FontStyle Style { get; set; }
 
 		public Font(string fontName, float size, FontStyle style, GraphicsUnit unit)
 		{
@@ -282,5 +283,15 @@ namespace XEmuera.Drawing
 			Size = size;
 			Style = style;
 		}
+
+		public void SetStyle(FontStyle style)
+        {
+			Style = style;
+        }
+
+		public Int64 StyleToNum()
+        {
+			return (Int64)Style;
+        }
 	}
 }

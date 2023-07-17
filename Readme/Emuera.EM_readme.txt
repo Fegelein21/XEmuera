@@ -1,0 +1,292 @@
+﻿◆ HTML_PRINTの<space>タグでparaに負数を指定できます
+
+◆ プログラム動作中Resourceフォルダーの画像ファイルを常時占用しないようにしました
+
+◆ INPUT, INPUTS, ONEINPUT, ONEINPUTS に第二引数追加(整数型，省略可，デフォルトは0)
+   TINPUT, TINPUTS, TONEINPUT, TONEINPUTS に第五引数追加(整数型，省略可，デフォルトは0)
+   追加引数==0時、または省略した時 本家版と同じです。
+   追加引数!=0時 マウスクリックをエンターキーにみなす(RESULTSに空文字列を代入。ボタンを押した場合，ボタンのインデックスをRESULTS:1に代入)、左クリックの時RESULT:1を1、右クリックの時RESULT:1を2にします。また、同時にShift Ctrl Altを押した場合、そのキー状態をRESULT:2に保存します。(bit 17 18 19)
+
+◆ ONEINPUT, ONEINPUTS, TONEINPUT, TONEINPUTS デフォルト値に2桁以上/2文字以上を指定できます
+
+◆ LOADTEXT, SAVETEXT の第一引数が文字列の場合、第一引数をパスとしてファイルをロード/セーブします。Emuera.exeを相対パスで指定(".."は無効)。更に、configにで「LOADTEXTとSAVETEXTで使える拡張子」が決められた拡張子しか使えません。(デフォルトはtxtのみ)
+   例文:LOADTEXTとSAVETEXTで使える拡張子:txt,(任意の拡張子),(任意の拡張子)
+
+◆ int HTML_STRINGLEN html(, returnPixel)
+   HTML_PRINTでhtmlを表示した結果の幅を返す、複数行がある場合1行目の幅を返す
+   第2引数は0または省略した場半角文字単位で返す、そうでないばあいはピクセル数を返す
+
+◆ int HTML_SUBSTRING str, int
+   strを2つに分ける
+   例：
+      HTML_SUBSTRING　"AB<b>CD</b>EFG",4
+      PRINTSL RESULTS
+      PRINTSL RESULTS:1
+   結果：
+      AB<b>C</b>
+      <b>D</b>EFG
+   (太字は普通より幅広いからです)
+
+◆ int ISDEFINED str
+   与えられた文字列と同名なマクロ(#DEFINE XXX)が定義されていたら1を返します。定義されていない場合0を返します。
+◆ int EXISTVAR str
+   与えられた文字列と同名な変数が定義されたら変数の性質によって正数を返します。定義されていない場合0を返します。
+   変数が整数型の場合、返り値 setbit 1
+   変数が文字列型の場合、返り値 setbit 2
+   変数が定数の場合、返り値 setbit 3
+   変数が2次元配列の場合、返り値 setbit 4 
+   変数が3次元配列の場合、返り値 setbit 5
+   例：
+      #DEFINE VAR_IS_NUM 1
+      #DEFINE VAR_IS_STRING 1p1
+      #DEFINE VAR_IS_CONST 1p2
+      #DEFINE VAR_IS_2DARRAY 1p3
+      #DEFINE VAR_IS_3DARRAY 1p4
+
+      #DIM FOO,10,10
+
+      ...
+
+      IF EXISTVAR("FOO")==(VAR_IS_NUM|VAR_IS_2DARRAY)
+         PRINTL TRUE
+      ELSE
+         PRINTL FALSE
+      ENDIF
+      IF EXISTVAR("FOO2")
+         PRINTL TRUE
+      ELSE
+         PRINTL FALSE
+      ENDIF
+   結果：
+      TRUE
+      FALSE   
+
+◆ int ENUMFUNCBEGINSWITH str
+   int ENUMVARBEGINSWITH str
+   int ENUMMACROBEGINSWITH str
+   int ENUMFUNCENDSWITH str
+   int ENUMVARENDSWITH str
+   int ENUMMACROENDSWITH str
+   int ENUMFUNCWITH str
+   int ENUMVARWITH str
+   int ENUMMACROWITH str
+   定義されたシンボルを返す，結果をRESULTSに代入，総数を返します。
+   FUNCは関数名，VARは変数名，MACROはマクロ名。
+   BEGINSWITHはstrで始まるシンボルです。
+   ENDSWITHはstrで終わるシンボルです。
+   WITHはstrを含むシンボルです。
+
+◆ int GETVAR str
+   str GETVARS str
+   int(1) SETVAR str, value
+   文字列で表した変数のGET、SET関数です。
+   例：
+      #DIM FOO = 10,10
+
+      SETVAR "FOO:1", 5
+      PRINTFORML {FOO} {FOO:1} {GETVAR("FOO:1")}
+   結果：
+      10 5 5
+
+◆ int(1) VARSETEX str, value(, int, int, int)
+   VARSETと似ています，第1引数は変数名の代わりに文字列で表した変数名に変更します
+   第3引数は0以外または省略した場合、配列の全てにvalueを代入、そうでない場合，最低次元の配列に代入
+   例：
+      #DIM FOO,2,3
+
+      VARSETEX "FOO:1:1", 5, 0
+      PRINTFORML {FOO:1:0} {FOO:1:2}
+      VARSETEX "FOO:1:0", 10
+      PRINTFORML {FOO:0:0} {FOO:1:2}
+   結果：
+      0 5
+      10 10
+
+◆ int(1) ARRAYMSORTEX str/intArray, strArray(, int)
+   ARRAYMSORTと似ています，第1引数は文字列の場合，変数名の代わりに文字列で表した変数配列名に変更します
+   第2引数は文字列配列，それぞれの要素は並び替えたい配列の変数名を表す
+   第2引数は0以外または省略した場合正順、0の場合逆順
+   例：
+      #DIM IDX = 4,2,3,1
+      #DIM AA = 1,2,3,4
+      #DIM BB = 5,3,1,2
+      #DIMS VARS = "IDX", "AA", "BB" ; IDXを入れないとIDXを並び替えしない
+
+      ARRAYMSORTEX IDX, VARS      ;
+      PRINTFORML > IDX == {IDX},{IDX:1},{IDX:2},{IDX:3}
+      PRINTFORML > AA == {AA},{AA:1},{AA:2},{AA:3}
+      PRINTFORML > BB == {BB},{BB:1},{BB:2},{BB:3}
+      PRINTL
+      ARRAYMSORTEX "IDX", VARS, 0   ;逆順
+      PRINTFORML > IDX == {IDX},{IDX:1},{IDX:2},{IDX:3}
+      PRINTFORML > AA == {AA},{AA:1},{AA:2},{AA:3}
+      PRINTFORML > BB == {BB},{BB:1},{BB:2},{BB:3}
+
+   結果:
+      > IDX == 1,2,3,4
+      > AA == 4,2,3,1
+      > BB == 2,3,1,5
+      
+      > IDX == 4,3,2,1
+      > AA == 1,3,2,4
+      > BB == 5,1,3,2
+
+◆ <1> int REGEXPMATCH str, pattern(, output)
+   <2> int REGEXPMATCH str, pattern, groupCount, matches
+   strが正規表現パターンpatternに合うなら合致結果の数を返す，そうでない場合0を返す
+   <1> outputが0以外の整数の場合，マッチグループ数をRESULT:1に、各マッチ結果をRESULTSに代入(合計「グループ数」×「戻り値」個)
+   <2> マッチグループ数をgroupCount(整数変数)に、各マッチ結果をmatches(文字列変数)に代入(合計「グループ数」×「戻り値」個)
+
+◆ int XML_DOCUMENT id, xml
+   xmlを解析し、XmlDocumentで保存する。1を返す
+   id(整数型)に対応するXmlDocumentがすでに存在している場合，0を返す
+
+◆ int XML_RELEASE id
+   id(整数型)に対応するXmlDocumentを削除する。1を返す
+   
+◆ int XML_EXIST id
+   id(整数型)に対応するXmlDocumentが存在してい場合1を返す，そうでない場合0を返す
+
+◆ int XML_GET xml, xpath(, strArray/int, int)
+   xpath(文字列型)の規則でxmlからノードを選択し、結果数を返す
+   第1引数は整数の場合，それをIDにみなして保存したXmlDocumentを使う。そのIDに対応するXmlDocumentが存在していない場合，-1を返す
+   第3引数は0以外または省略した場合，総数のみ返す，他の整数の場合，RESULTS結果を返す
+   第3引数は文字列配列の場合，その配列に結果代入
+   第4引数は結果のタイプを決めます
+   1: InnerText
+   2: InnerXml
+   3: OuterXml
+   他: Value
+   保存したXmlDocumentが存在しない場合，-1を返す
+
+◆ int XML_SET xml, xpath, str(, setall, int)
+   xpath(文字列型)の規則でxmlからノードを選択し、strを代入します。ノードの合致結果の数を返す
+   第1引数は整数の場合，それをIDにみなして保存したXmlDocumentを使う。そのIDに対応するXmlDocumentが存在していない場合，-1を返す
+   第4引数(整数型)は0または省略した場合，一つ以上の合致結果に対して，代入を行わない
+   第5引数は代入のタイプを決めます
+   1: InnerText
+   2: InnerXml
+   他: Value
+   保存したXmlDocumentが存在しない場合，-1を返す
+
+◆ str XML_TOSTR int
+   第一引数で指定したXmlDocumentを文字列に変換して返す。
+   X保存したmlDocumentが存在しない場合，空文字列を返す
+
+◆ int XML_ADDNODE xml, xpath, xml(, addmethod, setall)
+   第1引数は整数の場合，それをIDにみなして保存したXmlDocumentを使う。そうでない場合，第1引数が文字列変数でなければならない
+   第1引数で指定したXMLに対して:
+   addmethodが0または省略した場合，xpath(文字列型)で選択した要素ノードを親ノードとし、その子ノードリストの最後にxmlを子ノードとして追加する
+   addmethodが1の場合，xpath(文字列型)の規則で選択した要素ノード(ルートノードではない)を子ノードとし、そのノードの前にxmlを兄弟ノードとして追加する
+   addmethodが2の場合，xpath(文字列型)の規則で選択した要素ノード(ルートノードではない)を子ノードとし、そのノードの後にxmlを兄弟ノードとして追加する
+   setallが0または省略した場合，一つ以上の合致結果に対して，追加を行わない
+   成功した場合，合致結果の数を返す。失敗した場合，0を返す。保存したXmlDocumentが存在しない場合，-1を返す
+
+◆ int XML_REMOVENODE xml, xpath(, setall)
+   第1引数は整数の場合，それをIDにみなして保存したXmlDocumentを使う。そうでない場合，第1引数が文字列変数でなければならない
+   第1引数で指定したXMLに対して，xpathで選択した要素ノード(ルートノードは無効)を削除する。
+   setallが0または省略した場合，一つ以上の合致結果に対して，削除を行わない
+   成功した場合，合致結果の数を返す。失敗した場合，0を返す。保存したXmlDocumentが存在しない場合，-1を返す
+
+◆ <1> int XML_REPLACE xml, xml2
+   <2> int XML_REPLACE xml, xpath, xml2(, setall)
+   第1引数は整数の場合，それをIDにみなして保存したXmlDocumentを使う。そうでない場合，第1引数が文字列変数でなければならない
+   バリアント<1>の第1引数は整数だけ有効となる
+   <1> 保存したXmlDocumentの内容をxml2で上書きする
+   <2> xmlに対し、xpath(文字列型)の規則で選択した要素ノード(ルートノードではない)をxml2で上書きする
+   成功した場合，合致結果の数を返す。失敗した場合，0を返す。保存したXmlDocumentが存在しない場合，-1を返す
+   
+◆ int XML_ADDATTRIBUTE xml, xpath, name(, value, addmethod, setall)
+   第1引数は整数の場合，それをIDにみなして保存したXmlDocumentを使う。そうでない場合，第1引数が文字列変数でなければならない
+   第1引数で指定したXMLに対して:
+   addmethodが0または省略した場合，xpath(文字列型)で選択した要素ノードの属性リストの最後に、属性名name(文字列型)=属性の値value(文字列型)の属性を追加する
+   addmethodが1の場合，xpath(文字列型)の規則で選択した属性の前に、属性名name(文字列型)=属性の値value(文字列型)を兄弟属性として追加する。valueは省略可
+   addmethodが2の場合，xpath(文字列型)の規則で選択した属性の後に、属性名name(文字列型)=属性の値value(文字列型)を兄弟属性として追加する。valueは省略可
+   setallが0または省略した場合，一つ以上の合致結果に対して，追加を行わない
+   成功した場合，合致結果の数を返す。失敗した場合，0を返す。保存したXmlDocumentが存在しない場合，-1を返す
+
+◆ int XML_REMOVEATTRIBUTE xml, xpath(, setall)
+   第1引数は整数の場合，それをIDにみなして保存したXmlDocumentを使う。そうでない場合，第1引数が文字列変数でなければならない
+   第1引数で指定したXMLに対して，xpathで選択した属性を削除する。
+   setallが0または省略した場合，一つ以上の合致結果に対して，削除を行わない
+   成功した場合，合致結果の数を返す。失敗した場合，0を返す。保存したXmlDocumentが存在しない場合，-1を返す
+
+◆ int EXISTFILE str
+   第一引数をパスとしてファイルの存否をチェックします。Emuera.exeを相対パスで指定(".."は無効)。
+   存在しているなら1を返す，そうでない場合0を返す
+
+◆ int MAP_CREATE str
+   第一引数で指定した連想配列(Dictionary<string, string>)を作ります。1を返す
+   すでに存在している場合0を返す
+
+◆ int MAP_EXIST str
+   第一引数で指定した連想配列(Dictionary<string, string>)の存否をチェックします
+   存在しているなら1を返す，そうでない場合0を返す
+
+◆ int MAP_RELEASE str
+   第一引数で指定した連想配列(Dictionary<string, string>)を削除します。1を返す
+
+◆ str MAP_GET str, str
+   第一引数で指定した連想配列(Dictionary<string, string>)に，第二引数のキーが存在する場合，その値を返す。
+   存在していない場合，または連想配列自体が存在しない場合も，空文字列を返す
+   (例外発生しないので必要があればMAP_HASで確認してください)
+
+◆ int MAP_HAS str, str
+   第一引数で指定した連想配列(Dictionary<string, string>)に，第二引数のキーの存否をチェックします
+   存在しているなら1を返す，そうでない場合0を返すください
+   連想配列自体が存在しない場合，-1を返す
+
+◆ int MAP_SET str, str, str
+   第一引数で指定した連想配列(Dictionary<string, string>)に，第二引数のキーとペアした値に第三引数を代入
+   キーが存在していない場合キーを作る。1を返す。
+   連想配列自体が存在しない場合，-1を返す
+
+◆ int MAP_REMOVE str, str
+   第一引数で指定した連想配列(Dictionary<string, string>)に，第二引数のキーとペアした値を削除する。1を返す。
+   連想配列自体が存在しない場合，-1を返す
+
+◆ int MAP_SIZE str
+   第一引数で指定した連想配列(Dictionary<string, string>)に含まったキー-値ペアを返す
+   連想配列自体が存在しない場合，-1を返す
+
+◆ int MAP_CLEAR str
+   第一引数で指定した連想配列(Dictionary<string, string>)に含まったキー-値ペアを全部削除する。1を返す
+   連想配列自体が存在しない場合，-1を返す
+
+◆ <1> str MAP_GETKEYS str
+   <2> str MAP_GETKEYS str, int
+   <3> str MAP_GETKEYS str, strArray, int
+   第一引数で指定した連想配列(Dictionary<string, string>)に:
+   <1> "キー1,キー2,キー3,..."のような形の文字列を返す
+   <2> 第二引数が0ではない場合，RESULTSにキーを順次代入。RESULTS:0を返す
+   <3> 第三引数が0ではない場合，第二引数が指定した文字列配列変数にキーを順次代入。空文字列を返す
+   連想配列自体が存在しない場合，空文字列を返す
+   キーの数をRESULTに代入
+
+◆ str MAP_TOXML str
+   第一引数で指定した連想配列(Dictionary<string, string>)をXML文字列に変換し，XML文字列を返す。
+   連想配列自体が存在しない場合，空文字列を返す
+
+   返したXMLは
+   <map>
+      <p><k>キー1</k><v>値1</v></p>
+      <p><k>キー2</k><v>値2</v></p>
+      <p><k>キー3</k><v>値3</v></p>
+      ....
+   </map>
+   のような形です
+
+◆ int MAP_FROMXML str, str
+   第一引数で指定した連想配列(Dictionary<string, string>)に第二引数のXML文字列からキー-値ペアを読み取る。
+   キーが存在している場合その値を上書きします。1を返す
+   連想配列自体が存在しない場合，0を返す
+
+   XMLは、必ず
+   <map>
+      <p><k>キー1</k><v>値1</v></p>
+      <p><k>キー2</k><v>値2</v></p>
+      <p><k>キー3</k><v>値3</v></p>
+      ....
+   </map>
+   のようにしないといけません
+

@@ -42,7 +42,7 @@ namespace MinorShift.Emuera.GameData.Variable
 		EJAC = 0x08 | __INTEGER__ | __ARRAY_1D__ | __CAN_FORBID__,//射精チェックのための一時変数。
 		DOWN = 0x09 | __INTEGER__ | __ARRAY_1D__ | __CAN_FORBID__,//調教中パラメータの減少値。indexはPALAM.CSVのもの
 		RESULT = 0x0A | __INTEGER__ | __ARRAY_1D__,//戻り値(数値)
-		COUNT = 0x0B | __INTEGER__ | __ARRAY_1D__,//繰り返しカウンター
+		COUNT = 0x0B | __INTEGER__ | __ARRAY_1D__ | __CAN_FORBID__,//繰り返しカウンター
 		TARGET = 0x0C | __INTEGER__ | __ARRAY_1D__,//調教中のキャラの"登録番号"
 		ASSI = 0x0D | __INTEGER__ | __ARRAY_1D__ | __CAN_FORBID__,//助手のキャラの"登録番号"
 		MASTER = 0x0E | __INTEGER__ | __ARRAY_1D__ | __CAN_FORBID__,//主人公のキャラの"登録番号"。通常0
@@ -228,14 +228,22 @@ namespace MinorShift.Emuera.GameData.Variable
 		GLOBALNAME = 0x18 | __STRING__ | __ARRAY_1D__ | __UNCHANGEABLE__ | __EXTENDED__ | __CONSTANT__ | __CAN_FORBID__,
 		GLOBALSNAME = 0x19 | __STRING__ | __ARRAY_1D__ | __UNCHANGEABLE__ | __EXTENDED__ | __CONSTANT__ | __CAN_FORBID__,
 
-        __COUNT_CSV_STRING_ARRAY_1D__ = 0x1A,
+		#region EE_CSV機能拡張
+		DAYNAME = 0x1A | __STRING__ | __ARRAY_1D__ | __UNCHANGEABLE__ | __EXTENDED__ | __CONSTANT__ | __CAN_FORBID__,
+		TIMENAME = 0x1B | __STRING__ | __ARRAY_1D__ | __UNCHANGEABLE__ | __EXTENDED__ | __CONSTANT__ | __CAN_FORBID__,
+		MONEYNAME = 0x1C | __STRING__ | __ARRAY_1D__ | __UNCHANGEABLE__ | __EXTENDED__ | __CONSTANT__ | __CAN_FORBID__,
+		#endregion
 
+		__COUNT_CSV_STRING_ARRAY_1D__ = 0x1D,
 
 		GAMEBASE_AUTHER = 0x04 | __STRING__ | __CALC__ | __UNCHANGEABLE__ | __EXTENDED__,//文字列型。作者。綴りを間違えていたが互換性のため残す。
 		GAMEBASE_AUTHOR = 0x00 | __STRING__ | __CALC__ | __UNCHANGEABLE__ | __EXTENDED__,//文字列型。作者
 		GAMEBASE_INFO = 0x01 | __STRING__ | __CALC__ | __UNCHANGEABLE__ | __EXTENDED__,//文字列型。追加情報
 		GAMEBASE_YEAR = 0x02 | __STRING__ | __CALC__ | __UNCHANGEABLE__ | __EXTENDED__,//文字列型。製作年
 		GAMEBASE_TITLE = 0x03 | __STRING__ | __CALC__ | __UNCHANGEABLE__ | __EXTENDED__,//文字列型。タイトル
+		#region EE_UPDATECHECK
+		GAMEBASE_URL = 0x03 | __STRING__ | __CALC__ | __UNCHANGEABLE__ | __EXTENDED__,//文字列型。URL
+		#endregion
 		WINDOW_TITLE = 0x05 | __STRING__ | __CALC__ | __EXTENDED__,//文字列型。ウインドウのタイトル。変更可能。
 		//アンダースコア2つで囲まれた変数を追加したらVariableTokenに特別な処理が必要。
 		__FILE__ = 0x06 | __STRING__ | __CALC__ | __UNCHANGEABLE__ | __EXTENDED__,//現在実行中のファイル名

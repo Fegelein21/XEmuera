@@ -125,6 +125,8 @@ namespace MinorShift.Emuera.GameView
 					column++;
 			}
 
+			
+
 			quickButtonGroup.ResolveLayoutChanges();
 			window.RefreshQuickButtonGroup();
 

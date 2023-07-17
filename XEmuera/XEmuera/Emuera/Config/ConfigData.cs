@@ -117,6 +117,18 @@ namespace MinorShift.Emuera
 			//configArray.Add(new ConfigItem(ConfigCode.ForbidOneCodeVariable, ConfigsText.ForbidOneCodeVariable, false));
 			configArray.Add(new ConfigItem(ConfigCode.SystemNoTarget, ConfigsText.SystemNoTarget, false));
 			configArray.Add(new ConfigItem(ConfigCode.SystemIgnoreStringSet, ConfigsText.SystemIgnoreStringSet, false));
+			
+			#region EE_UPDATECHECK
+			configArray.Add(new ConfigItem(ConfigCode.ForbidUpdateCheck, ConfigsText.ForbidUpdateCheck, false));
+			#endregion
+			#region EE_ERDConfig
+			configArray.Add(new ConfigItem(ConfigCode.UseERD, ConfigsText.UseERD, true));
+			#endregion
+
+			#region EM_私家版_LoadText＆SaveText機能拡張
+			configArray.Add(new ConfigItem(ConfigCode.ValidExtension, ConfigsText.ValidExtension, new List<string> { "txt" }));
+			#endregion
+
 
 			configArray.Add(new ConfigItem(ConfigCode.PanSpeed, ConfigsText.PanSpeed, 2.0f));
 
@@ -291,11 +303,16 @@ namespace MinorShift.Emuera
 						term = new SingleTerm(0);
 					break;
 				//<int>
+				// 
+				case ConfigCode.FontSize:// "フォントサイズ"
+					term = new SingleTerm(Config.FontSize);
+					break;
+				case ConfigCode.LineHeight:// "一行の高さ"
+					term = new SingleTerm(Config.LineHeight);
+					break;
 				case ConfigCode.WindowX:// "ウィンドウ幅"
 				case ConfigCode.PrintCPerLine:// "PRINTCを並べる数"
 				case ConfigCode.PrintCLength:// "PRINTCの文字数"
-				case ConfigCode.FontSize:// "フォントサイズ"
-				case ConfigCode.LineHeight:// "一行の高さ"
 				case ConfigCode.SaveDataNos:// "表示するセーブデータ数"
 				case ConfigCode.MaxShopItem:// "販売アイテム数"
 				case ConfigCode.ComAbleDefault:// "COM_ABLE初期値"
@@ -369,6 +386,22 @@ namespace MinorShift.Emuera
 						continue;
 					if ((item.Code == ConfigCode.LastKey) && (item.GetValue<long>() == 0))
 						continue;
+					#region EM_私家版_LoadText＆SaveText機能拡張
+					if ((item.Code == ConfigCode.ValidExtension))
+					{
+						var ex = (ConfigItem)item;
+						var sb = new System.Text.StringBuilder();
+						sb.Append(ex.Text).Append(":");
+						var values = (List<string>)ex.Value;
+						foreach (var str in values)
+						{
+							sb.Append(str).Append(",");
+						}
+						sb.Remove(sb.Length - 1, 1);
+						writer.WriteLine(sb.ToString());
+						continue;
+					}
+					#endregion
 					//if (item.Code == ConfigCode.IgnoreWarningFiles)
 					//{
 					//    List<string> files = item.GetValue<List<string>>();

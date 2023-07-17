@@ -92,14 +92,14 @@
 						Toggled="gallery_view_button_Toggled"
 						IsToggled="True" />
 
-					<views:TintImageButton
+                    <views:TintImageButton
 						x:Name="menu_show_button"
 						Image="menu_show.svg"
 						Style="{StaticResource TintImageButtonStyle}"
 						Padding="8"
 						Clicked="ButtonVisibleGroup_Clicked" />
 
-					<views:TintImageButton
+                    <views:TintImageButton
 						x:Name="chevron_right_button"
 						Image="chevron_right.svg"
 						Style="{StaticResource TintImageButtonStyle}"

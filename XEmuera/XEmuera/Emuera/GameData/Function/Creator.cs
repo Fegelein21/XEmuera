@@ -207,7 +207,78 @@ namespace MinorShift.Emuera.GameData.Function
 
                 ["SPRITEANIMECREATE"] = new SpriteAnimeCreateMethod(),
                 ["SPRITEANIMEADDFRAME"] = new SpriteAnimeAddFrameMethod(),
-                ["SETANIMETIMER"] = new SetAnimeTimerMethod()
+                ["SETANIMETIMER"] = new SetAnimeTimerMethod(),
+
+                #region EM_私家版_追加関数
+                ["HTML_STRINGLEN"] = new HtmlStringLenMethod(),
+                ["HTML_SUBSTRING"] = new HtmlSubStringMethod(),
+
+                ["EXISTFILE"] = new ExistFileMethod(),
+                ["EXISTVAR"] = new ExistVarMethod(),
+                ["ISDEFINED"] = new IsDefinedMethod(),
+
+                ["ENUMFUNCBEGINSWITH"] = new EnumNameMethod(EnumNameMethod.EType.Function, EnumNameMethod.EAction.BeginsWith),
+                ["ENUMFUNCENDSWITH"] = new EnumNameMethod(EnumNameMethod.EType.Function, EnumNameMethod.EAction.EndsWith),
+                ["ENUMFUNCWITH"] = new EnumNameMethod(EnumNameMethod.EType.Function, EnumNameMethod.EAction.With),
+                ["ENUMVARBEGINSWITH"] = new EnumNameMethod(EnumNameMethod.EType.Variable, EnumNameMethod.EAction.BeginsWith),
+                ["ENUMVARENDSWITH"] = new EnumNameMethod(EnumNameMethod.EType.Variable, EnumNameMethod.EAction.EndsWith),
+                ["ENUMVARWITH"] = new EnumNameMethod(EnumNameMethod.EType.Variable, EnumNameMethod.EAction.With),
+                ["ENUMMACROBEGINSWITH"] = new EnumNameMethod(EnumNameMethod.EType.Macro, EnumNameMethod.EAction.BeginsWith),
+                ["ENUMMACROENDSWITH"] = new EnumNameMethod(EnumNameMethod.EType.Macro, EnumNameMethod.EAction.EndsWith),
+                ["ENUMMACROWITH"] = new EnumNameMethod(EnumNameMethod.EType.Macro, EnumNameMethod.EAction.With),
+                ["ENUMFILES"] = new EnumFilesMethod(),
+
+                ["GETVAR"] = new GetVarMethod(),
+                ["GETVARS"] = new GetVarsMethod(),
+                ["SETVAR"] = new SetVarMethod(),
+
+                ["VARSETEX"] = new VarSetExMethod(),
+                ["ARRAYMSORTEX"] = new ArrayMultiSortExMethod(),
+
+                ["REGEXPMATCH"] = new RegexpMatchMethod(),
+
+                ["XML_DOCUMENT"] = new XmlDocumentMethod(XmlDocumentMethod.Operation.Create),
+                ["XML_RELEASE"] = new XmlDocumentMethod(XmlDocumentMethod.Operation.Release),
+                ["XML_GET"] = new XmlGetMethod(),
+                ["XML_SET"] = new XmlSetMethod(),
+                ["XML_EXIST"] = new XmlDocumentMethod(XmlDocumentMethod.Operation.Check),
+                ["XML_TOSTR"] = new XmlToStrMethod(),
+                ["XML_ADDNODE"] = new XmlAddNodeMethod(XmlAddNodeMethod.Operation.Node),
+                ["XML_REMOVENODE"] = new XmlRemoveNodeMethod(XmlRemoveNodeMethod.Operation.Node),
+                ["XML_REPLACE"] = new XmlReplaceMethod(),
+                ["XML_ADDATTRIBUTE"] = new XmlAddNodeMethod(XmlAddNodeMethod.Operation.Attribute),
+                ["XML_REMOVEATTRIBUTE"] = new XmlRemoveNodeMethod(XmlRemoveNodeMethod.Operation.Attribute),
+
+                ["MAP_CREATE"] = new MapManagementMethod(MapManagementMethod.Operation.Create),
+                ["MAP_EXIST"] = new MapManagementMethod(MapManagementMethod.Operation.Check),
+                ["MAP_RELEASE"] = new MapManagementMethod(MapManagementMethod.Operation.Release),
+
+                ["MAP_GET"] = new MapGetStrMethod(MapGetStrMethod.Operation.Get),
+                ["MAP_CLEAR"] = new MapDataOperationMethod(MapDataOperationMethod.Operation.Clear),
+                ["MAP_SIZE"] = new MapDataOperationMethod(MapDataOperationMethod.Operation.Size),
+                ["MAP_HAS"] = new MapDataOperationMethod(MapDataOperationMethod.Operation.Has),
+                ["MAP_SET"] = new MapDataOperationMethod(MapDataOperationMethod.Operation.Set),
+                ["MAP_REMOVE"] = new MapDataOperationMethod(MapDataOperationMethod.Operation.Remove),
+                ["MAP_GETKEYS"] = new MapGetStrMethod(MapGetStrMethod.Operation.GetKeys),
+
+                ["MAP_TOXML"] = new MapGetStrMethod(MapGetStrMethod.Operation.ToXml),
+                ["MAP_FROMXML"] = new MapFromXmlMethod(),
+                #endregion
+
+                #region EEで追加されたやつ
+                ["EXISTSOUND"] = new ExistSoundMethod(),
+                ["EXISTFUNCTION"] = new ExistFunctionMethod(),
+                //["GROTATE"] = new GraphicsRotateMethod(),
+                ["GDRAWGWITHROTATE"] = new GraphicsDrawGWithRotateMethod(),
+                ["GDRAWTEXT"] = new GraphicsDrawStringMethod(),
+                ["GGETFONT"] = new GraphicsStateStrMethod(),//("GGETFONT")
+                ["GGETFONTSIZE"] = new GraphicsStateMethod(),//("GGETFONTSIZE")
+                ["GGETFONTSTYLE"] = new GraphicsStateMethod(),
+                ["GGETTEXTSIZE"] = new GraphicsGetTextSizeMethod(),
+                //["GGETBRUSH"] = new GraphicsGetBrushMethod(),
+                ["GETMEMORYUSAGE"] = new GetUsingMemoryMethod(),
+                ["CLEARMEMORY"] = new ClearMemoryMethod(),
+                #endregion
             };
 
 

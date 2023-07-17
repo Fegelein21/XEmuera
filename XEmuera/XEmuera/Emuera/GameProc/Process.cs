@@ -242,8 +242,9 @@ namespace MinorShift.Emuera.GameProc
             skipPrint = true;
             return (callFunction("CALLTRAINEND", false, false));
         }
-
-		public void InputResult5(int r0, int r1, int r2, int r3, int r4)
+		#region EE_INPUTMOUSEKEYのボタン対応
+		// public void InputResult5(int r0, int r1, int r2, int r3, int r4)
+		public void InputResult5(int r0, int r1, int r2, int r3, int r4, long r5)
 		{
 			long[] result = vEvaluator.RESULT_ARRAY;
 			result[0] = r0;
@@ -251,11 +252,25 @@ namespace MinorShift.Emuera.GameProc
 			result[2] = r2;
 			result[3] = r3;
 			result[4] = r4;
+			result[5] = r5;
 		}
+		#endregion
 		public void InputInteger(Int64 i)
 		{
 			vEvaluator.RESULT = i;
 		}
+		#region EM_私家版_INPUT系機能拡張
+		public void InputInteger(Int64 idx, Int64 i)
+		{
+			if (idx < vEvaluator.RESULT_ARRAY.Length)
+				vEvaluator.RESULT_ARRAY[idx] = i;
+		}
+		public void InputString(Int64 idx, string i)
+		{
+			if (idx < vEvaluator.RESULT_ARRAY.Length)
+				vEvaluator.RESULTS_ARRAY[idx] = i;
+		}
+		#endregion
 		public void InputSystemInteger(Int64 i)
 		{
 			systemResult = i;
@@ -524,13 +539,15 @@ namespace MinorShift.Emuera.GameProc
 			string extents = position.Filename.Substring(position.Filename.Length - 4).ToLower();
 			if (extents == ".erb")
 			{
-				return File.Exists(Program.ErbDir + position.Filename)
+				var filepath = Program.ErbDir + position.Filename;
+				return FileUtils.Exists(ref filepath)
 					? position.LineNo > 0 ? File.ReadLines(Program.ErbDir + position.Filename, Config.Encode).Skip(position.LineNo - 1).First() : ""
 					: "";
 			}
 			else if (extents == ".csv")
 			{
-				return File.Exists(Program.CsvDir + position.Filename)
+				var filepath = Program.ErbDir + position.Filename;
+				return FileUtils.Exists(ref filepath)
 					? position.LineNo > 0 ? File.ReadLines(Program.CsvDir + position.Filename, Config.Encode).Skip(position.LineNo - 1).First() : ""
 					: "";
 			}

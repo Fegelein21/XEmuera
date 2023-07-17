@@ -188,14 +188,17 @@ namespace MinorShift.Emuera.GameData.Expression
 			terms.CopyTo(ret);
 			return ret;
 		}
-
-		public static IOperandTerm ReduceVariableArgument(WordCollection wc, VariableCode varCode)
+		#region EE_ERD
+		// public static IOperandTerm ReduceVariableArgument(WordCollection wc, VariableCode varCode)
+		public static IOperandTerm ReduceVariableArgument(WordCollection wc, VariableCode varCode, VariableToken id)
 		{
-			IOperandTerm ret = reduceTerm(wc, false, TermEndWith.EoL, varCode);
-			if(ret == null)
+			// IOperandTerm ret = reduceTerm(wc, false, TermEndWith.EoL, varCode);
+			IOperandTerm ret = reduceTerm(wc, false, TermEndWith.EoL, varCode, id);
+			if (ret == null)
                 throw new CodeEE("変数の:の後に引数がありません");
 			return ret;
 		}
+		#endregion
 
 		public static VariableToken ReduceVariableIdentifier(WordCollection wc, string idStr)
 		{
@@ -220,7 +223,11 @@ namespace MinorShift.Emuera.GameData.Expression
 		/// <param name="idStr">識別子文字列</param>
 		/// <param name="varCode">変数の引数の場合はその変数のCode。連想配列的につかう</param>
 		/// <returns></returns>
-		private static IOperandTerm reduceIdentifier(WordCollection wc, string idStr, VariableCode varCode)
+		#region EE_ERD
+		//private static IOperandTerm reduceIdentifier(WordCollection wc, string idStr, VariableCode varCode)
+		private static IOperandTerm reduceIdentifier(WordCollection wc, string idStr, VariableCode varCode, VariableToken varId = null)
+		#endregion
+
 		{
 			wc.ShiftNext();
 			SymbolWord symbol = wc.Current as SymbolWord;
@@ -267,6 +274,11 @@ namespace MinorShift.Emuera.GameData.Expression
 					return refToken;
 				if (varCode != VariableCode.__NULL__ && GlobalStatic.ConstantData.isDefined(varCode, idStr))//連想配列的な可能性アリ
 					return new SingleTerm(idStr);
+				#region EE_ERD
+				else if (varId != null && GlobalStatic.ConstantData.isUserDefined(varId.Name, idStr))//ユーザー定義変数は名前付けられるようになったので通す
+					return new SingleTerm(idStr);
+				#endregion
+
 				GlobalStatic.IdentifierDictionary.ThrowException(idStr, false);
 			}
 			throw new ExeEE("エラー投げ損ねた");//ここまででthrowかreturnのどちらかをするはず。
@@ -328,9 +340,13 @@ namespace MinorShift.Emuera.GameData.Expression
 		/// <param name="allowKeywordTo">TOキーワードが見つかっても良いか</param>
 		/// <param name="endWith">終端記号</param>
 		/// <returns></returns>
-        private static IOperandTerm reduceTerm(WordCollection wc, bool allowKeywordTo, TermEndWith endWith, VariableCode varCode)
-        {
-            TermStack stack = new TermStack();
+
+		#region EE_ERD
+		// private static IOperandTerm reduceTerm(WordCollection wc, bool allowKeywordTo, TermEndWith endWith, VariableCode varCode)
+		private static IOperandTerm reduceTerm(WordCollection wc, bool allowKeywordTo, TermEndWith endWith, VariableCode varCode, VariableToken varId = null)
+		#endregion
+		{
+			TermStack stack = new TermStack();
             //int termCount = 0;
             int ternaryCount = 0;
             OperatorCode formerOp = OperatorCode.NULL;
@@ -363,7 +379,10 @@ namespace MinorShift.Emuera.GameData.Expression
 							}
 							else if (idStr.Equals("IS", Config.SCVariable))
 								throw new CodeEE("ISキーワードはここでは使用できません");
-							stack.Add(reduceIdentifier(wc, idStr, varCode));
+							#region EE_ERD
+							// stack.Add(reduceIdentifier(wc, idStr, varCode));
+							stack.Add(reduceIdentifier(wc, idStr, varCode, varId));
+							#endregion
 							continue;
 						}
 

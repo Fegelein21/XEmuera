@@ -1,0 +1,58 @@
+﻿=== "v16"
+* ERD機能の修正（CSV変数の添字から要素を取得できない不具合）
+* ホットキー機能拡張 Emuera-Anchorからの移植
+
+=== "v15"
+* ERD機能の修正（ハードコーディング変数に定義されてない引数を定義した時の例外落ち）
+* GDRAWTEXTの修正（GSETFONTを使用せずに実行した場合の例外落ち）
+
+=== "v14"
+* 関数追加：`GETMEMORYUSAGE`, `CLEARMEMORY`
+
+=== "v13"
+* ERD機能追加
+
+=== "v12"
+* 関数追加：`FORCE_BEGIN`
+* `PLAYSOUND`機能拡張 10チャンネルに対応
+
+=== "v11fix"
+* `UPDATECHECK`修正
+
+=== "v11"
+* 関数追加：`GDRAWGWITHROTATE`, `QUIT_AND_RESTART`, `FORCE_QUIT`, `FORCE_QUIT_AND_RESTART`
+
+=== "v10"
+* 関数追加：`UPDATECHECK`
+
+=== "v9"
+* WebPに対応
+
+=== "v8"
+* 関数追加：`TRYCALLF`, `TRYCALLFORMF`
+
+=== "v7"
+* 関数追加：`GGETTEXTSIZE`
+
+=== "v6"
+* 関数追加：`EXISTFUNCTION`
+
+=== "v5fix"
+* `OUTPUTLOG`機能拡張の脆弱性を修正
+
+=== "v5"
+* `OUTPUTLOG`機能拡張
+
+=== "v4"
+* 関数追加：`GGETFONT`, `GGETFONTSIZE`
+
+=== "v3"
+* 関数追加：`GDRAWTEXT`
+
+=== "v2"
+* `INPUTMOUSEKEY`機能拡張
+
+=== "v1"
+初公開
+* 関数追加：`PLAYSOUND`,`STOPSOUND`,`PLAYBGM`,`STOPBGM`,`EXISTSOUND`,`SETSOUNDVOLUME`,`SETBGMVOLUME`
+

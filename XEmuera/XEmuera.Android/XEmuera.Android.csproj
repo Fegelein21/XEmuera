@@ -71,6 +71,10 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <AndroidLinkTool>r8</AndroidLinkTool>
     <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
+    <AndroidKeyStore>false</AndroidKeyStore>
+    <AndroidSigningKeyStore>C:\Users\CK_Rainbow\AppData\Local\Xamarin\Mono for Android\Keystore\CK_Rainbow\ckrainbow.keystore</AndroidSigningKeyStore>
+    <AndroidSigningStorePass>
+    </AndroidSigningStorePass>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
