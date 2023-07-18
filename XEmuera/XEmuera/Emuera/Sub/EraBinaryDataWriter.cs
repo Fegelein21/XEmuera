@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.IO.Compression;
+using System.Xml;
 
 namespace MinorShift.Emuera.Sub
 {
@@ -17,19 +19,49 @@ namespace MinorShift.Emuera.Sub
 	{
 		public EraBinaryDataWriter(FileStream fs)
 		{
-			writer = new BinaryWriter(fs, Encoding.Unicode);
+			#region EM_私家版_セーブ圧縮
+			// writer = new BinaryWriter(fs, Encoding.Unicode);
+			if (Config.SystemSaveInBinary && Config.ZipSaveData)
+			{
+				ms = new MemoryStream();
+				writer = new BinaryWriter(ms, Encoding.Unicode, true);
+				fileWriter = new BinaryWriter(fs, Encoding.Unicode, true);
+			}
+			else
+			{
+				writer = new BinaryWriter(fs, Encoding.Unicode);
+				fileWriter = writer;
+			}
+			#endregion
 		}
 		BinaryWriter writer = null;
-		
+
+		#region EM_私家版_セーブ圧縮
+		BinaryWriter fileWriter = null;
+		MemoryStream ms = null;
+		#endregion
+
 		public void WriteHeader()
 		{
-			writer.Write(EraBDConst.Header);
-			writer.Write(EraBDConst.Version1808);
-			writer.Write(EraBDConst.DataCount);
+			#region EM_私家版_セーブ圧縮
+			//writer.Write(EraBDConst.Header);
+			//writer.Write(EraBDConst.Version1808);
+			//writer.Write(EraBDConst.DataCount);
+			//for (int i = 0; i < EraBDConst.DataCount; i++)
+			//{
+			//	writer.Write((UInt32)0);
+			//}
+			if (Config.SystemSaveInBinary && Config.ZipSaveData)
+				fileWriter.Write(EraBDConst.ZipHeader);
+			else
+				fileWriter.Write(EraBDConst.Header);
+			fileWriter.Write(EraBDConst.Version1808);
+			fileWriter.Write(EraBDConst.DataCount);
 			for (int i = 0; i < EraBDConst.DataCount; i++)
 			{
-				writer.Write((UInt32)0);
+				fileWriter.Write((UInt32)0);
 			}
+			#endregion
 		}
 
 		public void WriteFileType(EraSaveFileType type)
@@ -120,6 +152,25 @@ namespace MinorShift.Emuera.Sub
 				writer.Write(key);
 				writeData((string[, ,])v);
 			}
+			#region EM_私家版_セーブ拡張
+			else if (v is Dictionary<string, string> map)
+			{
+				writer.Write((byte)EraSaveDataType.Map);
+				writer.Write(key);
+				writer.Write(map.Count);
+				foreach (var pair in map)
+				{
+					writer.Write(pair.Key);
+					writer.Write(pair.Value);
+				}
+			}
+			else if (v is XmlDocument doc)
+			{
+				writer.Write((byte)EraSaveDataType.Xml);
+				writer.Write(key);
+				writer.Write(doc.OuterXml);
+			}
+			#endregion
 		}
 
 		#region private
@@ -407,6 +458,20 @@ namespace MinorShift.Emuera.Sub
 
 		public void Dispose()
 		{
+			#region EM_私家版_セーブ圧縮
+			if (Config.SystemSaveInBinary && Config.ZipSaveData && writer != null)
+			{
+				var st = writer.BaseStream;
+				st.Seek(0, SeekOrigin.Begin);
+				writer.Close(); writer = null;
+				var compressor = new GZipStream(fileWriter.BaseStream, CompressionMode.Compress);
+				st.CopyTo(compressor);
+				fileWriter.Close();
+				compressor.Close();
+				st.Close();
+			}
+			fileWriter = null;
+			#endregion
 			if (writer != null)
 				writer.Close();
 			writer = null;

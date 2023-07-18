@@ -240,14 +240,21 @@ namespace MinorShift.Emuera.GameData.Function
                 ["XML_DOCUMENT"] = new XmlDocumentMethod(XmlDocumentMethod.Operation.Create),
                 ["XML_RELEASE"] = new XmlDocumentMethod(XmlDocumentMethod.Operation.Release),
                 ["XML_GET"] = new XmlGetMethod(),
+                ["XML_GET_BYNAME"] = new XmlGetMethod(true),
                 ["XML_SET"] = new XmlSetMethod(),
+                ["XML_SET_BYNAME"] = new XmlSetMethod(true),
                 ["XML_EXIST"] = new XmlDocumentMethod(XmlDocumentMethod.Operation.Check),
                 ["XML_TOSTR"] = new XmlToStrMethod(),
                 ["XML_ADDNODE"] = new XmlAddNodeMethod(XmlAddNodeMethod.Operation.Node),
+                ["XML_ADDNODE_BYNAME"] = new XmlAddNodeMethod(XmlAddNodeMethod.Operation.Node, true),
                 ["XML_REMOVENODE"] = new XmlRemoveNodeMethod(XmlRemoveNodeMethod.Operation.Node),
+                ["XML_REMOVENODE_BYNAME"] = new XmlRemoveNodeMethod(XmlRemoveNodeMethod.Operation.Node, true),
                 ["XML_REPLACE"] = new XmlReplaceMethod(),
+                ["XML_REPLACE_BYNAME"] = new XmlReplaceMethod(true),
                 ["XML_ADDATTRIBUTE"] = new XmlAddNodeMethod(XmlAddNodeMethod.Operation.Attribute),
+                ["XML_ADDATTRIBUTE_BYNAME"] = new XmlAddNodeMethod(XmlAddNodeMethod.Operation.Attribute, true),
                 ["XML_REMOVEATTRIBUTE"] = new XmlRemoveNodeMethod(XmlRemoveNodeMethod.Operation.Attribute),
+                ["XML_REMOVEATTRIBUTE_BYNAME"] = new XmlRemoveNodeMethod(XmlRemoveNodeMethod.Operation.Attribute, true),
 
                 ["MAP_CREATE"] = new MapManagementMethod(MapManagementMethod.Operation.Create),
                 ["MAP_EXIST"] = new MapManagementMethod(MapManagementMethod.Operation.Check),
@@ -278,6 +285,8 @@ namespace MinorShift.Emuera.GameData.Function
                 //["GGETBRUSH"] = new GraphicsGetBrushMethod(),
                 ["GETMEMORYUSAGE"] = new GetUsingMemoryMethod(),
                 ["CLEARMEMORY"] = new ClearMemoryMethod(),
+                ["GETTEXTBOX"] = new GetTextBoxMethod(),
+                ["SETTEXTBOX"] = new ChangeTextBoxMethod(),
                 #endregion
             };
 

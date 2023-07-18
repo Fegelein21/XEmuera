@@ -219,7 +219,7 @@ namespace MinorShift.Emuera
 		private bool IsInitializing(bool showMessage = false)
 		{
 			// Process is null mostly because of closing
-			if (GlobalStatic.Process != null && GlobalStatic.Process.inInitializeing)
+			if (GlobalStatic.Process == null || GlobalStatic.Process.inInitializeing)
 			{
 				if (showMessage)
 					this.DisplaySnackBarAsync(StringsText.GameIsProcessing, null, null);

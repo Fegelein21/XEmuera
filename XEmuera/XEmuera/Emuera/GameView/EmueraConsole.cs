@@ -353,7 +353,13 @@ namespace MinorShift.Emuera.GameView
 					return selectingButton.Input.ToString();
 				if (inputReq.InputType == InputType.StrValue)
 					return selectingButton.Inputs;
-				return null;
+                #region EE_INPUTANY
+                if (inputReq.InputType == InputType.AnyValue && (selectingButton.IsInteger))
+					return selectingButton.Input.ToString();
+				if (inputReq.InputType == InputType.AnyValue)
+					return selectingButton.Inputs;
+                #endregion
+                return null;
 			}
 		}
 
@@ -462,7 +468,9 @@ namespace MinorShift.Emuera.GameView
 					lastButtonGeneration = newButtonGeneration;
 				lastButtonIsInput = true;
 			}
-			if (inputReq.InputType == InputType.StrValue)
+            #region EE_INPUTANY
+            if (inputReq.InputType == InputType.StrValue || inputReq.InputType == InputType.AnyValue)
+			#endregion
 			{
 				if (lastButtonGeneration == newButtonGeneration)
 					unchecked { newButtonGeneration++; }
@@ -794,8 +802,24 @@ namespace MinorShift.Emuera.GameView
 							str = "";
 						emuera.InputString(str);
 						break;
-				}
-				stopTimer();
+                    #region EE_INPUTANY
+                    case InputType.AnyValue:
+						if (Int64.TryParse(str, out inputValue))
+                        {
+							if (inputReq.IsSystemInput)
+								emuera.InputSystemInteger(inputValue);
+							else
+								emuera.InputInteger(inputValue);
+						}
+						else
+                        {
+							emuera.InputString(str);
+						}
+						break;
+                    #endregion
+
+                }
+                stopTimer();
 			}
 			Print(str);
 			PrintFlush(false);

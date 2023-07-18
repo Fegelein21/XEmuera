@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.IO.Compression;
+using System.Xml;
 
 namespace MinorShift.Emuera.Sub
 {
@@ -24,6 +26,11 @@ namespace MinorShift.Emuera.Sub
 		StrArray = 0x11,
 		StrArray2D = 0x12,
 		StrArray3D = 0x13,
+
+		#region EM_私家版_セーブ拡張
+		Map = 0x20,
+		Xml = 0x21,
+		#endregion
 		//SOC = 0xFD,//キャラデータ始まり
 		Separator = 0xFD,//データ区切り
 		EOC = 0xFE,//キャラデータ終わり
@@ -50,6 +57,9 @@ namespace MinorShift.Emuera.Sub
 	{
 		//Headerはpngのパクリ
 		public const UInt64 Header = 0x0A1A0A0D41524589UL;
+		#region EM_私家版_セーブ圧縮
+		public const UInt64 ZipHeader = 0x0A50495A41524589UL;
+		#endregion
 		public const UInt32 Version1808 = 1808;
 		public const UInt32 DataCount = 0;
 	}
@@ -80,21 +90,44 @@ namespace MinorShift.Emuera.Sub
 		/// </summary>
 		/// <param name="fs"></param>
 		/// <returns></returns>
-		public static EraBinaryDataReader CreateReader(FileStream fs)
+		#region EM_私家版_セーブ圧縮
+		//public static EraBinaryDataReader CreateReader(FileStream fs)
+		public static EraBinaryDataReader CreateReader(Stream fs)
+		#endregion
 		{
 			try
 			{
 				if ((fs == null) || (fs.Length < 16))
 					return null;
-				BinaryReader reader = new BinaryReader(fs, Encoding.Unicode);
+				#region EM_私家版_セーブ圧縮
+				BinaryReader reader = new BinaryReader(fs, Encoding.Unicode, true);
 
-				if (reader.ReadUInt64() != EraBDConst.Header)
+				//if (reader.ReadUInt64() != EraBDConst.Header)
+				//	return null;
+				var header = reader.ReadUInt64();
+				if (header != EraBDConst.Header && header != EraBDConst.ZipHeader)
 					return null;
+				#endregion
 				int version = (int)reader.ReadUInt32();
 				int datacount = (int)reader.ReadUInt32();
 				UInt32[] data = new UInt32[datacount];
 				for (int i = 0; i < datacount; i++)
 					data[i] = reader.ReadUInt32();
+
+				#region EM_私家版_セーブ圧縮
+				if (header == EraBDConst.ZipHeader)
+				{
+					var ms = new MemoryStream();
+					var gzips = new GZipStream(reader.BaseStream, CompressionMode.Decompress);
+					gzips.CopyTo(ms);
+					gzips.Close();
+					ms.Seek(0, SeekOrigin.Begin);
+					reader = new BinaryReader(ms, Encoding.Unicode);
+				}
+				else
+					reader = new BinaryReader(reader.BaseStream, Encoding.Unicode);
+				#endregion
+
 				if (version == EraBDConst.Version1808)
 					return new EraBinaryDataReader1808(reader, version, data);
 				else
@@ -106,6 +139,12 @@ namespace MinorShift.Emuera.Sub
 			}
 		}
 
+		#region EM_私家版_セーブ拡張
+		public bool EOF()
+		{
+			return reader.PeekChar() < 0;
+		}
+		#endregion
 		public abstract EraSaveFileType ReadFileType();
 
 		/// <summary>
@@ -114,6 +153,10 @@ namespace MinorShift.Emuera.Sub
 		/// <returns></returns>
 		public abstract Int64 ReadInt64();
 
+		#region EM_私家版_セーブ拡張
+		public abstract Dictionary<string, string> ReadMap();
+		public abstract XmlDocument ReadXml();
+		#endregion
 		public abstract string ReadString();
 		public abstract Int64 ReadInt();
 		public abstract void ReadIntArray(Int64[] refArray, bool needInit);
@@ -181,11 +224,32 @@ namespace MinorShift.Emuera.Sub
 				return reader.ReadInt64();
 			}
 
+
+			#region EM_私家版_セーブ拡張
+			public override Dictionary<string, string> ReadMap()
+			{
+				var count = reader.ReadInt32();
+				var dict = new Dictionary<string, string>();
+				for (int i = 0; i < count; i++)
+					dict.Add(reader.ReadString(), reader.ReadString());
+				return dict;
+			}
+			public override XmlDocument ReadXml()
+			{
+				var doc = new XmlDocument();
+				doc.LoadXml(reader.ReadString());
+				return doc;
+			}
+			#endregion
+
 			public override KeyValuePair<string, EraSaveDataType> ReadVariableCode()
 			{
 				EraSaveDataType type = (EraSaveDataType)reader.ReadByte();
-				if (type == EraSaveDataType.EOC || type == EraSaveDataType.EOF || type == EraSaveDataType.Separator)
+				#region EM_私家版_セーブ拡張
+				//if (type == EraSaveDataType.EOC || type == EraSaveDataType.EOF || type == EraSaveDataType.Separator)
+				if (type == EraSaveDataType.EOC || type == EraSaveDataType.EOF || type == EraSaveDataType.Separator || type == EraSaveDataType.Map || type == EraSaveDataType.Xml)
 					return new KeyValuePair<string, EraSaveDataType>(null, type);
+				#endregion
 				string key = reader.ReadString();
 				return new KeyValuePair<string, EraSaveDataType>(key, type);
 			}

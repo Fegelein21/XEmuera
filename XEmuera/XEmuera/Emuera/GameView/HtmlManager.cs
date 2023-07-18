@@ -834,9 +834,13 @@ namespace MinorShift.Emuera.GameView
 						string attrValue;
 						string src = null;
 						string srcb = null;
-						int height = 0;
-						int width = 0;
-						int ypos = 0;
+						#region EM_私家版_HTMLパラメータ拡張
+						//int height = 0;
+						//int width = 0;
+						//int ypos = 0;
+						MixedNum height = new MixedNum();
+						MixedNum width = new MixedNum();
+						MixedNum ypos = new MixedNum();
 						while (wc != null && !wc.EOL)
 						{
 							word = wc.Current as IdentifierWord;
@@ -862,28 +866,53 @@ namespace MinorShift.Emuera.GameView
 							}
 							else if (word.Code.Equals("height", StringComparison.OrdinalIgnoreCase))
 							{
-								if (height != 0)
+								//if (height != 0)
+								if (height.num != 0)
 									throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
-								if (!int.TryParse(attrValue, out height))
+								if (attrValue.EndsWith("px", StringComparison.OrdinalIgnoreCase))
+								{
+									if (!int.TryParse(attrValue.Substring(0, attrValue.Length - 2), out height.num))
+										throw new CodeEE("<" + tag + ">タグのheight属性の属性値が数値として解釈できません");
+									height.isPx = true;
+								}
+								//if (!int.TryParse(attrValue, out height))
+								else if (!int.TryParse(attrValue, out height.num))
 									throw new CodeEE("<" + tag + ">タグのheight属性の属性値が数値として解釈できません");
 							}
 							else if (word.Code.Equals("width", StringComparison.OrdinalIgnoreCase))
 							{
-								if (width != 0)
+								//if (width != 0)
+								if (width.num != 0)
 									throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
-								if (!int.TryParse(attrValue, out width))
+								if (attrValue.EndsWith("px", StringComparison.OrdinalIgnoreCase))
+								{
+									if (!int.TryParse(attrValue.Substring(0, attrValue.Length - 2), out width.num))
+										throw new CodeEE("<" + tag + ">タグのwidth属性の属性値が数値として解釈できません");
+									width.isPx = true;
+								}
+								//if (!int.TryParse(attrValue, out width))
+								else if (!int.TryParse(attrValue, out width.num))
 									throw new CodeEE("<" + tag + ">タグのwidth属性の属性値が数値として解釈できません");
 							}
 							else if (word.Code.Equals("ypos", StringComparison.OrdinalIgnoreCase))
 							{
-								if (ypos != 0)
+								//if (ypos != 0)
+								if (ypos.num != 0)
 									throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
-								if (!int.TryParse(attrValue, out ypos))
+								if (attrValue.EndsWith("px", StringComparison.OrdinalIgnoreCase))
+								{
+									if (!int.TryParse(attrValue.Substring(0, attrValue.Length - 2), out ypos.num))
+										throw new CodeEE("<" + tag + ">タグのypos属性の属性値が数値として解釈できません");
+									ypos.isPx = true;
+								}
+								//if (!int.TryParse(attrValue, out ypos))
+								else if (!int.TryParse(attrValue, out ypos.num))
 									throw new CodeEE("<" + tag + ">タグのypos属性の属性値が数値として解釈できません");
 							}
 							else
 								throw new CodeEE("<" + tag + ">タグの属性名" + word.Code + "は解釈できません");
 						}
+						#endregion
 						if (src == null)
 							throw new CodeEE("<" + tag + ">タグにsrc属性が設定されていません");
 						return new ConsoleImagePart(src, srcb, height, width, ypos);
@@ -893,7 +922,9 @@ namespace MinorShift.Emuera.GameView
 					{
 						if (wc == null)
 							throw new CodeEE("<" + tag + ">タグに属性が設定されていません");
-						int[] param = null;
+						#region EM_私家版_HTMLパラメータ拡張
+						// int[] param = null;
+						MixedNum[] param = null;
 						string type = null;
 						int color = -1;
 						int bcolor = -1;
@@ -930,11 +961,22 @@ namespace MinorShift.Emuera.GameView
 										throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
 									{
 										string[] tokens = attrValue.Split(',');
-										param = new int[tokens.Length];
+										param = new MixedNum[tokens.Length];
 										for (int i = 0; i < tokens.Length; i++)
 										{
-											if (!int.TryParse(tokens[i], out param[i]))
+											param[i] = new MixedNum();
+											tokens[i] = tokens[i].Trim();
+
+											if (tokens[i].EndsWith("px", StringComparison.OrdinalIgnoreCase))
+											{
+												if (!int.TryParse(tokens[i].Substring(0, tokens[i].Length - 2), out param[i].num))
+													throw new CodeEE("<" + tag + ">タグの" + word.Code + "属性の属性値が数値として解釈できません");
+												param[i].isPx = true;
+											}
+											else if (!int.TryParse(tokens[i], out param[i].num))
 												throw new CodeEE("<" + tag + ">タグの" + word.Code + "属性の属性値が数値として解釈できません");
+											//if (!int.TryParse(tokens[i], out param[i]))
+											//	throw new CodeEE("<" + tag + ">タグの" + word.Code + "属性の属性値が数値として解釈できません");
 										}
 										break;
 									}
@@ -957,6 +999,7 @@ namespace MinorShift.Emuera.GameView
 							b = Color.FromArgb(bcolor >> 16, (bcolor >> 8) & 0xFF, bcolor & 0xFF);
 						}
 						return ConsoleShapePart.CreateShape(type, param, c, b, color >= 0);
+						#endregion
 					}
 				case "button":
 				case "nonbutton":

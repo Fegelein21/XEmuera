@@ -177,6 +177,9 @@ namespace MinorShift.Emuera
 			#region EM_私家版_LoadText＆SaveText機能拡張
 			ValidExtension = instance.GetConfigValue<List<string>>(ConfigCode.ValidExtension);
 			#endregion
+			#region EM_私家版_セーブ圧縮
+			ZipSaveData = instance.GetConfigValue<bool>(ConfigCode.ZipSaveData);
+			#endregion
 
 			UseLanguage lang = instance.GetConfigValue<UseLanguage>(ConfigCode.useLanguage);
 			switch (lang)
@@ -687,6 +690,9 @@ namespace MinorShift.Emuera
 		#endregion
 		#region EM_私家版_LoadText＆SaveText機能拡張
 		public static List<string> ValidExtension { get; private set; }
+		#endregion
+		#region EM_私家版_セーブ圧縮
+		public static bool ZipSaveData { get; private set; }
 		#endregion
 
 	}

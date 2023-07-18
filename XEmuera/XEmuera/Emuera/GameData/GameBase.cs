@@ -170,7 +170,7 @@ namespace MinorShift.Emuera.GameData
 						case "バージョン名":
 							VersionName = tokens[1];
 							break;
-							#endregion
+						#endregion
 					}
 				}
 			}

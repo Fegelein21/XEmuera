@@ -279,9 +279,11 @@ namespace XEmuera.Models
 						ConfigCode.SystemIgnoreTripleSymbol,
 						ConfigCode.SystemSaveInBinary,
 						ConfigCode.SystemSaveInUTF8,
+						ConfigCode.ZipSaveData,
 						ConfigCode.SystemNoTarget,
 						ConfigCode.ForbidUpdateCheck,
 						ConfigCode.UseERD,
+						ConfigCode.ValidExtension,
 					}
 				},
 				new ConfigCodeGroup

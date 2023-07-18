@@ -11,6 +11,9 @@ namespace MinorShift.Emuera.GameProc
 		IntValue = 3,//整数値。OneInputかどうかは別の変数で
 		StrValue = 4,//文字列。
 		Void = 5,//入力不能。待つしかない→スキップ中orマクロ中ならなかったことになる
+        #region EE_INPUTANY
+		AnyValue = 6,//数値or文字列
+		#endregion
 
 		//1823
 		PrimitiveMouseKey = 11,
@@ -33,9 +36,11 @@ namespace MinorShift.Emuera.GameProc
 		public bool NeedValue
 		{ 
 			get 
-			{ 
-				return (InputType == InputType.IntValue || InputType == InputType.StrValue
-					|| InputType == InputType.PrimitiveMouseKey); 
+			{
+                #region EE_INPUTANY
+                return (InputType == InputType.IntValue || InputType == InputType.StrValue
+					|| InputType == InputType.PrimitiveMouseKey || InputType == InputType.AnyValue);
+				#endregion
 			}
 		}
 		#region EM_私家版_INPUT系機能拡張

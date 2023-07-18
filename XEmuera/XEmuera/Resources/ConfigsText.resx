@@ -325,6 +325,9 @@
   <data name="UseERD" xml:space="preserve">
     <value>启用ERD功能</value>
   </data>
+  <data name="ZipSaveData" xml:space="preserve">
+    <value>将存档数据压缩保存</value>
+  </data>
   <data name="ValidExtension" xml:space="preserve">
     <value>能够在LOADTEXT和SAVETEXT中使用的扩展名</value>
   </data>

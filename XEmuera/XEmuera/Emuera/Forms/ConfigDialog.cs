@@ -146,6 +146,9 @@
 // 			setCheckBox(checkBox29, ConfigCode.SystemNoTarget);
 // 			setCheckBox(checkBox30, ConfigCode.ForbidUpdateCheck);
 // 			setCheckBox(checkBox31, ConfigCode.UseERD);
+// 			#region EM_私家版_セーブ圧縮
+// 			setCheckBox(checkBox32, ConfigCode.ZipSaveData);
+// 			#endregion
 // 			setNumericUpDown(numericUpDown2, ConfigCode.WindowX);
 // 			setNumericUpDown(numericUpDown3, ConfigCode.WindowY);
 // 			setNumericUpDown(numericUpDown4, ConfigCode.MaxLog);
@@ -166,17 +169,18 @@
 //			setColorBox(colorBoxSelecting, ConfigCode.FocusColor);
 //			setColorBox(colorBoxBacklog, ConfigCode.LogColor);
 
-//			ConfigItem itemTDM = ConfigData.Instance.GetConfigItem(ConfigCode.TextDrawingMode);
-//			switch ((TextDrawingMode)itemTDM.Value)
-//			{
-//				case TextDrawingMode.WINAPI:
-//					comboBoxTextDrawingMode.SelectedIndex = 0; break;
-//				case TextDrawingMode.TEXTRENDERER:
-//					comboBoxTextDrawingMode.SelectedIndex = 1; break;
-//				case TextDrawingMode.GRAPHICS:
-//					comboBoxTextDrawingMode.SelectedIndex = 2; break;
-//			}
-//			comboBoxTextDrawingMode.Enabled = !itemTDM.Fixed;
+
+			// ConfigItem<TextDrawingMode> itemTDM = (ConfigItem<TextDrawingMode>)ConfigData.Instance.GetConfigItem(ConfigCode.TextDrawingMode);
+			// switch (itemTDM.Value)
+			// {
+			// 	case TextDrawingMode.WINAPI:
+			// 		comboBoxTextDrawingMode.SelectedIndex = 0; break;
+			// 	case TextDrawingMode.TEXTRENDERER:
+			// 		comboBoxTextDrawingMode.SelectedIndex = 1; break;
+			// 	case TextDrawingMode.GRAPHICS:
+			// 		comboBoxTextDrawingMode.SelectedIndex = 2; break;
+			// }
+			// comboBoxTextDrawingMode.Enabled = !itemTDM.Fixed;
 
 //			ConfigItem itemStr = ConfigData.Instance.GetConfigItem(ConfigCode.FontName);
 //			string fontname = (string)itemStr.Value;
@@ -272,10 +276,18 @@
 //            comboBox6.Enabled = !itemET.Fixed;
 
 
-//            textBox1.Text = Config.TextEditor;
-//            textBox2.Text = Config.EditorArg;
-//            textBox2.Enabled = (TextEditorType)itemET.Value == TextEditorType.USER_SETTING;
-//		}
+        //     textBox1.Text = Config.TextEditor;
+        //     textBox2.Text = Config.EditorArg;
+        //     textBox2.Enabled = itemET.Value == TextEditorType.USER_SETTING;
+
+		// 	#region EM_私家版_LoadText＆SaveText機能拡張
+		// 	{
+		// 		ConfigItem<List<string>> item = (ConfigItem<List<string>>)ConfigData.Instance.GetConfigItem(ConfigCode.ValidExtension);
+		// 		textBox3.Text = item.ValueToString();
+		// 		textBox3.Enabled = !item.Fixed;
+		// 	}
+		// 	#endregion
+		// }
 
 //		private void SaveConfig()
 //		{
@@ -422,8 +434,15 @@
 //            config.GetConfigItem(ConfigCode.TextEditor).SetValue(textBox1.Text);
 //            config.GetConfigItem(ConfigCode.EditorArgument).SetValue(textBox2.Text);
 
-//			config.SaveConfig();
-//		}
+		// 	#region EM_私家版_LoadText＆SaveText機能拡張
+		// 	config.GetConfigItem(ConfigCode.ValidExtension).TryParse(textBox3.Text);
+		// 	#endregion
+		// 	#region EM_私家版_セーブ圧縮
+		// 	config.GetConfigItem(ConfigCode.ZipSaveData).SetValue<bool>(checkBox32.Checked);
+		// 	#endregion
+
+		// 	config.SaveConfig();
+		// }
 
 
 //		private void comboBoxReduceArgumentOnLoad_SelectedIndexChanged(object sender, EventArgs e)

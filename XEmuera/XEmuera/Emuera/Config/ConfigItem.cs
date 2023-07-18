@@ -82,6 +82,21 @@ namespace MinorShift.Emuera
 			{
 				return string.Format("{0},{1},{2}", c.R, c.G, c.B);
 			}
+
+			#region EM_私家版_LoadText＆SaveText機能拡張
+			if (value is List<string>)
+			{
+				var sb = new StringBuilder();
+				var v = value;
+				foreach (var str in (List<string>)v)
+				{
+					if (sb.Length > 0)
+						sb.Append(",");
+					sb.Append(str);
+				}
+				return sb.ToString();
+			}
+			#endregion
 			return value.ToString();
 		}
 

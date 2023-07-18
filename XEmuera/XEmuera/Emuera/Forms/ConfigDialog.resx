@@ -231,7 +231,7 @@
     <value>13, 86</value>
   </data>
   <data name="checkBox24.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 16</value>
+    <value>246, 16</value>
   </data>
   <data name="checkBox24.TabIndex" type="System.Int32, mscorlib">
     <value>77</value>
@@ -255,7 +255,7 @@
     <value>108, 276</value>
   </data>
   <data name="textBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 19</value>
+    <value>179, 21</value>
   </data>
   <data name="textBox2.TabIndex" type="System.Int32, mscorlib">
     <value>76</value>
@@ -279,7 +279,7 @@
     <value>11, 250</value>
   </data>
   <data name="label23.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 12</value>
+    <value>113, 12</value>
   </data>
   <data name="label23.TabIndex" type="System.Int32, mscorlib">
     <value>75</value>
@@ -327,7 +327,7 @@
     <value>9, 220</value>
   </data>
   <data name="textBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 19</value>
+    <value>230, 21</value>
   </data>
   <data name="textBox1.TabIndex" type="System.Int32, mscorlib">
     <value>73</value>
@@ -351,7 +351,7 @@
     <value>9, 204</value>
   </data>
   <data name="label22.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 12</value>
+    <value>161, 12</value>
   </data>
   <data name="label22.TabIndex" type="System.Int32, mscorlib">
     <value>72</value>
@@ -378,7 +378,7 @@
     <value>144, 163</value>
   </data>
   <data name="label20.Size" type="System.Drawing.Size, System.Drawing">
-    <value>117, 12</value>
+    <value>137, 12</value>
   </data>
   <data name="label20.TabIndex" type="System.Int32, mscorlib">
     <value>71</value>
@@ -405,7 +405,7 @@
     <value>142, 139</value>
   </data>
   <data name="label17.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 12</value>
+    <value>161, 12</value>
   </data>
   <data name="label17.TabIndex" type="System.Int32, mscorlib">
     <value>70</value>
@@ -432,7 +432,7 @@
     <value>142, 114</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>81, 12</value>
+    <value>89, 12</value>
   </data>
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>69</value>
@@ -456,7 +456,7 @@
     <value>13, 163</value>
   </data>
   <data name="numericUpDown11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 19</value>
+    <value>120, 21</value>
   </data>
   <data name="numericUpDown11.TabIndex" type="System.Int32, mscorlib">
     <value>66</value>
@@ -480,7 +480,7 @@
     <value>13, 60</value>
   </data>
   <data name="checkBox18.Size" type="System.Drawing.Size, System.Drawing">
-    <value>151, 16</value>
+    <value>180, 16</value>
   </data>
   <data name="checkBox18.TabIndex" type="System.Int32, mscorlib">
     <value>65</value>
@@ -504,7 +504,7 @@
     <value>13, 137</value>
   </data>
   <data name="numericUpDown10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 19</value>
+    <value>120, 21</value>
   </data>
   <data name="numericUpDown10.TabIndex" type="System.Int32, mscorlib">
     <value>64</value>
@@ -525,7 +525,7 @@
     <value>13, 112</value>
   </data>
   <data name="numericUpDown4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 19</value>
+    <value>120, 21</value>
   </data>
   <data name="numericUpDown4.TabIndex" type="System.Int32, mscorlib">
     <value>63</value>
@@ -549,7 +549,7 @@
     <value>168, 60</value>
   </data>
   <data name="checkBox7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 16</value>
+    <value>144, 16</value>
   </data>
   <data name="checkBox7.TabIndex" type="System.Int32, mscorlib">
     <value>62</value>
@@ -576,7 +576,7 @@
     <value>168, 38</value>
   </data>
   <data name="checkBox6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 16</value>
+    <value>132, 16</value>
   </data>
   <data name="checkBox6.TabIndex" type="System.Int32, mscorlib">
     <value>61</value>
@@ -603,7 +603,7 @@
     <value>13, 38</value>
   </data>
   <data name="checkBox5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>147, 16</value>
+    <value>180, 16</value>
   </data>
   <data name="checkBox5.TabIndex" type="System.Int32, mscorlib">
     <value>60</value>
@@ -630,7 +630,7 @@
     <value>168, 16</value>
   </data>
   <data name="checkBox4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 16</value>
+    <value>132, 16</value>
   </data>
   <data name="checkBox4.TabIndex" type="System.Int32, mscorlib">
     <value>59</value>
@@ -657,7 +657,7 @@
     <value>13, 16</value>
   </data>
   <data name="checkBox3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 16</value>
+    <value>120, 16</value>
   </data>
   <data name="checkBox3.TabIndex" type="System.Int32, mscorlib">
     <value>58</value>
@@ -708,7 +708,7 @@
     <value>17, 185</value>
   </data>
   <data name="checkBox14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 16</value>
+    <value>216, 16</value>
   </data>
   <data name="checkBox14.TabIndex" type="System.Int32, mscorlib">
     <value>67</value>
@@ -735,7 +735,7 @@
     <value>7, 35</value>
   </data>
   <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 12</value>
+    <value>125, 12</value>
   </data>
   <data name="label18.TabIndex" type="System.Int32, mscorlib">
     <value>65</value>
@@ -792,7 +792,7 @@
     <value>143, 162</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 12</value>
+    <value>89, 12</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>63</value>
@@ -816,7 +816,7 @@
     <value>17, 160</value>
   </data>
   <data name="numericUpDown9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 19</value>
+    <value>120, 21</value>
   </data>
   <data name="numericUpDown9.TabIndex" type="System.Int32, mscorlib">
     <value>62</value>
@@ -840,7 +840,7 @@
     <value>143, 137</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 12</value>
+    <value>101, 12</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>61</value>
@@ -864,7 +864,7 @@
     <value>17, 135</value>
   </data>
   <data name="numericUpDown1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 19</value>
+    <value>120, 21</value>
   </data>
   <data name="numericUpDown1.TabIndex" type="System.Int32, mscorlib">
     <value>60</value>
@@ -888,7 +888,7 @@
     <value>143, 111</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 12</value>
+    <value>77, 12</value>
   </data>
   <data name="label9.TabIndex" type="System.Int32, mscorlib">
     <value>56</value>
@@ -912,7 +912,7 @@
     <value>17, 109</value>
   </data>
   <data name="numericUpDown7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 19</value>
+    <value>120, 21</value>
   </data>
   <data name="numericUpDown7.TabIndex" type="System.Int32, mscorlib">
     <value>55</value>
@@ -964,7 +964,7 @@
     <value>13, 115</value>
   </data>
   <data name="checkBox21.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 16</value>
+    <value>204, 16</value>
   </data>
   <data name="checkBox21.TabIndex" type="System.Int32, mscorlib">
     <value>83</value>
@@ -991,7 +991,7 @@
     <value>139, 249</value>
   </data>
   <data name="ScrollRange.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 12</value>
+    <value>101, 12</value>
   </data>
   <data name="ScrollRange.TabIndex" type="System.Int32, mscorlib">
     <value>82</value>
@@ -1015,7 +1015,7 @@
     <value>13, 247</value>
   </data>
   <data name="numericUpDown8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 19</value>
+    <value>120, 21</value>
   </data>
   <data name="numericUpDown8.TabIndex" type="System.Int32, mscorlib">
     <value>81</value>
@@ -1039,7 +1039,7 @@
     <value>13, 136</value>
   </data>
   <data name="checkBox17.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 16</value>
+    <value>228, 16</value>
   </data>
   <data name="checkBox17.TabIndex" type="System.Int32, mscorlib">
     <value>80</value>
@@ -1090,7 +1090,7 @@
     <value>139, 185</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>79, 12</value>
+    <value>95, 12</value>
   </data>
   <data name="label10.TabIndex" type="System.Int32, mscorlib">
     <value>78</value>
@@ -1117,7 +1117,7 @@
     <value>139, 160</value>
   </data>
   <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
-    <value>79, 12</value>
+    <value>95, 12</value>
   </data>
   <data name="label19.TabIndex" type="System.Int32, mscorlib">
     <value>77</value>
@@ -1141,7 +1141,7 @@
     <value>13, 183</value>
   </data>
   <data name="numericUpDownPosY.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 19</value>
+    <value>120, 21</value>
   </data>
   <data name="numericUpDownPosY.TabIndex" type="System.Int32, mscorlib">
     <value>76</value>
@@ -1162,7 +1162,7 @@
     <value>13, 158</value>
   </data>
   <data name="numericUpDownPosX.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 19</value>
+    <value>120, 21</value>
   </data>
   <data name="numericUpDownPosX.TabIndex" type="System.Int32, mscorlib">
     <value>75</value>
@@ -1210,7 +1210,7 @@
     <value>139, 38</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 12</value>
+    <value>89, 12</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>73</value>
@@ -1237,7 +1237,7 @@
     <value>139, 13</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 12</value>
+    <value>77, 12</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>72</value>
@@ -1261,7 +1261,7 @@
     <value>13, 36</value>
   </data>
   <data name="numericUpDown3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 19</value>
+    <value>120, 21</value>
   </data>
   <data name="numericUpDown3.TabIndex" type="System.Int32, mscorlib">
     <value>71</value>
@@ -1282,7 +1282,7 @@
     <value>13, 11</value>
   </data>
   <data name="numericUpDown2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 19</value>
+    <value>120, 21</value>
   </data>
   <data name="numericUpDown2.TabIndex" type="System.Int32, mscorlib">
     <value>70</value>
@@ -1306,7 +1306,7 @@
     <value>13, 94</value>
   </data>
   <data name="checkBox8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 16</value>
+    <value>192, 16</value>
   </data>
   <data name="checkBox8.TabIndex" type="System.Int32, mscorlib">
     <value>69</value>
@@ -1381,7 +1381,7 @@
     <value>132, 244</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 12</value>
+    <value>65, 12</value>
   </data>
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>53</value>
@@ -1408,7 +1408,7 @@
     <value>132, 219</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 12</value>
+    <value>89, 12</value>
   </data>
   <data name="label8.TabIndex" type="System.Int32, mscorlib">
     <value>52</value>
@@ -1432,7 +1432,7 @@
     <value>6, 242</value>
   </data>
   <data name="numericUpDown6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 19</value>
+    <value>120, 21</value>
   </data>
   <data name="numericUpDown6.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
@@ -1453,7 +1453,7 @@
     <value>6, 217</value>
   </data>
   <data name="numericUpDown5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 19</value>
+    <value>120, 21</value>
   </data>
   <data name="numericUpDown5.TabIndex" type="System.Int32, mscorlib">
     <value>50</value>
@@ -1477,7 +1477,7 @@
     <value>132, 164</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 12</value>
+    <value>65, 12</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>49</value>
@@ -1531,7 +1531,7 @@
     <value>colorBoxBacklog</value>
   </data>
   <data name="&gt;&gt;colorBoxBacklog.Type" xml:space="preserve">
-    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8204.3934, Culture=neutral, PublicKeyToken=null</value>
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8251.35785, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;colorBoxBacklog.Parent" xml:space="preserve">
     <value>tabPageFont</value>
@@ -1552,7 +1552,7 @@
     <value>colorBoxSelecting</value>
   </data>
   <data name="&gt;&gt;colorBoxSelecting.Type" xml:space="preserve">
-    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8204.3934, Culture=neutral, PublicKeyToken=null</value>
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8251.35785, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;colorBoxSelecting.Parent" xml:space="preserve">
     <value>tabPageFont</value>
@@ -1573,7 +1573,7 @@
     <value>colorBoxFG</value>
   </data>
   <data name="&gt;&gt;colorBoxFG.Type" xml:space="preserve">
-    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8204.3934, Culture=neutral, PublicKeyToken=null</value>
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8251.35785, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;colorBoxFG.Parent" xml:space="preserve">
     <value>tabPageFont</value>
@@ -1594,7 +1594,7 @@
     <value>colorBoxBG</value>
   </data>
   <data name="&gt;&gt;colorBoxBG.Type" xml:space="preserve">
-    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8204.3934, Culture=neutral, PublicKeyToken=null</value>
+    <value>MinorShift.Emuera.Forms.ColorBox, Emuera, Version=1.824.8251.35785, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;colorBoxBG.Parent" xml:space="preserve">
     <value>tabPageFont</value>
@@ -1669,7 +1669,7 @@
     <value>10, 274</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 12</value>
+    <value>161, 12</value>
   </data>
   <data name="label11.TabIndex" type="System.Int32, mscorlib">
     <value>77</value>
@@ -1696,7 +1696,7 @@
     <value>6, 217</value>
   </data>
   <data name="checkBoxSystemFullSpace.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 16</value>
+    <value>252, 16</value>
   </data>
   <data name="checkBoxSystemFullSpace.TabIndex" type="System.Int32, mscorlib">
     <value>74</value>
@@ -1723,7 +1723,7 @@
     <value>6, 195</value>
   </data>
   <data name="checkBox22.Size" type="System.Drawing.Size, System.Drawing">
-    <value>276, 16</value>
+    <value>312, 16</value>
   </data>
   <data name="checkBox22.TabIndex" type="System.Int32, mscorlib">
     <value>73</value>
@@ -1750,7 +1750,7 @@
     <value>4, 8</value>
   </data>
   <data name="label21.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 24</value>
+    <value>275, 24</value>
   </data>
   <data name="label21.TabIndex" type="System.Int32, mscorlib">
     <value>71</value>
@@ -1778,7 +1778,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>6, 151</value>
   </data>
   <data name="checkBox20.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 16</value>
+    <value>204, 16</value>
   </data>
   <data name="checkBox20.TabIndex" type="System.Int32, mscorlib">
     <value>70</value>
@@ -1805,7 +1805,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>18, 173</value>
   </data>
   <data name="checkBox19.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 16</value>
+    <value>288, 16</value>
   </data>
   <data name="checkBox19.TabIndex" type="System.Int32, mscorlib">
     <value>69</value>
@@ -1832,7 +1832,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>6, 129</value>
   </data>
   <data name="checkBox16.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 16</value>
+    <value>240, 16</value>
   </data>
   <data name="checkBox16.TabIndex" type="System.Int32, mscorlib">
     <value>55</value>
@@ -1859,7 +1859,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>6, 107</value>
   </data>
   <data name="checkBox15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 16</value>
+    <value>180, 16</value>
   </data>
   <data name="checkBox15.TabIndex" type="System.Int32, mscorlib">
     <value>54</value>
@@ -1886,7 +1886,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>6, 41</value>
   </data>
   <data name="checkBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 16</value>
+    <value>192, 16</value>
   </data>
   <data name="checkBox1.TabIndex" type="System.Int32, mscorlib">
     <value>38</value>
@@ -1913,7 +1913,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>6, 85</value>
   </data>
   <data name="checkBox10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>141, 16</value>
+    <value>156, 16</value>
   </data>
   <data name="checkBox10.TabIndex" type="System.Int32, mscorlib">
     <value>53</value>
@@ -1940,7 +1940,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>6, 63</value>
   </data>
   <data name="checkBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>141, 16</value>
+    <value>150, 16</value>
   </data>
   <data name="checkBox2.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -1987,6 +1987,57 @@ ERBスクリプトが正常に動作しないことがあります</value>
   <data name="&gt;&gt;tabPageSystem.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="textBox3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 207</value>
+  </data>
+  <data name="textBox3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>286, 21</value>
+  </data>
+  <data name="textBox3.TabIndex" type="System.Int32, mscorlib">
+    <value>87</value>
+  </data>
+  <data name="&gt;&gt;textBox3.Name" xml:space="preserve">
+    <value>textBox3</value>
+  </data>
+  <data name="&gt;&gt;textBox3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBox3.Parent" xml:space="preserve">
+    <value>tabPageSystem2</value>
+  </data>
+  <data name="&gt;&gt;textBox3.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label25.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label25.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label25.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 191</value>
+  </data>
+  <data name="label25.Size" type="System.Drawing.Size, System.Drawing">
+    <value>197, 12</value>
+  </data>
+  <data name="label25.TabIndex" type="System.Int32, mscorlib">
+    <value>86</value>
+  </data>
+  <data name="label25.Text" xml:space="preserve">
+    <value>LOADTEXTとSAVETEXTで使える拡張子</value>
+  </data>
+  <data name="&gt;&gt;label25.Name" xml:space="preserve">
+    <value>label25</value>
+  </data>
+  <data name="&gt;&gt;label25.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label25.Parent" xml:space="preserve">
+    <value>tabPageSystem2</value>
+  </data>
+  <data name="&gt;&gt;label25.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="checkBox31.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1994,10 +2045,10 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>NoControl</value>
   </data>
   <data name="checkBox31.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 151</value>
+    <value>4, 171</value>
   </data>
   <data name="checkBox31.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 16</value>
+    <value>126, 16</value>
   </data>
   <data name="checkBox31.TabIndex" type="System.Int32, mscorlib">
     <value>85</value>
@@ -2015,16 +2066,16 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>tabPageSystem2</value>
   </data>
   <data name="&gt;&gt;checkBox31.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="checkBox30.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="checkBox30.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 129</value>
+    <value>4, 149</value>
   </data>
   <data name="checkBox30.Size" type="System.Drawing.Size, System.Drawing">
-    <value>169, 16</value>
+    <value>162, 16</value>
   </data>
   <data name="checkBox30.TabIndex" type="System.Int32, mscorlib">
     <value>84</value>
@@ -2042,16 +2093,16 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>tabPageSystem2</value>
   </data>
   <data name="&gt;&gt;checkBox30.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="checkBox29.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="checkBox29.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 107</value>
+    <value>4, 127</value>
   </data>
   <data name="checkBox29.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 16</value>
+    <value>216, 16</value>
   </data>
   <data name="checkBox29.TabIndex" type="System.Int32, mscorlib">
     <value>83</value>
@@ -2069,7 +2120,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>tabPageSystem2</value>
   </data>
   <data name="&gt;&gt;checkBox29.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="checkBox26.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2078,7 +2129,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>6, 63</value>
   </data>
   <data name="checkBox26.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 16</value>
+    <value>240, 16</value>
   </data>
   <data name="checkBox26.TabIndex" type="System.Int32, mscorlib">
     <value>82</value>
@@ -2096,7 +2147,37 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>tabPageSystem2</value>
   </data>
   <data name="&gt;&gt;checkBox26.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
+  </data>
+  <data name="checkBox32.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox32.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="checkBox32.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 106</value>
+  </data>
+  <data name="checkBox32.Size" type="System.Drawing.Size, System.Drawing">
+    <value>300, 16</value>
+  </data>
+  <data name="checkBox32.TabIndex" type="System.Int32, mscorlib">
+    <value>81</value>
+  </data>
+  <data name="checkBox32.Text" xml:space="preserve">
+    <value>セーブデータを圧縮して保存する(バイナリ時のみ)</value>
+  </data>
+  <data name="&gt;&gt;checkBox32.Name" xml:space="preserve">
+    <value>checkBox32</value>
+  </data>
+  <data name="&gt;&gt;checkBox32.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox32.Parent" xml:space="preserve">
+    <value>tabPageSystem2</value>
+  </data>
+  <data name="&gt;&gt;checkBox32.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
   <data name="checkBox27.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2105,7 +2186,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>16, 85</value>
   </data>
   <data name="checkBox27.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 16</value>
+    <value>306, 16</value>
   </data>
   <data name="checkBox27.TabIndex" type="System.Int32, mscorlib">
     <value>81</value>
@@ -2123,7 +2204,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>tabPageSystem2</value>
   </data>
   <data name="&gt;&gt;checkBox27.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>7</value>
   </data>
   <data name="checkBoxSystemTripleSymbol.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2132,7 +2213,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>6, 41</value>
   </data>
   <data name="checkBoxSystemTripleSymbol.Size" type="System.Drawing.Size, System.Drawing">
-    <value>188, 16</value>
+    <value>192, 16</value>
   </data>
   <data name="checkBoxSystemTripleSymbol.TabIndex" type="System.Int32, mscorlib">
     <value>73</value>
@@ -2150,7 +2231,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>tabPageSystem2</value>
   </data>
   <data name="&gt;&gt;checkBoxSystemTripleSymbol.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>8</value>
   </data>
   <data name="label24.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2159,7 +2240,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>4, 8</value>
   </data>
   <data name="label24.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 24</value>
+    <value>275, 24</value>
   </data>
   <data name="label24.TabIndex" type="System.Int32, mscorlib">
     <value>72</value>
@@ -2178,7 +2259,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>tabPageSystem2</value>
   </data>
   <data name="&gt;&gt;label24.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="tabPageSystem2.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 40</value>
@@ -2211,7 +2292,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>8, 129</value>
   </data>
   <data name="checkBox9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 16</value>
+    <value>210, 16</value>
   </data>
   <data name="checkBox9.TabIndex" type="System.Int32, mscorlib">
     <value>82</value>
@@ -2238,7 +2319,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>8, 195</value>
   </data>
   <data name="checkBoxCompatiSP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>116, 16</value>
+    <value>132, 16</value>
   </data>
   <data name="checkBoxCompatiSP.TabIndex" type="System.Int32, mscorlib">
     <value>81</value>
@@ -2271,7 +2352,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>8, 173</value>
   </data>
   <data name="checkBox28.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 16</value>
+    <value>192, 16</value>
   </data>
   <data name="checkBox28.TabIndex" type="System.Int32, mscorlib">
     <value>80</value>
@@ -2301,7 +2382,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>8, 275</value>
   </data>
   <data name="checkBox25.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 16</value>
+    <value>282, 16</value>
   </data>
   <data name="checkBox25.TabIndex" type="System.Int32, mscorlib">
     <value>79</value>
@@ -2331,7 +2412,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>8, 253</value>
   </data>
   <data name="checkBox12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>239, 16</value>
+    <value>264, 16</value>
   </data>
   <data name="checkBox12.TabIndex" type="System.Int32, mscorlib">
     <value>78</value>
@@ -2361,7 +2442,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>8, 151</value>
   </data>
   <data name="checkBoxFuncNoIgnoreCase.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 16</value>
+    <value>282, 16</value>
   </data>
   <data name="checkBoxFuncNoIgnoreCase.TabIndex" type="System.Int32, mscorlib">
     <value>77</value>
@@ -2439,7 +2520,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>8, 231</value>
   </data>
   <data name="checkBoxCompatiLinefeedAs1739.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 16</value>
+    <value>258, 16</value>
   </data>
   <data name="checkBoxCompatiLinefeedAs1739.TabIndex" type="System.Int32, mscorlib">
     <value>74</value>
@@ -2469,7 +2550,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>8, 107</value>
   </data>
   <data name="checkBoxCompatiRAND.Size" type="System.Drawing.Size, System.Drawing">
-    <value>244, 16</value>
+    <value>252, 16</value>
   </data>
   <data name="checkBoxCompatiRAND.TabIndex" type="System.Int32, mscorlib">
     <value>73</value>
@@ -2499,7 +2580,7 @@ ERBスクリプトが正常に動作しないことがあります</value>
     <value>6, 3</value>
   </data>
   <data name="label30.Size" type="System.Drawing.Size, System.Drawing">
-    <value>274, 48</value>
+    <value>317, 48</value>
   </data>
   <data name="label30.TabIndex" type="System.Int32, mscorlib">
     <value>72</value>
@@ -2529,7 +2610,7 @@ Emueraの過去のバージョンで動作したものが動作しない、
     <value>8, 85</value>
   </data>
   <data name="checkBoxCompatiCALLNAME.Size" type="System.Drawing.Size, System.Drawing">
-    <value>257, 16</value>
+    <value>252, 16</value>
   </data>
   <data name="checkBoxCompatiCALLNAME.TabIndex" type="System.Int32, mscorlib">
     <value>56</value>
@@ -2559,7 +2640,7 @@ Emueraの過去のバージョンで動作したものが動作しない、
     <value>8, 63</value>
   </data>
   <data name="checkBoxCompatiErrorLine.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 16</value>
+    <value>216, 16</value>
   </data>
   <data name="checkBoxCompatiErrorLine.TabIndex" type="System.Int32, mscorlib">
     <value>54</value>
@@ -2664,7 +2745,7 @@ Emueraの過去のバージョンで動作したものが動作しない、
     <value>6, 12</value>
   </data>
   <data name="checkBox23.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 16</value>
+    <value>240, 16</value>
   </data>
   <data name="checkBox23.TabIndex" type="System.Int32, mscorlib">
     <value>73</value>
@@ -2691,7 +2772,7 @@ Emueraの過去のバージョンで動作したものが動作しない、
     <value>27, 102</value>
   </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 12</value>
+    <value>137, 12</value>
   </data>
   <data name="label15.TabIndex" type="System.Int32, mscorlib">
     <value>56</value>
@@ -2751,7 +2832,7 @@ Emueraの過去のバージョンで動作したものが動作しない、
     <value>27, 221</value>
   </data>
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 12</value>
+    <value>209, 12</value>
   </data>
   <data name="label14.TabIndex" type="System.Int32, mscorlib">
     <value>54</value>
@@ -2811,7 +2892,7 @@ Emueraの過去のバージョンで動作したものが動作しない、
     <value>27, 171</value>
   </data>
   <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>154, 12</value>
+    <value>173, 12</value>
   </data>
   <data name="label13.TabIndex" type="System.Int32, mscorlib">
     <value>52</value>
@@ -2871,7 +2952,7 @@ Emueraの過去のバージョンで動作したものが動作しない、
     <value>6, 64</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 12</value>
+    <value>149, 12</value>
   </data>
   <data name="label12.TabIndex" type="System.Int32, mscorlib">
     <value>50</value>
@@ -2928,7 +3009,7 @@ Emueraの過去のバージョンで動作したものが動作しない、
     <value>29, 152</value>
   </data>
   <data name="checkBox11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 16</value>
+    <value>216, 16</value>
   </data>
   <data name="checkBox11.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -2955,7 +3036,7 @@ Emueraの過去のバージョンで動作したものが動作しない、
     <value>6, 34</value>
   </data>
   <data name="checkBox13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>162, 16</value>
+    <value>192, 16</value>
   </data>
   <data name="checkBox13.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -3030,7 +3111,7 @@ Emueraの過去のバージョンで動作したものが動作しない、
     <value>87, 385</value>
   </data>
   <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
-    <value>197, 12</value>
+    <value>221, 12</value>
   </data>
   <data name="label16.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>

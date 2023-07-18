@@ -269,6 +269,16 @@ namespace MinorShift.Emuera
 		//	timer.Enabled = false;
 		//	console.Initialize();
 		//}
+		
+        #region EE_textbox拡張
+		public void ChangeTextBox(string str)
+        {
+			MainThread.BeginInvokeOnMainThread(() =>
+			{
+				this.richTextBox1.Text = str;
+			});
+        }
+		#endregion
 
 		private void InitConsole()
 		{

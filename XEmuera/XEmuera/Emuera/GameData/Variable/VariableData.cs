@@ -15,8 +15,8 @@ namespace MinorShift.Emuera.GameData.Variable
 	internal sealed partial class VariableData : IDisposable
 	{
 		#region EM_私家版_XMLDocument_連想配列
-		readonly Dictionary<Int64, XmlDocument> xmlDict = new Dictionary<Int64, XmlDocument>();
-		public Dictionary<Int64, XmlDocument> DataXmlDocument { get { return xmlDict; } }
+		readonly Dictionary<string, XmlDocument> xmlDict = new Dictionary<string, XmlDocument>();
+		public Dictionary<string, XmlDocument> DataXmlDocument { get { return xmlDict; } }
 		readonly Dictionary<string, Dictionary<string, string>> mapDict = new Dictionary<string, Dictionary<string, string>>();
 		public Dictionary<string, Dictionary<string, string>> DataStringMaps { get { return mapDict; } }
 		#endregion
@@ -297,6 +297,7 @@ namespace MinorShift.Emuera.GameData.Variable
 			varTokenDic.Add("GAMEBASE_TITLE", new StrConstantToken(VariableCode.GAMEBASE_TITLE, this, gamebase.ScriptTitle));
 			#region EE_UPDATECHECK
 			varTokenDic.Add("GAMEBASE_URL", new StrConstantToken(VariableCode.GAMEBASE_URL, this, gamebase.UpdateCheckURL));
+			varTokenDic.Add("GAMEBASE_VERSIONNAME", new StrConstantToken(VariableCode.GAMEBASE_URL, this, gamebase.VersionName));
 			#endregion
 
 
@@ -993,6 +994,43 @@ namespace MinorShift.Emuera.GameData.Variable
 					copyListToArray3D(longs2, (Int64[, ,])var.GetArray());
 		}
 
+		#region EM_私家版_セーブ拡張
+		public void SaveGlobalEMDataToStreamBinary(EraBinaryDataWriter writer)
+		{
+			foreach (var key in GlobalStatic.ConstantData.GlobalSaveMaps)
+			{
+				if (mapDict.ContainsKey(key))
+				{
+					writer.WriteWithKey(key, mapDict[key]);
+				}
+			}
+			foreach (var key in GlobalStatic.ConstantData.GlobalSaveXmls)
+			{
+				if (xmlDict.ContainsKey(key))
+				{
+					writer.WriteWithKey(key, xmlDict[key]);
+				}
+			}
+		}
+		public void SaveEMDataToStreamBinary(EraBinaryDataWriter writer)
+		{
+			foreach (var key in GlobalStatic.ConstantData.SaveMaps)
+			{
+				if (mapDict.ContainsKey(key))
+				{
+					writer.WriteWithKey(key, mapDict[key]);
+				}
+			}
+			foreach (var key in GlobalStatic.ConstantData.SaveXmls)
+			{
+				if (xmlDict.ContainsKey(key))
+				{
+					writer.WriteWithKey(key, xmlDict[key]);
+				}
+			}
+		}
+		#endregion
+
 		public void SaveGlobalToStreamBinary(EraBinaryDataWriter writer)
 		{
 			foreach (KeyValuePair<string, VariableToken> pair in varTokenDic)
@@ -1009,7 +1047,7 @@ namespace MinorShift.Emuera.GameData.Variable
 					writer.WriteWithKey(var.Name, var.GetArray());
 			}
 		}
-
+		
 		public void SaveToStreamBinary(EraBinaryDataWriter writer)
 		{
 			foreach (KeyValuePair<string, VariableToken> pair in varTokenDic)
@@ -1047,6 +1085,28 @@ namespace MinorShift.Emuera.GameData.Variable
 				vToken = null;
 			switch (nameAndType.Value)
 			{
+				#region EM_私家版_セーブ拡張
+				case EraSaveDataType.Map:
+					{
+						var key = reader.ReadString();
+						var dict = reader.ReadMap();
+						if (GlobalStatic.ConstantData.SaveMaps.Contains(key) || GlobalStatic.ConstantData.GlobalSaveMaps.Contains(key))
+						{
+							mapDict[key] = dict;
+						}
+						break;
+					}
+				case EraSaveDataType.Xml:
+					{
+						var key = reader.ReadString();
+						var doc = reader.ReadXml();
+						if (GlobalStatic.ConstantData.SaveXmls.Contains(key) || GlobalStatic.ConstantData.GlobalSaveXmls.Contains(key))
+						{
+							xmlDict[key] = doc;
+						}
+						break;
+					}
+				#endregion
 				case EraSaveDataType.EOF:
 					return false;
 				case EraSaveDataType.Int:

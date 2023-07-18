@@ -8,6 +8,7 @@ using MinorShift.Emuera.GameData.Variable;
 using MinorShift.Emuera.GameData;
 using MinorShift.Emuera.GameData.Function;
 using XEmuera;
+using MinorShift.Emuera.GameView;
 
 namespace MinorShift.Emuera.GameProc.Function
 {
@@ -226,7 +227,106 @@ namespace MinorShift.Emuera.GameProc.Function
 			argb[FunctionArgType.SP_REFBYNAME] = new SP_REF_ArgumentBuilder(true);
 			argb[FunctionArgType.SP_HTMLSPLIT] = new SP_HTMLSPLIT_ArgumentBuilder();
 
+			#region EM_私家版_HTMLパラメータ拡張
+			argb[FunctionArgType.SP_PRINT_IMG] = new SP_PRINT_IMG_ArgumentBuilder();
+			argb[FunctionArgType.SP_PRINT_RECT] = new SP_PRINT_SHAPE_ArgumentBuilder(4);
+			argb[FunctionArgType.SP_PRINT_SPACE] = new SP_PRINT_SHAPE_ArgumentBuilder(1);
+			#endregion
 		}
+
+		#region EM_私家版_HTMLパラメータ拡張
+		private sealed class SP_PRINT_IMG_ArgumentBuilder : ArgumentBuilder
+		{
+			public SP_PRINT_IMG_ArgumentBuilder()
+			{
+				this.argumentTypeArray = new Type[] { typeof(string), typeof(string), typeof(Int64), typeof(Int64), typeof(Int64) };
+				this.minArg = 1;
+			}
+			public override Argument CreateArgument(InstructionLine line, ExpressionMediator exm)
+			{
+				int argCount = 1;
+				var wc = popWords(line);
+				IOperandTerm name = null, nameb = null;
+				List<MixedIntegerExprTerm> param = new List<MixedIntegerExprTerm>();
+				if (!wc.EOL)
+				{
+					name = ExpressionParser.ReduceExpressionTerm(wc, TermEndWith.Comma);
+					if (Config.NeedReduceArgumentOnLoad) name = name.Restructure(exm);
+					wc.ShiftNext();
+				}
+				else
+				{
+					warn("第１引数を省略することはできません", line, 2, false);
+					return null;
+				}
+				if (!wc.EOL)
+				{
+					nameb = ExpressionParser.ReduceExpressionTerm(wc, TermEndWith.Comma);
+					if (Config.NeedReduceArgumentOnLoad) nameb = nameb.Restructure(exm);
+					wc.ShiftNext();
+					argCount++;
+				}
+				while (!wc.EOL)
+				{
+					var arg = ExpressionParser.ReduceExpressionTerm(wc, TermEndWith.Comma | TermEndWith.KeyWordPx);
+					if (Config.NeedReduceArgumentOnLoad) arg = arg.Restructure(exm);
+					param.Add(new MixedIntegerExprTerm { num = arg, isPx = (wc.Current.Type != '\0' && wc.Current.Type != ',') });
+					if (wc.Current.Type != '\0' && wc.Current.Type != ',') wc.ShiftNext();
+					wc.ShiftNext();
+					argCount++;
+				}
+
+				IOperandTerm[] terms = new IOperandTerm[argCount];
+				terms[0] = name;
+				if (nameb != null) terms[1] = nameb;
+				for (int i = 0; i < param.Count; i++) terms[i + 2] = param[i].num;
+				if (!checkArgumentType(line, exm, terms)) return null;
+
+				return new SpPrintImgArgument(name, nameb, param.Count > 0 ? param.ToArray() : null);
+			}
+		}
+		private sealed class SP_PRINT_SHAPE_ArgumentBuilder : ArgumentBuilder
+		{
+			public SP_PRINT_SHAPE_ArgumentBuilder(int max)
+			{
+				this.argumentTypeArray = new Type[] { typeof(Int64), typeof(Int64), typeof(Int64), typeof(Int64) };
+				this.minArg = 1;
+				this.maxArg = max;
+			}
+			int maxArg;
+			public override Argument CreateArgument(InstructionLine line, ExpressionMediator exm)
+			{
+				var wc = popWords(line);
+				List<MixedIntegerExprTerm> param = new List<MixedIntegerExprTerm>();
+
+				while (!wc.EOL)
+				{
+					var arg = ExpressionParser.ReduceExpressionTerm(wc, TermEndWith.Comma | TermEndWith.KeyWordPx);
+					if (Config.NeedReduceArgumentOnLoad) arg = arg.Restructure(exm);
+					param.Add(new MixedIntegerExprTerm { num = arg, isPx = (wc.Current.Type != '\0' && wc.Current.Type != ',') });
+					if (wc.Current.Type != '\0' && wc.Current.Type != ',') wc.ShiftNext();
+					wc.ShiftNext();
+
+					if (param.Count>this.maxArg)
+					{
+						warn("引数が多すぎます", line, 1, false);
+					}
+				}
+
+				if (param.Count != 1 && param.Count != 4)
+				{
+					warn("引数の数が正しくありません", line, 2, false);
+					return null;
+				}
+
+				IOperandTerm[] terms = new IOperandTerm[param.Count];
+				for (int i = 0; i < param.Count; i++) terms[i] = param[i].num;
+				if (!checkArgumentType(line, exm, terms)) return null;
+
+				return new SpPrintShapeArgument(param.ToArray());
+			}
+		}
+		#endregion
 
 		private sealed class SP_PRINTV_ArgumentBuilder : ArgumentBuilder
 		{

@@ -14,6 +14,7 @@ using Xamarin.Forms;
 using System.Net;
 using Xamarin.Essentials;
 using XEmuera;
+using MinorShift.Emuera.GameView;
 
 namespace MinorShift.Emuera.GameProc.Function
 {
@@ -295,19 +296,35 @@ namespace MinorShift.Emuera.GameProc.Function
 			public PRINT_IMG_Instruction()
 			{
 				flag = EXTENDED | METHOD_SAFE;
-				ArgBuilder = ArgumentParser.GetArgumentBuilder(FunctionArgType.STR_EXPRESSION);
+				#region EM_私家版_HTMLパラメータ拡張
+				// ArgBuilder = ArgumentParser.GetArgumentBuilder(FunctionArgType.STR_EXPRESSION);
+				ArgBuilder = ArgumentParser.GetArgumentBuilder(FunctionArgType.SP_PRINT_IMG);
+				#endregion
 			}
 
 			public override void DoInstruction(ExpressionMediator exm, InstructionLine func, ProcessState state)
 			{
                 if (GlobalStatic.Process.SkipPrint)
                     return;
-                string str;
-				if (func.Argument.IsConst)
-					str = func.Argument.ConstStr;
-				else
-					str = ((ExpressionArgument)func.Argument).Term.GetStrValue(exm);
-				exm.Console.PrintImg(str);
+				#region EM_私家版_HTMLパラメータ拡張
+				//string str;
+				//if (func.Argument.IsConst)
+				//	str = func.Argument.ConstStr;
+				//else
+				//	str = ((ExpressionArgument)func.Argument).Term.GetStrValue(exm);
+				//exm.Console.PrintImg(str);
+				var arg = ((SpPrintImgArgument)func.Argument);
+				if (arg == null)
+					throw new CodeEE("引数は正しくありません。");
+				var strb = arg.Nameb != null ? arg.Nameb.GetStrValue(exm) : null;
+				if (strb == string.Empty) strb = null;
+				exm.Console.PrintImg(
+					arg.Name.GetStrValue(exm),
+					strb,
+					arg.Param != null && arg.Param.Length > 1 ? new MixedNum { num = (int)arg.Param[1].num.GetIntValue(exm), isPx = arg.Param[1].isPx } : null,
+					arg.Param != null && arg.Param.Length > 0 ? new MixedNum { num = (int)arg.Param[0].num.GetIntValue(exm), isPx = arg.Param[0].isPx } : null,
+					arg.Param != null && arg.Param.Length > 2 ? new MixedNum { num = (int)arg.Param[2].num.GetIntValue(exm), isPx = arg.Param[2].isPx } : null);
+				#endregion
 			}
 		}
 
@@ -316,19 +333,31 @@ namespace MinorShift.Emuera.GameProc.Function
 			public PRINT_RECT_Instruction()
 			{
 				flag = EXTENDED | METHOD_SAFE;
-				ArgBuilder = ArgumentParser.GetArgumentBuilder(FunctionArgType.INT_ANY);
+				#region EM_私家版_HTMLパラメータ拡張
+				// ArgBuilder = ArgumentParser.GetArgumentBuilder(FunctionArgType.INT_ANY);
+				ArgBuilder = ArgumentParser.GetArgumentBuilder(FunctionArgType.SP_PRINT_RECT);
+				#endregion
 			}
 
 			public override void DoInstruction(ExpressionMediator exm, InstructionLine func, ProcessState state)
 			{
                 if (GlobalStatic.Process.SkipPrint)
                     return;
-                ExpressionArrayArgument intExpArg = (ExpressionArrayArgument)func.Argument;
-				int[] param = new int[intExpArg.TermList.Length];
-				for (int i = 0; i < intExpArg.TermList.Length; i++)
-					param[i] = FunctionIdentifier.toUInt32inArg(intExpArg.TermList[i].GetIntValue(exm), "PRINT_RECT", i + 1);
+				#region EM_私家版_HTMLパラメータ拡張
+				//ExpressionArrayArgument intExpArg = (ExpressionArrayArgument)func.Argument;
+				//int[] param = new int[intExpArg.TermList.Length];
+				//for (int i = 0; i < intExpArg.TermList.Length; i++)
+				//	param[i] = FunctionIdentifier.toUInt32inArg(intExpArg.TermList[i].GetIntValue(exm), "PRINT_RECT", i + 1);
 
+				//exm.Console.PrintShape("rect", param);
+				var arg = ((SpPrintShapeArgument)func.Argument);
+				if (arg == null)
+					throw new CodeEE("引数は正しくありません。");
+				var param = new MixedNum[arg.Param.Length];
+				for (int i = 0; i < param.Length; i++)
+					param[i] = new MixedNum { num = (int)arg.Param[i].num.GetIntValue(exm), isPx = arg.Param[i].isPx };
 				exm.Console.PrintShape("rect", param);
+				#endregion
 			}
 		}
 
@@ -337,20 +366,32 @@ namespace MinorShift.Emuera.GameProc.Function
 			public PRINT_SPACE_Instruction()
 			{
 				flag = EXTENDED | METHOD_SAFE;
-				ArgBuilder = ArgumentParser.GetArgumentBuilder(FunctionArgType.INT_EXPRESSION);
+				#region EM_私家版_HTMLパラメータ拡張
+				// ArgBuilder = ArgumentParser.GetArgumentBuilder(FunctionArgType.INT_EXPRESSION);
+				ArgBuilder = ArgumentParser.GetArgumentBuilder(FunctionArgType.SP_PRINT_SPACE);
+				#endregion
 			}
 
 			public override void DoInstruction(ExpressionMediator exm, InstructionLine func, ProcessState state)
 			{
                 if (GlobalStatic.Process.SkipPrint)
                     return;
-                Int64 param;
-				if (func.Argument.IsConst)
-					param = func.Argument.ConstInt;
-				else
-					param = ((ExpressionArgument)func.Argument).Term.GetIntValue(exm);
-				int param32 = FunctionIdentifier.toUInt32inArg(param, "PRINT_SPACE", 1);
-				exm.Console.PrintShape("space", new int[] { param32 });
+				#region EM_私家版_HTMLパラメータ拡張
+				//Int64 param;
+				//if (func.Argument.IsConst)
+				//	param = func.Argument.ConstInt;
+				//else
+				//	param = ((ExpressionArgument)func.Argument).Term.GetIntValue(exm);
+				//int param32 = FunctionIdentifier.toUInt32inArg(param, "PRINT_SPACE", 1);
+				// exm.Console.PrintShape("space", new int[] { param32 });
+				var arg = ((SpPrintShapeArgument)func.Argument);
+				if (arg == null)
+					throw new CodeEE("引数は正しくありません。");
+				var param = new MixedNum[arg.Param.Length];
+				for (int i = 0; i < param.Length; i++)
+					param[i] = new MixedNum { num = (int)arg.Param[i].num.GetIntValue(exm), isPx = arg.Param[i].isPx };
+				exm.Console.PrintShape("space", param);
+				#endregion
 			}
 		}
 
@@ -1789,8 +1830,27 @@ namespace MinorShift.Emuera.GameProc.Function
 				exm.Console.WaitInput(req);
 			}
 		}
-		
-		private sealed class AWAIT_Instruction : AbstractInstruction
+        #region EE_INPUTANY
+		private sealed class INPUTANY_Instruction : AbstractInstruction
+        {
+			public INPUTANY_Instruction()
+            {
+				ArgBuilder = ArgumentParser.GetArgumentBuilder(FunctionArgType.VOID);
+				//スキップ不可
+				//flag = IS_PRINT | IS_INPUT | EXTENDED;
+				flag = EXTENDED;
+			}
+			public override void DoInstruction(ExpressionMediator exm, InstructionLine func, ProcessState state)
+			{
+				InputRequest req = new InputRequest();
+				req.InputType = InputType.AnyValue;
+				exm.Console.WaitInput(req);
+			}
+		}
+        #endregion
+
+
+        private sealed class AWAIT_Instruction : AbstractInstruction
 		{
 			public AWAIT_Instruction()
 			{

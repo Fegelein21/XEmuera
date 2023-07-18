@@ -1085,5 +1085,14 @@ namespace XEmuera.Resources {
                 return ResourceManager.GetString("WindowY", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 将存档数据压缩保存.
+        /// </summary>
+        internal static string ZipSaveData {
+            get {
+                return ResourceManager.GetString("ZipSaveData", resourceCulture);
+            }
+        }
     }
 }

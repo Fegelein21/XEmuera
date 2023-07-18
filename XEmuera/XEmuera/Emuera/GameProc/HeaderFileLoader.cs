@@ -294,20 +294,45 @@ namespace MinorShift.Emuera.GameProc
 							var = parentProcess.VEvaluator.VariableData.CreateUserDefVariable(data);
 						idDic.AddUseDefinedVariable(var);
 						#region EE_ERD
-						//とりあえず一次元配列だけ対応
-						if (data.Dimension == 1 && Config.UseERD)
+						if (Config.UseERD)
 						{
-							var key = data.Name.ToUpper();
-							if (erdFileNames.ContainsKey(key))
-							{
-								var info = erdFileNames[key];
-								if (info.duplicatedBoth)
-									throw new CodeEE("変数" + data.Name + "用の定義ファイルがCSVとERD両方で存在します。どちらかに統一してください");
-								if (info.duplicatedErd)
-									throw new CodeEE("変数" + data.Name + "用のERDファイルが2つ以上存在します。どちらかに統一してください");
-								GlobalStatic.ConstantData.UserDefineLoadData(info.path, data.Name, data.Lengths[0], Config.DisplayReport);
+							string key;
+							if (data.Dimension == 1)
+                            {
+								key = data.Name.ToUpper();
+								if (erdFileNames.ContainsKey(key))
+								{
+									var info = erdFileNames[key];
+									GlobalStatic.ConstantData.UserDefineLoadData(info, data.Name, data.Lengths[0], Config.DisplayReport, dimline.SC);
+								}
+								App.DoEvents();
 							}
-							App.DoEvents();
+							else if (data.Dimension == 2)
+                            {
+								for (int dim = 1; dim < 3; dim++)
+								{
+									key = data.Name.ToUpper() + "@" + dim;
+									if (erdFileNames.ContainsKey(key))
+									{
+										var info = erdFileNames[key];
+										GlobalStatic.ConstantData.UserDefineLoadData(info, data.Name + "@" + dim, data.Lengths[0], Config.DisplayReport, dimline.SC);
+									}
+									App.DoEvents();
+								}
+							}
+							else if (data.Dimension == 3)
+							{
+								for (int dim = 1; dim < 4; dim++)
+								{
+									key = data.Name.ToUpper() + "@" + dim;
+									if (erdFileNames.ContainsKey(key))
+									{
+										var info = erdFileNames[key];
+										GlobalStatic.ConstantData.UserDefineLoadData(info, data.Name + "@" + dim, data.Lengths[0], Config.DisplayReport, dimline.SC);
+									}
+									App.DoEvents();
+								}
+							}
 						}
 						#endregion
 
@@ -338,31 +363,27 @@ namespace MinorShift.Emuera.GameProc
 			return noError;
 		}
 		#region EE_ERD
-		private class ERDPath
-		{
-			public string path;
-			public bool duplicatedErd;
-			public bool duplicatedBoth;
-		}
-		private Dictionary<string, ERDPath> erdFileNames;
+
+		private Dictionary<string, List<string>> erdFileNames;
 
 		private void PrepareERDFileNames()
 		{
-			if (erdFileNames == null) erdFileNames = new Dictionary<string, ERDPath>();
+			if (erdFileNames == null) erdFileNames = new Dictionary<string, List<string>>();
 			foreach (var path in FileUtils.GetFiles(Program.ErbDir, "*.erd", SearchOption.AllDirectories))
 			{
 				var key = Path.GetFileNameWithoutExtension(path).ToUpper();
 				if (!erdFileNames.ContainsKey(key))
-					erdFileNames[key] = new ERDPath() { path = path, duplicatedBoth = false, duplicatedErd = false };
+					erdFileNames[key] = new List<string> { path };
 				else
-					erdFileNames[key].duplicatedErd = true;
+					erdFileNames[key].Add(path);
 			}
 			foreach (var path in FileUtils.GetFiles(Program.CsvDir, "*.csv", SearchOption.TopDirectoryOnly))
 			{
 				var key = Path.GetFileNameWithoutExtension(path).ToUpper();
 				if (!erdFileNames.ContainsKey(key))
-					erdFileNames[key] = new ERDPath() { path = path, duplicatedBoth = false, duplicatedErd = false };
-				else erdFileNames[key].duplicatedBoth = true;
+					erdFileNames[key] = new List<string> { path };
+				else
+					erdFileNames[key].Add(path);
 			}
 		}
 		#endregion

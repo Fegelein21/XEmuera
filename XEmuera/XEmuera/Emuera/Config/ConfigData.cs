@@ -128,6 +128,9 @@ namespace MinorShift.Emuera
 			#region EM_私家版_LoadText＆SaveText機能拡張
 			configArray.Add(new ConfigItem(ConfigCode.ValidExtension, ConfigsText.ValidExtension, new List<string> { "txt" }));
 			#endregion
+			#region EM_私家版_セーブ圧縮
+			configArray.Add(new ConfigItem(ConfigCode.ZipSaveData, ConfigsText.ZipSaveData, false));
+			#endregion
 
 
 			configArray.Add(new ConfigItem(ConfigCode.PanSpeed, ConfigsText.PanSpeed, 2.0f));
