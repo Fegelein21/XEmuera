@@ -5,6 +5,7 @@ using System.Text;
 using XEmuera.Forms;
 using MinorShift.Emuera.Sub;
 using XEmuera.Drawing;
+using trerror = EvilMask.Emuera.Lang.Error;
 
 namespace MinorShift.Emuera.GameView
 {
@@ -72,7 +73,7 @@ namespace MinorShift.Emuera.GameView
 				if (builder.Length > 2000)
 					return;
 				if (builder.Length + str.Length > 2000)
-					str = str.Substring(0, 2000 - builder.Length) + "※※※バッファーの文字数が2000字(全角1000字)を超えています。これ以降は表示できません※※※";
+					str = str.Substring(0, 2000 - builder.Length) + trerror.BufferOverFlow.Text;
 				builder.Append(str);
 				lastStringStyle = style;
 			}

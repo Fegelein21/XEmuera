@@ -76,7 +76,8 @@ namespace XEmuera.Models
 			foreach (var itemPath in gameItemPaths)
 			{
 				if (!Directory.Exists(itemPath + directorySeparatorChar + "ERB"))
-					continue;
+					if (!Directory.Exists(itemPath + directorySeparatorChar + "erb"))
+						continue;
 
 				gameItem = new GameItemModel
 				{
@@ -86,8 +87,11 @@ namespace XEmuera.Models
 
 				if (!Directory.Exists(itemPath + directorySeparatorChar + "CSV"))
 				{
-					gameItem.HasError = true;
-					gameItem.Error = "(缺少CSV文件夹)";
+					if (!Directory.Exists(itemPath + directorySeparatorChar + "csv"))
+                    {
+						gameItem.HasError = true;
+						gameItem.Error = "(缺少CSV文件夹)";
+					}
 				}
 
 				AllModels.Add(gameItem);

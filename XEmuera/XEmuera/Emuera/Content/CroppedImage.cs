@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using XEmuera;
 using XEmuera.Drawing;
+using trerror = EvilMask.Emuera.Lang.Error;
 
 namespace MinorShift.Emuera.Content
 {
@@ -229,9 +230,9 @@ namespace MinorShift.Emuera.Content
 				return null;
 #if DEBUG
 			if (FrameList.Count == 0)
-				throw new ExeEE("totaltime > 0なのにFrameListが空");
+				throw new ExeEE(trerror.EmptyFramelist.Text);
 			if (lastFrame >= FrameList.Count)
-				throw new ExeEE("SpriteAnime:最終フレームが範囲外");
+				throw new ExeEE(trerror.OoRLasframe.Text);
 #endif
 			//一度もフレーム取得したことがない場合は現在時間を記録して最初のフレームを返す。
 			if (StartTime < 0)
@@ -258,7 +259,7 @@ namespace MinorShift.Emuera.Content
 				}
 			}
 			//ここまでこないはず
-			throw new ExeEE("SpriteAnime:時間外参照");
+			throw new ExeEE(trerror.SpriteTimeOut.Text);
 		}
 
 		public override bool IsCreated

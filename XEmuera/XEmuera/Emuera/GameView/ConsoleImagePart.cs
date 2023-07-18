@@ -40,21 +40,21 @@ namespace MinorShift.Emuera.GameView
 			if (raw_height != null && raw_height.num != 0)
 				{
 				sb.Append("' height='");
-				sb.Append(raw_height.ToString());
+				sb.Append(raw_height.num.ToString());
 				if (raw_height.isPx) sb.Append("px");
 			}
 			//if(raw_width != 0)
 			if(raw_width != null && raw_width.num != 0)
 				{
 				sb.Append("' width='");
-				sb.Append(raw_width.ToString());
+				sb.Append(raw_width.num.ToString());
 				if (raw_width.isPx) sb.Append("px");
 			}
 			//if(raw_ypos != 0)
 			if(raw_ypos != null && raw_ypos.num != 0)
 				{
 				sb.Append("' ypos='");
-				sb.Append(raw_ypos.ToString());
+				sb.Append(raw_ypos.num.ToString());
 				if (raw_ypos.isPx) sb.Append("px");
 			}
 			sb.Append("'>");

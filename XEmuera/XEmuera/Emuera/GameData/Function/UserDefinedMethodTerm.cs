@@ -4,6 +4,7 @@ using System.Text;
 using MinorShift.Emuera.GameProc;
 using MinorShift.Emuera.GameData.Expression;
 using MinorShift.Emuera.Sub;
+using trerror = EvilMask.Emuera.Lang.Error;
 
 namespace MinorShift.Emuera.GameData.Function
 {
@@ -93,7 +94,7 @@ namespace MinorShift.Emuera.GameData.Function
 			get
 			{
 				if (reffunc.CalledFunction == null)
-					throw new CodeEE("何も参照していない関数参照" + reffunc.Name + "を呼び出しました");
+					throw new CodeEE(string.Format(trerror.EmptyRefFunc.Text, reffunc.Name));
 				string errMes;
 				UserDefinedFunctionArgument arg = reffunc.CalledFunction.ConvertArg(srcArgs, out errMes);
 				if (arg == null)
@@ -106,7 +107,7 @@ namespace MinorShift.Emuera.GameData.Function
 			get
 			{
 				if (reffunc.CalledFunction == null)
-					throw new CodeEE("何も参照していない関数参照" + reffunc .Name+ "を呼び出しました");
+					throw new CodeEE(string.Format(trerror.EmptyRefFunc.Text, reffunc.Name));
 				return reffunc.CalledFunction;
 			}
 		}
@@ -135,9 +136,9 @@ namespace MinorShift.Emuera.GameData.Function
 		}
 		readonly UserDefinedRefMethod reffunc = null;
 		public override UserDefinedFunctionArgument Argument
-		{ get { throw new CodeEE("引数のない関数参照" + reffunc.Name + "を呼び出しました"); } }
+		{ get { throw new CodeEE(string.Format(trerror.RefFuncHasNotArg.Text, reffunc.Name)); } }
 		public override CalledFunction Call
-		{ get { throw new CodeEE("引数のない関数参照" + reffunc.Name + "を呼び出しました"); } }
+		{ get { throw new CodeEE(string.Format(trerror.RefFuncHasNotArg.Text, reffunc.Name)); } }
 		public string GetRefName()
 		{
 			if (reffunc.CalledFunction == null)
@@ -145,11 +146,11 @@ namespace MinorShift.Emuera.GameData.Function
 			return reffunc.CalledFunction.TopLabel.LabelName;
 		}
 		public override long GetIntValue(ExpressionMediator exm)
-		{ throw new CodeEE("引数のない関数参照" + reffunc.Name + "を呼び出しました"); }
+		{ throw new CodeEE(string.Format(trerror.RefFuncHasNotArg.Text, reffunc.Name)); }
 		public override string GetStrValue(ExpressionMediator exm)
-		{ throw new CodeEE("引数のない関数参照" + reffunc.Name + "を呼び出しました"); }
+		{ throw new CodeEE(string.Format(trerror.RefFuncHasNotArg.Text, reffunc.Name)); }
 		public override SingleTerm GetValue(ExpressionMediator exm)
-		{ throw new CodeEE("引数のない関数参照" + reffunc.Name + "を呼び出しました"); }
+		{ throw new CodeEE(string.Format(trerror.RefFuncHasNotArg.Text, reffunc.Name)); }
 		public override IOperandTerm Restructure(ExpressionMediator exm)
 		{
 			return this;

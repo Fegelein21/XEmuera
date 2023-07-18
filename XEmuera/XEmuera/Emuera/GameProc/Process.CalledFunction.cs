@@ -6,6 +6,7 @@ using MinorShift.Emuera.GameData;
 using MinorShift.Emuera.GameData.Expression;
 using MinorShift.Emuera.GameData.Function;
 using MinorShift.Emuera.GameData.Variable;
+using trerror = EvilMask.Emuera.Lang.Error;
 
 namespace MinorShift.Emuera.GameProc
 {
@@ -42,7 +43,7 @@ namespace MinorShift.Emuera.GameProc
 					{
 						Int64 charaNo = vTerm.GetElementInt(0, exm);
 						if ((charaNo < 0) || (charaNo >= GlobalStatic.VariableData.CharacterList.Count))
-							throw new CodeEE("キャラクタ配列変数" + vTerm.Identifier.Name + "の第１引数(" + charaNo.ToString() + ")はキャラ登録番号の範囲外です");
+							throw new CodeEE(string.Format(trerror.OoRCharaVarArg.Text, vTerm.Identifier.Name, "1", charaNo.ToString()));
 						TransporterRef[i] = (Array)vTerm.Identifier.GetArrayChara((int)charaNo);
 					}
 					else
@@ -88,7 +89,7 @@ namespace MinorShift.Emuera.GameProc
 				FunctionLabelLine line = parent.LabelDictionary.GetNonEventLabel(label);
 				if (parent.LabelDictionary.GetNonEventLabel(label) != null)
 				{
-					throw new CodeEE("イベント関数でない関数@" + label + "(" + line.Position.Filename + ":" + line.Position.LineNo + "行目)に対しEVENT呼び出しが行われました");
+					throw new CodeEE(string.Format(trerror.CalleventToNonEventFunc.Text, label, line.Position.Filename, line.Position.LineNo));
 				}
 				return null;
 			}
@@ -110,13 +111,13 @@ namespace MinorShift.Emuera.GameProc
 			{
 				if (parent.LabelDictionary.GetEventLabels(label) != null)
 				{
-					throw new CodeEE("イベント関数@" + label + "に対し通常のCALLが行われました(このエラーは互換性オプション「" + Config.GetConfigName(ConfigCode.CompatiCallEvent) + "」により無視できます)");
+					throw new CodeEE(string.Format(trerror.CallToEventFunc.Text, label, Config.GetConfigName(ConfigCode.CompatiCallEvent)));
 				}
 				return null;
 			}
             else if (labelline.IsMethod)
             {
-                throw new CodeEE("#FUCNTION(S)が定義された関数@" + labelline.LabelName + "(" + labelline.Position.Filename + ":" + labelline.Position.LineNo.ToString() + "行目)に対し通常のCALLが行われました");
+                throw new CodeEE(string.Format(trerror.CallToUserFunc.Text, labelline.LabelName, labelline.Position.Filename, labelline.Position.LineNo.ToString()));
             }
 			called.TopLabel = labelline;
 			called.CurrentLabel = labelline;
@@ -154,7 +155,7 @@ namespace MinorShift.Emuera.GameProc
             IOperandTerm[] convertedArg = new IOperandTerm[func.Arg.Length];
 			if(convertedArg.Length < srcArgs.Length)
 			{
-				errMes = "引数の数が関数\"@" + func.LabelName + "\"に設定された数を超えています";
+				errMes = string.Format(trerror.TooManyFuncArgs.Text, func.LabelName);
 				return null;
 			}
 			IOperandTerm term;
@@ -169,20 +170,20 @@ namespace MinorShift.Emuera.GameProc
 				{
 					if (term == null)
 					{
-						errMes = "\"@" + func.LabelName + "\"の" + (i + 1).ToString() + "番目の引数は参照渡しのため省略できません";
+						errMes = string.Format(trerror.CanNotOmitRefArg.Text, func.LabelName, (i + 1).ToString());
 						return null;
 					}
 					VariableTerm vTerm = term as VariableTerm;
 					if (vTerm == null || vTerm.Identifier.Dimension == 0)
 					{
-						errMes = "\"@" + func.LabelName + "\"の" + (i + 1).ToString() + "番目の引数は参照渡しのための配列変数でなければなりません";
+						errMes = string.Format(trerror.RequireArrayBecauseRefArg.Text, func.LabelName, (i + 1).ToString());
 						return null;
 					}
 					//TODO 1810alpha007 キャラ型を認めるかどうかはっきりしたい 今のところ認めない方向
 					//型チェック
 					if (!((ReferenceToken)destArg.Identifier).MatchType(vTerm.Identifier, false, out errMes))
 					{
-						errMes = "\"@" + func.LabelName + "\"の" + (i + 1).ToString() + "番目の引数:" + errMes;
+						errMes = string.Format(trerror.NumberOfArg.Text, func.LabelName, (i + 1).ToString(), errMes);
 						return null;
 					}
 				}
@@ -193,7 +194,7 @@ namespace MinorShift.Emuera.GameProc
 					//一応逃がす
 					if (term == null && !Config.CompatiFuncArgOptional)
 					{
-						errMes = "\"@" + func.LabelName + "\"の" + (i + 1).ToString() + "番目の引数は省略できません(この警告は互換性オプション「" + Config.GetConfigName(ConfigCode.CompatiFuncArgOptional) + "」により無視できます)";
+						errMes = string.Format(trerror.CanNotOmitArgWithMessage.Text, func.LabelName, (i + 1).ToString(), Config.GetConfigName(ConfigCode.CompatiFuncArgOptional));
 						return null;
 					}
 				}
@@ -201,14 +202,14 @@ namespace MinorShift.Emuera.GameProc
 				{
 					if (term.GetOperandType() == typeof(string))
 					{
-						errMes = "\"@" + func.LabelName + "\"の" + (i + 1).ToString() + "番目の引数を文字列型から整数型に変換できません";
+						errMes = string.Format(trerror.CanNotConvertStrToInt.Text, func.LabelName, (i + 1).ToString());
 						return null;
 					}
 					else
 					{
 						if (!Config.CompatiFuncArgAutoConvert)
 						{
-							errMes = "\"@" + func.LabelName + "\"の" + (i + 1).ToString() + "番目の引数を整数型から文字列型に変換できません(この警告は互換性オプション「" + Config.GetConfigName(ConfigCode.CompatiFuncArgAutoConvert) + "」により無視できます)";
+							errMes = string.Format(trerror.CanNotConvertIntToStr.Text, func.LabelName, (i + 1).ToString(), Config.GetConfigName(ConfigCode.CompatiFuncArgAutoConvert));
 							return null;
 						}
 						if (tostrMethod == null)

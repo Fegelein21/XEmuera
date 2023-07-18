@@ -155,13 +155,23 @@ namespace MinorShift.Emuera
 		#endregion
 		#region EE_ERDConfig
 		UseERD,
+        #endregion
+        #region EE_ERDNAME
+		VarsizeDimConfig,
 		#endregion
 
 		#region EM_私家版_LoadText＆SaveText機能拡張
 		ValidExtension = 200,
 		#endregion
 		#region EM_私家版_セーブ圧縮
-		ZipSaveData = 201,
+		ZipSaveData,
+		#endregion
+		#region EM_私家版_Emuera多言語化改造
+		EnglishConfigOutput,
+		EmueraLang,
+		#endregion
+		#region EM_私家版_Icon指定機能
+		EmueraIcon,
 		#endregion
 		PanSpeed,
 

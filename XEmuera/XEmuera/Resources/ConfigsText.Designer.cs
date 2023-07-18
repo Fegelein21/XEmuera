@@ -367,6 +367,15 @@ namespace XEmuera.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 使用英语输出配置文件.
+        /// </summary>
+        internal static string EnglishConfigOutput {
+            get {
+                return ResourceManager.GetString("EnglishConfigOutput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EXPLVの初期値.
         /// </summary>
         internal static string ExpLvDef {
@@ -1011,6 +1020,15 @@ namespace XEmuera.Resources {
         internal static string ValidExtension {
             get {
                 return ResourceManager.GetString("ValidExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VARSIZE使用与ERD相同的维度指定方式.
+        /// </summary>
+        internal static string VarsizeDimConfig {
+            get {
+                return ResourceManager.GetString("VarsizeDimConfig", resourceCulture);
             }
         }
         

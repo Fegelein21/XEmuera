@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using MinorShift.Emuera.Sub;
 using MinorShift.Emuera.GameData;
+using trerror = EvilMask.Emuera.Lang.Error;
+using trsl = EvilMask.Emuera.Lang.SystemLine;
 
 namespace MinorShift.Emuera.GameProc
 {
@@ -120,7 +122,7 @@ namespace MinorShift.Emuera.GameProc
 				if (!force)
 					return false;
 				else
-					throw new CodeEE("関数\"@" + functionName + "\"が見つかりません");
+					throw new CodeEE(string.Format(trerror.FuncIsNotFound.Text, functionName));
 			//そもそも非イベント関数では関数1個分しか与えないので条件を満たすわけがない
 			//if ((!isEvent) && (call.Count > 1))
 			//    throw new ExeEE("イベント関数でない関数\"@" + functionName + "\"の候補が複数ある");
@@ -141,28 +143,28 @@ namespace MinorShift.Emuera.GameProc
 			deleteAllPrevState();
 			if (Program.AnalysisMode)
 			{
-				console.PrintSystemLine("ファイル解析終了：Analysis.logに出力します");
+				console.PrintSystemLine(trsl.AnalysisCompleted.Text);
 				#region EE_OUTPUTLOG
 				// console.OutputLog(Program.ExeDir + "Analysis.log");
 				console.OutputSystemLog(Program.ExeDir + "Analysis.log");
 				#endregion
 				console.noOutputLog = true;
-				console.PrintSystemLine("エンターキーもしくはクリックで終了します");
-				//System.Media.SystemSounds.Asterisk.Play();
+				console.PrintSystemLine(trsl.PressEnterOrClick.Text);
+				// System.Media.SystemSounds.Asterisk.Play();
 				console.ThrowTitleError(false);
 				return;
 			}
 			if ((!noError) && (!Config.CompatiErrorLine))
 			{
-				console.PrintSystemLine("ERBコードに解釈不可能な行があるためEmueraを終了します");
-				console.PrintSystemLine("※互換性オプション「" + Config.GetConfigName(ConfigCode.CompatiErrorLine) + "」により強制的に動作させることができます");
-				console.PrintSystemLine("emuera.logにログを出力します");
+				console.PrintSystemLine(trsl.ExitBecauseCanNotInterpreted1.Text);
+				console.PrintSystemLine(string.Format(trsl.ExitBecauseCanNotInterpreted2.Text, Config.GetConfigName(ConfigCode.CompatiErrorLine)));
+				console.PrintSystemLine(trsl.ExitBecauseCanNotInterpreted3.Text);
 				#region EE_OUTPUTLOG
 				// console.OutputLog(Program.ExeDir + "emuera.log");
 				console.OutputSystemLog(Program.ExeDir + "emuera.log");
 				#endregion
 				console.noOutputLog = true;
-				console.PrintSystemLine("エンターキーもしくはクリックで終了します");
+				console.PrintSystemLine(trsl.PressEnterOrClick.Text);
 				//System.Media.SystemSounds.Asterisk.Play();
 				console.ThrowTitleError(true);
 				return;
@@ -228,7 +230,7 @@ namespace MinorShift.Emuera.GameProc
 			else//入力が正しくないならもう一回選択肢を書き直し、正しい選択を要求する。
 			{//RESUELASTLINEと同様の処理を行うように変更
 				console.deleteLine(1);
-				console.PrintTemporaryLine("無効な値です");
+				console.PrintTemporaryLine(trerror.InvalidValue.Text);
 				console.updatedGeneration = true;
 				openingInput();
 				//beginTitle();
@@ -413,7 +415,7 @@ namespace MinorShift.Emuera.GameProc
 					if (comAble[i] == systemResult)
 						selectCom = (int)systemResult;
 				}
-				console.PrintSingleLine(string.Format("＜コマンド連続実行：{0}/{1}＞", count, coms.Count));
+				console.PrintSingleLine(string.Format(trerror.ExecutedCom.Text, count, coms.Count));
 			}
 			//TrainNameが定義されていて使用可能(COMABLEが非0を返した)である
 			if (selectCom >= 0)
@@ -424,7 +426,7 @@ namespace MinorShift.Emuera.GameProc
 			else
 			{//されていない。
 				if (isCTrain)
-					console.PrintSingleLine("コマンドを実行できませんでした");
+					console.PrintSingleLine(trerror.CouldNotExecuteCom.Text);
 				vEvaluator.RESULT = systemResult;
 				state.SystemState = SystemStateCode.Train_CallEventComEnd;
 				callFunction("USERCOM", true, false);
@@ -495,7 +497,7 @@ namespace MinorShift.Emuera.GameProc
                 if (console.LastLineIsEmpty)
                 {
                     console.deleteLine(2);
-                    console.PrintTemporaryLine("無効な値です");
+                    console.PrintTemporaryLine(trerror.InvalidValue.Text);
                 }
 				console.updatedGeneration = true;
 				endCallShowUserCom();
@@ -576,7 +578,7 @@ namespace MinorShift.Emuera.GameProc
 				{
 					//見つからなければ終了
 					console.deleteLine(1);
-					console.PrintTemporaryLine("無効な値です");
+					console.PrintTemporaryLine(trerror.InvalidValue.Text);
 					console.updatedGeneration = true;
 					endCallShowAblupSelect();
 				}
@@ -665,8 +667,8 @@ namespace MinorShift.Emuera.GameProc
 			{
 				if (!vEvaluator.SaveTo(saveTarget, vEvaluator.SAVEDATA_TEXT))
 				{
-					console.PrintError("オートセーブ中に予期しないエラーが発生しました");
-					console.PrintError("オートセーブをスキップします");
+					console.PrintError(trerror.AutoSaveError1.Text);
+					console.PrintError(trerror.AutoSaveError2.Text);
 					console.ReadAnyKey();
 				}
 			}
@@ -713,7 +715,7 @@ namespace MinorShift.Emuera.GameProc
 						//console.Print("お金が足りません。");
 						//console.NewLine();
 						console.deleteLine(1);
-						console.PrintTemporaryLine("お金が足りません。");
+						console.PrintTemporaryLine(trerror.NotEnoughMoney.Text);
 					}
 				}
 				else
@@ -721,7 +723,7 @@ namespace MinorShift.Emuera.GameProc
 					//console.Print("売っていません。");
 					//console.NewLine();
 					console.deleteLine(1);
-					console.PrintTemporaryLine("売っていません。");
+					console.PrintTemporaryLine(trerror.OutOfStock.Text);
 				}
 				//購入に失敗した場合、endCallEventShop()に戻す。
 				//endCallEventShop();
@@ -747,7 +749,7 @@ namespace MinorShift.Emuera.GameProc
                 if (console.LastLineIsEmpty)
                 {
                     console.deleteLine(2);
-                    console.PrintTemporaryLine("無効な値です");
+                    console.PrintTemporaryLine(trerror.InvalidValue.Text);
                 }
 				console.updatedGeneration = true;
 				endCallShowShop();
@@ -787,21 +789,21 @@ namespace MinorShift.Emuera.GameProc
 
 		void beginSaveGame()
 		{
-			console.PrintSingleLine("何番にセーブしますか？");
+			console.PrintSingleLine(trsl.SaveQuestion.Text);
 			state.SystemState = SystemStateCode.SaveGame_Begin;
 			printSaveDataText();
 		}
 
 		void beginLoadGame()
 		{
-			console.PrintSingleLine("何番をロードしますか？");
+			console.PrintSingleLine(trsl.LoadQuestion.Text);
 			state.SystemState = SystemStateCode.LoadGame_Begin;
 			printSaveDataText();
 		}
 
 		void beginLoadGameOpening()
 		{
-			console.PrintSingleLine("何番をロードしますか？");
+			console.PrintSingleLine(trsl.LoadQuestion.Text);
 			state.SystemState = SystemStateCode.LoadGameOpenning_Begin;
 			printSaveDataText();
 		}
@@ -821,7 +823,7 @@ namespace MinorShift.Emuera.GameProc
 			for (int i = 0; i < page; i++)
 			{
 				console.PrintFlush(false);
-				console.Print(string.Format("[{0, 2}] セーブデータ{0, 2}～{1, 2}を表示", i * 20, i * 20 + 19));
+				console.Print(string.Format(trsl.DisplaySaveSlot.Text, i * 20, i * 20 + 19));
 			}
 			for (int i = 0; i < 20; i++)
 			{
@@ -838,7 +840,7 @@ namespace MinorShift.Emuera.GameProc
 			for (int i = page; i < ((dataIsAvailable.Length - 2) / 20); i++)
 			{
 				console.PrintFlush(false);
-				console.Print(string.Format("[{0, 2}] セーブデータ{0, 2}～{1, 2}を表示", (i + 1) * 20, (i + 1) * 20 + 19));
+				console.Print(string.Format(trsl.DisplaySaveSlot.Text, (i + 1) * 20, (i + 1) * 20 + 19));
 			}
 			//オートセーブの処理は別途切り出し（表示処理の都合上）
 			dataIsAvailable[dataIsAvailable.Length - 1] = false;
@@ -887,7 +889,7 @@ namespace MinorShift.Emuera.GameProc
 			else
 			{//入力しなおし
 				console.deleteLine(1);
-				console.PrintTemporaryLine("無効な値です");
+				console.PrintTemporaryLine(trerror.InvalidValue.Text);
 				console.updatedGeneration = true;
 				setWaitInput();
 				return;
@@ -896,9 +898,9 @@ namespace MinorShift.Emuera.GameProc
 			//既存データがあるなら選択肢を表示してSaveGame_WaitInputOverwriteへ移行。
 			if (available)
 			{
-				console.PrintSingleLine("既にデータが存在します。上書きしますか？");
-				console.PrintC("[0] はい", false);
-				console.PrintC("[1] いいえ", false);
+				console.PrintSingleLine(trsl.DoYouOverwrite.Text);
+				console.PrintC(trsl.Yes.Text, false);
+				console.PrintC(trsl.No.Text, false);
 				setWaitInput();
 				state.SystemState = SystemStateCode.SaveGame_WaitInputOverwrite;
 				return;
@@ -918,7 +920,7 @@ namespace MinorShift.Emuera.GameProc
 			else if (systemResult != 0)//「はい」でもない
 			{//入力しなおし
 				console.deleteLine(1);
-				console.PrintTemporaryLine("無効な値です");
+				console.PrintTemporaryLine(trerror.InvalidValue.Text);
 				console.updatedGeneration = true;
 				setWaitInput();
 				return;
@@ -933,7 +935,7 @@ namespace MinorShift.Emuera.GameProc
 		{
 			if (!vEvaluator.SaveTo(saveTarget, vEvaluator.SAVEDATA_TEXT))
 			{
-				console.PrintError("セーブ中に予期しないエラーが発生しました");
+				console.PrintError(trerror.UnexpectedSaveError.Text);
 				console.ReadAnyKey();
 			}
 			loadPrevState();
@@ -971,7 +973,7 @@ namespace MinorShift.Emuera.GameProc
 			else
 			{//入力しなおし
 				console.deleteLine(1);
-				console.PrintTemporaryLine("無効な値です");
+				console.PrintTemporaryLine(trerror.InvalidValue.Text);
 				console.updatedGeneration = true;
 				setWaitInput();
 				return;
@@ -979,7 +981,7 @@ namespace MinorShift.Emuera.GameProc
 			if (!available)
 			{
 				console.PrintSingleLine(systemResult.ToString());
-				console.PrintError("データがありません");
+				console.PrintError(trerror.NoData.Text);
 				if (state.SystemState == SystemStateCode.LoadGameOpenning_WaitInput)
 				{
 					beginLoadGameOpening();
@@ -990,7 +992,7 @@ namespace MinorShift.Emuera.GameProc
 			}
 
 			if (!vEvaluator.LoadFrom((int)systemResult))
-				throw new ExeEE("ファイルのロード中に予期しないエラーが発生しました");
+				throw new ExeEE(trerror.UnexpectedErrorInLoaddata.Text);
 			deletePrevState();
 			beginDataLoaded();
 		}
@@ -998,7 +1000,7 @@ namespace MinorShift.Emuera.GameProc
 
 		void endNormal()
 		{
-			throw new CodeEE("予期しないスクリプト終端です");
+			throw new CodeEE(trerror.UnexpectedScriptEnd.Text);
 		}
 
 		void endReloaderb()

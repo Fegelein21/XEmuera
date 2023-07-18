@@ -6,6 +6,7 @@ using XEmuera.Forms;
 using MinorShift.Emuera.Sub;
 using MinorShift.Emuera.GameProc;
 using System.Xml;
+using trerror = EvilMask.Emuera.Lang.Error;
 
 namespace MinorShift.Emuera.GameData.Variable
 {
@@ -15,10 +16,8 @@ namespace MinorShift.Emuera.GameData.Variable
 	internal sealed partial class VariableData : IDisposable
 	{
 		#region EM_私家版_XMLDocument_連想配列
-		readonly Dictionary<string, XmlDocument> xmlDict = new Dictionary<string, XmlDocument>();
-		public Dictionary<string, XmlDocument> DataXmlDocument { get { return xmlDict; } }
-		readonly Dictionary<string, Dictionary<string, string>> mapDict = new Dictionary<string, Dictionary<string, string>>();
-		public Dictionary<string, Dictionary<string, string>> DataStringMaps { get { return mapDict; } }
+		public Dictionary<string, XmlDocument> DataXmlDocument { get; set; } = new Dictionary<string, XmlDocument>();
+		public Dictionary<string, Dictionary<string, string>> DataStringMaps { get; set; } = new Dictionary<string, Dictionary<string, string>>();
 		#endregion
 		readonly Int64[] dataInteger;
 		readonly string[] dataString;
@@ -389,14 +388,14 @@ namespace MinorShift.Emuera.GameData.Variable
 					{
 						case 1: ret = new UserDefinedCharaStr1DVariableToken(data, this, index); break;
 						case 2: ret = new UserDefinedCharaStr2DVariableToken(data, this, index); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 				else
 					switch (data.Dimension)
 					{
 						case 1: ret = new UserDefinedCharaInt1DVariableToken(data, this, index); break;
 						case 2: ret = new UserDefinedCharaInt2DVariableToken(data, this, index); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 			}
 			UserDefinedCharaVarList.Add(ret);
@@ -411,7 +410,7 @@ namespace MinorShift.Emuera.GameData.Variable
 					case 1: ret = new StaticStr1DVariableToken(data); break;
 					case 2: ret = new StaticStr2DVariableToken(data); break;
 					case 3: ret = new StaticStr3DVariableToken(data); break;
-					default: throw new ExeEE("異常な変数宣言");
+					default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 				}
 			else
 				switch (data.Dimension)
@@ -419,7 +418,7 @@ namespace MinorShift.Emuera.GameData.Variable
 					case 1: ret = new StaticInt1DVariableToken(data); break;
 					case 2: ret = new StaticInt2DVariableToken(data); break;
 					case 3: ret = new StaticInt3DVariableToken(data); break;
-					default: throw new ExeEE("異常な変数宣言");
+					default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 				}
 			if (ret.IsGlobal)
 				userDefinedGlobalVarList.Add(ret);
@@ -450,7 +449,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						case 1: ret = new ReferenceStr1DToken(data); break;
 						case 2: ret = new ReferenceStr2DToken(data); break;
 						case 3: ret = new ReferenceStr3DToken(data); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 				}
 				else
@@ -460,7 +459,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						case 1: ret = new ReferenceInt1DToken(data); break;
 						case 2: ret = new ReferenceInt2DToken(data); break;
 						case 3: ret = new ReferenceInt3DToken(data); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 				}
 			}
@@ -473,7 +472,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						case 1: ret = new StaticStr1DVariableToken(data); break;
 						case 2: ret = new StaticStr2DVariableToken(data); break;
 						case 3: ret = new StaticStr3DVariableToken(data); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 				}
 				else
@@ -483,7 +482,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						case 1: ret = new StaticInt1DVariableToken(data); break;
 						case 2: ret = new StaticInt2DVariableToken(data); break;
 						case 3: ret = new StaticInt3DVariableToken(data); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 				}
 				userDefinedStaticVarList.Add(ret);
@@ -497,7 +496,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						case 1: ret = new PrivateStr1DVariableToken(data); break;
 						case 2: ret = new PrivateStr2DVariableToken(data); break;
 						case 3: ret = new PrivateStr3DVariableToken(data); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 				}
 				else
@@ -507,7 +506,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						case 1: ret = new PrivateInt1DVariableToken(data); break;
 						case 2: ret = new PrivateInt2DVariableToken(data); break;
 						case 3: ret = new PrivateInt3DVariableToken(data); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 				}
 			}
@@ -999,16 +998,16 @@ namespace MinorShift.Emuera.GameData.Variable
 		{
 			foreach (var key in GlobalStatic.ConstantData.GlobalSaveMaps)
 			{
-				if (mapDict.ContainsKey(key))
+				if (DataStringMaps.ContainsKey(key))
 				{
-					writer.WriteWithKey(key, mapDict[key]);
+					writer.WriteWithKey(key, DataStringMaps[key]);
 				}
 			}
 			foreach (var key in GlobalStatic.ConstantData.GlobalSaveXmls)
 			{
-				if (xmlDict.ContainsKey(key))
+				if (DataXmlDocument.ContainsKey(key))
 				{
-					writer.WriteWithKey(key, xmlDict[key]);
+					writer.WriteWithKey(key, DataXmlDocument[key]);
 				}
 			}
 		}
@@ -1016,16 +1015,16 @@ namespace MinorShift.Emuera.GameData.Variable
 		{
 			foreach (var key in GlobalStatic.ConstantData.SaveMaps)
 			{
-				if (mapDict.ContainsKey(key))
+				if (DataStringMaps.ContainsKey(key))
 				{
-					writer.WriteWithKey(key, mapDict[key]);
+					writer.WriteWithKey(key, DataStringMaps[key]);
 				}
 			}
 			foreach (var key in GlobalStatic.ConstantData.SaveXmls)
 			{
-				if (xmlDict.ContainsKey(key))
+				if (DataXmlDocument.ContainsKey(key))
 				{
-					writer.WriteWithKey(key, xmlDict[key]);
+					writer.WriteWithKey(key, DataXmlDocument[key]);
 				}
 			}
 		}
@@ -1092,7 +1091,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						var dict = reader.ReadMap();
 						if (GlobalStatic.ConstantData.SaveMaps.Contains(key) || GlobalStatic.ConstantData.GlobalSaveMaps.Contains(key))
 						{
-							mapDict[key] = dict;
+							DataStringMaps[key] = dict;
 						}
 						break;
 					}
@@ -1102,7 +1101,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						var doc = reader.ReadXml();
 						if (GlobalStatic.ConstantData.SaveXmls.Contains(key) || GlobalStatic.ConstantData.GlobalSaveXmls.Contains(key))
 						{
-							xmlDict[key] = doc;
+							DataXmlDocument[key] = doc;
 						}
 						break;
 					}
@@ -1158,7 +1157,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						reader.ReadStrArray3D((string[, ,])vToken.GetArray(), true);
 					break;
 				default:
-					throw new FileEE("データ異常");
+					throw new FileEE(trerror.AbnormalData.Text);
 			}
 			return true;
 		}

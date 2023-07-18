@@ -204,6 +204,7 @@ namespace XEmuera.Models
 					{
 						ConfigCode.AutoSave,
 						ConfigCode.UseSaveFolder,
+						ConfigCode.EnglishConfigOutput,
 						ConfigCode.MaxLog,
 						ConfigCode.InfiniteLoopAlertTime,
 						ConfigCode.SaveDataNos,
@@ -283,6 +284,7 @@ namespace XEmuera.Models
 						ConfigCode.SystemNoTarget,
 						ConfigCode.ForbidUpdateCheck,
 						ConfigCode.UseERD,
+						ConfigCode.VarsizeDimConfig,
 						ConfigCode.ValidExtension,
 					}
 				},

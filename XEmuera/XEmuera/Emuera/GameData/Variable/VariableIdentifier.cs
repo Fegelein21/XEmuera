@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using MinorShift.Emuera.Sub;
+using trerror = EvilMask.Emuera.Lang.Error;
 
 namespace MinorShift.Emuera.GameData.Variable
 {
@@ -292,8 +293,8 @@ namespace MinorShift.Emuera.GameData.Variable
 				if (localvarNameDic.TryGetValue(key, out ret))
 					return new VariableIdentifier(ret, subStr);
 				if (nameDic.ContainsKey(key))
-					throw new CodeEE("ローカル変数でない変数" + key + "に対して@が使われました");
-				throw new CodeEE("@の使い方が不正です");
+					throw new CodeEE(string.Format(trerror.UsedAtForGlobalVar.Text, key));
+				throw new CodeEE(trerror.InvalidAt.Text);
 			}
 			if (nameDic.TryGetValue(key, out ret))
 				return new VariableIdentifier(ret);
