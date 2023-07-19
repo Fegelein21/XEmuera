@@ -20,7 +20,7 @@ using XEmuera;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using XEmuera.Drawing;
-using System.Threading;
+using EvilMask.Emuera;
 
 namespace MinorShift.Emuera
 {
@@ -45,43 +45,38 @@ namespace MinorShift.Emuera
 			//folderSelectDialog.SelectedPath = Program.ErbDir;
 			//folderSelectDialog.ShowNewFolderButton = false;
 
-			//openFileDialog.InitialDirectory = Program.ErbDir;
-			//openFileDialog.Filter = "ERBファイル (*.erb)|*.erb";
-			//openFileDialog.FileName = "";
-			//openFileDialog.Multiselect = true;
-			//openFileDialog.RestoreDirectory = true;
+		// 	openFileDialog.InitialDirectory = Program.ErbDir;
+        //     openFileDialog.FileName = "";
+        //     openFileDialog.Multiselect = true;
+        //     openFileDialog.RestoreDirectory = true;
+            
+        //    string Emuera_verInfo = "Emuera Ver. " + emueraVer.FileVersion.Remove(5);
+        //     if (emueraVer.FileBuildPart > 0)
+        //         Emuera_verInfo += "+v" + emueraVer.FileBuildPart.ToString() + ((emueraVer.FilePrivatePart > 0) ? "." + emueraVer.FilePrivatePart.ToString() : "");
+		// 	EmuVerToolStripTextBox.Text = Emuera_verInfo;
 
 			//string Emuera_verInfo = "Emuera Ver. " + emueraVer.FileVersion.Remove(5);
 			//if (emueraVer.FileBuildPart > 0)
 			//Emuera_verInfo += "+v" + emueraVer.FileBuildPart.ToString() + ((emueraVer.FilePrivatePart > 0) ? "." + emueraVer.FilePrivatePart.ToString() : "");
 			//EmuVerToolStripTextBox.Text = Emuera_verInfo;
 
-			//timer = new System.Timers.Timer();
-			//timer.Elapsed += Timer_Elapsed;
-
-			//console = new EmueraConsole(this);
-			//timer.Enabled = true;
-
 			Task.Run(InitConsole);
+			
+			// this.richTextBox1.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.richTextBox1_MouseWheel);
+			// this.mainPicBox.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.richTextBox1_MouseWheel);
+			// this.vScrollBar.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.richTextBox1_MouseWheel);
 
-			//macroMenuItems[0] = マクロ01ToolStripMenuItem;
-			//macroMenuItems[1] = マクロ02ToolStripMenuItem;
-			//macroMenuItems[2] = マクロ03ToolStripMenuItem;
-			//macroMenuItems[3] = マクロ04ToolStripMenuItem;
-			//macroMenuItems[4] = マクロ05ToolStripMenuItem;
-			//macroMenuItems[5] = マクロ06ToolStripMenuItem;
-			//macroMenuItems[6] = マクロ07ToolStripMenuItem;
-			//macroMenuItems[7] = マクロ08ToolStripMenuItem;
-			//macroMenuItems[8] = マクロ09ToolStripMenuItem;
-			//macroMenuItems[9] = マクロ10ToolStripMenuItem;
-			//macroMenuItems[10] = マクロ11ToolStripMenuItem;
-			//macroMenuItems[11] = マクロ12ToolStripMenuItem;
-			//foreach(ToolStripMenuItem item in macroMenuItems)
-			//	item.Click += new EventHandler(マクロToolStripMenuItem_Click);
+			// this.richTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.richTextBox1_KeyDown);
 
-			//this.richTextBox1.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.richTextBox1_MouseWheel);
-			//this.mainPicBox.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.richTextBox1_MouseWheel);
-			//this.vScrollBar.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.richTextBox1_MouseWheel);
+			// #region EM_私家版_INPUT系機能拡張
+			// this.richTextBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.richTextBox1_ModifierRecorder_KeyUp);
+			// this.richTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.richTextBox1_ModifierRecorder_KeyDown);
+			// #endregion
+
+			// #region EM_私家版_Emuera多言語化改造
+			// this.labelMacroGroupChanged.Font = new Font(Lang.MFont, 24F, FontStyle.Regular, GraphicsUnit.Point, (byte)128);
+			// this.richTextBox1.Font = new Font(Config.Font.FontFamily, Config.FontSize, FontStyle.Regular, GraphicsUnit.Pixel);
+			// #endregion
 		}
 
 		//private ToolStripMenuItem[] macroMenuItems = new ToolStripMenuItem[KeyMacro.MaxFkey];
@@ -101,174 +96,58 @@ namespace MinorShift.Emuera
 
 		private EmueraConsole console = null;
 
-		//System.Timers.Timer timer;
+		#region EM_私家版_Icon指定機能
+		// public void SetupIcon(Icon icon)
+		// {
+		// 	this.Icon = icon;
+		// }
+		#endregion
 
-		//protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-		//{
-		//	//1823 INPUTMOUSEKEY Key入力全てを捕まえてERB側で処理する
-		//	//if (console != null && console.IsWaitingPrimitiveKey)
-		//	if (console != null && console.IsWaitingPrimitive)
-		//	{
-		//		return false;
-		//	}
-		//	if ((keyData & Keys.KeyCode) == Keys.B && ((keyData & Keys.Modifiers) & Keys.Control) == Keys.Control)
-		//	{
-		//		if (WindowState != FormWindowState.Minimized)
-		//		{
-		//			WindowState = FormWindowState.Minimized;
-		//			return true;
-		//		}
-		//	}
-		//	else if (((keyData & Keys.KeyCode) == Keys.C && ((keyData & Keys.Modifiers) & Keys.Control) == Keys.Control) || (keyData & Keys.KeyCode) == Keys.Insert && ((keyData & Keys.Modifiers) & Keys.Control) == Keys.Control)
-		//	{
-		//		if (this.richTextBox1.SelectedText == "")
-		//		{
-		//			ClipBoardDialog dialog = new ClipBoardDialog();
-		//			dialog.StartPosition = FormStartPosition.CenterParent;
-		//			dialog.Setup(console);
-		//			dialog.ShowDialog();
-		//			return true;
-		//		}
-		//	}
-		//	else if (((keyData & Keys.KeyCode) == Keys.V && ((keyData & Keys.Modifiers) & Keys.Control) == Keys.Control) || (keyData & Keys.KeyCode) == Keys.Insert && ((keyData & Keys.Modifiers) & Keys.Shift) == Keys.Shift)
-		//	{
-		//		if (Clipboard.GetDataObject() == null || !Clipboard.ContainsText())
-		//			return true;
-		//		else
-		//		{
-		//			if (Clipboard.GetDataObject().GetDataPresent(DataFormats.Text) == true)
-		//				richTextBox1.Paste(DataFormats.GetFormat(DataFormats.UnicodeText));
-		//			return true;
-		//		}
-		//	}
-		//	//else if (((int)keyData == (int)Keys.Control + (int)Keys.D) && Program.DebugMode)
-		//	//{
-		//	//    console.OpenDebugDialog();
-		//	//    return true;
-		//	//}
-		//	//else if (((int)keyData == (int)Keys.Control + (int)Keys.R) && Program.DebugMode)
-		//	//{
-		//	//    if ((console.DebugDialog != null) && (console.DebugDialog.Created))
-		//	//        console.DebugDialog.UpdateData();
-		//	//}
-		//	else if (Config.UseKeyMacro)
-		//	{
-		//		int keyCode = (int)(keyData & Keys.KeyCode);
-		//		bool shiftPressed = (keyData & Keys.Modifiers) == Keys.Shift;
-		//		bool ctrlPressed = (keyData & Keys.Modifiers) == Keys.Control;
-		//		bool unPressed = (int)(keyData & Keys.Modifiers) == 0;
-		//		if (keyCode >= (int)Keys.F1 && keyCode <= (int)Keys.F12)
-		//		{
-		//			int macroNum = keyCode - (int)Keys.F1;
-		//			if (shiftPressed)
-		//			{
-		//				if (this.richTextBox1.Text != "")
-		//					KeyMacro.SetMacro(macroNum, macroGroup, this.richTextBox1.Text);
-		//				return true;
-		//			}
-		//			else if (unPressed)
-		//			{
-		//				this.richTextBox1.Text = KeyMacro.GetMacro(macroNum, macroGroup);
-		//				this.richTextBox1.SelectionStart = this.richTextBox1.Text.Length;
-		//				return true;
-		//			}
-		//		}
-		//		else if (ctrlPressed)
-		//		{
-		//			int newGroupNum = -1;
-		//			if (keyCode >= (int)Keys.D0 && keyCode <= (int)Keys.D9)
-		//				newGroupNum = keyCode - (int)Keys.D0;
-		//			else if (keyCode >= (int)Keys.NumPad0 && keyCode <= (int)Keys.NumPad9)
-		//				newGroupNum = keyCode - (int)Keys.NumPad0;
-		//			if (newGroupNum >= 0)
-		//			{
-		//				setNewMacroGroup(newGroupNum);
-		//			}
-		//		}
-		//	}
-		//	return base.ProcessCmdKey(ref msg, keyData);
-		//}
+		#region EM_私家版_Emuera多言語化改造
+		public void TranslateUI()
+		{
+			// this.fileToolStripMenuItem.Text = Lang.UI.MainWindow.File.Text;
+			// this.rebootToolStripMenuItem.Text = Lang.UI.MainWindow.File.Restart.Text;
+			// this.ログをクリップボードにコピーToolStripMenuItem.Text = Lang.UI.MainWindow.File.CopyLogToClipboard.Text;
+			// this.ログを保存するSToolStripMenuItem.Text = Lang.UI.MainWindow.File.SaveLog.Text;
+			// this.タイトルへ戻るTToolStripMenuItem.Text = Lang.UI.MainWindow.File.BackToTitle.Text;
+			// this.コードを読み直すcToolStripMenuItem.Text = Lang.UI.MainWindow.File.ReloadAllScripts.Text;
+			// this.フォルダを読み直すFToolStripMenuItem.Text = Lang.UI.MainWindow.File.ReloadFolder.Text;
+			// this.ファイルを読み直すFToolStripMenuItem.Text = Lang.UI.MainWindow.File.ReloadScriptFile.Text;
+			// this.exitToolStripMenuItem.Text = Lang.UI.MainWindow.File.Exit.Text;
+			// this.openFileDialog.Filter = Lang.UI.MainWindow.FileFilter.Text + " (*.erb)|*.erb";
 
+			// this.デバッグToolStripMenuItem.Text = Lang.UI.MainWindow.Debug.Text;
+			// this.デバッグウインドウを開くToolStripMenuItem.Text = Lang.UI.MainWindow.Debug.OpenDebugWindow.Text;
+			// this.デバッグ情報の更新ToolStripMenuItem.Text = Lang.UI.MainWindow.Debug.UpdateDebugInfo.Text;
 
-		//protected override void WndProc(ref Message m)
-		//{
-		//	const int WM_SYSCOMMAND = 0x112;
-		//	//const int WM_MOUSEWHEEL = 0x020A;
-		//	const int SC_MOVE = 0xf010;
-		//	const int SC_MAXIMIZE = 0xf030;
+			// this.ヘルプHToolStripMenuItem.Text = Lang.UI.MainWindow.Help.Text;
+			// this.コンフィグCToolStripMenuItem.Text = Lang.UI.MainWindow.Help.Config.Text;
 
-		//	// WM_SYSCOMMAND (SC_MOVE) を無視することでフォームを移動できないようにする
-		//	switch (m.Msg)
-		//	{
-		//	case WM_SYSCOMMAND:
-		//		{
-		//			int wparam = m.WParam.ToInt32() & 0xfff0;
-		//			switch (wparam)
-		//			{
-		//			case SC_MOVE:
-		//				if (WindowState == FormWindowState.Maximized)
-		//					return;
-		//				break;
-		//			case SC_MAXIMIZE:
-		//				if (Screen.AllScreens.Length == 1)
-		//				{
-		//					this.MaximizedBounds = SKRectI.Create(this.Left, 0, Config.WindowX, Screen.PrimaryScreen.WorkingArea.Height);
-		//				}
-		//				else
-		//				{
-		//					for (int i = 0; i < Screen.AllScreens.Length; i++)
-		//					{
-		//						if (this.Left >= Screen.AllScreens[i].Bounds.Left && this.Left < Screen.AllScreens[i].Bounds.Right)
-		//						{
-		//							this.MaximizedBounds = SKRectI.Create(this.Left - Screen.AllScreens[i].Bounds.Left, Screen.AllScreens[i].Bounds.Top, Config.WindowX, Screen.AllScreens[i].WorkingArea.Height);
-		//							break;
-		//						}
-		//					}
-		//				}
-		//				break;
-		//			}
-		//			break;
-		//		}
+			// this.マクロToolStripMenuItem.Text = Lang.UI.MainWindow.ContextMenu.KeyMacro.Text;
+			// for (int i = 0; i < this.マクロToolStripMenuItem.DropDownItems.Count; i++)
+			// 	this.マクロToolStripMenuItem.DropDownItems[i].Text = Lang.UI.MainWindow.ContextMenu.KeyMacro.Text + i.ToString("D2");
+			// this.マクログループToolStripMenuItem.Text = Lang.UI.MainWindow.ContextMenu.KeyMacroGroup.Text;
+			// for (int i = 0; i < this.マクログループToolStripMenuItem.DropDownItems.Count; i++)
+			// 	this.マクログループToolStripMenuItem.DropDownItems[i].Text = Lang.UI.MainWindow.ContextMenu.KeyMacroGroup.Group.Text + i;
 
-		//	//MouseWheelイベントをここで処理しようと思ったけどなんかここまで来ない (Windows 7)
-		//	//case WM_MOUSEWHEEL:
-		//	//	{
-		//	//		if (!vScrollBar.Enabled)
-		//	//			break;
-		//	//		if (console == null)
-		//	//			break;
-		//	//		//int wparam_hiword = m.WParam.ToInt32() >> 16;
-		//	//		int move = (m.WParam.ToInt32() >> 16) / 120 * -1;
-		//	//		if ((vScrollBar.Value == vScrollBar.Maximum && move > 0) || (vScrollBar.Value == vScrollBar.Minimum && move < 0))
-		//	//			break;
-		//	//		int value = vScrollBar.Value + move;
-		//	//		if (value >= vScrollBar.Maximum)
-		//	//			vScrollBar.Value = vScrollBar.Maximum;
-		//	//		else if (value <= vScrollBar.Minimum)
-		//	//			vScrollBar.Value = vScrollBar.Minimum;
-		//	//		else
-		//	//			vScrollBar.Value = value;
-		//	//		bool force_refresh = (vScrollBar.Value == vScrollBar.Maximum) || (vScrollBar.Value == vScrollBar.Minimum);
+			// this.切り取り.Text = Lang.UI.MainWindow.ContextMenu.Cut.Text;
+			// this.コピー.Text = Lang.UI.MainWindow.ContextMenu.Copy.Text;
+			// this.貼り付け.Text = Lang.UI.MainWindow.ContextMenu.Paste.Text;
+			// this.削除.Text = Lang.UI.MainWindow.ContextMenu.Delete.Text;
+			// this.実行.Text = Lang.UI.MainWindow.ContextMenu.Execute.Text;
+		}
+		#endregion
 
-		//	//		//ボタンとの関係をチェック
-		//	//		if (Config.UseMouse)
-		//	//			force_refresh = console.MoveMouse(mainPicBox.PointToClient(Control.MousePosition)) || force_refresh;
-		//	//		//上端でも下端でもなくボタン選択状態のアップデートも必要ないなら描画を控えめに。
-		//	//		console.RefreshStrings(force_refresh);
-
-		//	//		break;
-		//	//	}
-		//	}
-		//	base.WndProc(ref m);
-		//}
-
-		//private void Timer_Elapsed(object sender, ElapsedEventArgs e)
-		//{
-		//	//if (!this.Created)
-		//	//	return;
-		//	timer.Enabled = false;
-		//	console.Initialize();
-		//}
+		#region EE_textbox拡張
+		public void ChangeTextBox(string str)
+        {
+			MainThread.BeginInvokeOnMainThread(() =>
+			{
+				this.richTextBox1.Text = str;
+			});
+        }
+		#endregion
 
 		private void InitConsole()
 		{
@@ -806,20 +685,28 @@ namespace MinorShift.Emuera
 		//	ShowConfigDialog();
 		//}
 
-		//public void ShowConfigDialog()
-		//{
-
-		//	ConfigDialog dialog = new ConfigDialog();
-		//	dialog.StartPosition = FormStartPosition.CenterParent;
-		//	dialog.SetConfig(this);
-		//	dialog.ShowDialog();
-		//	if (dialog.Result == ConfigDialogResult.SaveReboot)
-		//	{
-		//		console.forceStopTimer();
-		//		Program.Reboot = true;
-		//		this.Close();
-		//	}
-		//}
+		// public void ShowConfigDialog()
+		// {
+		// 	string lang = Config.EmueraLang;
+		// 	ConfigDialog dialog = new ConfigDialog();
+		// 	dialog.TranslateUI();
+		// 	dialog.SetupLang(Lang.GetLangList());
+		// 	dialog.StartPosition = FormStartPosition.CenterParent;
+		// 	dialog.SetConfig(this);
+		// 	dialog.ShowDialog();
+		// 	if (dialog.Result == ConfigDialogResult.SaveReboot)
+		// 	{
+		// 		console.forceStopTimer();
+		// 		Program.Reboot = true;
+		// 		this.Close();
+		// 	}
+		// 	if (Config.EmueraLang != lang)
+		// 	{
+		// 		Lang.ReloadLang();
+		// 		KeyMacro.ResetNames();
+		// 		this.TranslateUI();
+		// 	}
+		// }
 
 		//private async void タイトルへ戻るTToolStripMenuItem_Click(object sender, EventArgs e)
 		//{
@@ -902,20 +789,21 @@ namespace MinorShift.Emuera
 		//	}
 		//}
 
-		//private void ログをクリップボードにコピーToolStripMenuItem_Click(object sender, EventArgs e)
-		//{
-		//	try
-		//	{
-		//		ClipBoardDialog dialog = new ClipBoardDialog();
-		//		dialog.Setup(console);
-		//		dialog.ShowDialog();
-		//	}
-		//	catch (Exception)
-		//	{
-		//		MessageBox.Show("予期せぬエラーが発生したためクリップボードを開けません");
-		//		return;
-		//	}
-		//}
+		// private void ログをクリップボードにコピーToolStripMenuItem_Click(object sender, EventArgs e)
+		// {
+		// 	try
+		// 	{
+		// 		ClipBoardDialog dialog = new ClipBoardDialog();
+		// 		dialog.Text = Lang.UI.ClipBoardDialog.Text;
+		// 		dialog.Setup(console);
+		// 		dialog.ShowDialog();
+		// 	}
+		// 	catch (Exception)
+		// 	{
+		// 		MessageBox.Show("予期せぬエラーが発生したためクリップボードを開けません");
+		// 		return;
+		// 	}
+		// }
 
 		//private void ファイルを読み直すFToolStripMenuItem_Click(object sender, EventArgs e)
 		//{

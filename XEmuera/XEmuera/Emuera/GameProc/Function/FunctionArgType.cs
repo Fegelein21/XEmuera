@@ -76,5 +76,10 @@ namespace MinorShift.Emuera.GameProc.Function
 		#region EE
 		STR_DOUBLE,
 		#endregion
+		#region EM_私家版_HTMLパラメータ拡張
+		SP_PRINT_IMG,
+		SP_PRINT_RECT,
+		SP_PRINT_SPACE,
+		#endregion
 	}
 }

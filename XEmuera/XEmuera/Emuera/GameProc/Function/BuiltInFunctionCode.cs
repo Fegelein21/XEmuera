@@ -370,6 +370,7 @@ namespace MinorShift.Emuera.GameProc.Function
 		FORCE_QUIT,
 		FORCE_QUIT_AND_RESTART,
 		FORCE_BEGIN,
+		INPUTANY,
 		#endregion
 	}
 }

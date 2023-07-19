@@ -242,7 +242,8 @@ namespace MinorShift.Emuera.GameData.Variable
 		GAMEBASE_YEAR = 0x02 | __STRING__ | __CALC__ | __UNCHANGEABLE__ | __EXTENDED__,//文字列型。製作年
 		GAMEBASE_TITLE = 0x03 | __STRING__ | __CALC__ | __UNCHANGEABLE__ | __EXTENDED__,//文字列型。タイトル
 		#region EE_UPDATECHECK
-		GAMEBASE_URL = 0x03 | __STRING__ | __CALC__ | __UNCHANGEABLE__ | __EXTENDED__,//文字列型。URL
+		GAMEBASE_URL = 0x0B | __STRING__ | __CALC__ | __UNCHANGEABLE__ | __EXTENDED__,//文字列型。URL
+		GAMEBASE_VERSIONNAME = 0x0C | __STRING__ | __CALC__ | __UNCHANGEABLE__ | __EXTENDED__,//文字列型。バージョン名
 		#endregion
 		WINDOW_TITLE = 0x05 | __STRING__ | __CALC__ | __EXTENDED__,//文字列型。ウインドウのタイトル。変更可能。
 		//アンダースコア2つで囲まれた変数を追加したらVariableTokenに特別な処理が必要。

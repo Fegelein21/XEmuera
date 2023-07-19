@@ -9,6 +9,7 @@ using MinorShift.Emuera.GameView;
 using MinorShift.Emuera.GameData;
 using MinorShift.Emuera.GameData.Function;
 using MinorShift.Emuera.GameProc.Function;
+using trerror = EvilMask.Emuera.Lang.Error;
 
 namespace MinorShift.Emuera.GameProc
 {
@@ -24,7 +25,7 @@ namespace MinorShift.Emuera.GameProc
             if (token == null || (token != "SINGLE" && token != "LATER" && token != "PRI" && token != "ONLY" && token != "FUNCTION" && token != "FUNCTIONS" 
                 && token != "LOCALSIZE" && token != "LOCALSSIZE" && token != "DIM" && token != "DIMS"))
             {
-                ParserMediator.Warn("解釈できない#行です", position, 1);
+                ParserMediator.Warn(trerror.CanNotInterpretSharpLine.Text, position, 1);
                 return false;
             }
 			try
@@ -35,22 +36,22 @@ namespace MinorShift.Emuera.GameProc
 					case "SINGLE":
 						if (label.IsMethod)
 						{
-							ParserMediator.Warn("式中関数では#SINGLEは機能しません", position, 1);
+							ParserMediator.Warn(trerror.UseSingleUserFunc.Text, position, 1);
 							break;
 						}
 						else if (!label.IsEvent)
 						{
-							ParserMediator.Warn("イベント関数以外では#SINGLEは機能しません", position, 1);
+							ParserMediator.Warn(trerror.UsableSingleEventFunc.Text, position, 1);
 							break;
 						}
 						else if (label.IsSingle)
 						{
-							ParserMediator.Warn("#SINGLEが重複して使われています", position, 1);
+							ParserMediator.Warn(trerror.DuplicateSingle.Text, position, 1);
 							break;
 						}
 						else if (label.IsOnly)
 						{
-							ParserMediator.Warn("#ONLYが指定されたイベント関数では#SINGLEは機能しません", position, 1);
+							ParserMediator.Warn(trerror.OnlyWithSingle.Text, position, 1);
 							break;
 						}
 						label.IsSingle = true;
@@ -58,86 +59,86 @@ namespace MinorShift.Emuera.GameProc
 					case "LATER":
 						if (label.IsMethod)
 						{
-							ParserMediator.Warn("式中関数では#LATERは機能しません", position, 1);
+							ParserMediator.Warn(trerror.UseLaterUserFunc.Text, position, 1);
 							break;
 						}
 						else if (!label.IsEvent)
 						{
-							ParserMediator.Warn("イベント関数以外では#LATERは機能しません", position, 1);
+							ParserMediator.Warn(trerror.UsableLaterEventFunc.Text, position, 1);
 							break;
 						}
 						else if (label.IsLater)
 						{
-							ParserMediator.Warn("#LATERが重複して使われています", position, 1);
+							ParserMediator.Warn(trerror.DuplicateLater.Text, position, 1);
 							break;
 						}
 						else if (label.IsOnly)
 						{
-							ParserMediator.Warn("#ONLYが指定されたイベント関数では#LATERは機能しません", position, 1);
+							ParserMediator.Warn(trerror.OnlyWithLater.Text, position, 1);
 							break;
 						}
 						else if (label.IsPri)
-							ParserMediator.Warn("#PRIと#LATERが重複して使われています(この関数は2度呼ばれます)", position, 1);
+							ParserMediator.Warn(trerror.PriWithLater.Text, position, 1);
 						label.IsLater = true;
 						break;
 					case "PRI":
 						if (label.IsMethod)
 						{
-							ParserMediator.Warn("式中関数では#PRIは機能しません", position, 1);
+							ParserMediator.Warn(trerror.UsePriUserFunc.Text, position, 1);
 							break;
 						}
 						else if (!label.IsEvent)
 						{
-							ParserMediator.Warn("イベント関数以外では#PRIは機能しません", position, 1);
+							ParserMediator.Warn(trerror.UsablePriEventFunc.Text, position, 1);
 							break;
 						}
 						else if (label.IsPri)
 						{
-							ParserMediator.Warn("#PRIが重複して使われています", position, 1);
+							ParserMediator.Warn(trerror.DuplicatePri.Text, position, 1);
 							break;
 						}
 						else if (label.IsOnly)
 						{
-							ParserMediator.Warn("#ONLYが指定されたイベント関数では#PRIは機能しません", position, 1);
+							ParserMediator.Warn(trerror.OnlyWithPri.Text, position, 1);
 							break;
 						}
 						else if (label.IsLater)
-							ParserMediator.Warn("#PRIと#LATERが重複して使われています(この関数は2度呼ばれます)", position, 1);
+							ParserMediator.Warn(trerror.PriWithLater.Text, position, 1);
 						label.IsPri = true;
 						break;
 					case "ONLY":
 						if (label.IsMethod)
 						{
-							ParserMediator.Warn("式中関数では#ONLYは機能しません", position, 1);
+							ParserMediator.Warn(trerror.UseOnlyUserFunc.Text, position, 1);
 							break;
 						}
 						else if (!label.IsEvent)
 						{
-							ParserMediator.Warn("イベント関数以外では#ONLYは機能しません", position, 1);
+							ParserMediator.Warn(trerror.UsableOnlyEventFunc.Text, position, 1);
 							break;
 						}
 						else if (label.IsOnly)
 						{
-							ParserMediator.Warn("#ONLYが重複して使われています", position, 1);
+							ParserMediator.Warn(trerror.DuplicateOnly.Text, position, 1);
 							break;
 						}
 						else if (OnlyLabel.Contains(label.LabelName))
-							ParserMediator.Warn("このイベント関数\"@" + label.LabelName + "\"にはすでに#ONLYが宣言されています（この関数は実行されません）", position, 1);
+							ParserMediator.Warn(string.Format(trerror.AlreadyDeclaredOnly.Text, label.LabelName), position, 1);
 						OnlyLabel.Add(label.LabelName);
 						label.IsOnly = true;
 						if (label.IsPri)
 						{
-							ParserMediator.Warn("このイベント関数には#PRIが宣言されていますが無視されます", position, 1);
+							ParserMediator.Warn(trerror.BeIgnorePri.Text, position, 1);
 							label.IsPri = false;
 						}
 						if (label.IsLater)
 						{
-							ParserMediator.Warn("このイベント関数には#LATERが宣言されていますが無視されます", position, 1);
+							ParserMediator.Warn(trerror.BeIgnoreLater.Text, position, 1);
 							label.IsLater = false;
 						}
 						if (label.IsSingle)
 						{
-							ParserMediator.Warn("このイベント関数には#SINGLEが宣言されていますが無視されます", position, 1);
+							ParserMediator.Warn(trerror.BeIgnoreSingle.Text, position, 1);
 							label.IsSingle = false;
 						}
 						break;
@@ -145,27 +146,27 @@ namespace MinorShift.Emuera.GameProc
 					case "FUNCTIONS":
 						if (!string.IsNullOrEmpty(label.LabelName) && char.IsDigit(label.LabelName[0]))
 						{
-							ParserMediator.Warn("#" + token + "属性は関数名が数字で始まる関数には指定できません", position, 1);
+							ParserMediator.Warn(string.Format(trerror.CanNotDeclaredBeginNumberFunction.Text, token), position, 1);
 							label.IsError = true;
-							label.ErrMes = "関数名が数字で始まっています";
+							label.ErrMes = trerror.FuncNameBeginNumber.Text;
 							break;
 						}
 						if (label.IsMethod)
 						{
 							if ((label.MethodType == typeof(Int64) && token == "FUNCTION") || (label.MethodType == typeof(string) && token == "FUNCTIONS"))
 							{
-								ParserMediator.Warn("関数" + label.LabelName + "にはすでに#" + token + "が宣言されています(この行は無視されます)", position, 1);
+								ParserMediator.Warn(string.Format(trerror.AlreadySharpDeclared.Text, label.LabelName, token), position, 1);
 								return false;
 							}
 							if (label.MethodType == typeof(Int64) && token == "FUNCTIONS")
-								ParserMediator.Warn("関数" + label.LabelName + "にはすでに#FUNCTIONが宣言されています", position, 2);
+								ParserMediator.Warn(string.Format(trerror.AlreadyDeclaredSharpFunction.Text, label.LabelName), position, 2);
 							else if (label.MethodType == typeof(string) && token == "FUNCTION")
-								ParserMediator.Warn("関数" + label.LabelName + "にはすでに#FUNCTIONSが宣言されています", position, 2);
+								ParserMediator.Warn(string.Format(trerror.AlreadyDeclaredSharpFunctions.Text, label.LabelName), position, 2);
 							return false;
 						}
 						if (label.Depth == 0)
 						{
-							ParserMediator.Warn("システム関数に#" + token + "が指定されています", position, 2);
+							ParserMediator.Warn(string.Format(trerror.UseSharpInSystemFunc.Text, token), position, 2);
 							return false;
 						}
 						label.IsMethod = true;
@@ -176,22 +177,22 @@ namespace MinorShift.Emuera.GameProc
 							label.MethodType = typeof(Int64);
 						if (label.IsPri)
 						{
-							ParserMediator.Warn("式中関数では#PRIは機能しません", position, 1);
+							ParserMediator.Warn(trerror.UsePriUserFunc.Text, position, 1);
 							label.IsPri = false;
 						}
 						if (label.IsLater)
 						{
-							ParserMediator.Warn("式中関数では#LATERは機能しません", position, 1);
+							ParserMediator.Warn(trerror.UseLaterUserFunc.Text, position, 1);
 							label.IsLater = false;
 						}
 						if (label.IsSingle)
 						{
-							ParserMediator.Warn("式中関数では#SINGLEは機能しません", position, 1);
+							ParserMediator.Warn(trerror.UseSingleUserFunc.Text, position, 1);
 							label.IsSingle = false;
 						}
 						if (label.IsOnly)
 						{
-							ParserMediator.Warn("式中関数では#ONLYは機能しません", position, 1);
+							ParserMediator.Warn(trerror.UseOnlyUserFunc.Text, position, 1);
 							label.IsOnly = false;
 						}
 						break;
@@ -200,29 +201,29 @@ namespace MinorShift.Emuera.GameProc
 						{
 							if (wc.EOL)
 							{
-								ParserMediator.Warn("#" + token + "の後に有効な数値が指定されていません", position, 2);
+								ParserMediator.Warn(string.Format(trerror.SharpHasNotValidValue.Text, token), position, 2);
 								break;
 							}
                             //イベント関数では指定しても無視される
                             if (label.IsEvent)
                             {
-                                ParserMediator.Warn("イベント関数では#" + token + "による" + token.Substring(0, token.Length - 4)+ "のサイズ指定は無視されます", position, 1);
+                                ParserMediator.Warn(string.Format(trerror.EventFuncIgnoreSpecified.Text, token, token.Substring(0, token.Length - 4)), position, 1);
                                 break;
                             }
 							IOperandTerm arg = ExpressionParser.ReduceIntegerTerm(wc, TermEndWith.EoL);
                             if ((!(arg.Restructure(null) is SingleTerm sizeTerm)) || (sizeTerm.GetOperandType() != typeof(Int64)))
                             {
-                                ParserMediator.Warn("#" + token + "の後に有効な定数式が指定されていません", position, 2);
+                                ParserMediator.Warn(string.Format(trerror.SharpHasNotValidValue.Text, token), position, 2);
                                 break;
                             }
                             if (sizeTerm.Int <= 0)
 							{
-								ParserMediator.Warn("#" + token + "に0以下の値(" + sizeTerm.Int.ToString() + ")が与えられました。設定は無視されます", position, 1);
+								ParserMediator.Warn(string.Format(trerror.LocalsizeLessThan1.Text, token, sizeTerm.Int.ToString()), position, 1);
 								break;
 							}
 							if (sizeTerm.Int >= Int32.MaxValue)
 							{
-								ParserMediator.Warn("#" + token + "に大きすぎる値(" + sizeTerm.Int.ToString() + ")が与えられました。設定は無視されます", position, 1);
+								ParserMediator.Warn(string.Format(trerror.TooManyLocalsize.Text, token, sizeTerm.Int.ToString()), position, 1);
 								break;
 							}
 							int size = (int)sizeTerm.Int;
@@ -230,22 +231,22 @@ namespace MinorShift.Emuera.GameProc
 							{
 								if (GlobalStatic.IdentifierDictionary.getLocalIsForbid("LOCAL"))
 								{
-									ParserMediator.Warn("#" + token + "が指定されていますが変数LOCALは使用禁止されています", position, 2);
+									ParserMediator.Warn(string.Format(trerror.LocalIsProhibited.Text, token, "LOCAL"), position, 2);
 									break;
 								}
 								if (label.LocalLength > 0)
-									ParserMediator.Warn("この関数にはすでに#LOCALSIZEが定義されています。（以前の定義は無視されます）", position, 1);
+									ParserMediator.Warn(trerror.DuplicateLocalsize.Text, position, 1);
 								label.LocalLength = size;
 							}
 							else
 							{
 								if (GlobalStatic.IdentifierDictionary.getLocalIsForbid("LOCALS"))
 								{
-									ParserMediator.Warn("#" + token + "が指定されていますが変数LOCALSは使用禁止されています", position, 2);
+									ParserMediator.Warn(string.Format(trerror.LocalIsProhibited.Text, token, "LOCALS"), position, 2);
 									break;
 								}
 								if (label.LocalsLength > 0)
-									ParserMediator.Warn("この関数にはすでに#LOCALSSIZEが定義されています。（以前の定義は無視されます）", position, 1);
+									ParserMediator.Warn(trerror.DuplicateLocalssize.Text, position, 1);
 								label.LocalsLength = size;
 							}
 						}
@@ -256,17 +257,17 @@ namespace MinorShift.Emuera.GameProc
 							UserDefinedVariableData data = UserDefinedVariableData.Create(wc, token == "DIMS", true, position);
 							if (!label.AddPrivateVariable(data))
 							{
-								ParserMediator.Warn("変数名" + data.Name + "は既に使用されています", position, 2);
+								ParserMediator.Warn(string.Format(trerror.VarNameAlreadyUsed.Text, data.Name), position, 2);
 								return false;
 							}
 							break;
 						}
 					default:
-						ParserMediator.Warn("解釈できない#行です", position, 1);
+						ParserMediator.Warn(trerror.CanNotInterpretSharpLine.Text, position, 1);
 						break;
 				}
 				if (!wc.EOL)
-					ParserMediator.Warn("#の識別子の後に余分な文字があります", position, 1);
+					ParserMediator.Warn(trerror.ExtraCharacterAfterSharp.Text, position, 1);
 			}
 			catch (Exception e)
 			{
@@ -298,7 +299,7 @@ namespace MinorShift.Emuera.GameProc
 				WordCollection wc = LexicalAnalyzer.Analyse(stream, LexEndWith.EoL, LexAnalyzeFlag.AllowAssignment);
 				if (wc.EOL || !(wc.Current is IdentifierWord))
 				{
-					errMes = "関数名が不正であるか存在しません";
+					errMes = trerror.InvalidFunc.Text;
 					goto err;
 				}
 				labelName = ((IdentifierWord)wc.Current).Code;
@@ -315,7 +316,7 @@ namespace MinorShift.Emuera.GameProc
 				if (!isFunction)//$ならこの時点で終了
 				{
 					if (!wc.EOL)
-						ParserMediator.Warn("$で始まるラベルに引数が設定されています", position, 1);
+						ParserMediator.Warn(trerror.LabelHasArg.Text, position, 1);
 					return new GotoLabelLine(position, labelName);
 				}
 
@@ -400,9 +401,9 @@ namespace MinorShift.Emuera.GameProc
                     if ((!(wc.Current is OperatorWord opWT)) || ((opWT.Code != OperatorCode.Increment) && (opWT.Code != OperatorCode.Decrement)))
                     {
                         if (op == '+')
-                            errMes = "行が\'+\'から始まっていますが、インクリメントではありません";
+                            errMes = trerror.StartedPlusButNotIncrement.Text;
                         else
-                            errMes = "行が\'-\'から始まっていますが、デクリメントではありません";
+                            errMes = trerror.StartedMinusButNotDecrement.Text;
                         goto err;
                     }
                     wc.ShiftNext();
@@ -427,9 +428,9 @@ namespace MinorShift.Emuera.GameProc
 						if ((stream.Current != ';') && (stream.Current != ' ') && (stream.Current != '\t') && (!Config.SystemAllowFullSpace || (stream.Current != '　')))
 						{
 							if (stream.Current == '　')
-								errMes = "命令で行が始まっていますが、命令の直後に半角スペース・タブ以外の文字が来ています(この警告はシステムオプション「" + Config.GetConfigName(ConfigCode.SystemAllowFullSpace) + "」により無視できます)";
+								errMes = string.Format(trerror.InvalidCharacterAfterInstruction1.Text, Config.GetConfigName(ConfigCode.SystemAllowFullSpace));
 							else
-								errMes = "命令で行が始まっていますが、命令の直後に半角スペース・タブ以外の文字が来ています";
+								errMes = trerror.InvalidCharacterAfterInstruction2.Text;
 							goto err;
 						}
 						stream.ShiftNext();
@@ -439,7 +440,7 @@ namespace MinorShift.Emuera.GameProc
 				LexicalAnalyzer.SkipWhiteSpace(stream);
 				if (stream.EOS)
 				{
-					errMes = "解釈できない行です";
+					errMes = trerror.CanNotInterpretedLine.Text;
 					goto err;
 				}
 				//命令行ではない→代入行のはず
@@ -454,7 +455,7 @@ namespace MinorShift.Emuera.GameProc
 				}
 				catch(CodeEE)
 				{
-					errMes = "解釈できない行です";
+					errMes = trerror.CanNotInterpretedLine.Text;
 					goto err;
 				}
 				//eramaker互換警告
@@ -470,7 +471,7 @@ namespace MinorShift.Emuera.GameProc
 				if (assignOP == OperatorCode.Equal)
 				{
 					if (console != null)
-						ParserMediator.Warn("代入演算子に\"==\"が使われています", position, 0);
+						ParserMediator.Warn(trerror.Use2EqualToAssign.Text, position, 0);
 					//"=="を代入文に使うのは本当はおかしいが結構使われているので仕様にする
 					assignOP = OperatorCode.Assignment;
 				}

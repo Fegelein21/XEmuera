@@ -6,6 +6,8 @@ using XEmuera.Forms;
 using MinorShift.Emuera.Sub;
 using MinorShift.Emuera.GameProc;
 using System.Xml;
+using trerror = EvilMask.Emuera.Lang.Error;
+using System.Data;
 
 namespace MinorShift.Emuera.GameData.Variable
 {
@@ -15,10 +17,9 @@ namespace MinorShift.Emuera.GameData.Variable
 	internal sealed partial class VariableData : IDisposable
 	{
 		#region EM_私家版_XMLDocument_連想配列
-		readonly Dictionary<Int64, XmlDocument> xmlDict = new Dictionary<Int64, XmlDocument>();
-		public Dictionary<Int64, XmlDocument> DataXmlDocument { get { return xmlDict; } }
-		readonly Dictionary<string, Dictionary<string, string>> mapDict = new Dictionary<string, Dictionary<string, string>>();
-		public Dictionary<string, Dictionary<string, string>> DataStringMaps { get { return mapDict; } }
+		public Dictionary<string, XmlDocument> DataXmlDocument { get; set; } = new Dictionary<string, XmlDocument>();
+		public Dictionary<string, Dictionary<string, string>> DataStringMaps { get; set; } = new Dictionary<string, Dictionary<string, string>>();
+		public Dictionary<string, DataTable> DataDataTables { get; set; } = new Dictionary<string, DataTable>();
 		#endregion
 		readonly Int64[] dataInteger;
 		readonly string[] dataString;
@@ -297,6 +298,7 @@ namespace MinorShift.Emuera.GameData.Variable
 			varTokenDic.Add("GAMEBASE_TITLE", new StrConstantToken(VariableCode.GAMEBASE_TITLE, this, gamebase.ScriptTitle));
 			#region EE_UPDATECHECK
 			varTokenDic.Add("GAMEBASE_URL", new StrConstantToken(VariableCode.GAMEBASE_URL, this, gamebase.UpdateCheckURL));
+			varTokenDic.Add("GAMEBASE_VERSIONNAME", new StrConstantToken(VariableCode.GAMEBASE_URL, this, gamebase.VersionName));
 			#endregion
 
 
@@ -388,14 +390,14 @@ namespace MinorShift.Emuera.GameData.Variable
 					{
 						case 1: ret = new UserDefinedCharaStr1DVariableToken(data, this, index); break;
 						case 2: ret = new UserDefinedCharaStr2DVariableToken(data, this, index); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 				else
 					switch (data.Dimension)
 					{
 						case 1: ret = new UserDefinedCharaInt1DVariableToken(data, this, index); break;
 						case 2: ret = new UserDefinedCharaInt2DVariableToken(data, this, index); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 			}
 			UserDefinedCharaVarList.Add(ret);
@@ -410,7 +412,7 @@ namespace MinorShift.Emuera.GameData.Variable
 					case 1: ret = new StaticStr1DVariableToken(data); break;
 					case 2: ret = new StaticStr2DVariableToken(data); break;
 					case 3: ret = new StaticStr3DVariableToken(data); break;
-					default: throw new ExeEE("異常な変数宣言");
+					default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 				}
 			else
 				switch (data.Dimension)
@@ -418,7 +420,7 @@ namespace MinorShift.Emuera.GameData.Variable
 					case 1: ret = new StaticInt1DVariableToken(data); break;
 					case 2: ret = new StaticInt2DVariableToken(data); break;
 					case 3: ret = new StaticInt3DVariableToken(data); break;
-					default: throw new ExeEE("異常な変数宣言");
+					default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 				}
 			if (ret.IsGlobal)
 				userDefinedGlobalVarList.Add(ret);
@@ -449,7 +451,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						case 1: ret = new ReferenceStr1DToken(data); break;
 						case 2: ret = new ReferenceStr2DToken(data); break;
 						case 3: ret = new ReferenceStr3DToken(data); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 				}
 				else
@@ -459,7 +461,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						case 1: ret = new ReferenceInt1DToken(data); break;
 						case 2: ret = new ReferenceInt2DToken(data); break;
 						case 3: ret = new ReferenceInt3DToken(data); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 				}
 			}
@@ -472,7 +474,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						case 1: ret = new StaticStr1DVariableToken(data); break;
 						case 2: ret = new StaticStr2DVariableToken(data); break;
 						case 3: ret = new StaticStr3DVariableToken(data); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 				}
 				else
@@ -482,7 +484,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						case 1: ret = new StaticInt1DVariableToken(data); break;
 						case 2: ret = new StaticInt2DVariableToken(data); break;
 						case 3: ret = new StaticInt3DVariableToken(data); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 				}
 				userDefinedStaticVarList.Add(ret);
@@ -496,7 +498,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						case 1: ret = new PrivateStr1DVariableToken(data); break;
 						case 2: ret = new PrivateStr2DVariableToken(data); break;
 						case 3: ret = new PrivateStr3DVariableToken(data); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 				}
 				else
@@ -506,7 +508,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						case 1: ret = new PrivateInt1DVariableToken(data); break;
 						case 2: ret = new PrivateInt2DVariableToken(data); break;
 						case 3: ret = new PrivateInt3DVariableToken(data); break;
-						default: throw new ExeEE("異常な変数宣言");
+						default: throw new ExeEE(trerror.AbnormalVarDeclaration.Text);
 					}
 				}
 			}
@@ -993,6 +995,57 @@ namespace MinorShift.Emuera.GameData.Variable
 					copyListToArray3D(longs2, (Int64[, ,])var.GetArray());
 		}
 
+		#region EM_私家版_セーブ拡張
+		public void SaveGlobalEMDataToStreamBinary(EraBinaryDataWriter writer)
+		{
+			foreach (var key in GlobalStatic.ConstantData.GlobalSaveMaps)
+			{
+				if (DataStringMaps.ContainsKey(key))
+				{
+					writer.WriteWithKey(key, DataStringMaps[key]);
+				}
+			}
+			foreach (var key in GlobalStatic.ConstantData.GlobalSaveXmls)
+			{
+				if (DataXmlDocument.ContainsKey(key))
+				{
+					writer.WriteWithKey(key, DataXmlDocument[key]);
+				}
+			}
+			foreach (var key in GlobalStatic.ConstantData.GlobalSaveDTs)
+			{
+				if (DataDataTables.ContainsKey(key))
+				{
+					writer.WriteWithKey(key, DataDataTables[key]);
+				}
+			}
+		}
+		public void SaveEMDataToStreamBinary(EraBinaryDataWriter writer)
+		{
+			foreach (var key in GlobalStatic.ConstantData.SaveMaps)
+			{
+				if (DataStringMaps.ContainsKey(key))
+				{
+					writer.WriteWithKey(key, DataStringMaps[key]);
+				}
+			}
+			foreach (var key in GlobalStatic.ConstantData.SaveXmls)
+			{
+				if (DataXmlDocument.ContainsKey(key))
+				{
+					writer.WriteWithKey(key, DataXmlDocument[key]);
+				}
+			}
+			foreach (var key in GlobalStatic.ConstantData.SaveDTs)
+			{
+				if (DataDataTables.ContainsKey(key))
+				{
+					writer.WriteWithKey(key, DataDataTables[key]);
+				}
+			}
+		}
+		#endregion
+
 		public void SaveGlobalToStreamBinary(EraBinaryDataWriter writer)
 		{
 			foreach (KeyValuePair<string, VariableToken> pair in varTokenDic)
@@ -1009,7 +1062,7 @@ namespace MinorShift.Emuera.GameData.Variable
 					writer.WriteWithKey(var.Name, var.GetArray());
 			}
 		}
-
+		
 		public void SaveToStreamBinary(EraBinaryDataWriter writer)
 		{
 			foreach (KeyValuePair<string, VariableToken> pair in varTokenDic)
@@ -1047,6 +1100,38 @@ namespace MinorShift.Emuera.GameData.Variable
 				vToken = null;
 			switch (nameAndType.Value)
 			{
+				#region EM_私家版_セーブ拡張
+				case EraSaveDataType.Map:
+					{
+						var key = reader.ReadString();
+						var dict = reader.ReadMap();
+						if (GlobalStatic.ConstantData.SaveMaps.Contains(key) || GlobalStatic.ConstantData.GlobalSaveMaps.Contains(key))
+						{
+							DataStringMaps[key] = dict;
+						}
+						break;
+					}
+				case EraSaveDataType.Xml:
+					{
+						var key = reader.ReadString();
+						var doc = reader.ReadXml();
+						if (GlobalStatic.ConstantData.SaveXmls.Contains(key) || GlobalStatic.ConstantData.GlobalSaveXmls.Contains(key))
+						{
+							DataXmlDocument[key] = doc;
+						}
+						break;
+					}
+				case EraSaveDataType.DT:
+					{
+						var key = reader.ReadString();
+						var dt = reader.ReadDataTable();
+						if (GlobalStatic.ConstantData.SaveDTs.Contains(key) || GlobalStatic.ConstantData.GlobalSaveDTs.Contains(key))
+						{
+							DataDataTables[key] = dt;
+						}
+						break;
+					}
+				#endregion
 				case EraSaveDataType.EOF:
 					return false;
 				case EraSaveDataType.Int:
@@ -1098,7 +1183,7 @@ namespace MinorShift.Emuera.GameData.Variable
 						reader.ReadStrArray3D((string[, ,])vToken.GetArray(), true);
 					break;
 				default:
-					throw new FileEE("データ異常");
+					throw new FileEE(trerror.AbnormalData.Text);
 			}
 			return true;
 		}

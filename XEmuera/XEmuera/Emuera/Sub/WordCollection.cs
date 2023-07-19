@@ -38,6 +38,17 @@ namespace MinorShift.Emuera.Sub
 				return Collection[Pointer]; 
 			} 
 		}
+		#region EM_私家版_HTMLパラメータ拡張
+		public Word Next
+		{
+			get
+			{
+				if (Pointer + 1 >= Collection.Count)
+					return nullToken;
+				return Collection[Pointer + 1];
+			}
+		}
+		#endregion
 		public bool EOL { get { return Pointer >= Collection.Count; } }
 
 		public void Insert(Word w)

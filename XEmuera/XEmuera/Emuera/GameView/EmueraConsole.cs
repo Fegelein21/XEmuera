@@ -20,6 +20,11 @@ using XEmuera.Drawing;
 using SkiaSharp;
 using XEmuera;
 using Xamarin.Essentials;
+using EvilMask.Emuera;
+
+using trmb = EvilMask.Emuera.Lang.MessageBox;
+using trerror = EvilMask.Emuera.Lang.Error;
+using trsl = EvilMask.Emuera.Lang.SystemLine;
 
 namespace MinorShift.Emuera.GameView
 {
@@ -353,7 +358,13 @@ namespace MinorShift.Emuera.GameView
 					return selectingButton.Input.ToString();
 				if (inputReq.InputType == InputType.StrValue)
 					return selectingButton.Inputs;
-				return null;
+                #region EE_INPUTANY
+                if (inputReq.InputType == InputType.AnyValue && (selectingButton.IsInteger))
+					return selectingButton.Input.ToString();
+				if (inputReq.InputType == InputType.AnyValue)
+					return selectingButton.Inputs;
+                #endregion
+                return null;
 			}
 		}
 
@@ -392,14 +403,14 @@ namespace MinorShift.Emuera.GameView
 
 			if (GlobalStatic.ForceQuitAndRestart == true)
 			{
-				DialogResult result = MessageBox.Show($"FORCE_QUIT_AND_RESTARTが入力待ちを挟まず連続実行されました。再起動せず終了しますか？",
+				DialogResult result = MessageBox.Show(trmb.ForceQuitAndRestart.Text,
 					"FORCE_QUIT_AND_RESTART",
 					MessageBoxButtons.YesNo
 					);
 				if (result == DialogResult.Yes)
 				{
 					Program.Reboot = false;
-					throw new CodeEE("FORCE_QUIT_AND_RESTARTが連続実行されました");
+					throw new CodeEE(trerror.ForceQuitAndRestartError.Text);
 				}
 			}
 			GlobalStatic.ForceQuitAndRestart = true;
@@ -462,7 +473,9 @@ namespace MinorShift.Emuera.GameView
 					lastButtonGeneration = newButtonGeneration;
 				lastButtonIsInput = true;
 			}
-			if (inputReq.InputType == InputType.StrValue)
+            #region EE_INPUTANY
+            if (inputReq.InputType == InputType.StrValue || inputReq.InputType == InputType.AnyValue)
+			#endregion
 			{
 				if (lastButtonGeneration == newButtonGeneration)
 					unchecked { newButtonGeneration++; }
@@ -613,7 +626,7 @@ namespace MinorShift.Emuera.GameView
 				//100ms未満の場合、一瞬だけ残り0が表示されて終了
 				//timer_nextDisplayTime = timer_startTime + 100;
 				long start = inputReq.Timelimit / 100;
-				string timeString1 = "残り ";
+				string timeString1 = trsl.Remaining.Text;
 				string timeString2 = ((double)start / 10.0).ToString();
 				PrintSingleLine(timeString1 + timeString2);
 			}
@@ -656,7 +669,7 @@ namespace MinorShift.Emuera.GameView
 				//表示に時間がかかってタイマーが止まるので次の描画は100ms後。場合によっては表示が0.2一気に飛ぶ。
 				timer_nextDisplayTime = curtime + 100;
 				long time = (timer_endTime - curtime) / 100;
-				string timeString1 = "残り ";
+				string timeString1 = trsl.Remaining.Text;
 				string timeString2 = ((double)time / 10.0).ToString();
 				changeLastLine(timeString1 + timeString2);
 			}
@@ -751,7 +764,7 @@ namespace MinorShift.Emuera.GameView
 			if (state == ConsoleState.Running)
 			{//RunningならProcessは処理を継続するべき
 				state = ConsoleState.Error;
-                PrintError("emueraのエラー：プログラムの状態を特定できません");
+                PrintError(trerror.ProgramStatusError.Text);
 			}
 			if (state == ConsoleState.Error && !noOutputLog)
 				#region EE_OUTPUTLOG
@@ -794,8 +807,24 @@ namespace MinorShift.Emuera.GameView
 							str = "";
 						emuera.InputString(str);
 						break;
-				}
-				stopTimer();
+                    #region EE_INPUTANY
+                    case InputType.AnyValue:
+						if (Int64.TryParse(str, out inputValue))
+                        {
+							if (inputReq.IsSystemInput)
+								emuera.InputSystemInteger(inputValue);
+							else
+								emuera.InputInteger(inputValue);
+						}
+						else
+                        {
+							emuera.InputString(str);
+						}
+						break;
+                    #endregion
+
+                }
+                stopTimer();
 			}
 			Print(str);
 			PrintFlush(false);
@@ -1160,14 +1189,14 @@ namespace MinorShift.Emuera.GameView
 		{
 			if(timer.Enabled)
 			{
-				PrintError("タイマー系命令の待ち時間中はコマンドを入力できません");
+				PrintError(trerror.CanNotInputTimerWait.Text);
 				PrintError("");//タイマー表示処理に消されちゃうかもしれないので
 				RefreshStrings(true);
 				return;
 			}
 			if (IsInProcess)
 			{
-				PrintError("スクリプト実行中はコマンドを入力できません");
+				PrintError(trerror.CanNotInputScriptRunning.Text);
 				RefreshStrings(true);
 				return;
 			}
@@ -1206,7 +1235,7 @@ namespace MinorShift.Emuera.GameView
 			{
 				if (!Program.DebugMode)
 				{
-					PrintError("デバッグウインドウは-Debug引数付きで起動したときのみ使えます");
+					PrintError(trerror.CanNotUseDebugWindow.Text);
 					RefreshStrings(true);
 					return;
 				}
@@ -1216,7 +1245,7 @@ namespace MinorShift.Emuera.GameView
 			{
 				if (!Config.UseDebugCommand)
 				{
-					PrintError("デバッグコマンドを使用できない設定になっています");
+					PrintError(trerror.CanNotUseDebugCommand.Text);
 					RefreshStrings(true);
 					return;
 				}
@@ -1529,20 +1558,20 @@ namespace MinorShift.Emuera.GameView
 			//	return null;
 			StringBuilder builder = new StringBuilder("");
 			LogicalLine line = emuera.GetScaningLine();
-			builder.AppendLine("*実行中の行");
+			builder.AppendLine(trsl.Processing.Text);
 			if ((line == null) || (line.Position == null))
 			{
-				builder.AppendLine("ファイル名:なし");
-				builder.AppendLine("行番号:なし 関数名:なし");
+				builder.AppendLine(trsl.FileNone.Text);
+				builder.AppendLine(trsl.LineFuncNone.Text);
 				builder.AppendLine("");
 			}
 			else
 			{
-				builder.AppendLine("ファイル名:" + line.Position.Filename);
-				builder.AppendLine("行番号:" + line.Position.LineNo.ToString() + " 関数名:" + line.ParentLabelLine.LabelName);
+				builder.AppendLine(string.Format(trsl.FileName.Text, line.Position.Filename));
+				builder.AppendLine(string.Format(trsl.LineFuncName.Text, line.Position.LineNo.ToString(), line.ParentLabelLine.LabelName));
 				builder.AppendLine("");
 			}
-			builder.AppendLine("*スタックトレース");
+			builder.AppendLine(trsl.FuncCallStack.Text);
 			for (int i = dTraceLogList.Count - 1; i >= 0; i--)
 			{
 				builder.AppendLine(dTraceLogList[i]);
@@ -1551,24 +1580,24 @@ namespace MinorShift.Emuera.GameView
 		}
 		public void OpenDebugDialog()
 		{
-			//if (!Program.DebugMode)
-			//	return;
-			//if (dd != null)
-			//{
-			//	if (dd.Created)
-			//	{
-			//		dd.Focus();
-			//		return;
-			//	}
-			//	else
-			//	{
-			//		dd.Dispose();
-			//		dd = null;
-			//	}
-			//}
-			//dd = new DebugDialog();
-			//dd.SetParent(this, emuera);
-			//dd.Show();
+			// if (!Program.DebugMode)
+			// 	return;
+			// if (dd != null)
+			// {
+			// 	if (dd.Created)
+			// 	{
+			// 		dd.Focus();
+			// 		return;
+			// 	}
+			// 	else
+			// 	{
+			// 		dd.Dispose();
+			// 		dd = null;
+			// 	}
+			// }
+			// dd = new DebugDialog();
+			// dd.SetParent(this, emuera);
+			// dd.Show();
 		}
 
 		public void DebugPrint(string str)
@@ -1637,7 +1666,7 @@ namespace MinorShift.Emuera.GameView
 					WordCollection wc = LexicalAnalyzer.Analyse(new StringStream(com), LexEndWith.EoL, LexAnalyzeFlag.None);
 					IOperandTerm term = ExpressionParser.ReduceExpressionTerm(wc, TermEndWith.EoL);
 					if (term == null)
-						throw new CodeEE("解釈不能なコードです");
+						throw new CodeEE(trerror.CanNotInterpretedLine.Text);
 					if (term.GetOperandType() == typeof(Int64))
 					{
 						if (outputDebugConsole)
@@ -1655,23 +1684,23 @@ namespace MinorShift.Emuera.GameView
 					line = LogicalLineParser.ParseLine(com, null);
 				}
 				if (line == null)
-					throw new CodeEE("解釈不能なコードです");
+					throw new CodeEE(trerror.CanNotInterpretedLine.Text);
 				if (line is InvalidLine)
 					throw new CodeEE(line.ErrMes);
 				if (!(line is InstructionLine))
-					throw new CodeEE("デバッグコマンドで使用できるのは代入文か命令文だけです");
+					throw new CodeEE(trerror.InvalidDebugCommand.Text);
 				InstructionLine func = (InstructionLine)line;
 				if (func.Function.IsFlowContorol())
-					throw new CodeEE("フロー制御命令は使用できません");
+					throw new CodeEE(trerror.CanNotUseFlowInstruction.Text);
 				//__METHOD_SAFE__をみるならいらないかも
 				if (func.Function.IsWaitInput())
-					throw new CodeEE(func.Function.Name + "命令は使用できません");
+					throw new CodeEE(string.Format(trerror.CanNotUseInstruction.Text, func.Function.Name));
 				//1750 __METHOD_SAFE__とほぼ条件同じだよねってことで
 				if (!func.Function.IsMethodSafe())
-					throw new CodeEE(func.Function.Name + "命令は使用できません");
+					throw new CodeEE(string.Format(trerror.CanNotUseInstruction.Text, func.Function.Name));
 				//1756 SIFの次に来てはいけないものはここでも不可。
 				if (func.Function.IsPartial())
-					throw new CodeEE(func.Function.Name + "命令は使用できません");
+					throw new CodeEE(string.Format(trerror.CanNotUseInstruction.Text, func.Function.Name));
 				switch (func.FunctionCode)
 				{//取りこぼし
 					//逆にOUTPUTLOG、QUITはDebugCommandの前に捕まえる
@@ -1679,7 +1708,7 @@ namespace MinorShift.Emuera.GameView
 					case FunctionCode.UPCHECK:
 					case FunctionCode.CUPCHECK:
 					case FunctionCode.SAVEDATA:
-						throw new CodeEE(func.Function.Name + "命令は使用できません");
+						throw new CodeEE(string.Format(trerror.CanNotUseInstruction.Text, func.Function.Name));
 				}
 				ArgumentParser.SetArgumentTo(func);
 				if (func.IsError)
@@ -1939,12 +1968,12 @@ namespace MinorShift.Emuera.GameView
 		{
 			if (state == ConsoleState.Error)
 			{
-				MessageBox.Show("エラー発生時はこの機能は使えません");
+				MessageBox.Show(trerror.CanNotUseWhenError.Text);
 				return;
 			}
 			if (state == ConsoleState.Initializing)
 			{
-				MessageBox.Show("初期化中はこの機能は使えません");
+				MessageBox.Show(trerror.CanNotUseWhenInitialize.Text);
 				return;
 			}
             bool notRedraw = false;
@@ -1961,11 +1990,11 @@ namespace MinorShift.Emuera.GameView
             prevState = state;
 			prevReq = inputReq;
 			state = ConsoleState.Initializing;
-			PrintSingleLine("ERB再読み込み中……", true);
+			PrintSingleLine(trsl.ReloadingErb.Text, true);
 			force_temporary = true;
 			emuera.ReloadErb();
 			force_temporary = false;
-            PrintSingleLine("再読み込み完了", true);
+            PrintSingleLine(trsl.ReloadCompleted.Text, true);
 			RefreshStrings(true);
             //強制的にボタン世代が切り替わるのを防ぐ
             updatedGeneration = true;
@@ -1990,12 +2019,12 @@ namespace MinorShift.Emuera.GameView
 		{
 			if (state == ConsoleState.Error)
 			{
-				MessageBox.Show("エラー発生時はこの機能は使えません");
+				MessageBox.Show(trerror.CanNotUseWhenError.Text);
 				return;
 			}
 			if (state == ConsoleState.Initializing)
 			{
-				MessageBox.Show("初期化中はこの機能は使えません");
+				MessageBox.Show(trerror.CanNotUseWhenInitialize.Text);
 				return;
 			}
             bool notRedraw = false;
@@ -2012,11 +2041,11 @@ namespace MinorShift.Emuera.GameView
 			prevState = state;
 			prevReq = inputReq;
 			state = ConsoleState.Initializing;
-            PrintSingleLine("ERB再読み込み中……", true);
+            PrintSingleLine(trsl.ReloadingErb.Text, true);
 			force_temporary = true;
 			emuera.ReloadPartialErb(path);
 			force_temporary = false;
-            PrintSingleLine("再読み込み完了", true);
+            PrintSingleLine(trsl.ReloadCompleted.Text, true);
 			RefreshStrings(true);
             //強制的にボタン世代が切り替わるのを防ぐ
             updatedGeneration = true;
@@ -2028,12 +2057,12 @@ namespace MinorShift.Emuera.GameView
 		{
             if (state == ConsoleState.Error)
 			{
-				MessageBox.Show("エラー発生時はこの機能は使えません");
+				MessageBox.Show(trerror.CanNotUseWhenError.Text);
 				return;
 			}
 			if (state == ConsoleState.Initializing)
 			{
-				MessageBox.Show("初期化中はこの機能は使えません");
+				MessageBox.Show(trerror.CanNotUseWhenInitialize.Text);
 				return;
 			}
             if (timer.Enabled)
@@ -2059,11 +2088,11 @@ namespace MinorShift.Emuera.GameView
 			prevState = state;
 			prevReq = inputReq;
 			state = ConsoleState.Initializing;
-            PrintSingleLine("ERB再読み込み中……", true);
+            PrintSingleLine(trsl.ReloadingErb.Text, true);
 			force_temporary = true;
             emuera.ReloadPartialErb(paths);
 			force_temporary = false;
-            PrintSingleLine("再読み込み完了", true);
+            PrintSingleLine(trsl.ReloadCompleted.Text, true);
 			RefreshStrings(true);
             //強制的にボタン世代が切り替わるのを防ぐ
             updatedGeneration = true;

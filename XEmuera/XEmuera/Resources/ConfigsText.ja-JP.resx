@@ -345,6 +345,15 @@
   <data name="UseERD" xml:space="preserve">
     <value>ERD機能を利用する</value>
   </data>
+  <data name="VarsizeDimConfig" xml:space="preserve">
+    <value>VARSIZEの次元指定をERD機能に合わせる</value>
+  </data>
+  <data name="EnglishConfigOutput" xml:space="preserve">
+    <value>CONFIGファイルの内容を英語で保存する</value>
+  </data>
+  <data name="ZipSaveData" xml:space="preserve">
+    <value>セーブデータを圧縮して保存する</value>
+  </data>
   <data name="ValidExtension" xml:space="preserve">
     <value>LOADTEXTとSAVETEXTで使える拡張子</value>
   </data>

@@ -4,6 +4,7 @@ using MinorShift.Emuera.GameData;
 using MinorShift.Emuera.GameData.Expression;
 using MinorShift.Emuera.GameData.Variable;
 using MinorShift.Emuera.GameData.Function;
+using MinorShift.Emuera.GameView;
 
 namespace MinorShift.Emuera.GameProc.Function
 {
@@ -17,6 +18,33 @@ namespace MinorShift.Emuera.GameProc.Function
 		}
 		readonly public IOperandTerm Def;
 		readonly public IOperandTerm Mouse;
+	}
+	#endregion
+	#region EM_私家版_HTMLパラメータ拡張
+	internal sealed class MixedIntegerExprTerm
+	{
+		public IOperandTerm num = null;
+		public bool isPx = false;
+	}
+	internal sealed class SpPrintShapeArgument : Argument
+	{
+		public SpPrintShapeArgument(MixedIntegerExprTerm[] param)
+		{
+			Param = param;
+		}
+		readonly public MixedIntegerExprTerm[] Param;
+	}
+	internal sealed class SpPrintImgArgument : Argument
+	{
+		public SpPrintImgArgument(IOperandTerm name, IOperandTerm nameb, MixedIntegerExprTerm[] param)
+		{
+			Name = name;
+			Nameb = nameb;
+			Param = param;
+		}
+		readonly public IOperandTerm Name;
+		readonly public IOperandTerm Nameb;
+		readonly public MixedIntegerExprTerm[] Param;
 	}
 	#endregion
 	internal abstract class Argument

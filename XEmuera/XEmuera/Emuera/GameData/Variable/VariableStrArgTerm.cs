@@ -4,6 +4,7 @@ using System.Text;
 using MinorShift.Emuera.Sub;
 using MinorShift.Emuera.GameProc;
 using MinorShift.Emuera.GameData.Expression;
+using trerror = EvilMask.Emuera.Lang.Error;
 
 namespace MinorShift.Emuera.GameData.Variable
 {
@@ -43,18 +44,18 @@ namespace MinorShift.Emuera.GameData.Variable
 				#endregion
 			string key = strTerm.GetStrValue(exm);
 			if (key == "")
-				throw new CodeEE("キーワードを空には出来ません");
+				throw new CodeEE(trerror.KeywordCanNotEmpty.Text);
 			#region EE_ERD
 			if (dic == null && key != "")
-				throw new CodeEE("配列変数" + parentCode.ToString() + "に" + key + "の定義はありません");
+				throw new CodeEE(string.Format(trerror.NotDefinedErdKey.Text, parentCode.ToString(), key));
 			#endregion
 
 			if (!dic.TryGetValue(key, out int i))
             {
                 if (errPos == null)
-                    throw new CodeEE("配列変数" + parentCode.ToString() + "の要素を文字列で指定することはできません");
+                    throw new CodeEE(string.Format(trerror.CanNotSpecifiedByString.Text, parentCode.ToString()));
                 else
-                    throw new CodeEE(errPos + "の中に\"" + key + "\"の定義がありません");
+                    throw new CodeEE(string.Format(trerror.NotDefinedKey.Text, errPos, key));
             }
             return i;
         }

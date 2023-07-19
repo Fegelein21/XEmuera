@@ -8,6 +8,7 @@ using MinorShift._Library;
 using XEmuera;
 using XEmuera.Drawing;
 using SkiaSharp;
+using trmb = EvilMask.Emuera.Lang.MessageBox;
 
 namespace MinorShift.Emuera
 {
@@ -173,9 +174,23 @@ namespace MinorShift.Emuera
 			#region EE版_ERDConfig
 			UseERD = instance.GetConfigValue<bool>(ConfigCode.UseERD);
 			#endregion
+			#region EE_ERDNAME
+			VarsizeDimConfig = instance.GetConfigValue<bool>(ConfigCode.VarsizeDimConfig);
+			#endregion
+
 
 			#region EM_私家版_LoadText＆SaveText機能拡張
 			ValidExtension = instance.GetConfigValue<List<string>>(ConfigCode.ValidExtension);
+			#endregion
+			#region EM_私家版_セーブ圧縮
+			ZipSaveData = instance.GetConfigValue<bool>(ConfigCode.ZipSaveData);
+			#endregion
+			#region EM_私家版_Emuera多言語化改造
+			EnglishConfigOutput = instance.GetConfigValue<bool>(ConfigCode.EnglishConfigOutput);
+			EmueraLang = instance.GetConfigValue<string>(ConfigCode.EmueraLang);
+			#endregion
+			#region EM_私家版_Icon指定機能
+			EmueraIcon = instance.GetConfigValue<string>(ConfigCode.EmueraIcon);
 			#endregion
 
 			UseLanguage lang = instance.GetConfigValue<UseLanguage>(ConfigCode.useLanguage);
@@ -193,27 +208,27 @@ namespace MinorShift.Emuera
 
 			if (FontSize < 8)
 			{
-				MessageBox.Show("フォントサイズが小さすぎます(8が下限)", "設定のエラー");
+				MessageBox.Show(trmb.TooSmallFontSize.Text, trmb.ConfigError.Text);
 				FontSize = 8;
 			}
 			if (LineHeight < FontSize)
 			{
-				MessageBox.Show("行の高さがフォントサイズより小さいため、フォントサイズと同じ高さと解釈されます", "設定のエラー");
+				MessageBox.Show(trmb.LineHeightLessThanFontSize.Text, trmb.ConfigError.Text);
 				LineHeight = FontSize;
 			}
 			if (SaveDataNos < 20)
 			{
-				MessageBox.Show("表示するセーブデータ数が少なすぎます(20が下限)", "設定のエラー");
+				MessageBox.Show(trmb.TooSmallDisplaySaveData.Text, trmb.ConfigError.Text);
 				SaveDataNos = 20;
 			}
 			if (SaveDataNos > 80)
 			{
-				MessageBox.Show("表示するセーブデータ数が多すぎます(80が上限)", "設定のエラー");
+				MessageBox.Show(trmb.TooLargeDisplaySaveData.Text, trmb.ConfigError.Text);
 				SaveDataNos = 80;
 			}
 			if (MaxLog < 500)
 			{
-				MessageBox.Show("ログ表示行数が少なすぎます(500が下限)", "設定のエラー");
+				MessageBox.Show(trmb.TooSmallLogSize.Text, trmb.ConfigError.Text);
 				MaxLog = 500;
 			}
 
@@ -232,6 +247,13 @@ namespace MinorShift.Emuera
 			if (UseSaveFolder && !Directory.Exists(SavDir))
 				createSavDirAndMoveFiles();
 		}
+		#region EM_私家版_Emuera多言語化改造
+		public static void UpdateLangSetting(ConfigData instance) 
+		{
+			EnglishConfigOutput = instance.GetConfigValue<bool>(ConfigCode.EnglishConfigOutput);
+			EmueraLang = instance.GetConfigValue<string>(ConfigCode.EmueraLang);
+		}
+		#endregion
 
 		public static void RefreshDisplayConfig()
 		{
@@ -324,7 +346,7 @@ namespace MinorShift.Emuera
 			}
 			catch
 			{
-				MessageBox.Show("savフォルダの作成に失敗しました", "フォルダ作成失敗");
+				MessageBox.Show(trmb.FailedCreateSavFolder.Text, trmb.FolderCreationFailure.Text);
 				return;
 			}
 			string globalFile = Program.ExeDir + "global.sav";
@@ -333,13 +355,13 @@ namespace MinorShift.Emuera
 			string[] savFiles = FileUtils.GetFiles(Program.ExeDir, "save*.sav", SearchOption.TopDirectoryOnly);
 			if (!existGlobal && savFiles.Length == 0)
 				return;
-			DialogResult result = MessageBox.Show("savフォルダを作成しました\n現在のデータをsavフォルダ内に移動しますか？", "データ移動", MessageBoxButtons.YesNo);
+			DialogResult result = MessageBox.Show(trmb.SavFolderCreated.Text, trmb.DataTransfer.Text, MessageBoxButtons.YesNo);
 			if (result != DialogResult.Yes)
 				return;
 			//ダイアログが開いている間にフォルダを消してしまうような邪悪なユーザーがいるかもしれない
 			if (!Directory.Exists(SavDir))
 			{
-				MessageBox.Show("savフォルダの作成が見当たりません", "フォルダ作成失敗");
+				MessageBox.Show(trmb.MissingSavFolder.Text, trmb.DataTransferFailure.Text);
 				return;
 			}
 			//ダイアログが開いている間にファイルを変更するような邪悪なユーザーがいるかもしれない
@@ -354,7 +376,7 @@ namespace MinorShift.Emuera
 			}
 			catch
 			{
-				MessageBox.Show("savファイルの移動に失敗しました", "移動失敗");
+				MessageBox.Show(trmb.FailedMoveSavFiles.Text, trmb.DataTransferFailure.Text);
 			}
 		}
 		//先にSetConfigを呼ぶこと
@@ -684,9 +706,22 @@ namespace MinorShift.Emuera
 		#endregion
 		#region EE版_ERDConfig
 		public static bool UseERD { get; private set; }
+        #endregion
+        #region EE_ERDNAME
+		public static bool VarsizeDimConfig { get; private set; }
 		#endregion
 		#region EM_私家版_LoadText＆SaveText機能拡張
 		public static List<string> ValidExtension { get; private set; }
+		#endregion
+		#region EM_私家版_セーブ圧縮
+		public static bool ZipSaveData { get; private set; }
+		#endregion
+		#region EM_私家版_Emuera多言語化改造
+		public static bool EnglishConfigOutput { get; private set; }
+		public static string EmueraLang { get; private set; }
+		#endregion
+		#region EM_私家版_Icon指定機能
+		public static string EmueraIcon { get; private set; }
 		#endregion
 
 	}

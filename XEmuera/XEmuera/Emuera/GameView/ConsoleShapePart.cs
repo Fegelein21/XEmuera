@@ -11,7 +11,9 @@ namespace MinorShift.Emuera.GameView
 {
 	abstract class ConsoleShapePart : AConsoleColoredPart
 	{
-		static public ConsoleShapePart CreateShape(string shapeType, int[] param, Color color, Color bcolor, bool colorchanged)
+		#region EM_私家版_HTMLパラメータ拡張
+		static public ConsoleShapePart CreateShape(string shapeType, MixedNum[] param, Color color, Color bcolor, bool colorchanged)
+		// static public ConsoleShapePart CreateShape(string shapeType, int[] param, Color color, Color bcolor, bool colorchanged)
 		{
 			string type = shapeType.ToLower();
 			colorchanged = colorchanged || color != Config.ForeColor;
@@ -21,7 +23,9 @@ namespace MinorShift.Emuera.GameView
 			sb.Append("' param='");
 			for (int i = 0; i < param.Length;i++ )
 			{
-				sb.Append(param[i].ToString());
+				// sb.Append(param[i].ToString());
+				sb.Append(param[i].num.ToString());
+				if (param[i].isPx) sb.Append("px");
 				if (i < param.Length - 1)
 					sb.Append(", ");
 			}
@@ -41,34 +45,43 @@ namespace MinorShift.Emuera.GameView
 			sb.Append(">");
 			ConsoleShapePart ret = null;
 			int lineHeight = Config.FontSize;
-			float[] paramPixel = new float[param.Length];
-			for (int i = 0; i < param.Length; i++)
-			{
-				paramPixel[i] = ((float)param[i] * lineHeight) / 100f;
-			}
-			RectangleF rectF;
+			//float[] paramPixel = new float[param.Length];
+			//for (int i = 0; i < param.Length; i++)
+			//{
+			//	paramPixel[i] = ((float)param[i] * lineHeight) / 100f;
+			//}
+			//RectangleF rectF;
 
 			switch (type)
 			{
 				case "space":
 					#region EM_私家版_space制限解除
 					// if (paramPixel.Length == 1 && paramPixel[0] >= 0)
-					if (paramPixel.Length == 1)
 					#endregion
+					if (param.Length == 1)
 					{
-						rectF = new RectangleF(0, 0, paramPixel[0], lineHeight);
+						//rectF = new RectangleF(0, 0, paramPixel[0], lineHeight);
+						var rectF = new RectangleF(0, 0, param[0].isPx ? param[0].num : ((float)param[0].num * lineHeight) / 100f, lineHeight);
 						ret = new ConsoleSpacePart(rectF);
 					}
 					break;
 				case "rect":
-					if (paramPixel.Length == 1 && paramPixel[0] > 0)
+					// if (paramPixel.Length == 1 && paramPixel[0] >= 0)
+					if (param.Length == 1 && param[0].num > 0)
 					{
-						rectF = new RectangleF(0, 0, paramPixel[0], lineHeight);
+						//rectF = new RectangleF(0, 0, paramPixel[0], lineHeight);
+						var rectF = new RectangleF(0, 0, param[0].isPx ? param[0].num : ((float)param[0].num * lineHeight) / 100f, lineHeight);
 						ret = new ConsoleRectangleShapePart(rectF);
 					}
-					else if (paramPixel.Length == 4)
+					// else if (paramPixel.Length == 4)
+					else if (param.Length == 4)
 					{
-						rectF = new RectangleF(paramPixel[0], paramPixel[1], paramPixel[2], paramPixel[3]);
+						//rectF = new RectangleF(paramPixel[0], paramPixel[1], paramPixel[2], paramPixel[3]);
+						var rectF = new RectangleF(
+							param[0].isPx ? param[0].num : ((float)param[0].num * lineHeight) / 100f,
+							param[1].isPx ? param[1].num : ((float)param[1].num * lineHeight) / 100f,
+							param[2].isPx ? param[2].num : ((float)param[2].num * lineHeight) / 100f,
+							param[3].isPx ? param[3].num : ((float)param[3].num * lineHeight) / 100f);
 						//1820a12 サイズ上限撤廃
 						if (rectF.X >= 0 && rectF.Width > 0 && rectF.Height > 0)
 						//	rectF.Y >= 0 && (rectF.Y + rectF.Height) <= lineHeight)
@@ -90,6 +103,7 @@ namespace MinorShift.Emuera.GameView
 			ret.colorChanged = colorchanged;
 			return ret;
 		}
+		#endregion
 
 		public override bool CanDivide
 		{

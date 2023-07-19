@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MinorShift.Emuera.Sub;
 using MinorShift.Emuera.GameProc;
+using trerror = EvilMask.Emuera.Lang.Error;
 
 namespace MinorShift.Emuera.GameData.Variable
 {
@@ -577,7 +578,7 @@ namespace MinorShift.Emuera.GameData.Variable
 					//        reader.ReadStrArray3D(dataStringArray3D[codeInt], true);
 					//    break;
 					default:
-						throw new FileEE("データ異常");
+						throw new FileEE(trerror.AbnormalData.Text);
 				}
 			}
 		whilebreak:
@@ -709,7 +710,7 @@ namespace MinorShift.Emuera.GameData.Variable
                     int elem1 = (int)(elem64 >> 32);
                     int elem2 = (int)(elem64 & 0x7FFFFFFF);
                     if (elem1 < 0 || elem1 >= array.GetLength(0) || elem2 < 0 || elem2 >= array.GetLength(1))
-                        throw new CodeEE("ソートキーが配列外を参照しています");
+                        throw new CodeEE(trerror.OoRSortKey.Text);
                     temp_SortKey = array[elem1, elem2];
                 }
                 else if (sortkey.IsArray1D)
@@ -718,8 +719,8 @@ namespace MinorShift.Emuera.GameData.Variable
                         ? (string[])UserDefCVarDataList[token.ArrayIndex]
                         : dataStringArray[sortkey.CodeInt];
                     if (elem64 < 0 || elem64 >= array.Length)
-                        throw new CodeEE("ソートキーが配列外を参照しています");
-                    if (array[(int)elem64] != null)
+						throw new CodeEE(trerror.OoRSortKey.Text);
+					if (array[(int)elem64] != null)
                         temp_SortKey = array[(int)elem64];
                     else
                         temp_SortKey = "";
@@ -743,7 +744,7 @@ namespace MinorShift.Emuera.GameData.Variable
                     int elem1 = (int)(elem64 >> 32);
 					int elem2 = (int)(elem64 & 0x7FFFFFFF);
 					if (elem1 < 0 || elem1 >= array.GetLength(0) || elem2 < 0 || elem2 >= array.GetLength(1))
-						throw new CodeEE("ソートキーが配列外を参照しています");
+						throw new CodeEE(trerror.OoRSortKey.Text);
 					temp_SortKey = array[elem1, elem2];
 				}
 				else if (sortkey.IsArray1D)
@@ -752,7 +753,7 @@ namespace MinorShift.Emuera.GameData.Variable
                         ? (Int64[])UserDefCVarDataList[token.ArrayIndex]
                         : dataIntegerArray[sortkey.CodeInt];
                     if (elem64 < 0 || elem64 >= array.Length)
-						throw new CodeEE("ソートキーが配列外を参照しています");
+						throw new CodeEE(trerror.OoRSortKey.Text);
 					temp_SortKey = array[(int)elem64];
 				}
 				else

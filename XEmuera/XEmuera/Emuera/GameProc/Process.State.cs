@@ -5,6 +5,8 @@ using MinorShift.Emuera.GameData.Expression;
 using MinorShift.Emuera.GameData.Function;
 using MinorShift.Emuera.GameView;
 using MinorShift.Emuera.GameData.Variable;
+using trerror = EvilMask.Emuera.Lang.Error;
+using trsl = EvilMask.Emuera.Lang.SystemLine;
 
 namespace MinorShift.Emuera.GameProc
 {
@@ -198,7 +200,7 @@ namespace MinorShift.Emuera.GameProc
 				case "TITLE":
 					SetBegin(BeginType.TITLE, force); return;
 			}
-			throw new CodeEE("BEGINのキーワード\"" + keyword + "\"は未定義です");
+			throw new CodeEE(string.Format(trerror.InvalidBeginArg.Text, keyword));
 		}
 
 		//public void SetBegin(BeginType type)
@@ -232,7 +234,7 @@ namespace MinorShift.Emuera.GameProc
 		err:
 			CalledFunction func = functionList[0];
 			string funcName = func.FunctionName;
-			throw new CodeEE("@" + funcName + "中で" + errmes + "命令を実行することはできません");
+			throw new CodeEE(string.Format(trerror.CanNotUseInstruction.Text, funcName, errmes));
 		}
 		#endregion
 
@@ -432,7 +434,7 @@ namespace MinorShift.Emuera.GameProc
 			else if (Program.DebugMode)
 			{
 				FunctionLabelLine label = called.CurrentLabel;
-				console.DebugAddTraceLog("CALL :@" + label.LabelName + ":" + label.Position.ToString() + "行目");
+				console.DebugAddTraceLog(string.Format(trsl.DebugTraceCall.Text, label.LabelName, label.Position.Filename, label.Position.ToString()));
 			}
             lineCount++;
             //ShfitNextLine();
@@ -447,16 +449,16 @@ namespace MinorShift.Emuera.GameProc
 				foreach (CalledFunction called in functionList)
 				{
 					if (called.IsEvent)
-						throw new CodeEE("EVENT関数の解決前にCALLEVENT命令が行われました");
+						throw new CodeEE(trerror.CalleventBeforeFinishEvent.Text);
 				}
 			}
 			if (Program.DebugMode)
 			{
 				FunctionLabelLine label = call.CurrentLabel;
 				if (call.IsJump)
-					console.DebugAddTraceLog("JUMP :@" + label.LabelName + ":" + label.Position.ToString() + "行目");
+					console.DebugAddTraceLog(string.Format(trsl.DebugTraceJump.Text, label.LabelName, label.Position.Filename, label.Position.ToString()));
 				else
-					console.DebugAddTraceLog("CALL :@" + label.LabelName + ":" + label.Position.ToString() + "行目");
+					console.DebugAddTraceLog(string.Format(trsl.DebugTraceCall.Text, label.LabelName, label.Position.Filename, label.Position.ToString()));
 			}
             if (srcArgs != null)
             {

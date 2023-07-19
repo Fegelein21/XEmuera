@@ -219,7 +219,7 @@ namespace MinorShift.Emuera
 		private bool IsInitializing(bool showMessage = false)
 		{
 			// Process is null mostly because of closing
-			if (GlobalStatic.Process != null && GlobalStatic.Process.inInitializeing)
+			if (GlobalStatic.Process == null || GlobalStatic.Process.inInitializeing)
 			{
 				if (showMessage)
 					this.DisplaySnackBarAsync(StringsText.GameIsProcessing, null, null);
@@ -230,10 +230,6 @@ namespace MinorShift.Emuera
 
 		public void Close()
 		{
-			if (IsInitializing(false))
-            {
-				return;
-            }
 			IsWindowClosing = true;
 			MainThread.BeginInvokeOnMainThread(() =>
 			{
@@ -285,12 +281,6 @@ namespace MinorShift.Emuera
 				//case SKTouchAction.Entered:
 				//	break;
 				case SKTouchAction.Pressed:
-
-					// when rebooting, clicking may cause unexpected closing
-					if (IsInitializing(false) || GlobalStatic.Process == null)
-                    {
-						return;
-                    }
 
 					IsMouseMoveAction = false;
 					IsDragScrollBar = true;

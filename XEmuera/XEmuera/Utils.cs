@@ -63,10 +63,6 @@ namespace XEmuera
 		{
 			Init = false;
 
-			VersionUpdate.Check();
-
-			LanguageModel.Load();
-
 			PlatformService = DependencyService.Get<IPlatformService>();
 
 			if (!RequestExternalPermissions())
@@ -77,6 +73,8 @@ namespace XEmuera
 			}
 
 			GameFolderModel.Load();
+
+			LanguageModel.Load();
 
 			FontModel.Load();
 

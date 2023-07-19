@@ -4,6 +4,7 @@ using MinorShift.Emuera.Sub;
 using System;
 using System.Text;
 using XEmuera.Forms;
+using trmk = EvilMask.Emuera.Lang.KeyMacro;
 namespace MinorShift.Emuera
 {
 	internal static class KeyMacro
@@ -25,17 +26,22 @@ namespace MinorShift.Emuera
 		static bool isMacroChanged = false;
 		static KeyMacro()
 		{
+			ResetNames();
+		}
+
+		public static void ResetNames()
+		{
 			for (int g = 0; g < MaxGroup; g++)
 			{
-				groupName[g] = "マクログループ" + g.ToString() + "に設定";
+				groupName[g] = string.Format(trmk.SetMacroGroup.Text, g.ToString());
 				for (int f = 0; f < MaxFkey; f++)
 				{
 					int i = f + g * MaxFkey;
 					macro[i] = "";
 					if (g == 0)
-						macroName[i] = "マクロキーF" + (f + 1).ToString() + ":";
+						macroName[i] = string.Format(trmk.MacroKeyF.Text, (f + 1).ToString());
 					else
-						macroName[i] = "G" + g.ToString() + ":マクロキーF" + (f + 1).ToString() + ":";
+						macroName[i] = string.Format(trmk.GMacroKeyF.Text, g.ToString(), (f + 1).ToString());
 
 				}
 			}

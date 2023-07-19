@@ -1,4 +1,5 @@
-﻿using MinorShift.Emuera.Sub;
+﻿﻿using MinorShift.Emuera.Sub;
+﻿using EvilMask.Emuera;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using XEmuera;
+using trerror = EvilMask.Emuera.Lang.Error;
 
 namespace MinorShift.Emuera.Content
 {
@@ -120,7 +122,7 @@ namespace MinorShift.Emuera.Content
 							}
 							else
 							{
-								ParserMediator.Warn("同名のリソースがすでに作成されています:" + item.Name, sp, 0);
+								ParserMediator.Warn(string.Format(trerror.SpriteNameAlreadyUsed.Text, item.Name), sp, 0);
 								item.Dispose();
 							}
 						}
@@ -153,31 +155,6 @@ namespace MinorShift.Emuera.Content
 				graph.GDispose();
 			gList.Clear();
 		}
-		#region EM_私家版_ファイル占用解除
-		// filepathの安全性(ゲームフォルダ以外のフォルダか)を確認しない
-		//static public SKBitmap LoadImage(string filepath)
-		//{
-		//	SKBitmap bmp = null;
-		//	FileStream fs = null;
-		//	if (!File.Exists(filepath)) return null;
-
-		//	try
-		//	{
-		//		fs = new FileStream(filepath, FileMode.Open);
-		//		var factory = new ImageProcessor.ImageFactory();
-		//		factory.Load(fs);
-		//		bmp = (SKBitmap)factory.Image;
-		//	}
-		//	catch { }
-		//	finally
-		//	{
-		//		fs?.Close();
-		//		fs?.Dispose();
-		//	}
-		//	return bmp;
-
-		//}
-		#endregion
 		/// <summary>
 		/// resourcesフォルダ中のcsvの1行を読んで新しいリソースを作る(or既存のアニメーションスプライトに1フレーム追加する)
 		/// </summary>
@@ -200,7 +177,7 @@ namespace MinorShift.Emuera.Content
 			{
 				if (tokens.Length < 4)
 				{
-					ParserMediator.Warn("アニメーションスプライトのサイズが宣言されていません", sp, 1);
+					ParserMediator.Warn(trerror.NotDeclaredAnimationSpriteSize.Text, sp, 1);
 					return null;
 				}
 				//w,h
@@ -210,7 +187,7 @@ namespace MinorShift.Emuera.Content
 					sccs &= int.TryParse(tokens[i + 2], out sizeValue[i]);
 				if (!sccs || sizeValue[0] <= 0 || sizeValue[1] <= 0 || sizeValue[0] > AbstractImage.MAX_IMAGESIZE || sizeValue[1] > AbstractImage.MAX_IMAGESIZE)
 				{
-					ParserMediator.Warn("アニメーションスプライトのサイズの指定が適切ではありません", sp, 1);
+					ParserMediator.Warn(trerror.InvalidAnimationSpriteSize.Text, sp, 1);
 					return null;
 				}
 				SpriteAnime anime = new SpriteAnime(name, new Size(sizeValue[0],sizeValue[1]));
@@ -221,7 +198,7 @@ namespace MinorShift.Emuera.Content
 
 			if(arg2.IndexOf('.') < 0)
 			{
-				ParserMediator.Warn("第二引数に拡張子がありません:" + arg2, sp, 1);
+				ParserMediator.Warn(string.Format(trerror.MissingSecondArgumentExtension.Text, arg2), sp, 1);
 				return null;
 			}
 			string parentName = dir + arg2;
@@ -230,30 +207,37 @@ namespace MinorShift.Emuera.Content
 			//親画像のロードConstImage
 			if (!FileUtils.Exists(ref parentName))
 			{
-				//ParserMediator.Warn("指定された画像ファイルが見つかりませんでした:" + arg2, sp, 1);
-				ParserMediator.Warn("指定された画像ファイルが見つかりませんでした:" + parentName, sp, 1);
-				return null;
+				string filepath = parentName;
+				if (!FileUtils.Exists(ref filepath))
+				{
+					ParserMediator.Warn(string.Format(trerror.NotExistImageFile.Text, arg2), sp, 1);
+					return null;
+				}
+				// #region EM_私家版_webp
+				// // Bitmap bmp = new Bitmap(filepath);
+				// var bmp = Utils.LoadImage(filepath);
+				// #endregion
 			}
 			if (!resourceDic.TryGetValue(parentName, out var aContentFile))
 			{
 				SKBitmap bmp = SKBitmap.Decode(parentName);
 				if (bmp == null)
 				{
-					ParserMediator.Warn("指定されたファイルの読み込みに失敗しました:" + arg2, sp, 1);
+					ParserMediator.Warn(string.Format(trerror.FailedLoadFile.Text, arg2), sp, 1);
 					return null;
 				}
 				if (bmp.Width > AbstractImage.MAX_IMAGESIZE || bmp.Height > AbstractImage.MAX_IMAGESIZE)
 				{
 					//1824-2 すでに8192以上の幅を持つ画像を利用したバリアントが存在してしまっていたため、警告しつつ許容するように変更
 					//	bmp.Dispose();
-					ParserMediator.Warn("指定された画像ファイルの大きさが大きすぎます(幅及び高さを"+ AbstractImage.MAX_IMAGESIZE.ToString()+ "以下にすることを強く推奨します):" + arg2, sp, 1);
+					ParserMediator.Warn(string.Format(trerror.TooLargeImageFile.Text, AbstractImage.MAX_IMAGESIZE.ToString(), arg2), sp, 1);
 					//return null;
 				}
 				ConstImage img = new ConstImage(parentName);
 				img.CreateFrom(bmp, Config.TextDrawingMode == TextDrawingMode.WINAPI);
 				if (!img.IsCreated)
 				{
-					ParserMediator.Warn("画像リソースの作成に失敗しました:" + arg2, sp, 1);
+					ParserMediator.Warn(string.Format(trerror.FailedCreateResource.Text, arg2), sp, 1);
 					return null;
 				}
 				resourceDic.Add(parentName, img);
@@ -261,7 +245,7 @@ namespace MinorShift.Emuera.Content
 			}
             if (!(aContentFile is ConstImage parentImage) || !parentImage.IsCreated)
             {
-                ParserMediator.Warn("作成に失敗したリソースを元にスプライトを作成しようとしました:" + arg2, sp, 1);
+                ParserMediator.Warn(string.Format(trerror.SpriteCreateFromFailedResource.Text, arg2), sp, 1);
                 return null;
             }
             Rectangle rect = new Rectangle(new Point(0, 0), DisplayUtils.ToSize(parentImage.Bitmap.Info.Size));
@@ -279,12 +263,12 @@ namespace MinorShift.Emuera.Content
 					rect = new Rectangle(rectValue[0], rectValue[1], rectValue[2], rectValue[3]);
 					if (rect.Width <= 0 || rect.Height <= 0)
 					{
-						ParserMediator.Warn("スプライトの高さ又は幅には正の値のみ指定できます:" + name, sp, 1);
+						ParserMediator.Warn(string.Format(trerror.SpriteSizeIsNegatibe.Text, name), sp, 1);
 						return null;
 					}
 					if (!rect.IntersectsWith(new Rectangle(0,0,parentImage.Bitmap.Width, parentImage.Bitmap.Height)))
 					{
-						ParserMediator.Warn("親画像の範囲外を参照しています:" + name, sp, 1);
+						ParserMediator.Warn(string.Format(trerror.OoRParentImage.Text, name), sp, 1);
 						return null;
 					}
 				}
@@ -300,7 +284,7 @@ namespace MinorShift.Emuera.Content
 						sccs = int.TryParse(tokens[8], out delay);
 						if (sccs && delay <= 0)
 						{
-							ParserMediator.Warn("フレーム表示時間には正の値のみ指定できます:" + name, sp, 1);
+							ParserMediator.Warn(string.Format(trerror.FrameTimeIsNegative.Text, name), sp, 1);
 							return null;
 						}
 					}
@@ -311,7 +295,7 @@ namespace MinorShift.Emuera.Content
 			{
 				if(!currentAnime.AddFrame(parentImage, rect, pos, delay))
 				{
-					ParserMediator.Warn("アニメーションスプライトのフレームの追加に失敗しました:" + arg2, sp, 1);
+					ParserMediator.Warn(string.Format(trerror.FailedAddSpriteFrame.Text, arg2), sp, 1);
 					return null;
 				}
 				return null;

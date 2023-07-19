@@ -10,10 +10,18 @@ using XEmuera;
 
 namespace MinorShift.Emuera.GameView
 {
+	#region EM_私家版_HTMLパラメータ拡張
+	internal sealed class MixedNum
+	{
+		public int num = 0;
+		public bool isPx = false;
+	}
+	#endregion
 	class ConsoleImagePart : AConsoleDisplayPart
 	{
-
-		public ConsoleImagePart(string resName, string resNameb, int raw_height, int raw_width, int raw_ypos)
+		#region EM_私家版_HTMLパラメータ拡張
+		//public ConsoleImagePart(string resName, string resNameb, int raw_height, int raw_width, int raw_ypos)
+		public ConsoleImagePart(string resName, string resNameb, MixedNum raw_height, MixedNum raw_width, MixedNum raw_ypos)
 		{
 			top = 0;
 			bottom = Config.FontSize;
@@ -28,20 +36,26 @@ namespace MinorShift.Emuera.GameView
 				sb.Append("' srcb='");
 				sb.Append(ButtonResourceName);
 			}
-			if(raw_height != 0)
-			{
+			//if(raw_height != 0)
+			if (raw_height != null && raw_height.num != 0)
+				{
 				sb.Append("' height='");
-				sb.Append(raw_height.ToString());
+				sb.Append(raw_height.num.ToString());
+				if (raw_height.isPx) sb.Append("px");
 			}
-			if(raw_width != 0)
-			{
+			//if(raw_width != 0)
+			if(raw_width != null && raw_width.num != 0)
+				{
 				sb.Append("' width='");
-				sb.Append(raw_width.ToString());
+				sb.Append(raw_width.num.ToString());
+				if (raw_width.isPx) sb.Append("px");
 			}
-			if(raw_ypos != 0)
-			{
+			//if(raw_ypos != 0)
+			if(raw_ypos != null && raw_ypos.num != 0)
+				{
 				sb.Append("' ypos='");
-				sb.Append(raw_ypos.ToString());
+				sb.Append(raw_ypos.num.ToString());
+				if (raw_ypos.isPx) sb.Append("px");
 			}
 			sb.Append("'>");
 			AltText = sb.ToString();
@@ -54,23 +68,36 @@ namespace MinorShift.Emuera.GameView
 				return;
 			}
 			int height;
-			if (raw_height == 0)//HTMLで高さが指定されていない又は0が指定された場合、フォントサイズをそのまま高さ(px単位)として使用する。
+			//if (raw_height == 0)//HTMLで高さが指定されていない又は0が指定された場合、フォントサイズをそのまま高さ(px単位)として使用する。
+			if (raw_height == null || raw_height.num == 0)//HTMLで高さが指定されていない又は0が指定された場合、フォントサイズをそのまま高さ(px単位)として使用する。
 				height = Config.FontSize;
-			else//HTMLで高さが指定された場合、フォントサイズの100分率と解釈する。
-				height = Config.FontSize * raw_height / 100;
+			// else//HTMLで高さが指定された場合、フォントサイズの100分率と解釈する。
+			//	height = Config.FontSize * raw_height / 100;
+			else if (raw_height.isPx)//HTMLで高さがpx指定された場合、そのまま使う。
+				height = raw_height.num;
+			else // フォントサイズの100分率と解釈する。
+				height = Config.FontSize * raw_height.num / 100;
 			//幅が指定されていない又は0が指定された場合、元画像の縦横比を維持するように幅(px単位)を設定する。1未満は端数としてXsubpixelに記録。
 			//負の値が指定される可能性があるが、最終的なWidthは正の値になるようにあとで調整する。
-			if (raw_width == 0)
-			{
+			//if (raw_width == 0)
+			if (raw_width == null || raw_width.num == 0)
+				{
 				Width = cImage.DestBaseSize.Width * height / cImage.DestBaseSize.Height;
 				XsubPixel = ((float)cImage.DestBaseSize.Width * height) / cImage.DestBaseSize.Height - Width;
 			}
+			else if (raw_width.isPx)
+			{
+				Width = raw_width.num;
+			}
 			else
 			{
-				Width = Config.FontSize * raw_width / 100;
-				XsubPixel = ((float)Config.FontSize * raw_width / 100f) - Width;
+				// Width = Config.FontSize * raw_width / 100;
+				// XsubPixel = ((float)Config.FontSize * raw_width / 100f) - Width;
+				Width = Config.FontSize * raw_width.num / 100;
+				XsubPixel = ((float)Config.FontSize * raw_width.num / 100f) - Width;
 			}
-			top = raw_ypos * Config.FontSize / 100;
+			//top = raw_ypos * Config.FontSize / 100;
+			top = raw_ypos != null ? (raw_ypos.isPx ? raw_ypos.num : raw_ypos.num * Config.FontSize / 100) : 0;
 			destRect = new Rectangle(0, top, Width, height);
 			if (destRect.Width < 0)
 			{
@@ -94,7 +121,7 @@ namespace MinorShift.Emuera.GameView
 				//	cImageB = null;
 			}
 		}
-
+		#endregion
 		private readonly ASprite cImage;
 		private readonly ASprite cImageB;
 		private readonly int top;

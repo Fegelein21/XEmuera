@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using trerror = EvilMask.Emuera.Lang.Error;
 
 namespace MinorShift.Emuera.Sub
 {
@@ -75,11 +76,11 @@ namespace MinorShift.Emuera.Sub
     internal sealed class NotImplCodeEE : CodeEE
 	{
 		public NotImplCodeEE(ScriptPosition position)
-			: base("この機能は現バージョンでは使えません", position)
+			: base(trerror.CanNotUseFuncCurrentVer.Text, position)
 		{
 		}
 		public NotImplCodeEE()
-			: base("この機能は現バージョンでは使えません")
+			: base(trerror.CanNotUseFuncCurrentVer.Text)
 		{
 		}
 	}

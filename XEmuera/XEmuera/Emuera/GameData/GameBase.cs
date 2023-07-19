@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using MinorShift.Emuera.Sub;
 using XEmuera;
+using trerror = EvilMask.Emuera.Lang.Error;
 
 namespace MinorShift.Emuera.GameData
 {
@@ -117,7 +118,7 @@ namespace MinorShift.Emuera.GameData
 							if (tryatoi(tokens[1], out ScriptUniqueCode))
 							{
 								if (ScriptUniqueCode == 0L)
-									ParserMediator.Warn("コード:0のセーブデータはいかなるコードのスクリプトからも読めるデータとして扱われます", pos, 0);
+									ParserMediator.Warn(trerror.SaveCodeIs0.Text, pos, 0);
 							}							
 							break;
 						case "バージョン":
@@ -152,14 +153,14 @@ namespace MinorShift.Emuera.GameData
                             Compatible_EmueraVer = tokens[1];
                             if (!Regex.IsMatch(Compatible_EmueraVer, @"^\d+\.\d+\.\d+\.\d+$"))
                             {
-                                ParserMediator.Warn("バージョン指定を読み取れなかったので処理を省略します", pos, 0);
+                                ParserMediator.Warn(trerror.CanNotReadVersion.Text, pos, 0);
                                 break;
                             }
                             Version curerntVersion = new Version(GlobalStatic.MainWindow.InternalEmueraVer);
                             Version targetVersoin = new Version(Compatible_EmueraVer);
                             if (curerntVersion < targetVersoin)
                             {
-                                ParserMediator.Warn("このバリアント動作させるにはVer. " + GlobalStatic.MainWindow.EmueraVerText + "以降のバージョンのEmueraが必要です", pos, 2);
+                                ParserMediator.Warn(string.Format(trerror.RequireLaterEmuera.Text, GlobalStatic.MainWindow.EmueraVerText), pos, 2);
                                 return false;
                             }
                             break;
@@ -170,13 +171,13 @@ namespace MinorShift.Emuera.GameData
 						case "バージョン名":
 							VersionName = tokens[1];
 							break;
-							#endregion
+						#endregion
 					}
 				}
 			}
 			catch
 			{
-                ParserMediator.Warn("GAMEBASE.CSVの読み込み中にエラーが発生したため、読みこみを中断します", pos, 1);
+                ParserMediator.Warn(trerror.SomethingErrorInGamebase.Text, pos, 1);
 				return true;
 			}
 			finally

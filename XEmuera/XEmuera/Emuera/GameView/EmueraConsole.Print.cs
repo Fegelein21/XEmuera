@@ -10,7 +10,9 @@ using System.IO;
 using System.Text;
 using XEmuera.Forms;
 using XEmuera;
-using System.Threading;
+using trmb = EvilMask.Emuera.Lang.MessageBox;
+using trerror = EvilMask.Emuera.Lang.Error;
+using trsl = EvilMask.Emuera.Lang.SystemLine;
 
 namespace MinorShift.Emuera.GameView
 {
@@ -140,7 +142,7 @@ namespace MinorShift.Emuera.GameView
 			}
 			if (errorStr != null)
 			{
-				MessageBox.Show("Emueraの表示処理中に不適正なフォントを検出しました\n描画処理を続行できないため強制終了します", "フォント不適正");
+				MessageBox.Show(trmb.IllegalFontError.Text, trmb.IllegalFontError.Text);
 				this.Quit();
 				return;
 			}
@@ -248,16 +250,16 @@ namespace MinorShift.Emuera.GameView
 			{
 				if (position.LineNo >= 0)
 				{
-					PrintErrorButton(string.Format("警告Lv{0}:{1}:{2}行目:{3}", level, position.Filename, position.LineNo, str), position);
+					PrintErrorButton(string.Format(trerror.Warning1.Text, level, position.Filename, position.LineNo, str), position);
 					GlobalStatic.Process.printRawLine(position);
 				}
 				else
-					PrintErrorButton(string.Format("警告Lv{0}:{1}:{2}", level, position.Filename, str), position);
+					PrintErrorButton(string.Format(trerror.Warning2.Text, level, position.Filename, str), position);
 
 			}
 			else
 			{
-				PrintError(string.Format("警告Lv{0}:{1}", level, str));
+				PrintError(string.Format(trerror.Warning3.Text, level, str));
 			}
 			force_temporary = b;
 		}
@@ -349,13 +351,20 @@ namespace MinorShift.Emuera.GameView
 			return;
 		}
 
-		
-		public void PrintImg(string str)
-		{
-			printBuffer.Append(new ConsoleImagePart(str, null, 0, 0, 0));
-		}
 
-		public void PrintShape(string type, int[] param)
+		#region EM_私家版_HTMLパラメータ拡張
+		// public void PrintImg(string str)
+		public void PrintImg(string name, string nameb, MixedNum height, MixedNum width, MixedNum ypos)
+		{
+			//printBuffer.Append(new ConsoleImagePart(str, null, 0, 0, 0));
+			printBuffer.Append(new ConsoleImagePart(name, nameb, height, width, ypos));
+		}
+		#endregion
+
+		#region EM_私家版_HTMLパラメータ拡張
+		//public void PrintShape(string type, int[] param)
+		public void PrintShape(string type, MixedNum[] param)
+		#endregion
 		{
 			ConsoleShapePart part = ConsoleShapePart.CreateShape(type, param, userStyle.Color, userStyle.ButtonColor, false);
 			printBuffer.Append(part);
@@ -548,7 +557,7 @@ namespace MinorShift.Emuera.GameView
 		public void printCustomBar(string barStr)
 		{
 			if (string.IsNullOrEmpty(barStr))
-				throw new CodeEE("空文字列によるDRAWLINEが行われました");
+				throw new CodeEE(trerror.EmptyDrawline.Text);
 			StringStyle ss = userStyle;
 			userStyle.FontStyle = FontStyle.Regular;
 			Print(getStBar(barStr));
@@ -599,7 +608,7 @@ namespace MinorShift.Emuera.GameView
 			}
 			catch (Exception)
 			{
-				MessageBox.Show("ログの出力に失敗しました", "ログ出力失敗");
+				MessageBox.Show(trmb.FailedOutputLogError.Text, trmb.FailedOutputLog.Text);
 				return false;
 			}
 			finally
@@ -620,12 +629,12 @@ namespace MinorShift.Emuera.GameView
 				filename = Program.ExeDir + filename;
 			if (filename.IndexOf("../") >= 0)
 			{
-				MessageBox.Show("ログ出力先に親ディレクトリは指定できません", "ログ出力失敗");
+				MessageBox.Show(trmb.CanNotOutputToParentDirectory.Text, trmb.FailedOutputLog.Text);
 				return false;
 			}
 			if (!filename.StartsWith(Program.ExeDir, StringComparison.CurrentCultureIgnoreCase))
 			{
-				MessageBox.Show("ログファイルは実行ファイル以下のディレクトリにのみ保存できます", "ログ出力失敗");
+				MessageBox.Show(trmb.CanOnlyOutputToSubDirectory.Text, trmb.FailedOutputLog.Text);
 				return false;
 			}
 
@@ -636,7 +645,7 @@ namespace MinorShift.Emuera.GameView
 					var showFilename = filename;
 					if (Program.ExeDir != "")
 						showFilename = filename.Replace(Program.ExeDir, "");
-					PrintSystemLine("※※※ログファイルを" + showFilename + "に出力しました※※※");
+					PrintSystemLine(string.Format(trsl.LogFileHasBeenCreated.Text, showFilename));
 					RefreshStrings(true);
 				}
 				return true;
@@ -652,7 +661,7 @@ namespace MinorShift.Emuera.GameView
 
 			if (!filename.StartsWith(Program.ExeDir, StringComparison.CurrentCultureIgnoreCase))
             {
-                MessageBox.Show("ログファイルは実行ファイル以下のディレクトリにのみ保存できます", "ログ出力失敗");
+                MessageBox.Show(trmb.CanOnlyOutputToSubDirectory.Text, trmb.FailedOutputLog.Text);
                 return false;
             }
 
@@ -663,7 +672,7 @@ namespace MinorShift.Emuera.GameView
 					var showFilename = filename;
 					if (Program.ExeDir != "")
 						showFilename = filename.Replace(Program.ExeDir, "");
-					PrintSystemLine("※※※ログファイルを" + showFilename + "に出力しました※※※");
+					PrintSystemLine(string.Format(trsl.LogFileHasBeenCreated.Text, showFilename));
 					RefreshStrings(true);
 				}
 				return true;

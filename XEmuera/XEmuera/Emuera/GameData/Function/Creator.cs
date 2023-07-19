@@ -240,14 +240,21 @@ namespace MinorShift.Emuera.GameData.Function
                 ["XML_DOCUMENT"] = new XmlDocumentMethod(XmlDocumentMethod.Operation.Create),
                 ["XML_RELEASE"] = new XmlDocumentMethod(XmlDocumentMethod.Operation.Release),
                 ["XML_GET"] = new XmlGetMethod(),
+                ["XML_GET_BYNAME"] = new XmlGetMethod(true),
                 ["XML_SET"] = new XmlSetMethod(),
+                ["XML_SET_BYNAME"] = new XmlSetMethod(true),
                 ["XML_EXIST"] = new XmlDocumentMethod(XmlDocumentMethod.Operation.Check),
                 ["XML_TOSTR"] = new XmlToStrMethod(),
                 ["XML_ADDNODE"] = new XmlAddNodeMethod(XmlAddNodeMethod.Operation.Node),
+                ["XML_ADDNODE_BYNAME"] = new XmlAddNodeMethod(XmlAddNodeMethod.Operation.Node, true),
                 ["XML_REMOVENODE"] = new XmlRemoveNodeMethod(XmlRemoveNodeMethod.Operation.Node),
+                ["XML_REMOVENODE_BYNAME"] = new XmlRemoveNodeMethod(XmlRemoveNodeMethod.Operation.Node, true),
                 ["XML_REPLACE"] = new XmlReplaceMethod(),
+                ["XML_REPLACE_BYNAME"] = new XmlReplaceMethod(true),
                 ["XML_ADDATTRIBUTE"] = new XmlAddNodeMethod(XmlAddNodeMethod.Operation.Attribute),
+                ["XML_ADDATTRIBUTE_BYNAME"] = new XmlAddNodeMethod(XmlAddNodeMethod.Operation.Attribute, true),
                 ["XML_REMOVEATTRIBUTE"] = new XmlRemoveNodeMethod(XmlRemoveNodeMethod.Operation.Attribute),
+                ["XML_REMOVEATTRIBUTE_BYNAME"] = new XmlRemoveNodeMethod(XmlRemoveNodeMethod.Operation.Attribute, true),
 
                 ["MAP_CREATE"] = new MapManagementMethod(MapManagementMethod.Operation.Create),
                 ["MAP_EXIST"] = new MapManagementMethod(MapManagementMethod.Operation.Check),
@@ -263,6 +270,30 @@ namespace MinorShift.Emuera.GameData.Function
 
                 ["MAP_TOXML"] = new MapGetStrMethod(MapGetStrMethod.Operation.ToXml),
                 ["MAP_FROMXML"] = new MapFromXmlMethod(),
+
+                ["DT_CREATE"] = new DataTableManagementMethod(DataTableManagementMethod.Operation.Create),
+                ["DT_EXIST"] = new DataTableManagementMethod(DataTableManagementMethod.Operation.Check),
+                ["DT_RELEASE"] = new DataTableManagementMethod(DataTableManagementMethod.Operation.Release),
+                ["DT_NOCASE"] = new DataTableManagementMethod(DataTableManagementMethod.Operation.Case),
+
+                ["DT_CLEAR"] = new DataTableManagementMethod(DataTableManagementMethod.Operation.Clear),
+
+                ["DT_COLUMN_ADD"] = new DataTableColumnManagementMethod(DataTableColumnManagementMethod.Operation.Create),
+                ["DT_COLUMN_EXIST"] = new DataTableColumnManagementMethod(DataTableColumnManagementMethod.Operation.Check),
+                ["DT_COLUMN_REMOVE"] = new DataTableColumnManagementMethod(DataTableColumnManagementMethod.Operation.Remove),
+                ["DT_COLUMN_LENGTH"] = new DataTableLengthMethod(DataTableLengthMethod.Operation.Column),
+
+                ["DT_ROW_ADD"] = new DataTableRowSetMethod(DataTableRowSetMethod.Operation.Add),
+                ["DT_ROW_SET"] = new DataTableRowSetMethod(DataTableRowSetMethod.Operation.Set),
+                ["DT_ROW_REMOVE"] = new DataTableRowRemoveMethod(),
+                ["DT_ROW_LENGTH"] = new DataTableLengthMethod(DataTableLengthMethod.Operation.Row),
+
+                ["DT_CELL_GET"] = new DataTableCellGetMethod(DataTableCellGetMethod.Operation.Get),
+                ["DT_CELL_ISNULL"] = new DataTableCellGetMethod(DataTableCellGetMethod.Operation.IsNull),
+                ["DT_CELL_GETS"] = new DataTableCellGetMethod(DataTableCellGetMethod.Operation.Gets),
+                ["DT_CELL_SET"] = new DataTableCellSetMethod(),
+
+                ["DT_SELECT"] = new DataTableSelectMethod(),
                 #endregion
 
                 #region EEで追加されたやつ
@@ -278,6 +309,9 @@ namespace MinorShift.Emuera.GameData.Function
                 //["GGETBRUSH"] = new GraphicsGetBrushMethod(),
                 ["GETMEMORYUSAGE"] = new GetUsingMemoryMethod(),
                 ["CLEARMEMORY"] = new ClearMemoryMethod(),
+                ["GETTEXTBOX"] = new GetTextBoxMethod(),
+                ["SETTEXTBOX"] = new ChangeTextBoxMethod(),
+                ["ERDNAME"] = new ErdNameMethod(),
                 #endregion
             };
 

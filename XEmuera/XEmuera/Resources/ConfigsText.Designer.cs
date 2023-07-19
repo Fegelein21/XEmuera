@@ -367,6 +367,15 @@ namespace XEmuera.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 使用英语输出配置文件.
+        /// </summary>
+        internal static string EnglishConfigOutput {
+            get {
+                return ResourceManager.GetString("EnglishConfigOutput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EXPLVの初期値.
         /// </summary>
         internal static string ExpLvDef {
@@ -1015,6 +1024,15 @@ namespace XEmuera.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to VARSIZE使用与ERD相同的维度指定方式.
+        /// </summary>
+        internal static string VarsizeDimConfig {
+            get {
+                return ResourceManager.GetString("VarsizeDimConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 显示eramaker兼容性相关警告.
         /// </summary>
         internal static string WarnBackCompatibility {
@@ -1083,6 +1101,15 @@ namespace XEmuera.Resources {
         internal static string WindowY {
             get {
                 return ResourceManager.GetString("WindowY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 将存档数据压缩保存.
+        /// </summary>
+        internal static string ZipSaveData {
+            get {
+                return ResourceManager.GetString("ZipSaveData", resourceCulture);
             }
         }
     }

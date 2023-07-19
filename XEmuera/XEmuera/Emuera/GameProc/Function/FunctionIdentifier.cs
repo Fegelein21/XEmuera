@@ -405,6 +405,7 @@ namespace MinorShift.Emuera.GameProc.Function
 			addFunction(FunctionCode.FORCE_QUIT, argb[FunctionArgType.VOID]);
 			addFunction(FunctionCode.FORCE_QUIT_AND_RESTART, argb[FunctionArgType.VOID]);
 			addFunction(FunctionCode.FORCE_BEGIN, new FORCE_BEGIN_Instruction());//強制BEGIN
+			addFunction(FunctionCode.INPUTANY, new INPUTANY_Instruction());
 			#endregion
 
 			Dictionary<string, FunctionMethod> methodList = FunctionMethodCreator.GetMethodList();

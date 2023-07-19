@@ -6,6 +6,7 @@ using MinorShift.Emuera.Sub;
 using System.Drawing;
 using MinorShift.Emuera.GameData.Expression;
 using XEmuera.Drawing;
+using trerror = EvilMask.Emuera.Lang.Error;
 
 namespace MinorShift.Emuera.GameView
 {
@@ -386,9 +387,9 @@ namespace MinorShift.Emuera.GameView
 					string txt = Unescape(st.Substring());
 					cssList.Add(new ConsoleStyledString(txt, state.GetSS()));
 					if (state.FlagPClosed)
-						throw new CodeEE("</p>の後にテキストがあります");
+						throw new CodeEE(trerror.TextAfterP.Text);
 					if (state.FlagNobrClosed)
-						throw new CodeEE("</nobr>の後にテキストがあります");
+						throw new CodeEE(trerror.TextAfterNobr.Text);
 					break;
 				}
 				else if (found > 0)
@@ -404,7 +405,7 @@ namespace MinorShift.Emuera.GameView
 					st.CurrentPosition += 4;
 					found = st.Find("-->");
 					if (found < 0)
-						throw new CodeEE("コメンdト終了タグ\"-->\"がみつかりません");
+						throw new CodeEE(trerror.NotFoundCloseTag.Text);
 					st.CurrentPosition += found + 3;
 					continue;
 				}
@@ -418,7 +419,7 @@ namespace MinorShift.Emuera.GameView
 					st.ShiftNext();
 					AConsoleDisplayPart part = tagAnalyze(state, st);
 					if (st.Current != '>')
-						throw new CodeEE("タグ終端'>'が見つかりません");
+						throw new CodeEE(trerror.NotFoundTerminateTag.Text);
 					if (part != null)
 						cssList.Add(part);
 					st.ShiftNext();
@@ -441,7 +442,7 @@ namespace MinorShift.Emuera.GameView
 			}
 			//</nobr></p>は省略許可
 			if (state.CurrentButtonTag != null || state.FontStyle != FontStyle.Regular || state.FonttagList.Count > 0)
-				throw new CodeEE("閉じられていないタグがあります");
+				throw new CodeEE(trerror.TagIsNotClosed.Text);
 			if (cssList.Count > 0)
 				buttonList.Add(cssToButton(cssList, state, console));
 
@@ -450,9 +451,9 @@ namespace MinorShift.Emuera.GameView
 				if (button != null && button.PointXisLocked)
 				{
 					if (!state.FlagNobr)
-						throw new CodeEE("<nobr>が設定されていない行ではpos属性は使用できません");
+						throw new CodeEE(trerror.CanNotUsePosWithoutNobr.Text);
 					if (state.Alignment != DisplayLineAlignment.LEFT)
-						throw new CodeEE("alignがleftでない行ではpos属性は使用できません");
+						throw new CodeEE(trerror.CanOnlyUsePosAssignmentLR.Text);
 					break;
 				}
 			}
@@ -519,8 +520,8 @@ namespace MinorShift.Emuera.GameView
 				if (found <= index + 1)
 				{
 					if (found < 0)
-						throw new CodeEE("'&'に対応する';'がみつかりません");
-					throw new CodeEE("'&'と';'が連続しています");
+						throw new CodeEE(trerror.MissingSemicolon.Text);
+					throw new CodeEE(trerror.ContinuouslyAndSemicolon.Text);
 				}
 				string escWordRow = str.Substring(index + 1, found - index - 1);
 				index = found + 1;
@@ -538,7 +539,7 @@ namespace MinorShift.Emuera.GameView
 						{
 							int iBbase = 10;
 							if (escWord[0] != '#')
-								throw new CodeEE("\"&" + escWordRow + ";\"は適切な文字参照ではありません");
+								throw new CodeEE(string.Format(trerror.InvalidCharacterReference.Text, escWordRow));
 							if (escWord.Length > 1 && escWord[1] == 'x')
 							{
 								iBbase = 16;
@@ -553,11 +554,11 @@ namespace MinorShift.Emuera.GameView
 							catch
 							{
 
-								throw new CodeEE("\"&" + escWordRow + ";\"は適切な文字参照ではありません");
+								throw new CodeEE(string.Format(trerror.InvalidCharacterReference.Text, escWordRow));
 							}
 
 							if (unicode < 0 || unicode > 0xFFFF)
-								throw new CodeEE("\"&" + escWordRow + ";\"はUnicodeの範囲外です(サロゲートペアは使えません)");
+								throw new CodeEE(string.Format(trerror.OoRUnicodeHtml.Text, escWordRow));
 							b.Append((char)unicode);
 							break;
 						}
@@ -702,46 +703,46 @@ namespace MinorShift.Emuera.GameView
 					case "u": endStyle = FontStyle.Underline; goto case "s";
 					case "s":
 						if ((state.FontStyle & endStyle) == FontStyle.Regular)
-							throw new CodeEE("</" + tag + ">の前に<" + tag + ">がありません");
+							throw new CodeEE(string.Format(trerror.UnexpectedCloseTag.Text, tag));
 						state.FontStyle ^= endStyle;
 						return null;
 					case "p":
 						if ((!state.FlagP) || (state.FlagPClosed))
-							throw new CodeEE("</p>の前に<p>がありません");
+							throw new CodeEE(string.Format(trerror.UnexpectedCloseTag.Text, "p"));
 						state.FlagPClosed = true;
 						return null;
 					case "nobr":
 						if ((!state.FlagNobr) || (state.FlagNobrClosed))
-							throw new CodeEE("</nobr>の前に<nobr>がありません");
+							throw new CodeEE(string.Format(trerror.UnexpectedCloseTag.Text, "nobr"));
 						state.FlagNobrClosed = true;
 						return null;
 					case "font":
 						if (state.FonttagList.Count == 0)
-							throw new CodeEE("</font>の前に<font>がありません");
+							throw new CodeEE(string.Format(trerror.UnexpectedCloseTag.Text, "font"));
 						state.FonttagList.RemoveAt(state.FonttagList.Count - 1);
 						return null;
 					case "button":
 						if (state.CurrentButtonTag == null || !state.CurrentButtonTag.IsButtonTag)
-							throw new CodeEE("</button>の前に<button>がありません");
+							throw new CodeEE(string.Format(trerror.UnexpectedCloseTag.Text, "button"));
 						state.CurrentButtonTag = null;
 						state.FlagButton = true;
 						return null;
 					case "nonbutton":
 						if (state.CurrentButtonTag == null || state.CurrentButtonTag.IsButtonTag)
-							throw new CodeEE("</nonbutton>の前に<nonbutton>がありません");
+							throw new CodeEE(string.Format(trerror.UnexpectedCloseTag.Text, "nonbutton"));
 						state.CurrentButtonTag = null;
 						state.FlagButton = true;
 						return null;
 					#region EM_私家版_clearbutton
 					case "clearbutton":
 						if (!state.FlagClearButton)
-							throw new CodeEE("</clearbutton>の前に<clearbutton>がありません");
+							throw new CodeEE(string.Format(trerror.UnexpectedCloseTag.Text, "clearbutton"));
 						state.FlagClearButton = false;
 						state.FlagClearButtonTooltip = false;
 						return null;
 					#endregion
 					default:
-						throw new CodeEE("終了タグ</"+tag+">は解釈できません");
+						throw new CodeEE(string.Format(trerror.CanNotInterpretCloseTag.Text, tag));
 				}
 				//goto error;
 			}
@@ -772,33 +773,33 @@ namespace MinorShift.Emuera.GameView
 				case "u": newStyle = FontStyle.Underline; goto case "s";
 				case "s":
 					if (wc != null)
-						throw new CodeEE("<" + tag + ">タグにに属性が設定されています");
+						throw new CodeEE(string.Format(trerror.AttributeSetToTag.Text, tag));
 					if ((state.FontStyle & newStyle) != FontStyle.Regular)
-						throw new CodeEE("<" + tag + ">が二重に使われています");
+						throw new CodeEE(string.Format(trerror.DuplicateTag.Text, tag));
 					state.FontStyle |= newStyle;
 						return null;
 				case "br":
 					if (wc != null)
-						throw new CodeEE("<" + tag + ">タグにに属性が設定されています");
+						throw new CodeEE(string.Format(trerror.AttributeSetToTag.Text, tag));
 					state.FlagBr = true;
 						return null;
 				case "nobr":
 					if (wc != null)
-						throw new CodeEE("<" + tag + ">タグに属性が設定されています");
+						throw new CodeEE(string.Format(trerror.AttributeSetToTag.Text, tag));
 					if (!state.LineHead)
-						throw new CodeEE("<nobr>が行頭以外で使われています");
+						throw new CodeEE(string.Format(trerror.TagIsNotBegin.Text, "nobr"));
 					if (state.FlagNobr)
-						throw new CodeEE("<nobr>が2度以上使われています");
+						throw new CodeEE(string.Format(trerror.DuplicateTag.Text, "nobr"));
 					state.FlagNobr = true;
 						return null;
 				case "p":
 					{
 						if (wc == null)
-							throw new CodeEE("<" + tag + ">タグに属性が設定されていません");
+							throw new CodeEE(string.Format(trerror.TagHasNotAttribute.Text, tag));
 						if (!state.LineHead)
-							throw new CodeEE("<p>が行頭以外で使われています");
+							throw new CodeEE(string.Format(trerror.TagIsNotBegin.Text, "p"));
 						if (state.FlagNobr)
-							throw new CodeEE("<p>が2度以上使われています");
+							throw new CodeEE(string.Format(trerror.DuplicateTag.Text, "p"));
 						word = wc.Current as IdentifierWord;
 						wc.ShiftNext();
 						OperatorWord op = wc.Current as OperatorWord;
@@ -808,7 +809,7 @@ namespace MinorShift.Emuera.GameView
 						if (!wc.EOL || word == null || op == null || op.Code != OperatorCode.Assignment || attr == null)
 							goto error;
 						if (!word.Code.Equals("align", StringComparison.OrdinalIgnoreCase))
-							throw new CodeEE("<p>タグの属性名" + word.Code + "は解釈できません");
+							throw new CodeEE(string.Format(trerror.CanNotInterpretPAttribute.Text, word.Code));
 						string attrValue = Unescape(attr.Str);
 						switch (attrValue.ToLower())
 						{
@@ -822,7 +823,7 @@ namespace MinorShift.Emuera.GameView
 								state.Alignment = DisplayLineAlignment.RIGHT;
 								break;
 							default:
-								throw new CodeEE("属性値" + attr.Str + "は解釈できません");
+								throw new CodeEE(string.Format(trerror.CanNotInterpretAttribute.Text, attr.Str));
 						}
 						state.FlagP = true;
 						return null;
@@ -830,13 +831,17 @@ namespace MinorShift.Emuera.GameView
 				case "img":
 					{
 						if (wc == null)
-							throw new CodeEE("<" + tag + ">タグに属性が設定されていません");
+							throw new CodeEE(string.Format(trerror.TagHasNotAttribute.Text, tag));
 						string attrValue;
 						string src = null;
 						string srcb = null;
-						int height = 0;
-						int width = 0;
-						int ypos = 0;
+						#region EM_私家版_HTMLパラメータ拡張
+						//int height = 0;
+						//int width = 0;
+						//int ypos = 0;
+						MixedNum height = new MixedNum();
+						MixedNum width = new MixedNum();
+						MixedNum ypos = new MixedNum();
 						while (wc != null && !wc.EOL)
 						{
 							word = wc.Current as IdentifierWord;
@@ -851,49 +856,76 @@ namespace MinorShift.Emuera.GameView
 							if (word.Code.Equals("src", StringComparison.OrdinalIgnoreCase))
 							{
 								if (src != null)
-									throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
+									throw new CodeEE(string.Format(trerror.DuplicateAttribute.Text, tag, word.Code));
 								src = attrValue;
 							}
 							else if (word.Code.Equals("srcb", StringComparison.OrdinalIgnoreCase))
 							{
 								if (srcb != null)
-									throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
+									throw new CodeEE(string.Format(trerror.DuplicateAttribute.Text, tag, word.Code));
 								srcb = attrValue;
 							}
 							else if (word.Code.Equals("height", StringComparison.OrdinalIgnoreCase))
 							{
-								if (height != 0)
-									throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
-								if (!int.TryParse(attrValue, out height))
-									throw new CodeEE("<" + tag + ">タグのheight属性の属性値が数値として解釈できません");
+								//if (height != 0)
+								if (height.num != 0)
+									throw new CodeEE(string.Format(trerror.DuplicateAttribute.Text, tag, word.Code));
+								if (attrValue.EndsWith("px", StringComparison.OrdinalIgnoreCase))
+								{
+									if (!int.TryParse(attrValue.Substring(0, attrValue.Length - 2), out height.num))
+										throw new CodeEE(string.Format(trerror.AttributeCanNotInterpretNum.Text, tag, "height"));
+									height.isPx = true;
+								}
+								//if (!int.TryParse(attrValue, out height))
+								else if (!int.TryParse(attrValue, out height.num))
+									throw new CodeEE(string.Format(trerror.AttributeCanNotInterpretNum.Text, tag, "height"));
 							}
 							else if (word.Code.Equals("width", StringComparison.OrdinalIgnoreCase))
 							{
-								if (width != 0)
-									throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
-								if (!int.TryParse(attrValue, out width))
-									throw new CodeEE("<" + tag + ">タグのwidth属性の属性値が数値として解釈できません");
+								//if (width != 0)
+								if (width.num != 0)
+									throw new CodeEE(string.Format(trerror.DuplicateAttribute.Text, tag, word.Code));
+								if (attrValue.EndsWith("px", StringComparison.OrdinalIgnoreCase))
+								{
+									if (!int.TryParse(attrValue.Substring(0, attrValue.Length - 2), out width.num))
+										throw new CodeEE(string.Format(trerror.AttributeCanNotInterpretNum.Text, tag, "width"));
+									width.isPx = true;
+								}
+								//if (!int.TryParse(attrValue, out width))
+								else if (!int.TryParse(attrValue, out width.num))
+									throw new CodeEE(string.Format(trerror.AttributeCanNotInterpretNum.Text, tag, "width"));
 							}
 							else if (word.Code.Equals("ypos", StringComparison.OrdinalIgnoreCase))
 							{
-								if (ypos != 0)
-									throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
-								if (!int.TryParse(attrValue, out ypos))
-									throw new CodeEE("<" + tag + ">タグのypos属性の属性値が数値として解釈できません");
+								//if (ypos != 0)
+								if (ypos.num != 0)
+									throw new CodeEE(string.Format(trerror.DuplicateAttribute.Text, tag, word.Code));
+								if (attrValue.EndsWith("px", StringComparison.OrdinalIgnoreCase))
+								{
+									if (!int.TryParse(attrValue.Substring(0, attrValue.Length - 2), out ypos.num))
+										throw new CodeEE(string.Format(trerror.AttributeCanNotInterpretNum.Text, tag, "ypos"));
+									ypos.isPx = true;
+								}
+								//if (!int.TryParse(attrValue, out ypos))
+								else if (!int.TryParse(attrValue, out ypos.num))
+									throw new CodeEE(string.Format(trerror.AttributeCanNotInterpretNum.Text, tag, "ypos"));
 							}
 							else
-								throw new CodeEE("<" + tag + ">タグの属性名" + word.Code + "は解釈できません");
+								throw new CodeEE(string.Format(trerror.CanNotInterpretAttributeName.Text, tag, word.Code));
 						}
+						#endregion
 						if (src == null)
-							throw new CodeEE("<" + tag + ">タグにsrc属性が設定されていません");
+							throw new CodeEE(string.Format(trerror.NotSetAttribute.Text, tag, "src"));
 						return new ConsoleImagePart(src, srcb, height, width, ypos);
 					}
 
 				case "shape":
 					{
 						if (wc == null)
-							throw new CodeEE("<" + tag + ">タグに属性が設定されていません");
-						int[] param = null;
+							throw new CodeEE(string.Format(trerror.TagHasNotAttribute.Text, tag));
+						#region EM_私家版_HTMLパラメータ拡張
+						// int[] param = null;
+						MixedNum[] param = null;
 						string type = null;
 						int color = -1;
 						int bcolor = -1;
@@ -912,40 +944,51 @@ namespace MinorShift.Emuera.GameView
 							{
 								case "color":
 									if (color >= 0)
-										throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
+										throw new CodeEE(string.Format(trerror.DuplicateAttribute.Text, tag, word.Code));
 									color = stringToColorInt32(attrValue);
 									break;
 								case "bcolor":
 									if (bcolor >= 0)
-										throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
+										throw new CodeEE(string.Format(trerror.DuplicateAttribute.Text, tag, word.Code));
 									bcolor = stringToColorInt32(attrValue);
 									break;
 								case "type":
 									if (type != null)
-										throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
+										throw new CodeEE(string.Format(trerror.DuplicateAttribute.Text, tag, word.Code));
 									type = attrValue;
 									break;
 								case "param":
 									if (param != null)
-										throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
+										throw new CodeEE(string.Format(trerror.DuplicateAttribute.Text, tag, word.Code));
 									{
 										string[] tokens = attrValue.Split(',');
-										param = new int[tokens.Length];
+										param = new MixedNum[tokens.Length];
 										for (int i = 0; i < tokens.Length; i++)
 										{
-											if (!int.TryParse(tokens[i], out param[i]))
-												throw new CodeEE("<" + tag + ">タグの" + word.Code + "属性の属性値が数値として解釈できません");
+											param[i] = new MixedNum();
+											tokens[i] = tokens[i].Trim();
+
+											if (tokens[i].EndsWith("px", StringComparison.OrdinalIgnoreCase))
+											{
+												if (!int.TryParse(tokens[i].Substring(0, tokens[i].Length - 2), out param[i].num))
+													throw new CodeEE(string.Format(trerror.AttributeCanNotInterpretNum.Text, tag, word.Code));
+												param[i].isPx = true;
+											}
+											else if (!int.TryParse(tokens[i], out param[i].num))
+												throw new CodeEE(string.Format(trerror.AttributeCanNotInterpretNum.Text, tag, word.Code));
+											//if (!int.TryParse(tokens[i], out param[i]))
+											//	throw new CodeEE("<" + tag + ">タグの" + word.Code + "属性の属性値が数値として解釈できません");
 										}
 										break;
 									}
 								default:
-									throw new CodeEE("<" + tag + ">タグの属性名" + word.Code + "は解釈できません");
+									throw new CodeEE(string.Format(trerror.CanNotInterpretAttributeName.Text, tag, word.Code));
 							}
 						}
 						if (param == null)
-							throw new CodeEE("<" + tag + ">タグにparam属性が設定されていません");
+							throw new CodeEE(string.Format(trerror.NotSetAttribute.Text, tag, "param"));
 						if (type == null)
-							throw new CodeEE("<" + tag + ">タグにtype属性が設定されていません");
+							throw new CodeEE(string.Format(trerror.NotSetAttribute.Text, tag, "type"));
 						Color c = Config.ForeColor;
 						Color b = Config.FocusColor;
 						if (color >= 0)
@@ -957,12 +1000,13 @@ namespace MinorShift.Emuera.GameView
 							b = Color.FromArgb(bcolor >> 16, (bcolor >> 8) & 0xFF, bcolor & 0xFF);
 						}
 						return ConsoleShapePart.CreateShape(type, param, c, b, color >= 0);
+						#endregion
 					}
 				case "button":
 				case "nonbutton":
 					{
 						if (state.CurrentButtonTag != null)
-							throw new CodeEE("<button>又は<nonbutton>が入れ子にされています");
+							throw new CodeEE(trerror.NestedButtonTag.Text);
 						HtmlAnalzeStateButtonTag buttonTag = new HtmlAnalzeStateButtonTag();
 						bool isButton = tag.ToLower() == "button";
 						string attrValue;
@@ -983,29 +1027,29 @@ namespace MinorShift.Emuera.GameView
 							if (word.Code.Equals("value", StringComparison.OrdinalIgnoreCase))
 							{
 								if (!isButton)
-									throw new CodeEE("<" + tag + ">タグにvalue属性が設定されています");
+									throw new CodeEE(string.Format(trerror.NotSetAttribute.Text, tag, "value"));
 								if (value != null)
-									throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
+									throw new CodeEE(string.Format(trerror.DuplicateAttribute.Text, tag, word.Code));
 								value = attrValue;
 							}
 							else if (word.Code.Equals("title", StringComparison.OrdinalIgnoreCase))
 							{
 								if (buttonTag.ButtonTitle != null)
-										throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
+									throw new CodeEE(string.Format(trerror.DuplicateAttribute.Text, tag, word.Code));
 								buttonTag.ButtonTitle = attrValue;
 							}
 							else if (word.Code.Equals("pos", StringComparison.OrdinalIgnoreCase))
 							{
 								//throw new NotImplCodeEE();
 								if (buttonTag.PointXisLocked)
-									throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
+									throw new CodeEE(string.Format(trerror.DuplicateAttribute.Text, tag, word.Code));
 								if (!int.TryParse(attrValue, out int pos))
-									throw new CodeEE("<" + tag + ">タグのpos属性の属性値が数値として解釈できません");
+									throw new CodeEE(string.Format(trerror.AttributeCanNotInterpretNum.Text, tag, "pos"));
 								buttonTag.PointX = pos;
 								buttonTag.PointXisLocked = true;
 							}
 							else
-								throw new CodeEE("<" + tag + ">タグの属性名" + word.Code + "は解釈できません");
+								throw new CodeEE(string.Format(trerror.CanNotInterpretAttributeName.Text, tag, word.Code));
 						}
 						#region EM_私家版_clearbutton
 						//if (isButton)
@@ -1045,7 +1089,7 @@ namespace MinorShift.Emuera.GameView
 				case "clearbutton":
 					{
 						if (state.FlagClearButton)
-							throw new CodeEE("<clearbutton>が入れ子にされています");
+							throw new CodeEE(trerror.NestedClearbuttonTag.Text);
 						if (wc!=null)
 							while (!wc.EOL)
 							{
@@ -1063,10 +1107,10 @@ namespace MinorShift.Emuera.GameView
 									if (val == "true")
 										state.FlagClearButtonTooltip = true;
 									else if (val != "false")
-										throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性の値\"" + attr.Str + "\"は解釈できません");
+										throw new CodeEE(string.Format(trerror.ClearbuttonAttributeCanNotInterpretNum.Text, tag, word.Code, attr.Str));
 								}
 								else
-									throw new CodeEE("<" + tag + ">タグの属性名" + word.Code + "は解釈できません");
+									throw new CodeEE(string.Format(trerror.CanNotInterpretAttributeName.Text, tag, word.Code));
 							}
 						state.FlagClearButton = true;
 						return null;
@@ -1075,7 +1119,7 @@ namespace MinorShift.Emuera.GameView
 				case "font":
 					{
 						if (wc == null)
-							throw new CodeEE("<" + tag + ">タグに属性が設定されていません");
+							throw new CodeEE(string.Format(trerror.TagHasNotAttribute.Text, tag));
 						HtmlAnalzeStateFontTag font = new HtmlAnalzeStateFontTag();
 						while (!wc.EOL)
 						{
@@ -1092,17 +1136,17 @@ namespace MinorShift.Emuera.GameView
 							{
 								case "color":
 									if (font.Color >= 0)
-										throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
+										throw new CodeEE(string.Format(trerror.DuplicateAttribute.Text, tag, word.Code));
 									font.Color = stringToColorInt32(attrValue);
 									break;
 								case "bcolor":
 									if (font.BColor >= 0)
-										throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
+										throw new CodeEE(string.Format(trerror.DuplicateAttribute.Text, tag, word.Code));
 									font.BColor = stringToColorInt32(attrValue);
 									break;
 								case "face":
 									if (font.FontName != null)
-										throw new CodeEE("<" + tag + ">タグに" + word.Code + "属性が2度以上指定されています");
+										throw new CodeEE(string.Format(trerror.DuplicateAttribute.Text, tag, word.Code));
 									font.FontName = attrValue;
 									break;
 								//case "pos":
@@ -1118,7 +1162,7 @@ namespace MinorShift.Emuera.GameView
 								//		break;
 								//	}
 								default:
-								throw new CodeEE("<" + tag + ">タグの属性名" + word.Code + "は解釈できません");
+									throw new CodeEE(string.Format(trerror.CanNotInterpretAttributeName.Text, tag, word.Code));
 							}
 						}
 						//他のfontタグの内側であるなら未設定項目については外側のfontタグの設定を受け継ぐ(posは除く)
@@ -1141,13 +1185,13 @@ namespace MinorShift.Emuera.GameView
 
 
 		error:
-			throw new CodeEE("html文字列\"" + st.RowString + "\"のタグ解析中にエラーが発生しました");
+			throw new CodeEE(string.Format(trerror.HtmlTagError.Text, st.RowString));
 		}
 
 		private static int stringToColorInt32(string str)
 		{
 			if(str.Length == 0)
-				throw new CodeEE("色を表す単語又は#RRGGBB値が必要です");
+				throw new CodeEE(trerror.RequireColorCode.Text);
 			int i;
 			if (str[0] == '#')
 			{
@@ -1156,11 +1200,11 @@ namespace MinorShift.Emuera.GameView
 				{
 					i = Convert.ToInt32(colorvalue, 16);
 					if (i < 0 || i > 0xFFFFFF)
-						throw new CodeEE(colorvalue + "は適切な色指定の範囲外です");
+						throw new CodeEE(string.Format(trerror.OoRColorValue.Text, colorvalue));
 				}
 				catch
 				{
-					throw new CodeEE(colorvalue + "は数値として解釈できません");
+					throw new CodeEE(string.Format(trerror.CanNotInterpretNumValue.Text, colorvalue));
 				}
 			}
 			else
@@ -1169,17 +1213,17 @@ namespace MinorShift.Emuera.GameView
 				if (color.A == 0)//色名として解釈失敗 エラー確定
 				{
 					if(str.Equals("transparent", StringComparison.OrdinalIgnoreCase))
-						throw new CodeEE("無色透明(Transparent)は色として指定できません");
+						throw new CodeEE(trerror.TransparentUnsupported.Text);
 					try
 					{
 						i = Convert.ToInt32(str, 16);
 					}
 					catch//16進数でもない
 					{
-						throw new CodeEE("指定された色名\"" + str + "\"は無効な色名です");
+						throw new CodeEE(trerror.InvalidColorName.Text);
 					}
 					//#RRGGBBを意図したのかもしれない
-					throw new CodeEE("指定された色名\"" + str + "\"は無効な色名です(16進数で色を指定する場合には数値の前に#が必要です)");
+					throw new CodeEE(string.Format(trerror.InvalidColorName2.Text, str));
 				}
 				i = color.R * 0x10000 + color.G * 0x100 + color.B;
 			}

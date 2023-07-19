@@ -6,23 +6,26 @@ using System.Drawing;
 using MinorShift.Emuera.Sub;
 using XEmuera;
 using SkiaSharp;
+using EvilMask.Emuera;
 
 namespace MinorShift.Emuera
 {
 
 	internal sealed class ConfigItem
 	{
+		#region EM_私家版_Emuera多言語化改造
 		public static ConfigItem Copy(ConfigItem other)
 		{
 			if (other == null)
 				return null;
-			ConfigItem ret = new ConfigItem(other.Code, other.Text, other.Value)
+			ConfigItem ret = new ConfigItem(other.Code, other.Text, other.EngText, other.Value)
 			{
 				Name = other.Name,
 				Fixed = other.Fixed
 			};
 			return ret;
 		}
+		#endregion
 
 		public ConfigCode Code { get; private set; }
 
@@ -30,19 +33,27 @@ namespace MinorShift.Emuera
 
 		public string Text { get; private set; }
 
+		#region EM_私家版_Emuera多言語化改造
+		public string EngText { get; private set; }
+		#endregion
+
 		public bool Fixed { get; set; }
 
 		public object Value { get; set; }
 
 		public object DefaultValue { get; private set; }
 
-		public ConfigItem(ConfigCode code, string text, object value)
+		#region EM_私家版_Emuera多言語化改造
+		public ConfigItem(ConfigCode code, string text, string etext, object value)
 		{
 			this.Code = code;
-			this.Text = text;
+			this.Name = code.ToString();
+			this.Text = text.ToUpper();
+			this.EngText = etext.ToUpper();
 			this.Value = value;
 			this.DefaultValue = value;
 		}
+		#endregion
 
 		public void CopyTo(ConfigItem other)
 		{
@@ -82,12 +93,29 @@ namespace MinorShift.Emuera
 			{
 				return string.Format("{0},{1},{2}", c.R, c.G, c.B);
 			}
+
+			#region EM_私家版_LoadText＆SaveText機能拡張
+			if (value is List<string>)
+			{
+				var sb = new StringBuilder();
+				var v = value;
+				foreach (var str in (List<string>)v)
+				{
+					if (sb.Length > 0)
+						sb.Append(",");
+					sb.Append(str);
+				}
+				return sb.ToString();
+			}
+			#endregion
 			return value.ToString();
 		}
 
 		public override string ToString()
 		{
-			return Text + ":" + ValueToString(Value);
+			#region EM_私家版_Emuera多言語化改造
+			return (Config.EnglishConfigOutput ? EngText : Text) + ":" + ValueToString(Value);
+			#endregion
 		}
 
 
@@ -115,8 +143,14 @@ namespace MinorShift.Emuera
 				ret = TryStringsToColor(str, out Color c);
 				if (ret)
 					Value = c;
-				else
-					ShowError("値をColor指定子として認識できません");
+                else
+                    throw new CodeEE(Lang.Error.NotExistColorSpecifier.Text);
+            }
+			else if (Value is char)
+			{
+				ret = char.TryParse(str, out char c);
+				if (ret)
+					Value = c;
 			}
 			else if (Value is char)
 			{
@@ -130,7 +164,7 @@ namespace MinorShift.Emuera
 				if (ret)
 					Value = i;
 				else
-					ShowError("数字でない文字が含まれています");
+					throw new CodeEE(Lang.Error.ContainsNonNumericCharacters.Text);
 			}
 			else if (Value is long)
 			{
@@ -138,7 +172,7 @@ namespace MinorShift.Emuera
 				if (ret)
 					Value = l;
 				else
-					ShowError("数字でない文字が含まれています");
+					throw new CodeEE(Lang.Error.ContainsNonNumericCharacters.Text);
 			}
 			else if (Value is float)
 			{
@@ -146,7 +180,7 @@ namespace MinorShift.Emuera
 				if (ret)
 					Value = f;
 				else
-					ShowError("数字でない文字が含まれています");
+					throw new CodeEE(Lang.Error.ContainsNonNumericCharacters.Text);
 			}
 			else if (Value is List<long> longlist)
 			{
@@ -159,7 +193,7 @@ namespace MinorShift.Emuera
 						longlist.Add(l);
 					else
 					{
-						ShowError("数字でない文字が含まれています");
+						throw new CodeEE(Lang.Error.ContainsNonNumericCharacters.Text);
 					}
 				}
 			}
@@ -173,7 +207,7 @@ namespace MinorShift.Emuera
 				{
 					#region EM_私家版_LoadText＆SaveText機能拡張
 					ret = true;
-					var list = (List<string>)Value;
+					var list = stringlist;
 					TryStringToStringList(str, ref list);
 					Value = list;
 					#endregion
@@ -188,7 +222,7 @@ namespace MinorShift.Emuera
 					Value = (TextDrawingMode)Enum.Parse(typeof(TextDrawingMode), str);
 				}
 				else
-					ShowError("不正な指定です");
+					throw new CodeEE(Lang.Error.InvalidSpecification.Text);
 			}
 			else if (Value is ReduceArgumentOnLoadFlag)
 			{
@@ -199,7 +233,7 @@ namespace MinorShift.Emuera
 					Value = (ReduceArgumentOnLoadFlag)Enum.Parse(typeof(ReduceArgumentOnLoadFlag), str);
 				}
 				else
-					ShowError("不正な指定です");
+					throw new CodeEE(Lang.Error.InvalidSpecification.Text);
 			}
 			else if (Value is DisplayWarningFlag)
 			{
@@ -210,7 +244,7 @@ namespace MinorShift.Emuera
 					Value = (DisplayWarningFlag)Enum.Parse(typeof(DisplayWarningFlag), str);
 				}
 				else
-					ShowError("不正な指定です");
+					throw new CodeEE(Lang.Error.InvalidSpecification.Text);
 			}
 			else if (Value is UseLanguage)
 			{
@@ -221,7 +255,7 @@ namespace MinorShift.Emuera
 					Value = (UseLanguage)Enum.Parse(typeof(UseLanguage), str);
 				}
 				else
-					ShowError("不正な指定です");
+					throw new CodeEE(Lang.Error.InvalidSpecification.Text);
 			}
 			else if (Value is TextEditorType)
 			{
@@ -232,7 +266,7 @@ namespace MinorShift.Emuera
 					Value = (TextEditorType)Enum.Parse(typeof(TextEditorType), str);
 				}
 				else
-					ShowError("不正な指定です");
+					throw new CodeEE(Lang.Error.InvalidSpecification.Text);
 			}
 			else if (Value is SKFilterQuality)
 			{
@@ -240,7 +274,7 @@ namespace MinorShift.Emuera
 				if (ret)
 					Value = result;
 				else
-					ShowError("不正な指定です");
+					throw new CodeEE(Lang.Error.InvalidSpecification.Text);
 			}
 			//else
 			//    ShowError("型不明なコンフィグ");
@@ -297,7 +331,7 @@ namespace MinorShift.Emuera
 				p = true;
 				return true;
 			}
-			throw new CodeEE("不正な指定です");
+			throw new CodeEE(Lang.Error.InvalidSpecification.Text);
 		}
 
 		public static bool TryStringsToColor(string str, out Color c)
@@ -317,5 +351,3 @@ namespace MinorShift.Emuera
 		}
 	}
 }
-
-
