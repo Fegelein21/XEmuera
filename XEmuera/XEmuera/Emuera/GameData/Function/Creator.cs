@@ -270,6 +270,30 @@ namespace MinorShift.Emuera.GameData.Function
 
                 ["MAP_TOXML"] = new MapGetStrMethod(MapGetStrMethod.Operation.ToXml),
                 ["MAP_FROMXML"] = new MapFromXmlMethod(),
+
+                ["DT_CREATE"] = new DataTableManagementMethod(DataTableManagementMethod.Operation.Create),
+                ["DT_EXIST"] = new DataTableManagementMethod(DataTableManagementMethod.Operation.Check),
+                ["DT_RELEASE"] = new DataTableManagementMethod(DataTableManagementMethod.Operation.Release),
+                ["DT_NOCASE"] = new DataTableManagementMethod(DataTableManagementMethod.Operation.Case),
+
+                ["DT_CLEAR"] = new DataTableManagementMethod(DataTableManagementMethod.Operation.Clear),
+
+                ["DT_COLUMN_ADD"] = new DataTableColumnManagementMethod(DataTableColumnManagementMethod.Operation.Create),
+                ["DT_COLUMN_EXIST"] = new DataTableColumnManagementMethod(DataTableColumnManagementMethod.Operation.Check),
+                ["DT_COLUMN_REMOVE"] = new DataTableColumnManagementMethod(DataTableColumnManagementMethod.Operation.Remove),
+                ["DT_COLUMN_LENGTH"] = new DataTableLengthMethod(DataTableLengthMethod.Operation.Column),
+
+                ["DT_ROW_ADD"] = new DataTableRowSetMethod(DataTableRowSetMethod.Operation.Add),
+                ["DT_ROW_SET"] = new DataTableRowSetMethod(DataTableRowSetMethod.Operation.Set),
+                ["DT_ROW_REMOVE"] = new DataTableRowRemoveMethod(),
+                ["DT_ROW_LENGTH"] = new DataTableLengthMethod(DataTableLengthMethod.Operation.Row),
+
+                ["DT_CELL_GET"] = new DataTableCellGetMethod(DataTableCellGetMethod.Operation.Get),
+                ["DT_CELL_ISNULL"] = new DataTableCellGetMethod(DataTableCellGetMethod.Operation.IsNull),
+                ["DT_CELL_GETS"] = new DataTableCellGetMethod(DataTableCellGetMethod.Operation.Gets),
+                ["DT_CELL_SET"] = new DataTableCellSetMethod(),
+
+                ["DT_SELECT"] = new DataTableSelectMethod(),
                 #endregion
 
                 #region EEで追加されたやつ

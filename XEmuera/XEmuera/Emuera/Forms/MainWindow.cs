@@ -75,7 +75,7 @@ namespace MinorShift.Emuera
 
 			// #region EM_私家版_Emuera多言語化改造
 			// this.labelMacroGroupChanged.Font = new Font(Lang.MFont, 24F, FontStyle.Regular, GraphicsUnit.Point, (byte)128);
-			// this.richTextBox1.Font = new Font(Config.Font.FontFamily, 18F, FontStyle.Regular, GraphicsUnit.Pixel);
+			// this.richTextBox1.Font = new Font(Config.Font.FontFamily, Config.FontSize, FontStyle.Regular, GraphicsUnit.Pixel);
 			// #endregion
 		}
 

@@ -97,9 +97,12 @@ namespace MinorShift.Emuera.GameData
 		public HashSet<string> SaveMaps { get; private set; } = new HashSet<string>();
 		public HashSet<string> GlobalSaveXmls { get; private set; } = new HashSet<string>();
 		public HashSet<string> SaveXmls { get; private set; } = new HashSet<string>();
+		public HashSet<string> GlobalSaveDTs { get; private set; } = new HashSet<string>();
+		public HashSet<string> SaveDTs { get; private set; } = new HashSet<string>();
 
 		public HashSet<string> StaticMaps { get; private set; } = new HashSet<string>();
 		public HashSet<string> StaticXmls { get; private set; } = new HashSet<string>();
+		public HashSet<string> StaticDTs { get; private set; } = new HashSet<string>();
 		#endregion
 
 		//private readonly GameBase gamebase;
@@ -1295,6 +1298,18 @@ namespace MinorShift.Emuera.GameData
 								SaveXmls.Add(tokens[i].Trim());
 							continue;
 						}
+						if (tokens[0].Equals("GLOBAL_DTS", Config.SCVariable))
+						{
+							for (int i = 1; i < tokens.Length; i++)
+								GlobalSaveDTs.Add(tokens[i].Trim());
+							continue;
+						}
+						if (tokens[0].Equals("SAVE_DTS", Config.SCVariable))
+						{
+							for (int i = 1; i < tokens.Length; i++)
+								SaveDTs.Add(tokens[i].Trim());
+							continue;
+						}
 						if (tokens[0].Equals("STATIC_XMLS", Config.SCVariable))
 						{
 							for (int i = 1; i < tokens.Length; i++)
@@ -1305,6 +1320,12 @@ namespace MinorShift.Emuera.GameData
 						{
 							for (int i = 1; i < tokens.Length; i++)
 								StaticMaps.Add(tokens[i].Trim());
+							continue;
+						}
+						if (tokens[0].Equals("STATIC_DTS", Config.SCVariable))
+						{
+							for (int i = 1; i < tokens.Length; i++)
+								StaticDTs.Add(tokens[i].Trim());
 							continue;
 						}
 					}
@@ -1662,7 +1683,7 @@ namespace MinorShift.Emuera.GameData
 						ParserMediator.Warn(trerror.ProhibitedArrayName.Text, position, 2);
 						break;
 					}
-					if ((index < 0) || (target.Length <= index))
+					if (((index < 0) || (target.Length <= index)))
 					{
 						ParserMediator.Warn(string.Format(trerror.OoRArray.Text, index.ToString()), position, 1);
 						continue;

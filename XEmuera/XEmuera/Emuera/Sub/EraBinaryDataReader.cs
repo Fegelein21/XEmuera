@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Xml;
 using trerror = EvilMask.Emuera.Lang.Error;
+using System.Data;
 
 namespace MinorShift.Emuera.Sub
 {
@@ -31,6 +32,7 @@ namespace MinorShift.Emuera.Sub
 		#region EM_私家版_セーブ拡張
 		Map = 0x20,
 		Xml = 0x21,
+		DT = 0x22,
 		#endregion
 		//SOC = 0xFD,//キャラデータ始まり
 		Separator = 0xFD,//データ区切り
@@ -156,6 +158,7 @@ namespace MinorShift.Emuera.Sub
 
 		#region EM_私家版_セーブ拡張
 		public abstract Dictionary<string, string> ReadMap();
+		public abstract DataTable ReadDataTable();
 		public abstract XmlDocument ReadXml();
 		#endregion
 		public abstract string ReadString();
@@ -241,6 +244,15 @@ namespace MinorShift.Emuera.Sub
 				doc.LoadXml(reader.ReadString());
 				return doc;
 			}
+			public override DataTable ReadDataTable()
+			{
+				var dt = new DataTable();
+				var ss = new StringReader(reader.ReadString());
+				dt.ReadXmlSchema(ss);
+				ss = new StringReader(reader.ReadString());
+				dt.ReadXml(ss);
+				return dt;
+			}
 			#endregion
 
 			public override KeyValuePair<string, EraSaveDataType> ReadVariableCode()
@@ -248,7 +260,7 @@ namespace MinorShift.Emuera.Sub
 				EraSaveDataType type = (EraSaveDataType)reader.ReadByte();
 				#region EM_私家版_セーブ拡張
 				//if (type == EraSaveDataType.EOC || type == EraSaveDataType.EOF || type == EraSaveDataType.Separator)
-				if (type == EraSaveDataType.EOC || type == EraSaveDataType.EOF || type == EraSaveDataType.Separator || type == EraSaveDataType.Map || type == EraSaveDataType.Xml)
+				if (type == EraSaveDataType.EOC || type == EraSaveDataType.EOF || type == EraSaveDataType.Separator || type == EraSaveDataType.Map || type == EraSaveDataType.Xml || type == EraSaveDataType.DT)
 					return new KeyValuePair<string, EraSaveDataType>(null, type);
 				#endregion
 				string key = reader.ReadString();

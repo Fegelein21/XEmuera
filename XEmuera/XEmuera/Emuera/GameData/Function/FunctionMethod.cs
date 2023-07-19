@@ -48,6 +48,7 @@ namespace MinorShift.Emuera.GameData.Function
 			RefInt3D = RefInt | Array3D,
 			RefString3D = RefString | Array3D,
 
+			VariadicAny = Variadic | Any,
 			VariadicInt = Variadic | Int,
 			VariadicString = Variadic | String,
 			VariadicSameAsFirst = Variadic | SameAsFirst,
@@ -87,8 +88,26 @@ namespace MinorShift.Emuera.GameData.Function
 		{
 			public List<_ArgType> ArgTypes { get; set; } = new List<_ArgType>();
 			public int OmitStart { get; set; } = -1;
+			public bool MatchVariadicGroup { get; set; } = false;
 
-			public _ArgType Last { get { return ArgTypes.Count > 0 ? ArgTypes[ArgTypes.Count - 1] : null; } }
+			public _ArgType[] LastVariadics 
+			{ 
+				get {
+					int count = 0;
+					for (int i = ArgTypes.Count - 1; i >= 0; i--)
+					{
+						if (!ArgTypes[i].Variadic) break;
+						count++;
+					}
+					if (count == 0) return null;
+					var ret = new _ArgType[count];
+					for (int i = 0; i < count; i++)
+					{
+						ret[i] = ArgTypes[ArgTypes.Count - count + i];
+					}
+					return ret;
+				}
+			}
 		}
 		protected ArgTypeList[] argumentTypeArrayEx = null;
 
@@ -101,15 +120,25 @@ namespace MinorShift.Emuera.GameData.Function
 			for (int idx = 0; idx < argumentTypeArrayEx.Length; idx++)
 			{
 				var list = argumentTypeArrayEx[idx];
-				bool variadic = list.ArgTypes.Count > 0 && list.Last.Variadic;
+				var vs = list.LastVariadics;
+				bool variadic = vs != null;
 				bool argsNotMoreThanRule = variadic ? true : arguments.Length <= list.ArgTypes.Count;
 				bool argsNotLessThanRule = list.OmitStart > -1 ? arguments.Length >= list.OmitStart : arguments.Length >= list.ArgTypes.Count;
 				if (argsNotMoreThanRule && argsNotLessThanRule)
 				{
+					if (list.MatchVariadicGroup && vs != null)
+					{
+						var variadicGroupStart = list.ArgTypes.Count - vs.Length;
+						if (arguments.Length > variadicGroupStart && (arguments.Length - variadicGroupStart) % vs.Length != 0)
+						{
+							errMsg[idx] = string.Format(Lang.Error.ArgsNotFitExpr.Text, name, arguments.Length, variadicGroupStart, vs.Length);
+							continue;
+						}
+					}
 					// 引数の数が有効
 					for (int i = 0; i < (variadic ? arguments.Length : Math.Min(arguments.Length, list.ArgTypes.Count)); i++)
 					{
-						var rule = variadic && i + 1 >= list.ArgTypes.Count ? list.Last : list.ArgTypes[i];
+						var rule = variadic && i >= list.ArgTypes.Count ? vs[(i - list.ArgTypes.Count) % vs.Length] : list.ArgTypes[i];
 						if (arguments[i] == null)
 						{
 							if (i < list.OmitStart || (list.OmitStart > -1 && i >= list.OmitStart && rule.DisallowVoid))
@@ -137,7 +166,7 @@ namespace MinorShift.Emuera.GameData.Function
 							switch (dims)
 							{
 								case 0:
-									{ 
+									{
 										// 普通の場合
 										var err = rule.String ? Lang.Error.ArgIsNotStrVar
 											: (rule.Int ? Lang.Error.ArgIsNotIntVar : Lang.Error.ArgIsNotVar);
@@ -190,10 +219,9 @@ namespace MinorShift.Emuera.GameData.Function
 							break;
 						}
 					}
-					if (errMsg[idx] == null)
-						return null;
+					if (errMsg[idx] == null) return null;
 				}
-				else if (list.OmitStart == -1 && list.ArgTypes.Count > 0 && !list.Last.Variadic)
+				else if (list.OmitStart == -1 && list.ArgTypes.Count > 0 && !variadic)
 				{
 					// 数固定の引数が必要
 					if (list.ArgTypes.Count > 0)

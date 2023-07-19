@@ -7,6 +7,7 @@ using MinorShift.Emuera.Sub;
 using MinorShift.Emuera.GameProc;
 using System.Xml;
 using trerror = EvilMask.Emuera.Lang.Error;
+using System.Data;
 
 namespace MinorShift.Emuera.GameData.Variable
 {
@@ -18,6 +19,7 @@ namespace MinorShift.Emuera.GameData.Variable
 		#region EM_私家版_XMLDocument_連想配列
 		public Dictionary<string, XmlDocument> DataXmlDocument { get; set; } = new Dictionary<string, XmlDocument>();
 		public Dictionary<string, Dictionary<string, string>> DataStringMaps { get; set; } = new Dictionary<string, Dictionary<string, string>>();
+		public Dictionary<string, DataTable> DataDataTables { get; set; } = new Dictionary<string, DataTable>();
 		#endregion
 		readonly Int64[] dataInteger;
 		readonly string[] dataString;
@@ -1010,6 +1012,13 @@ namespace MinorShift.Emuera.GameData.Variable
 					writer.WriteWithKey(key, DataXmlDocument[key]);
 				}
 			}
+			foreach (var key in GlobalStatic.ConstantData.GlobalSaveDTs)
+			{
+				if (DataDataTables.ContainsKey(key))
+				{
+					writer.WriteWithKey(key, DataDataTables[key]);
+				}
+			}
 		}
 		public void SaveEMDataToStreamBinary(EraBinaryDataWriter writer)
 		{
@@ -1025,6 +1034,13 @@ namespace MinorShift.Emuera.GameData.Variable
 				if (DataXmlDocument.ContainsKey(key))
 				{
 					writer.WriteWithKey(key, DataXmlDocument[key]);
+				}
+			}
+			foreach (var key in GlobalStatic.ConstantData.SaveDTs)
+			{
+				if (DataDataTables.ContainsKey(key))
+				{
+					writer.WriteWithKey(key, DataDataTables[key]);
 				}
 			}
 		}
@@ -1102,6 +1118,16 @@ namespace MinorShift.Emuera.GameData.Variable
 						if (GlobalStatic.ConstantData.SaveXmls.Contains(key) || GlobalStatic.ConstantData.GlobalSaveXmls.Contains(key))
 						{
 							DataXmlDocument[key] = doc;
+						}
+						break;
+					}
+				case EraSaveDataType.DT:
+					{
+						var key = reader.ReadString();
+						var dt = reader.ReadDataTable();
+						if (GlobalStatic.ConstantData.SaveDTs.Contains(key) || GlobalStatic.ConstantData.GlobalSaveDTs.Contains(key))
+						{
+							DataDataTables[key] = dt;
 						}
 						break;
 					}

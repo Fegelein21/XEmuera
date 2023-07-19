@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 using System.IO.Compression;
 using System.Xml;
+using System.Data;
 
 namespace MinorShift.Emuera.Sub
 {
@@ -169,6 +170,18 @@ namespace MinorShift.Emuera.Sub
 				writer.Write((byte)EraSaveDataType.Xml);
 				writer.Write(key);
 				writer.Write(doc.OuterXml);
+			}
+			else if (v is DataTable dt)
+			{
+				writer.Write((byte)EraSaveDataType.DT);
+				writer.Write(key);
+				var ss = new StringWriter();
+				dt.WriteXmlSchema(ss);
+				writer.Write(ss.ToString());
+
+				ss = new StringWriter();
+				dt.WriteXml(ss);
+				writer.Write(ss.ToString());
 			}
 			#endregion
 		}

@@ -1132,6 +1132,12 @@ namespace EvilMask.Emuera
             [Managed] public static TranslatableString ImgRefOutOfRange { get; } = new TranslatableString("{0}関数: 画像の範囲外が指定されています");
 
             [Managed] public static TranslatableString MinInt64CanNotApplyABS { get; } = new TranslatableString("{0}関数: 符号付き64bit整数の最小値({1})に対して絶対値を取ることはできません");
+            
+            [Managed] public static TranslatableString UnsupportedType { get; } = new TranslatableString("{0}関数: 対応していない型が指定されています");
+            [Managed] public static TranslatableString ArgsNotFitExpr { get; } = new TranslatableString("{0}関数: 引数の数({1})が{2}+{3}nではありません");
+            [Managed] public static TranslatableString DTLackOfNamedColumn { get; } = new TranslatableString("{0}関数: DataTable(\"{1}\")に\"{2}\"を名前とした列がありません");
+            [Managed] public static TranslatableString DTInvalidDataType{ get; } = new TranslatableString("{0}関数: DataTable(\"{1}\")の\"{2}\"列に違う型の値を指定しようとしています");
+            [Managed] public static TranslatableString DTCanNotEditIdColumn { get; } = new TranslatableString("{0}関数: DataTable(\"{1}\")の\"id\"列は変更できません");
         }
         [Managed]
         public sealed class MessageBox
